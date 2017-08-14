@@ -1,0 +1,105 @@
+TD.TreespaceCell {
+	BORDER-RIGHT: #A5A4A6 1px solid; COLOR: #040284; BORDER-BOTTOM: #A5A4A6 1px solid; HEIGHT: 20px; BACKGROUND-COLOR: #f6f6f6; TEXT-ALIGN: center
+}
+TD.TreeResponsible {
+	BORDER-RIGHT: #A5A4A6 1px solid; BORDER-TOP: #A5A4A6 1px solid; TEXT-ALIGN: center
+}
+TD.TreeMonitor {
+	BORDER-RIGHT: #A5A4A6 1px solid; BORDER-TOP: #A5A4A6 1px solid; TEXT-ALIGN: center
+}
+TD.TreePlanWorkDate {
+	BORDER-RIGHT: #A5A4A6 1px solid; BORDER-TOP: #A5A4A6 1px solid; TEXT-ALIGN: center
+}
+TD.TreePlanWorkLoad {
+	BORDER-RIGHT: #A5A4A6 1px solid; BORDER-TOP: #A5A4A6 1px solid; TEXT-ALIGN: center
+}
+TD.Treepercent {
+	BORDER-RIGHT: #A5A4A6 1px solid; PADDING-RIGHT: 5px; BORDER-TOP: #A5A4A6 1px solid; TEXT-ALIGN: right
+}
+TD.Treestatus {
+	BORDER-RIGHT: #A5A4A6 1px solid; BORDER-TOP: #A5A4A6 1px solid; PADDING-LEFT: 5px; TEXT-ALIGN: left
+}
+TD.TreeTextCenter {
+	BORDER-RIGHT: #A5A4A6 1px solid; PADDING-RIGHT: 3px; BORDER-TOP: #A5A4A6 1px solid; PADDING-LEFT: 3px; COLOR: #000000; TEXT-ALIGN: center
+}
+TD.TreeTextRight {
+	BORDER-RIGHT: #A5A4A6 1px solid; PADDING-RIGHT: 3px; BORDER-TOP: #A5A4A6 1px solid; PADDING-LEFT: 3px; COLOR: #000000; TEXT-ALIGN: right
+}
+TD.TreeTextLeft {
+	BORDER-RIGHT: #A5A4A6 1px solid; PADDING-RIGHT: 3px; BORDER-TOP: #A5A4A6 1px solid; PADDING-LEFT: 3px; COLOR: #000000; TEXT-ALIGN: left
+}
+SPAN.Treetaskname {
+	OVERFLOW: hidden; WIDTH: 220px
+}
+TD.Treetaskname {
+	BORDER-RIGHT: #848284 1px solid; BORDER-TOP: #848284 1px solid; BORDER-LEFT: #A5A4A6; BORDER-BOTTOM: #A5A4A6; HEIGHT: 20px
+}
+TD.Treetaskcount {
+	BORDER-RIGHT: #A5A4A6 1px solid; BORDER-TOP: #A5A4A6 1px solid; HEIGHT: 20px; TEXT-ALIGN: center
+}
+TD.stuff {
+	HEIGHT: 8px; BACKGROUND-COLOR: transparent
+}
+HR.scheduled {
+	HEIGHT: 8px; BACKGROUND-COLOR: #0a91ff
+}
+TD.scheduled {
+	HEIGHT: 8px; BACKGROUND-COLOR: #0a91ff
+}
+HR.tracked {
+	HEIGHT: 8px; BACKGROUND-COLOR: lightsalmon
+}
+TD.tracked {
+	HEIGHT: 8px; BACKGROUND-COLOR: lightsalmon
+}
+TD.common {
+	BORDER-TOP: #A5A4A6 1px solid; HEIGHT: 20px
+}
+TD.sc {
+	BORDER-TOP: #A5A4A6 1px solid; HEIGHT: 2px
+}
+TD.critical {
+	HEIGHT: 0px; BACKGROUND-COLOR: red
+}
+TD.noncritical {
+	HEIGHT: 0px; BACKGROUND-COLOR: transparent
+}
+IMG.milstone {
+	WIDTH: 0px; HEIGHT: 0px
+}
+TABLE.timeline {
+	BORDER-RIGHT: #A5A4A6 1px solid; BORDER-TOP: #A5A4A6 1px solid; FONT-SIZE: 12px; BORDER-LEFT: #A5A4A6 1px solid; BORDER-BOTTOM: #A5A4A6 1px solid; BORDER-COLLAPSE: collapse
+}
+TD.month {
+	BORDER-RIGHT: #A5A4A6 1px solid; BACKGROUND: url(bg.gif); COLOR: #ffffaa; BORDER-BOTTOM: #A5A4A6 1px solid; HEIGHT: 19px
+}
+TD.week {
+	BORDER-RIGHT: #A5A4A6 1px solid; PADDING-LEFT: 2px; COLOR: #040284; HEIGHT: 20px; BACKGROUND-COLOR: #f6f6f6
+}
+TD.taskbar {
+	BORDER-TOP: #A5A4A6 1px solid
+}
+TR.rowType1 {
+	BACKGROUND-COLOR: #ffffff
+}
+TR.rowType2 {
+	BACKGROUND-COLOR: #f6f6f6
+}
+IMG.Treeicon {
+	BORDER-RIGHT: 0px; BORDER-TOP: 0px; VERTICAL-ALIGN: bottom; BORDER-LEFT: 0px; WIDTH: 19px; BORDER-BOTTOM: 0px; HEIGHT: 19px
+}
+IMG.important {
+	WIDTH: 16px; HEIGHT: 16px
+}
+TABLE.legend {
+	FONT-SIZE: 12px; WIDTH: 600px; COLOR: #0000ff; HEIGHT: 20px; BACKGROUND-COLOR: #eeeeee
+}
+TABLE.TreeLegend {
+	FONT-SIZE: 12px; WIDTH: 200px; COLOR: #0000ff; HEIGHT: 30px; BACKGROUND-COLOR: #ffffff
+}
+SELECT.legend {
+	FONT-SIZE: 12px; HEIGHT: 15px
+}
+TD.percent {
+	BORDER-TOP: #A5A4A6 1px solid; COLOR: lightsalmon; HEIGHT: 20px
+}

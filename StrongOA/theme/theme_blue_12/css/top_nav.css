@@ -1,0 +1,22 @@
+.top_nav .tabHeadLeftScroll,.top_nav .tabHeadRightScroll,.top_nav .tabHeadSlider{ float:left;}
+.top_nav .tabHeadLeftScroll,.top_nav .tabHeadRightScroll{ cursor:pointer; padding:0px 5px; height:28px;}
+.top_nav li{ float:left; list-style-type:none;}
+.top_nav .tabHeadText{ margin-top:4px; margin-bottom:-4px; float:left; width:100px; text-align:center; overflow:hidden; white-space: nowrap;  text-overflow: ellipsis;}
+.top_nav .tabHeadContainer .tabHeadClose{float:left; cursor:pointer;}
+.top_nav .tabHeaddown{ width:16px; height:28px;  cursor:pointer; float:left;	}
+
+.top_nav .tabHeadContainer{ height:28px; line-height:28px; background:url(../image/top_nav/bg_nav_left_new_03.jpg) repeat-x;}
+.top_nav .active{  color:#000000;}
+.top_nav .tabHeadClosephoto{ background:url(../image/top_nav/pic_close.gif) no-repeat 0px 12px; font-size:8px; width:8px;height:28px;}
+.top_nav .activebg{  padding:0px 4px 0px 2px; color:#000000;}
+.top_nav .menubg{background:url(../image/top_nav/bg_nav_left_new_08.jpg) repeat-x 0px 2px;}
+.top_nav .menubg2{background:url(../image/top_nav/bg_nav_left_new_15.jpg) 0px 6px repeat-x;}
+.top_nav .tabHeadbg{ background:url(../image/top_nav/bg_nav_left_new_15.jp) bottom repeat-x; padding:0px 4px 0px 2px; color:#000000;}
+.top_nav .menubg .tabHeadLeft { float:left; height:28px; background:url(../image/top_nav/bg_nav_left_new_06.jpg) no-repeat bottom left; width:5px; font-size:5px;}
+.top_nav .menubg2 .tabHeadLeft{ float:left; height:28px; background:url(../image/top_nav/bg_nav_left_new_19.jpg) no-repeat bottom left; width:5px; font-size:5px;}
+.top_nav .tabHeadright{float:left; height:28px; }
+.top_nav .tabHeadRightphoto{background:url(../image/top_nav/bg_nav_left_new_09.jpg) no-repeat bottom ; width:4px; heigh:28px; float:left;}
+.top_nav .menubg2 .tabHeadRightphoto{background:url(../image/top_nav/bg_nav_left_new_17.jpg) no-repeat bottom; width:5px; heigh:28px; float:left;}
+.top_nav .tabHeadLeftScrollphoto{background:url(../image/top_nav/bg_nav_left_new_28.jpg) no-repeat 5px 10px;width:11px;heigh:28px;}
+.top_nav .tabHeadRightScrollphoto{background:url(../image/top_nav/bg_nav_left_new_31.jpg) no-repeat 5px 10px;width:11px;heigh:28px;}
+.top_nav .tabHeaddown{ background:url(../image/top_nav/bg_top_menu_icon.jpg) no-repeat center;}

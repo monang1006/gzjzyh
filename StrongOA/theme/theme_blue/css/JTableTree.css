@@ -1,0 +1,50 @@
+IMG.JTT_SIcon {
+	BORDER-RIGHT: 0px; BORDER-TOP: 0px; VERTICAL-ALIGN: bottom; BORDER-LEFT: 0px; WIDTH: 16px; BORDER-BOTTOM: 0px; HEIGHT: 16px
+}
+IMG.JTT_SPlusMinus {
+	BORDER-RIGHT: 0px; BORDER-TOP: 0px; VERTICAL-ALIGN: bottom; BORDER-LEFT: 0px; WIDTH: 19px; BORDER-BOTTOM: 0px; HEIGHT: 19px
+}
+TABLE.JTT_STable {
+	BORDER-RIGHT: #A5A4A6 0px solid;
+	BORDER-TOP: #A5A4A6 1px solid;
+	FONT-SIZE: 12px;
+	BORDER-LEFT:#A5A4A6 1px solid;
+	WIDTH: 0px;
+	BORDER-BOTTOM: #A5A4A6 1px solid;
+
+    }
+TD.JTT_SHead {
+	
+}
+TD.JTT_SHeadCell {
+	BORDER-RIGHT: #A5A4A6 1px solid;
+	PADDING-RIGHT: 5px;
+	PADDING-LEFT: 5px;
+	VERTICAL-ALIGN: middle;
+	COLOR: #02519E;
+	BORDER-BOTTOM: #A5A4A6 0px solid;
+	WHITE-SPACE: nowrap;
+	HEIGHT: 28px;
+	TEXT-ALIGN: center;
+	font-weight: bold;
+	background-image: url(../../jsp/uums/clearancemanage/jstreeimgs/treemunebg.jpg);	
+				}
+		
+TD.JTT_SRowCell {
+	BORDER-RIGHT: #A5A4A6 1px solid; BORDER-TOP:#A5A4A6 1px solid; BORDER-LEFT: #A5A4A6; BORDER-BOTTOM: #A5A4A6; HEIGHT: 20px
+}
+SPAN.JTT_STreeText {
+	MARGIN-TOP: 2px; FONT-SIZE: 14px; MARGIN-BOTTOM: 1px; VERTICAL-ALIGN: middle; CURSOR: hand; POSITION: relative; HEIGHT: 16px; textAlign: center
+}
+SPAN.JTT_STreeNode {
+	VERTICAL-ALIGN: middle; HEIGHT: 20px
+}
+TD.JTT_SIndexRowCell {
+	BORDER-RIGHT: #A5A4A6 1px solid; BORDER-TOP: #A5A4A6 1px solid; WIDTH: 24px; HEIGHT: 20px; TEXT-ALIGN: center
+}
+TR.JTT_RowStyleEven {
+	HEIGHT: 20px; BACKGROUND-COLOR: #F5F9FE;
+}
+TR.JTT_RowStyleOdd {
+	HEIGHT: 20px; BACKGROUND-COLOR: #ffffff;
+}

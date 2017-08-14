@@ -1,0 +1,34 @@
+<PUBLIC:COMPONENT tagName=checkbox lightweight="true">
+<RPOPERTY NAME=fill>
+<RPOPERTY NAME=value GET=getValue PUT=setValue>
+<ATTACH EVENT=onkeydown HANDLER=onKeyDown>
+<ATTACH EVENT=oncontentready HANDLER=init>
+</PUBLIC:COMPONENT>
+<SCRIPT LANGUAGE=javascript>
+function init()
+{
+	if(fill != null && fill.toLowerCase() == "yes")
+	{
+		style.background="#B5E3DF";
+	}
+}
+function onKeyDown()
+{
+	if(event.keyCode == 13)
+		event.keyCode = 9;
+}
+function getValue()
+{
+	if(checked)
+		return "Y";
+	else
+		return "N";
+}
+function setValue(val)
+{
+	if(val.toString().toUpperCase() == "Y")
+		checked = true;
+	else
+		checked = false;
+}
+</SCRIPT>

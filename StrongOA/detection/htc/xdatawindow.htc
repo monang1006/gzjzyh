@@ -1,0 +1,2409 @@
+
+<!-- 
+	History: The last revised time is at 2005-1-14
+Note:	
+	DataWindow组件是组件库中最重要的部分,对于这部分的代码一定要维护好.
+	请不要修改此文件！
+-->
+<PUBLIC:COMPONENT tagName=datawindow> 
+<PUBLIC:DEFAULTS viewLinkContent tabStop="true" />
+
+<!-- <PUBLIC:PROPERTY NAME=debugMode get=getDebugMode put=setDebugMode /> -->
+
+<PUBLIC:PROPERTY NAME=autoSize get=getAutoSize put=setAutoSize />
+<PUBLIC:PROPERTY NAME=autoAddRow get=getAutoAddRow put=setAutoAddRow />
+<PUBLIC:PROPERTY NAME=captions />
+<PUBLIC:PROPERTY NAME=rowselect get=getRowSelectStyle put=setRowSelectStyle />
+<PUBLIC:PROPERTY NAME=node />
+<PUBLIC:PROPERTY NAME=heading />
+<PUBLIC:PROPERTY NAME=xml get=getXml />
+<PUBLIC:PROPERTY NAME=disable get=getDisable put=setDisable />
+<PUBLIC:PROPERTY NAME=readonly get=getReadOnly put=setReadOnly />
+<PUBLIC:PROPERTY NAME=maxLine get=getMaxLine put=setMaxLine />
+<PUBLIC:PROPERTY NAME=bCanAdd get=getAddable put=setAddable />
+<PUBLIC:PROPERTY NAME=canAdd get=getAddable put=setAddable />
+<PUBLIC:PROPERTY NAME=bCanDelete get=getDeletable put=setDeletable />
+<PUBLIC:PROPERTY NAME=canDelete get=getDeletable put=setDeletable />
+<PUBLIC:PROPERTY NAME=workID get=getWorkID put=setWorkID />
+<PUBLIC:PROPERTY NAME=serviceName />
+<PUBLIC:PROPERTY NAME=paramsName get=getParamsName put=setParamsName />
+<PUBLIC:PROPERTY NAME=paramsValue get=getParamsValue put=setParamsValue />
+<!-- 新增面向对象的属性 -->
+<PUBLIC:PROPERTY NAME=totalTag get=getTotalTag put=setTotalTag />
+<PUBLIC:PROPERTY NAME=averageTag get=getAverageTag put=setAverageTag />
+<PUBLIC:PROPERTY NAME=modified get=isModified put=setModified />
+<PUBLIC:PROPERTY NAME=bCanMultiSel get=getMultiSel put=setMultiSel />
+<PUBLIC:PROPERTY NAME=canMultiSelect get=getMultiSel put=setMultiSel />
+<PUBLIC:PROPERTY NAME=pageIndex get=getPageIndex />
+<PUBLIC:PROPERTY NAME=pageCount get=getPageCount />
+<PUBLIC:PROPERTY NAME=rowCount get=getRowCount />
+<PUBLIC:PROPERTY NAME=colCount get=getColCount />
+<PUBLIC:PROPERTY NAME=selRows get=getSelectedRows />
+<PUBLIC:PROPERTY NAME=activeCell get=getActiveCell />
+<PUBLIC:PROPERTY NAME=activeRow get=getActiveRow />
+<PUBLIC:PROPERTY NAME=activeCol get=getActiveCol />
+<PUBLIC:PROPERTY NAME=hiddenCols get=getHiddenCols />
+<!-- Modify by WangJian -->
+<!-- 20040726:WangJian:信息标签是否可视属性 -->
+<PUBLIC:PROPERTY NAME=bInfoLabelVisible get=getbInfoLabelVisible put=setbInfoLabelVisible />
+
+<!-- 20040726:WangJian:网格列头是否可视属性 -->
+<PUBLIC:PROPERTY NAME=bFixedColVisible put=setbFixedColVisible />
+<PUBLIC:PROPERTY NAME=returnInitWorkId get=getInitWorkId />
+
+<!-- 20040812:WangJian:在初始化时进行和后台通讯，将返回xml数据写入dw  -->
+<PROPERTY NAME="noderequest" />
+
+<!-- 20040924:WangJian:用于设置翻页时是系统自动处理还是用户在事件中手工处理  -->
+<PUBLIC:PROPERTY NAME=AutoTurnPage put=setAutoTurnPage />
+<!--200401010:WangJian:增加信息标签图标的更改设置 -->
+<PUBLIC:PROPERTY NAME=InfoLabelIcon put=setInfoLabelIcon />
+<!--200401105:WangJian:使标题栏的高度可微调 -->
+<PUBLIC:PROPERTY NAME=TitleHeight put=setTitleHeight />
+
+<!-- end Modify -->
+
+
+<!-- 获得行,格,列的三种对象 -->
+<PUBLIC:METHOD NAME="row" />
+<PUBLIC:METHOD NAME="cell" />
+<PUBLIC:METHOD NAME="col" />
+
+<PUBLIC:METHOD NAME="hasFocus" />
+<PUBLIC:METHOD NAME="getTitle" />
+<PUBLIC:METHOD NAME="setTitle" />
+<PUBLIC:METHOD NAME="addRow" />
+<PUBLIC:METHOD NAME="allocAttrMem" />
+<PUBLIC:METHOD NAME="calcAllColsTotal" />
+<PUBLIC:METHOD NAME="calcColTotal" />
+<PUBLIC:METHOD NAME="checkFormula" />
+<PUBLIC:METHOD NAME="checkNull" />
+<PUBLIC:METHOD NAME="clearAll" />
+<PUBLIC:METHOD NAME="clear" />
+<PUBLIC:METHOD NAME="commit" />
+<PUBLIC:METHOD NAME="removeFocus" />
+<PUBLIC:METHOD NAME="deleteRow" />
+<PUBLIC:METHOD NAME="calcColTotal" />
+<PUBLIC:METHOD NAME="calcAllColsTotal" />
+<PUBLIC:METHOD NAME="calcColAverage" />
+<PUBLIC:METHOD NAME="calcAllColsAverage" />
+<PUBLIC:METHOD NAME="deleteRowAndFocusNext" />
+<PUBLIC:METHOD NAME="disableAll" />
+<PUBLIC:METHOD NAME="disableCell" />
+<PUBLIC:METHOD NAME="disableCol" />
+<PUBLIC:METHOD NAME="disableRow" />
+<PUBLIC:METHOD NAME="focusCell" />
+<PUBLIC:METHOD NAME="formatData" />
+<PUBLIC:METHOD NAME="getCellText" />
+<PUBLIC:METHOD NAME="getCellValue" />
+<PUBLIC:METHOD NAME="getCellFormula" />
+<PUBLIC:METHOD NAME="getColCount" />
+<PUBLIC:METHOD NAME="getColTotal" />
+<PUBLIC:METHOD NAME="getCurCol" />
+<PUBLIC:METHOD NAME="getCurRow" />
+<PUBLIC:METHOD NAME="getRowCount" />
+<PUBLIC:METHOD NAME="getRelatedColsList" />
+<PUBLIC:METHOD NAME="getRelatedColsCount" />
+<PUBLIC:METHOD NAME="hasRelatedCols" />
+<PUBLIC:METHOD NAME="colHasFormula" />
+<PUBLIC:METHOD NAME="getColFormulaMsg" />
+<PUBLIC:METHOD NAME="isModified" />
+<PUBLIC:METHOD NAME="mapCellNode" />
+<PUBLIC:METHOD NAME="parseXML" />
+<PUBLIC:METHOD NAME="readOnlyAll" />
+<PUBLIC:METHOD NAME="readOnlyCell" />
+<PUBLIC:METHOD NAME="readOnlyCol" />
+<PUBLIC:METHOD NAME="readOnlyRow" />
+<PUBLIC:METHOD NAME="checkData" />
+<PUBLIC:METHOD NAME="isNullRow" />
+<PUBLIC:METHOD NAME="isNullCell" />
+<PUBLIC:METHOD NAME="selectRow" />
+<PUBLIC:METHOD NAME="setCellAttribute" />
+<PUBLIC:METHOD NAME="setCellValue" />
+<PUBLIC:METHOD NAME="setColAttribute" />
+<PUBLIC:METHOD NAME="setColWidth" />
+<PUBLIC:METHOD NAME="setModified" />
+<PUBLIC:METHOD NAME="unformatData" />
+<PUBLIC:METHOD NAME="getCellObject" />
+<PUBLIC:METHOD NAME="getObject" />
+<PUBLIC:METHOD NAME="refresh" />
+<PUBLIC:METHOD NAME="mapNode" />
+<PUBLIC:METHOD NAME="getCurPageIndex" />
+<PUBLIC:METHOD NAME="getPageCount" />
+<PUBLIC:METHOD NAME="queryPageData" />
+
+<!-- 兼容函数 -->
+<PUBLIC:METHOD NAME="getRowNum" />
+<PUBLIC:METHOD NAME="getColNum" />
+<PUBLIC:METHOD NAME="getObjPoint" />
+<PUBLIC:METHOD NAME="sumExp" />
+<!--20040827:WangJian add method -->
+<!--20040827:WangJian:根据请求条件，查询后台，将返回的xml数据写入dw -->
+<PUBLIC:METHOD NAME="setNodeRequest" />
+<!--20040923:WangJian:增加dw的颜色，字体，网格线的设置 -->
+<PUBLIC:METHOD NAME="setColor" />
+<PUBLIC:METHOD NAME="setFont" />
+<PUBLIC:METHOD NAME="setGridLine" />
+
+<!-- end wangjian add method -->
+
+<public:ATTACH   EVENT="oncontentready"  HANDLER="init" />
+<public:ATTACH   EVENT="onload" for="window"  HANDLER="fnOnLoad" />
+<public:ATTACH   EVENT="onunload" for="window"  HANDLER="fnUnload" />
+
+<public:ATTACH   EVENT="onkeydown"  HANDLER="fnKeyDown" />
+<public:ATTACH   EVENT="onfocus"  HANDLER="fnFocus" />
+<public:ATTACH   EVENT="onblur"  HANDLER="fnLostFocus" />
+<public:ATTACH   EVENT="onresize" for="window"  HANDLER="fnResize" />
+<!--20050114:WangJian:税务优化，去掉此事件绑定>
+<!--<public:ATTACH   EVENT="onmouseout"  HANDLER="fnMouseOut" />-->
+
+<PUBLIC:EVENT NAME="onchangemapnode" ID="eChangeMapNode" />
+<PUBLIC:EVENT NAME="onchange" ID="eChange" />
+
+
+<PUBLIC:EVENT NAME="onbeforeadd" ID="eBeforeAdd" />
+<PUBLIC:EVENT NAME="onadd" ID="eAdd" />
+<PUBLIC:EVENT NAME="onbeforedelete" ID="eBeforeDelete" />
+<PUBLIC:EVENT NAME="ondelete" ID="eDelete" />
+<PUBLIC:EVENT NAME="onrowchange" ID="eRowChange" />
+<PUBLIC:EVENT NAME="oncolchange" ID="eColChange" />
+<PUBLIC:EVENT NAME="onpositionchange" ID="ePositionChange" />
+<PUBLIC:EVENT NAME="onclick" ID="eClick" />
+<PUBLIC:EVENT NAME="ondblclick" ID="eDblClick" /><!-- 王柯峰的需求 -->
+<PUBLIC:EVENT NAME="onentercell" ID="eEnterCell" />
+<PUBLIC:EVENT NAME="onleavecell" ID="eLeaveCell" />
+<PUBLIC:EVENT NAME="onmapnodefinish" ID="eMapNodeFinish" />
+<PUBLIC:EVENT NAME="onkeydown" ID="eKeyDown" />
+<PUBLIC:EVENT NAME="onquerypage" ID="eQueryPage" />
+<!-- 建议以下四个事件取消,目前为了兼容暂时保留 -->
+<PUBLIC:EVENT NAME="onfirstpage" ID="eFirstPage" />
+<PUBLIC:EVENT NAME="onpreviouspage" ID="ePreviousPage" />
+<PUBLIC:EVENT NAME="onnextpage" ID="eNextPage" />
+<PUBLIC:EVENT NAME="onlastpage" ID="eLastPage" />
+<!--  -->
+<PUBLIC:EVENT NAME="onbrowse" ID="eBrowseButtonClick" />
+<PUBLIC:EVENT NAME="onlink" ID="eLink" />
+<PUBLIC:EVENT NAME="onbeforenavigate" ID="eBeforeNavigate" />
+<PUBLIC:EVENT NAME="ondataarrived" ID="eDataArrived" />
+
+<!--20040924:WangJian add event -->
+<!--20040924:WangJian:因为原有翻页事件不能修改，增加新翻页事件，提供给用户，用户可选择是否手工处理或让控件自动处理翻页 -->
+<PUBLIC:EVENT NAME="onturnpage" ID="eTurnPage" />
+
+<!--20040924:WangJian add event end-->
+
+</PUBLIC:COMPONENT>
+
+<!--
+<SCRIPT LANGUAGE="javascript" src="js/service.js"></SCRIPT>
+-->
+<SCRIPT LANGUAGE="javascript">
+
+//20040828:WangJian: initial general variant
+//20041029:WangJian:为满足对原有分页功能的兼容，
+//因此，规定当 m_strNodeRequest=="" && m_bAutoTurnPage==true 表示使用旧的分页功能，否则就使用新分页功能。
+var m_strNodeRequest = "" //请求后台数据的请求文本，格式为：服务名称:查询条件:返回节点路径
+//var m_strCurPageSize = "" //当前网格中每页的总行数
+//20040924:WangJian:用于设置翻页时是系统自动处理还是用户在事件中手工处理
+//alert("define var");
+var m_bAutoTurnPage =true;
+
+//end WangJian
+
+var workID = null;
+var strParamsName = null;
+var strParamsValue = null;
+var strDataPath = "";
+var bFocus = false;
+
+var _rtnCode = "1";
+var _code = "";
+var _message = "";
+var _doc = null;
+
+var IEVersion = 6.0;
+
+var strFnAdd;
+var strFnDelete;
+var strFnChange;
+var strFnClick;
+var strFnDblClick;
+var strFnEnterCell;
+var strFnLeaveCell;
+var strFnKeyDown;
+var strFnBrowseButtonClick;
+var strFnLink;
+
+var outterID_DW = "";
+var arrCaption = "";
+
+var linkWindowSize;
+var linkWindowFeature;
+
+var refNode = null;
+////Properties parsing
+
+///////用户自定义功能区//////////////////////////////////////////////////
+//可通过修改UserCustom中的代码，实现对datawindow的缺省初始自定义设置
+function UserCustom()
+{
+	//htcDatawindow.SetInfoLabelIcon(2);//去掉此行注释，可将图标改为联通图标
+	//setColor("FILL_COLOR","&HF5D8D1");
+	//setFont("FIXED_HEADER_TEXT","宋体",false);
+	//setFont("TEXT","隶书","false");
+	return;
+}
+
+var START = new Date().getTime();
+function fnResize(){
+	len = new Date().getTime() - START;
+	if (len > 600){
+		htcDatawindow.style.width = htcDatawindow.style.width == "100%"?"99.6%":"100%";
+		START = new Date().getTime();
+	}
+}
+
+/////////////////////////////////////////////////////////////////////////
+
+function getMaxLine()
+{
+	return htcDatawindow.maxLine;
+}
+function setMaxLine(val)
+{
+	htcDatawindow.maxLine = val;
+}
+function getMultiSel()
+{
+	return htcDatawindow.bCanMultiSel;
+}
+function setMultiSel(val)
+{
+	htcDatawindow.bCanMultiSel = val;
+}
+function getAddable()
+{
+	return htcDatawindow.bCanAdd;
+}
+function setAddable(val)
+{
+	htcDatawindow.bCanAdd = val;
+}
+function getDeletable()
+{
+	return htcDatawindow.bCanDelete;
+}
+function setDeletable(val)
+{
+	htcDatawindow.bCanDelete = val;
+}
+function getWorkID()
+{
+	return workID;
+}
+function setWorkID(val)
+{
+	workID = val;
+}
+function getParamsName()
+{
+	return strParamsName;
+}
+function setParamsName(val)
+{
+	strParamsName = val;
+}
+function getParamsValue()
+{
+	return strParamsValue;
+}
+function setParamsValue(val)
+{
+	strParamsValue = val;
+}
+function getAutoSize()
+{
+	return htcDatawindow.bAutoSize;
+}
+function setAutoSize(val)
+{
+	
+	htcDatawindow.bAutoSize = val;
+}
+function getAutoAddRow()
+{
+	return htcDatawindow.bAutoAddRow();
+}
+function setAutoAddRow(val)
+{
+	htcDatawindow.bAutoAddRow = val;
+}
+function getRowSelectStyle()
+{
+	return htcDatawindow.bRowSelect;
+}
+function setRowSelectStyle(val)
+{
+	htcDatawindow.bRowSelect = val;
+}
+function getXml()
+{
+	return htcDatawindow.xml;
+}
+function getDisable()
+{
+	return htcDatawindow.bDisable;
+}
+function setDisable(val)
+{
+	htcDatawindow.disableAll(val);
+	//20031225 兼容已有的程序，这种做法不合理。
+	htcDatawindow.bDisable = val;
+	//20050518:WangJian:解决当disable后，在页面中按回车键不能跳过该组件的问题
+	//外部很多代码在组件被disable时仍然调用focus()，导致报错，只有解决了该问题之后才能放开以下代码
+	//this.disabled = val;
+}
+function getReadOnly()
+{
+	return htcDatawindow.bReadOnly;
+}
+function setReadOnly(val)
+{
+	htcDatawindow.bReadOnly = val;
+	//20031225 兼容已有的程序，这种做法不合理。
+	htcDatawindow.readOnlyAll(val);
+}
+
+////
+function init()
+{
+
+
+	strFnAdd = "";
+	strFnDelete = "";//好像不用
+	strFnChange = new Array;
+	strFnClick = new Array;
+	strFnDblClick = new Array;
+	strFnEnterCell = new Array;
+	strFnLeaveCell = new Array;
+	strFnKeyDown = new Array;
+	strFnBrowseButtonClick = new Array;
+	strFnLink = new Array;
+	linkWindowSize = new Array;
+	linkWindowFeature = new Array;
+
+	var IEVerArray = window.navigator.appVersion.split(";");
+	IEVersion = parseFloat(IEVerArray[1].replace("MSIE",""));
+	//使用xp菜单问题太多,暂时屏蔽
+	htcDatawindow.bXPStyleMenu = false;//对于IE5.5特定处理xp风格菜单
+	//htcDatawindow.attachEvent('onkeyup',fnKeyDown);
+	htcDatawindow.skin = 2;
+	//设定行选择的习惯
+	rowselect = true;
+	//解析字符串
+	/*
+	1.htcDatawindow.allocAttrMem(colsCount);
+	2.htcDatawindow.setColAttribute(colIndex); //loop
+	3.htcDatawindow.parseXML(eval(node));
+	*/
+	//1.
+	if(id != null)
+		outterID_DW = id;
+	//alert(childNodes.length);
+	allocAttrMem(childNodes.length);
+	if(title != "")
+		htcDatawindow.strTitle = title;
+	else{
+		//兼容heading属性
+		if(heading != null)
+			htcDatawindow.strTitle = heading;
+	}
+	//2.
+	for(var i=0;i<childNodes.length;i++){
+		setColAttribute(i);
+	}
+	//兼容性
+	if(captions != null){
+		//alert("升级提示:\n 组件[datawindow]现在不建议使用[captions]属性,请参照文档变更.");
+		arrCaption = captions.split("|");
+		if(arrCaption.length != childNodes.length){
+			alert("Datawindow组件指定的标签个数不正确!");
+			return;
+		}
+		for(var i=0;i<childNodes.length;i++){
+			htcDatawindow.setColCaption(i,arrCaption[i]);
+		}
+	}
+	//20041009:WangJian:用户通过修改下边函数，实现自定义的缺省初始设置
+	UserCustom();
+	//
+	//3.引用数据岛
+	if(node != null){
+		if(node.indexOf("/") != -1){
+			//var arrNode = new Array();
+			var arrNode = node.split("/");
+			var nodeXML = eval(arrNode[0]);
+			for(var j=1;j<arrNode.length;j++){
+				nodeXML = nodeXML.getElementsByTagName(arrNode[j])[0];
+				strDataPath = strDataPath + "/";
+				}
+			refNode = nodeXML;
+		}else{
+			refNode = eval(node).documentElement;
+		}
+		htcDatawindow.setRefXML(refNode);
+		//4.
+		htcDatawindow.parseXML(refNode);
+
+	}else{
+		//20040810:王健:增加noderequest属性，当node为空时主动查询service，得到dwxml内容，绑定到setRefXML中
+		if (noderequest != null)
+			setNodeRequest(noderequest);
+		else
+			htcDatawindow.parseNull();
+/*		
+		if (m_strNodeRequest != ""){
+			var arrNodeRequest = m_strNodeRequest.split(":");
+			var arrNodeLevel = arrNodeRequest[2].split("/");
+			var strUseNodeName = arrNodeLevel[arrNodeLevel.length-1];
+			//需要在dw中保存sid，提供dw.WorkId属性
+			var sid=createWorkId();
+			htcDatawindow.WorkId=sid;
+			var service = new Service(arrNodeRequest[0],sid);
+			var oArg
+			if(arrNodeRequest[1] != "" ){
+				oArg=service.doService(arrNodeRequest[1]);
+				}
+			else{
+				oArg=service.doService();
+				}
+			if (getCode(service)== "2000")
+			{
+	   			if (strUseNodeName == ""){
+	   				//没有根节点，需补上一个
+	   				oArg = "<ROOT>" + oArg + "</ROOT>";
+	   				strUseNodeName = "ROOT";
+	   			}
+	   			//var oDoc=loadXml("<A><ZSPM><item><dm>01</dm><mc>彩电</mc></item><item><dm>02</dm><mc>冰箱</mc></item><item><dm>03</dm><mc>电话</mc></item></ZSPM></A>");
+	   			var oDoc=loadXml(oArg);
+	   			refNode = oDoc.getElementsByTagName(strUseNodeName)(0);
+				htcDatawindow.setRefXML(refNode);
+				htcDatawindow.parseXML(refNode);
+   			}
+   			else{
+   				//alert("wrong service");
+	   			showMessage(getMessage(service), 0);
+	   			htcDatawindow.parseNull();
+   			}
+		}else
+			htcDatawindow.parseNull();
+*/
+	}
+	//如果初始化不指定绑定数据岛,则后来mapNode时指定页面上的数据岛
+	//htcDatawindow.bDisable = disable;
+	//htcDatawindow.bReadOnly = readonly;
+}
+
+//20041201:WangJian:当前版本中暂不增加此调整，下一个版本提供
+//20041110:WangJian:处理当在dw在table中是，设置高度为绝对数值时，不能刷新的问题
+function fnOnLoad(){
+	var strHeight = style.height;
+	if(strHeight.indexOf("%") == -1){
+		//alert("strHeight:" + strHeight);
+		htcDatawindow.style.height=style.height;
+	}
+}
+
+function fnUnload()
+{
+	htcDatawindow.cleanMemory();
+}
+function fnKeyDown()
+{
+	if(IEVersion >= 6.0){
+		if(event.ctrlKey == true){
+			var bResult = true;
+			switch (event.keyCode){
+				case 45://insert
+				htcDatawindow.cmdAdd();
+				bResult = false;
+				break;
+				case 46://delete
+				htcDatawindow.cmdDeleteSelRows();
+				bResult = false;
+				break;
+				case 68://d
+				htcDatawindow.cmdDelCurRow();
+				bResult = false;
+				break;
+				case 65://a
+				htcDatawindow.cmdSelectAllRows();
+				bResult = false;
+				break;
+				case 70://f
+				htcDatawindow.cmdFind();
+				bResult = false;
+				break;
+				case 81://q
+				htcDatawindow.cmdSelCurRow();
+				bResult = false;
+				break;
+				case 82://r
+				htcDatawindow.cmdRefresh();
+				bResult = false;
+				break;
+				case 66://b
+				htcDatawindow.cmdFirstPage();
+				bResult = false;
+				break;
+				case 80://p
+				htcDatawindow.cmdPreviousPage();
+				bResult = false;
+				break;
+				case 78://n
+				htcDatawindow.cmdNextPage();
+				bResult = false;
+				break;
+				case 76://l
+				htcDatawindow.cmdLastPage();
+				bResult = false;
+				break;
+				case 83://s
+				htcDatawindow.cmdSave();
+				bResult = false;
+			}
+			event.returnValue = bResult;
+		}
+	}
+	//If the event defination in the col declaration
+	if(strFnKeyDown[0] == getCurCol()&& strFnKeyDown[1] != ""){
+		eval(strFnKeyDown[1]);
+		}
+}
+function fnFocus()
+{
+	if(IEVersion < 6.0){
+		htcDatawindow.startKeyHooker();
+	}
+	//htcDatawindow.focus();
+	htcDatawindow.cmdFocus();
+	bFocus = true;
+}
+function fnLostFocus()
+{
+	//alert("htc lost focus ")
+	htcDatawindow.IEPack_LostFocus();
+	if(IEVersion < 6.0){
+		htcDatawindow.endKeyHooker();
+	}
+	bFocus = false;
+	//离开Datawindow时也应该fire onleavecell事件!!!
+	//if(htcDatawindow.activeCell != null)
+	//	fnLeaveCell(htcDatawindow.activeCell.x, htcDatawindow.activeCell.y);
+	
+}
+
+///////////Modify by WangJian
+//20040726:WangJian:增加属性
+function getbInfoLabelVisible()
+{
+	return htcDatawindow.bInfoLabelVisible;
+}
+function setbInfoLabelVisible(val)
+{
+	//alert("LDKJF");
+	htcDatawindow.bInfoLabelVisible = val;
+}
+function setbFixedColVisible(val)
+{
+	htcDatawindow.bFixedColVisible = val;
+}
+//20040726:end 
+function getInitWorkId()
+{
+	return htcDatawindow.WorkId
+}
+//20040924:WangJian:用于设置翻页时是系统自动处理还是用户在事件中手工处理
+function setAutoTurnPage(val)
+{
+	m_bAutoTurnPage = eval(val);
+}
+//20041010:WangJian:用于设置信息标签的图标
+function setInfoLabelIcon(val){
+	htcDatawindow.setInfoLabelIcon(val);
+}
+<!--200401105:WangJian:使标题栏的高度可微调 -->
+function setTitleHeight(val){
+	htcDatawindow.TitleHeight = val;
+}
+
+
+//end Modify
+
+
+
+
+
+
+/////////Datawindow Methods List//////////////////
+function hasFocus()
+{
+	return bFocus;
+}
+function getTitle()
+{
+	return htcDatawindow.strTitle;
+}
+function setTitle(val)
+{
+	return htcDatawindow.strTitle = val;
+}
+/*
+函数名称:	 addRow
+函数功能: 新增行
+参数名称:
+	bImpactPreRows, 是否影响以前的选择行,默认为true
+	bShowPlus, 是否标记为新增行,默认为false(如果标记为新增行,则会显示不同的图标)
+	bSelectNewRow, 是否定位于新增行,默认为true
+	bRaiseEvent, 是否冒出事件,默认为true
+	bNewRowModifiedMask, 此行的修改标记,默认为true
+返回值:新增行的row对象
+*/
+function addRow(bImpactPreRows,bShowPlus,bSelectNewRow,bRaiseEvent,bNewRowModifiedMask)
+{
+
+	if (bImpactPreRows="[object]" )
+	{
+	  bImpactPreRows = true;
+	};
+
+	switch(addRow.arguments.length){
+	case 0:
+	bImpactPreRows = true;
+	bShowPlus = false;
+	bSelectNewRow = true;
+	bRaiseEvent = true;
+	bNewRowModifiedMask = true;
+	break;
+	case 1:
+	bShowPlus = false;
+	bSelectNewRow = true;
+	bRaiseEvent = true;
+	bNewRowModifiedMask = true;
+	break;
+	case 2:
+	bSelectNewRow = true;
+	bRaiseEvent = true;
+	bNewRowModifiedMask = true;
+	break;
+	case 3:
+	bRaiseEvent = true;
+	bNewRowModifiedMask = true;
+	case 4:
+	bNewRowModifiedMask = true;
+	break;
+	}
+	return htcDatawindow.addRow(1,bImpactPreRows,bShowPlus,bSelectNewRow,bRaiseEvent,bNewRowModifiedMask);
+}
+function allocAttrMem(colCount)
+{
+	htcDatawindow.allocAttrMem(colCount);
+}
+
+function calcColTotal(colIndex)
+{
+	if(calcColTotal.arguments.length == 0){
+		colIndex = -1;
+	}
+	htcDatawindow.calcColTotal(colIndex);
+}
+
+function calcAllColsTotal()
+{
+	htcDatawindow.calcAllColsTotal();
+}
+
+function calcColAverage(colIndex)
+{
+	if(calcColAverage.arguments.length == 0){
+		colIndex = -1;
+	}
+	htcDatawindow.calcColAverage(colIndex);
+}
+
+function calcAllColsAverage()
+{
+	htcDatawindow.calcAllColsAverage();
+}
+
+function checkFormula()
+{
+	//注意activex内核已经抛弃checkFormula函数,替代为checkFormulaEx
+	return htcDatawindow.checkFormulaEx();
+}
+//支持直接删除空行的参数,同时增加对于datawindow空行的定义规则
+function checkNull(bDeleteNullRows)
+{
+	if(checkNull.arguments.length == 0)
+		bDeleteNullRows = true;
+	return htcDatawindow.checkNull(bDeleteNullRows);
+}
+function clear()
+{
+	htcDatawindow.clearAllData();
+}
+function clearAll()
+{
+	//strFnAdd = "";
+	//strFnDelete = "";
+	//strFnChange = "";
+	//strFnClick = "";
+	//strFnEnterCell = "";
+	//strFnLeaveCell = "";
+	//strFnKeyDown = "";
+
+	htcDatawindow.clearAllData();
+}
+
+/**
+*oNode: 提交数据岛目的
+*bCommitTotal: 是否提交总计行
+*bCommitAverage: 是否提交平均行
+*/
+function commit(oNode,bCommitTotal,bCommitAverage)
+{
+	if(commit.arguments.length == 0){
+		oNode = refNode;
+		//目前这里默认commit似乎有bug
+		//htcDatawindow.commit2(refNode);
+	}else{
+		if(oNode.indexOf("/") != -1){//支持分层节点类型
+			var arrNode = oNode.split("/");
+			var nodeXML = eval(arrNode[0]);
+			for(var j=1;j<arrNode.length;j++)
+				nodeXML = nodeXML.getElementsByTagName(arrNode[j])[0];
+			oNode = nodeXML;
+		}else
+			oNode = eval(oNode).documentElement;
+	}
+	switch(commit.arguments.length){
+	case 0,1:
+		bCommitTotal = false;
+		bCommitAverage = false;
+	break;
+	case 2:
+		bCommitAverage = false;
+	break;
+	}
+	htcDatawindow.commit2(oNode,1,bCommitTotal,bCommitAverage);
+}
+function removeFocus()
+{
+	htcDatawindow.removeFocus();
+}
+function deleteRow(rowIndex, bNotice, bRaiseEvent)
+{
+	switch(deleteRow.arguments.length){
+	case 0:
+		rowIndex = -1;
+		bNotice = false;
+		bRaiseEvent = true;
+		break;
+	case 1:
+		bNotice = false;
+		bRaiseEvent = true;
+		break;
+	case 2:
+		bRaiseEvent = true;
+		break;
+	}
+	//注意这里实际上还没有调用bRaiseEvent参数的性能
+	htcDatawindow.deleteRowAndFocusNext(rowIndex,1,bNotice,bRaiseEvent);
+}
+function deleteRowAndFocusNext(rowIndex)
+{
+	if(deleteRowAndFocusNext.arguments.length == 0){
+		rowIndex = -1;
+	}
+	htcDatawindow.deleteRowAndFocusNext(rowIndex);
+}
+function disableAll(bState)
+{
+	if(disableAll.arguments.length == 0){
+		bState = true;
+	}
+	htcDatawindow.disableAll(bState);
+}
+function disableCell(rowIndex,colIndex,bState)
+{
+	switch(disableCell.arguments.length){
+	case 0:
+		rowIndex = -1;
+		colIndex = -1;
+		bState = true;
+		break;
+	case 1:
+		colIndex = -1;
+		bState = true;
+		break;
+	case 2:
+		bState = true;
+		break;
+	}
+	htcDatawindow.disableCell(rowIndex,colIndex,bState);
+}
+function disableCol(colIndex,bState)
+{
+	switch(disableCol.arguments.length){
+	case 0:
+		colIndex = -1;
+		bState = true;
+		break;
+	case 1:
+		bState = true;
+		break;
+	}
+	htcDatawindow.disableCol(colIndex,bState);
+}
+function disableRow(rowIndex,bState)
+{
+	switch(disableRow.arguments.length){
+	case 0:
+		rowIndex = -1;
+		bState = true;
+		break;
+	case 1:
+		bState = true;
+		break;
+	}
+	htcDatawindow.disableRow(rowIndex,bState);
+}
+function focusCell(rowIndex,colIndex)
+{
+	switch(focusCell.arguments.length){
+		case 0:
+			htcDatawindow.focusCell(-1,-1);
+		break;
+		case 1:
+			htcDatawindow.focusCell(rowIndex,-1);
+		break;
+		case 2:
+			htcDatawindow.focusCell(rowIndex,colIndex);
+		break;
+	}
+}
+function formatData(vValue, colIndex, rowIndex)
+{
+	switch(formatData.arguments.length){
+		case 1:
+			return htcDatawindow.formatData(vValue,-1,0);
+		break;
+		case 2:
+			return htcDatawindow.formatData(vValue,colIndex,0);
+		break;
+		case 3:
+			return htcDatawindow.formatData(vValue,colIndex,rowIndex);
+		break;
+	}
+}
+function getCellText(rowIndex,colIndex)
+{
+	switch(getCellText.arguments.length){
+		case 0:
+			return htcDatawindow.getCellText(-1,-1);
+		break;
+		case 1:
+			return htcDatawindow.getCellText(rowIndex,-1);
+		break;
+		case 2:
+			return htcDatawindow.getCellText(rowIndex,colIndex);
+		break;
+	}
+}
+function getCellValue(rowIndex,colIndex)
+{
+	var result;
+	switch(getCellValue.arguments.length){
+		case 0:
+			result = htcDatawindow.getCellValue(-1,-1,1);
+		break;
+		case 1:
+			result = htcDatawindow.getCellValue(rowIndex,-1,1);
+		break;
+		case 2:
+			result = htcDatawindow.getCellValue(rowIndex,colIndex,1);
+		break;
+	}
+	if(result == null)//转换null为""
+		return ""
+	else
+		return result;
+}
+function getCellFormula(rowIndex,colIndex)
+{
+	switch(getCellFormula.arguments.length){
+		case 0:
+			return htcDatawindow.getCellFormula(-1,-1);
+		break;
+		case 1:
+			return htcDatawindow.getCellFormula(rowIndex,-1);
+		break;
+		case 2:
+			return htcDatawindow.getCellFormula(rowIndex,colIndex);
+		break;
+	}
+}
+function getColCount(colIndex)
+{
+	if(getColCount.arguments.length == 0)
+		colIndex = -1;
+	return htcDatawindow.getColCount(colIndex);
+}
+function getColTotal(colIndex)
+{
+	if(getColTotal.arguments.length == 0)
+		colIndex = -1;
+	return htcDatawindow.getColTotal(colIndex);
+}
+function getCurCol()
+{
+	return htcDatawindow.getCurCol();
+}
+function getCurRow()
+{
+	return htcDatawindow.getCurRow();
+}
+function getRowCount()
+{
+	return htcDatawindow.getRowCount();
+}
+function getRowNum()
+{
+	alert("CTAIS_HTC_编码提示:[getRowNum]函数已经替换为[getRowCount].");
+	return htcDatawindow.getRowCount();
+}
+function getColNum()
+{
+	alert("CTAIS_HTC_编码提示:[getColNum]函数已经替换为[getColCount].");
+	return htcDatawindow.getColCount();
+}
+function getRelatedColsList(colIndex)
+{
+	if(getRelatedColsList.arguments.length == 0)
+		colIndex = -1;
+	return htcDatawindow.getRelatedColsList(colIndex).split("|");
+}
+function getRelatedColsCount(colIndex)
+{
+	if(getRelatedColsCount.arguments.length == 0)
+		colIndex = -1;
+	return htcDatawindow.getRelatedColsCount(colIndex);
+}
+function hasRelatedCols(colIndex)
+{
+	if(hasRelatedCols.arguments.length == 0)
+		colIndex = -1;
+	return htcDatawindow.hasRelatedCols(colIndex);
+}
+function getTotalTag()
+{
+	return htcDatawindow.strTotalTagName;
+}
+function setTotalTag(val)
+{
+	htcDatawindow.strTotalTagName = val;
+}
+function getAverageTag()
+{
+	return htcDatawindow.strAverageTagName;
+}
+function setAverageTag(val)
+{
+	htcDatawindow.strAverageTagName = val;
+}
+function isModified()
+{
+	return htcDatawindow.isModified();
+}
+function checkData()
+{
+	if(checkNull(true) == false)
+		return false;
+	else
+		return checkFormula();
+}
+function isNullRow(rowIndex)
+{
+	return htcDatawindow.isNullRow(rowIndex);
+}
+function isNullCell(rowIndex, colIndex)
+{
+	return htcDatawindow.isNullCell(rowIndex, colIndex);
+}
+function mapCellNode(rowIndex,colIndex,node,initKey,bReplace,bRaiseChangeEvent,bRecordModifiedMask)
+{
+	switch(mapCellNode.arguments.length){
+	case 3:
+		initKey = "";
+		bReplace = false;
+		bRaiseChangeEvent = false;
+		bRecordModifiedMask = false;
+		break;
+	case 4:
+		bReplace = false;
+		bRaiseChangeEvent = false;
+		bRecordModifiedMask = false;
+		break;
+	case 5:
+		bRaiseChangeEvent = false;
+		bRecordModifiedMask = false;
+		break;
+	case 6:
+		bRecordModifiedMask = false;
+		break;
+		}
+	if(typeof(node) == "string"){
+		if(node.indexOf("/") != -1){
+				//var arrNode = new Array();
+				var arrNode = node.split("/");
+				var nodeXML = eval(arrNode[0]);
+				for(var j=1;j<arrNode.length;j++)
+					nodeXML = nodeXML.getElementsByTagName(arrNode[j])[0];
+				htcDatawindow.mapCellNode(rowIndex,colIndex,eval(nodeXML),initKey,bReplace,bRaiseChangeEvent,bRecordModifiedMask);
+			}else
+				htcDatawindow.mapCellNode(rowIndex,colIndex,eval(node).documentElement,initKey,bReplace,bRaiseChangeEvent,bRecordModifiedMask);
+	}else{
+		if(eval(node).nodeType == 9)
+			htcDatawindow.mapCellNode(rowIndex,colIndex,eval(node).documentElement,initKey,bReplace,bRaiseChangeEvent,bRecordModifiedMask);
+		else
+			htcDatawindow.mapCellNode(rowIndex,colIndex,eval(node),initKey,bReplace,bRaiseChangeEvent,bRecordModifiedMask);
+	}
+}
+function parseXML(node)
+{
+	htcDatawindow.parseXML(eval(node));
+}
+function colHasFormula(colIndex)
+{
+	if(colHasFormula.arguments.length == 0)
+		colIndex = -1;
+	return htcDatawindow.colHasFormula(colIndex);
+}
+function getColFormulaMsg(colIndex)
+{
+	return htcDatawindow.getColFormulaMsg(colIndex);
+}
+function readOnlyAll(bState)
+{
+	if(readOnlyAll.arguments.length == 0)
+		bState = true;
+	htcDatawindow.readOnlyAll(bState);
+}
+function readOnlyCell(rowIndex,colIndex,bState)
+{
+	switch(readOnlyCell.arguments.length){
+	case 0:
+		rowIndex = -1;
+		colIndex = -1;
+		bState = true;
+		break;
+	case 1:
+		colIndex = -1;
+		bState = true;
+		break;
+	case 2:
+		bState = true;
+		break;
+	}
+	htcDatawindow.readOnlyCell(rowIndex,colIndex,bState);
+}
+function readOnlyCol(colIndex,bState)
+{
+	switch(readOnlyCol.arguments.length){
+	case 0:
+		colIndex = -1;
+		bState = true;
+		break;
+	case 1:
+		bState = true;
+		break;
+	}
+	htcDatawindow.readOnlyCol(colIndex,bState);
+}
+function readOnlyRow(rowIndex,bState)
+{
+	switch(readOnlyRow.arguments.length){
+	case 0:
+		rowIndex = -1;
+		bState = true;
+		break;
+	case 1:
+		bState = true;
+		break;
+	}
+	htcDatawindow.readOnlyRow(rowIndex,bState);
+}
+function selectRow(rowIndex)
+{
+	if(selectRow.arguments.length == 0)
+		rowIndex = -1;
+	htcDatawindow.selectRow(rowIndex);
+}
+function setColAttribute(colIndex)
+{
+	//alert(strAttribute);
+	var strAttribute = "";   
+	var nodeRequest;//要主动读取service的传入服务字串
+	var oNode;//主动读取得到的xml对象
+	if(childNodes(colIndex).type != null)
+		strAttribute = "TYPE:" + childNodes(colIndex).type + ";";
+
+//dingyg add 20030913
+	if(childNodes(colIndex).nominus != null)
+		strAttribute = "NOMINUS:" + childNodes(colIndex).nominus + ";";
+
+
+
+	if(childNodes(colIndex).id != null)
+		strAttribute = strAttribute + "ID:" + childNodes(colIndex).id + ";";
+	if(childNodes(colIndex).caption != null)
+		strAttribute = strAttribute + "CAPTION:" + childNodes(colIndex).caption + ";";
+	else
+		strAttribute = strAttribute + "CAPTION:" + arrCaption[colIndex] + ";";
+	if(childNodes(colIndex).fill != null)
+		strAttribute = strAttribute + "FILL:" + childNodes(colIndex).fill + ";";
+	if(childNodes(colIndex).preset != null)
+		strAttribute = strAttribute + "PRESET:" + childNodes(colIndex).preset + ";";
+	if(childNodes(colIndex).disable != null)
+		strAttribute = strAttribute + "DISABLE:" + childNodes(colIndex).disable + ";";
+	if(childNodes(colIndex).readonly != null)
+		strAttribute = strAttribute + "READONLY:" + childNodes(colIndex).readonly + ";";
+	if(childNodes(colIndex).customized != null)
+		strAttribute = strAttribute + "CUSTOMIZED:" + childNodes(colIndex).customized + ";";
+	//20040729:WangJian:修改此部分代码，使之能够自动读取service，提交查询，得到返回的xml数据
+	if(childNodes(colIndex).node != null)
+		strAttribute = strAttribute + "NODE:" + childNodes(colIndex).node + ";";
+	else{
+		//20040730:王健:增加dw初始化时可给出下拉列表部分的动态数据导入
+		if(childNodes(colIndex).noderequest != null){
+			//nodeRequest = childNodes(colIndex).noderequest;
+			var arrNodeRequest = childNodes(colIndex).noderequest.split(":");
+			//alert("请求名称:" + arrNodeRequest[0] +"  请求条件:" +arrNodeRequest[1] + 
+			//	"   xml层格式:" + arrNodeRequest[2]);
+			var arrNodeLevel = arrNodeRequest[2].split("/");
+			var strUseNodeName = arrNodeLevel[arrNodeLevel.length-1];
+			//alert("最内节点名称:" + strUseNodeName);
+			var sid=createWorkId();
+			var service = new Service(arrNodeRequest[0],sid);
+			var oArg
+			if(arrNodeRequest[1].length !=0 )
+				oArg=service.doService(arrNodeRequest[1]);
+			else
+				oArg=service.doService();
+			if (getCode(service)== "2000")
+			{			
+	   			if (strUseNodeName.length == 0){
+	   				//没有根节点，需补上一个
+	   				strUseNodeName = "ROOT";
+	   				oArg = "<ROOT>" + oArg + "</ROOT>";
+	   			}
+	   			//var oDoc=loadXml("<A><ZSPM><item><dm>01</dm><mc>彩电</mc></item><item><dm>02</dm><mc>冰箱</mc></item><item><dm>03</dm><mc>电话</mc></item></ZSPM></A>");
+	   			var oDoc=loadXml(oArg);
+	   			//var oNode;
+	   			if (strUseNodeName.length != 0)
+	   				oNode=oDoc.getElementsByTagName(strUseNodeName)(0);
+	   			else
+	   				oNode = oDoc.documentElement;
+	   			//alert(oDoc.xml);
+	   			strAttribute = strAttribute + "NODE:" + strUseNodeName + ";";
+   			}
+   			else{
+   				//alert("wrong service");
+	   			showMessage(getMessage(service), 0);
+   			}
+		}
+		//20040812:王健:增加初始化时根据条件动态请求数据，写入列表中
+		//dictrequest格式:[数据源]:表名称:[列名称,]
+		if (childNodes(colIndex).noderequest == null && childNodes(colIndex).dictrequest != null){
+			//alert("dictrequest  " + dictrequest);
+			//alert("开始位置：" + dictrequest.indexOf(":"));
+			//alert("last位置：" + dictrequest.lastIndexOf(":"));
+			var strDictRequest = childNodes(colIndex).dictrequest;
+			var strTableName = strDictRequest.substring(strDictRequest.indexOf(":")+1,strDictRequest.lastIndexOf(":"));
+			//alert("TableName:" + strTableName);
+			var strXml = getDictRequestStr(strDictRequest);
+			var sid=createWorkId();
+			var service = new Service("XmlDataIsland.get",sid);
+			var oArg
+			oArg=service.doService(strXml);
+			if (getCode(service)== "2000")
+			{
+	   			var oDoc=loadXml(oArg);
+	   			oNode = oDoc.getElementsByTagName(strTableName)(0);
+				//setOptions(refNode,sInitValueKey);
+				strAttribute = strAttribute + "NODE:" + strTableName + ";";
+   			}
+   			else{
+   				//alert("wrong service");
+	   			showMessage(getMessage(service), 0);
+   			}			
+		}		
+	}
+	//20040729:end 
+	if(childNodes(colIndex).colwidth != null)
+		strAttribute = strAttribute + "COLWIDTH:" + childNodes(colIndex).colwidth + ";";
+	if(childNodes(colIndex).maxlength != null){
+		strAttribute = strAttribute + "MAXLENGTH:" + childNodes(colIndex).maxlength + ";";
+	}else{
+		//20041122:WangJian:解决如果某列设置MAXLENGTH属性后，跟着的列如果没有设置此属性，
+		//则跟着的列将也和这列设置的MAXLENGTH属性相同的错误。
+		strAttribute = strAttribute + "MAXLENGTH:256;";
+	}
+	if(childNodes(colIndex).skin != null)
+		strAttribute = strAttribute + "SKIN" + childNodes(colIndex).skin + ";";
+	if(childNodes(colIndex).initkey != null)
+		strAttribute = strAttribute + "INITKEY:" + childNodes(colIndex).initkey + ";";
+	if(childNodes(colIndex).key != null)
+		strAttribute = strAttribute + "KEY:" + childNodes(colIndex).key + ";";
+	if(childNodes(colIndex).view != null)
+		strAttribute = strAttribute + "VIEW:" + childNodes(colIndex).view + ";";
+	if(childNodes(colIndex).total != null)
+		strAttribute = strAttribute + "TOTAL:" + childNodes(colIndex).total + ";";
+	if(childNodes(colIndex).average != null)
+		strAttribute = strAttribute + "AVERAGE:" + childNodes(colIndex).average + ";";
+	if(childNodes(colIndex).formula != null)
+		strAttribute = strAttribute + "FORMULA:" + childNodes(colIndex).formula + ";";
+	if(childNodes(colIndex).bind != null)
+		strAttribute = strAttribute + "BIND:" + childNodes(colIndex).bind + ";";
+	if(childNodes(colIndex).value != null)
+		strAttribute = strAttribute + "VALUE:" + childNodes(colIndex).value + ";";
+	if(childNodes(colIndex).url != null)
+		strAttribute = strAttribute + "URL:" + childNodes(colIndex).url + ";";
+
+
+	if(childNodes(colIndex).allowsort != null)
+		strAttribute = strAttribute + "ALLOWSORT:" + childNodes(colIndex).allowsort + ";";
+
+	if(childNodes(colIndex).seperator != null)
+		strAttribute = strAttribute + "SEPERATOR:" + childNodes(colIndex).seperator + ";";
+	if(childNodes(colIndex).defaultvalue != null)
+		strAttribute = strAttribute + "DEFAULTVALUE:" + childNodes(colIndex).defaultvalue + ";";
+	if(childNodes(colIndex).format != null)
+		strAttribute = strAttribute + "FORMAT:" + childNodes(colIndex).format + ";";
+	if(childNodes(colIndex).wrapchar != null)
+		strAttribute = strAttribute + "WRAPCHAR:" + childNodes(colIndex).wrapchar + ";";
+	if(childNodes(colIndex).nullcols != null)
+		strAttribute = strAttribute + "NULLCOLS:" + childNodes(colIndex).nullcols + ";";
+	if(childNodes(colIndex).nullexplicit != null)
+		strAttribute = strAttribute + "NULLEXPLICIT:" + childNodes(colIndex).nullexplicit + ";";
+	//
+	strAttribute = strAttribute.substring(0,strAttribute.length-1);
+	//alert(strAttribute);
+
+	if(childNodes(colIndex).node != null){
+		
+		if(childNodes(colIndex).node.indexOf("/") != -1){
+			//var arrNode = new Array();
+			var arrNode = childNodes(colIndex).node.split("/");
+			var nodeXML = eval(arrNode[0]);
+			for(var j=1;j<arrNode.length;j++)
+				nodeXML = nodeXML.getElementsByTagName(arrNode[j])(0);
+			htcDatawindow.setColAttribute(colIndex, strAttribute, nodeXML);
+		}
+		else{
+			htcDatawindow.setColAttribute(colIndex, strAttribute, eval(childNodes(colIndex).node).documentElement);
+			}
+	}
+	else{
+		if(childNodes(colIndex).noderequest == null  && childNodes(colIndex).dictrequest == null)
+			htcDatawindow.setColAttribute(colIndex,strAttribute);
+		else
+			if(oNode != null)
+				htcDatawindow.setColAttribute(colIndex, strAttribute, oNode);
+			else
+				htcDatawindow.setColAttribute(colIndex,strAttribute);
+	}
+	
+	//event parsing
+	/*var strFnAdd_SomeCol = new Array(-1,"");
+	if(childNodes(colIndex).onadd != null){
+		strFnAdd_SomeCol[0] = colIndex;
+		strFnAdd_SomeCol[1] = childNodes(colIndex).onadd;
+		}
+	strFnAdd[colIndex] = strFnAdd_SomeCol;
+
+	var strFnDelete_SomeCol = new Array(-1,"");
+	if(childNodes(colIndex).ondelete != null){
+		strFnDelete_SomeCol[0] = colIndex;
+		strFnDelete_SomeCol[1] = childNodes(colIndex).ondelete;
+		}
+	strFnDelete[colIndex] = strFnDelete_SomeCol;
+	*/
+
+	var strFnChange_SomeCol = new Array(-1,"");
+	if(childNodes(colIndex).onchange != null){
+		strFnChange_SomeCol[0] = colIndex;
+		strFnChange_SomeCol[1] = childNodes(colIndex).onchange;
+		if(strFnChange_SomeCol[1].indexOf("this") != -1)
+			strFnChange_SomeCol[1] = strFnChange_SomeCol[1].replace("this", outterID_DW + ".activeCell");
+		}
+
+
+
+	if(childNodes(colIndex).onchangemapnode != null){
+		strFnChange_SomeCol[0] = colIndex;
+		strFnChange_SomeCol[1] = childNodes(colIndex).onchangemapnode;
+		if(strFnChange_SomeCol[1].indexOf("this") != -1)
+			strFnChange_SomeCol[1] = strFnChange_SomeCol[1].replace("this", outterID_DW + ".activeCell");
+		}
+
+
+
+
+	strFnChange[colIndex] = strFnChange_SomeCol;
+
+	var strFnClick_SomeCol = new Array(-1,"");
+	if(childNodes(colIndex).onclick != null){
+		strFnClick_SomeCol[0] = colIndex;
+		strFnClick_SomeCol[1] = childNodes(colIndex).onclick;
+		if(strFnClick_SomeCol[1].indexOf("this") != -1)
+			strFnClick_SomeCol[1] = strFnClick_SomeCol[1].replace("this", outterID_DW + ".activeCell");
+		}
+	strFnClick[colIndex] = strFnClick_SomeCol;
+
+	var strFnDblClick_SomeCol = new Array(-1,"");
+	if(childNodes(colIndex).ondblclick != null){
+		strFnDblClick_SomeCol[0] = colIndex;
+		strFnDblClick_SomeCol[1] = childNodes(colIndex).ondblclick;
+		if(strFnDblClick_SomeCol[1].indexOf("this") != -1)
+			strFnDblClick_SomeCol[1] = strFnDblClick_SomeCol[1].replace("this", outterID_DW + ".activeCell");
+		}
+	strFnDblClick[colIndex] = strFnDblClick_SomeCol;
+
+	var strFnEnterCell_SomeCol = new Array(-1,"");
+	if(childNodes(colIndex).onentercell != null){
+		strFnEnterCell_SomeCol[0] = colIndex;
+		strFnEnterCell_SomeCol[1] = childNodes(colIndex).onentercell;
+		if(strFnEnterCell_SomeCol[1].indexOf("this") != -1)
+			strFnEnterCell_SomeCol[1] = strFnEnterCell_SomeCol[1].replace("this", outterID_DW + ".activeCell");
+		}
+	strFnEnterCell[colIndex] = strFnEnterCell_SomeCol;
+
+	var strFnLeaveCell_SomeCol = new Array(-1,"");
+	if(childNodes(colIndex).onleavecell != null){
+		strFnLeaveCell_SomeCol[0] = colIndex;
+		strFnLeaveCell_SomeCol[1] = childNodes(colIndex).onleavecell;
+		if(strFnLeaveCell_SomeCol[1].indexOf("this") != -1)
+			strFnLeaveCell_SomeCol[1] = strFnLeaveCell_SomeCol[1].replace("this", outterID_DW + ".activeCell");
+		}
+	strFnLeaveCell[colIndex] = strFnLeaveCell_SomeCol;
+
+	var strFnKeyDown_SomeCol = new Array(-1,"");
+	if(childNodes(colIndex).onkeydown != null){
+		strFnKeyDown_SomeCol[0] = colIndex;
+		strFnKeyDown_SomeCol[1] = childNodes(colIndex).onkeydown;
+		if(strFnKeyDown_SomeCol[1].indexOf("this") != -1)
+			strFnKeyDown_SomeCol[1] = strFnKeyDown_SomeCol[1].replace("this", outterID_DW + ".activeCell");
+		}
+	strFnKeyDown[colIndex] = strFnKeyDown_SomeCol;
+
+	var strFnBrowseButtonClick_SomeCol = new Array(-1,"");
+	if(childNodes(colIndex).onbrowse != null){
+		strFnBrowseButtonClick_SomeCol[0] = colIndex;
+		strFnBrowseButtonClick_SomeCol[1] = childNodes(colIndex).onbrowse;
+		if(strFnBrowseButtonClick_SomeCol[1].indexOf("this") != -1)
+			strFnBrowseButtonClick_SomeCol[1] = strFnBrowseButtonClick_SomeCol[1].replace("this", outterID_DW + ".activeCell");
+		}
+	strFnBrowseButtonClick[colIndex] = strFnBrowseButtonClick_SomeCol;
+
+	var strFnLink_SomeCol = new Array(-1,"");
+	if(childNodes(colIndex).onlink != null){
+		strFnLink_SomeCol[0] = colIndex;
+		strFnLink_SomeCol[1] = childNodes(colIndex).onlink;
+		if(strFnLink_SomeCol[1].indexOf("this") != -1)
+			strFnLink_SomeCol[1] = strFnLink_SomeCol[1].replace("this", outterID_DW + ".activeCell");
+		}
+	strFnLink[colIndex] = strFnLink_SomeCol;
+
+	var linkWindowSize_SomeCol = new Array(400,200);
+	if(childNodes(colIndex).size != null){
+		linkWindowSize_SomeCol[0] = childNodes(colIndex).size.split("*")[0];
+		linkWindowSize_SomeCol[1] = childNodes(colIndex).size.split("*")[1];
+		}
+	linkWindowSize[colIndex] = linkWindowSize_SomeCol;
+
+	var linkWindowFeature_SomeCol = new Array(-1,"");
+	if(childNodes(colIndex).feature != null){
+		linkWindowFeature_SomeCol[0] = colIndex;
+		linkWindowFeature_SomeCol[1] = childNodes(colIndex).feature;
+		}
+	linkWindowFeature[colIndex] = linkWindowFeature_SomeCol;
+}
+function setCellAttribute(rowIndex,colIndex,strAttr)
+{
+	htcDatawindow.setCellAttribute(rowIndex,colIndex,strAttr);
+}
+function setCellValue(rowIndex,colIndex,value,bRaiseEvent,bRecordChangeModified)
+{
+	switch(setCellValue.arguments.length){
+	case 1:
+	case 2:
+		alert("函数[setCellValue]:至少需要指定三个参数 rowIndex,colIndex,value !");
+		break;
+	case 3:
+		bRaiseEvent = false;
+		bRecordChangeModified = false;
+		break;
+	case 4:
+		bRecordChangeModified = false;
+		break;
+	}
+	htcDatawindow.setCellValue(value,rowIndex,colIndex,1,bRaiseEvent,bRecordChangeModified);
+}
+function setModified(bState,bResetNewRow)
+{
+	switch(setModified.arguments.length){
+	case 0:
+		bState = true;
+		bResetNewRow = true;
+		break;
+	case 1:
+		bResetNewRow = true;
+		break;
+		}
+	htcDatawindow.setModified(bState,bResetNewRow);
+}
+function unformatData(vValue, colIndex, rowInex)
+{
+	switch(unformatData.arguments.length){
+		case 1:
+		colIndex = -1;
+		break;
+		case 2:
+		rowIndex = 0;
+		break;
+	}
+	htcDatawindow.unformatData(vValue,colIndex,rowIndex);
+}
+
+function getCellObject(rowIndex,colIndex)
+{
+	switch(getCellObject.arguments.length){
+		case 0:
+		rowIndex = -1;
+		colIndex = -1;
+		case 1:
+		colIndex = -1;
+		break;
+	}
+	return htcDatawindow.getCellObject(rowIndex,colIndex);
+}
+function getObject(rowIndex,colIndex)
+{
+	alert("警告:[getObject]函数已经被替换为[getCellObject]!");
+	switch(getObject.arguments.length){
+		case 0:
+		rowIndex = -1;
+		colIndex = -1;
+		case 1:
+		colIndex = -1;
+		break;
+	}
+	return htcDatawindow.getCellObject(rowIndex,colIndex);
+}
+function refresh()
+{
+	htcDatawindow.refresh();
+}
+function mapNode(oNode)
+{
+	if(oNode == null){
+		alert("编程错误:组件[DataWindow]的成员函数[mapNode]中的参数'oNode'为空!");
+		return;
+	}
+	if(oNode.nodeType == 9)
+		htcDatawindow.MapNode(oNode.documentElement);
+	else
+		htcDatawindow.MapNode(oNode);
+
+	var oEvent = createEventObject();
+	eMapNodeFinish.fire(oEvent);
+}
+function getCurPageIndex()
+{
+	return htcDatawindow.getCurPageIndex();
+}
+function getPageCount()
+{
+	return htcDatawindow.getPageCount();
+}
+function getSelectedRows()
+{
+	return htcDatawindow.getSelRows();
+}
+function getActiveCell()
+{
+	return htcDatawindow.activeCell;
+}
+function getActiveRow()
+{
+	if(getCurRow() != -1)
+		return htcDatawindow.row(getCurRow());
+	else
+		return null;
+}
+function getActiveCol()
+{
+	if(getCurCol() != -1)
+		return htcDatawindow.col(getCurCol());
+	else
+		return null;
+}
+function getHiddenCols()
+{
+	return htcDatawindow.hiddenCols;
+}
+function cell(rowIndex,colIndex)
+{
+	return htcDatawindow.cell(rowIndex,colIndex);
+}
+function row(rowIndex)
+{
+	return htcDatawindow.row(rowIndex);
+}
+function col(colIndex)
+{
+	return htcDatawindow.col(colIndex);
+}
+function calcColTotal(colIndex)
+{
+	return htcDatawindow.calcColTotal(colIndex);
+}
+function calcAllColsTotal()
+{
+	htcDatawindow.calcAllColsTotal();
+}
+function getObjPoint(obj)
+{
+	var pt = new Array(-1,-1);
+	if(obj == null){
+		alert("函数:[getObjPoint]参数为空!");
+		return pt;
+		}
+	pt[0] = obj.x;
+	pt[1] = obj.y;
+	return pt;
+}
+function sumExp(strExp,rowIndex,bReturnString)
+{
+	switch(sumExp.arguments.length){
+	case 1:
+		rowIndex = -1;
+		bReturnString = false;
+		break;
+	case 2:
+		bReturnString = false;
+	}
+	//为了避免js中的浮点型数据的误差,所以县返回一个字符串,然后parseFloat();
+	return parseFloat(htcDatawindow.sumExp(strExp,rowIndex,true),10);
+}
+//20040827:WangJian add method
+
+/*
+ * 创建人: WangJian
+ * 创建日期: 2004-08-25
+ * 最后修改日期: 2004-08-27
+ * 函数功能：分拆请求条件，从新拼装，调用ProcessQueryPage函数，将请求写入dw
+ *前后端约定规则：1.所有服务必须初始化。2.初始化不返回数据。
+ *3.实际处理服务名称和初始化名称只是最后子串不同，初始化名称最后子串固定为init
+ * 输入参数：string val请求字串，格式为：ServiceName:Condition:returnNodePath
+ * 输出参数：
+*/
+function setNodeRequest(val){
+	m_strNodeRequest=val;
+	//alert("m_strNodeRequest:" + m_strNodeRequest);
+	var arrNodeRequest = m_strNodeRequest.split(":");
+	if (workID == null){
+		var sid = InitService(arrNodeRequest[0]); //初始化服务
+		if (sid == "" || sid == null)
+			return;
+		workID = sid;
+	}
+	var str = arrNodeRequest[1];
+	//判断dw的请求是否包含分页信息
+	var pageindex = 0;
+	if (str.indexOf("<PAGEINDEX>") != -1)
+		pageindex = parseInt(str.substring(str.indexOf("<PAGEINDEX>")+11,str.indexOf("</PAGEINDEX>")));
+	//alert("pageindex:"+ pageindex);
+	ProcessQueryPage(pageindex);//当pageindex=0，表示没有分页信息
+}
+/*
+ * 创建人: WangJian
+ * 创建日期: 2004-09-23
+ * 最后修改日期: 
+ * 函数功能：设置网格背景和前景等不同位置的显示颜色
+ * 输入参数：string:strType设置什么部位的颜色;int32:lColor颜色的16进制数值
+ * 输出参数：
+*/
+function setColor(strType,lColor){
+	htcDatawindow.SetColor(strType,lColor);
+}
+/*
+ * 创建人: WangJian
+ * 创建日期: 2004-09-23
+ * 最后修改日期: 204-11-02
+ * 函数功能：设置网格固定行列和正文文本的字体的类型和粗细
+ * 输入参数：string:strType设置什么部位的字体;string:strFontName字体名称;bool:bIsBold是否加粗显示;int:iFontSize字体尺寸
+ * 输出参数：
+*/
+function setFont(strType,strFontName,bIsBold,iFontSize){
+	if(setFont.arguments.length == 2)
+		htcDatawindow.SetFont(strType,strFontName);
+	if(setFont.arguments.length == 3)
+		htcDatawindow.SetFont(strType,strFontName,bIsBold);
+	if(setFont.arguments.length == 4)
+		htcDatawindow.SetFont(strType,strFontName,bIsBold,iFontSize);
+}
+/*
+ * 创建人: WangJian
+ * 创建日期: 2004-09-23
+ * 最后修改日期: 
+ * 函数功能：设置网格线的类型
+ * 输入参数：int:iType:网格线的显示类型
+ * 输出参数：
+*/
+function setGridLine(iType){
+	htcDatawindow.setGridLine(iType);
+}
+
+
+//wangjian end add method
+
+
+
+////////Event Processing Functions///////
+function fnBeforeAdd(rowIndex,bCancel)
+{
+	var oEvent = createEventObject();
+	oEvent.rowIndex = rowIndex;
+	eBeforeAdd.fire(oEvent);
+	//wait
+	if(oEvent.returnValue == false)
+		bCancel = true;
+}
+function fnAdd(rowIndex)
+{
+	var oEvent = createEventObject();
+	oEvent.rowIndex = rowIndex;
+	eAdd.fire(oEvent);
+	//If the event defination in the col declaration
+//	if(strFnAdd != "")
+//		eval(strFnAdd);
+}
+function fnBeforeDelete(rowIndex,bCancel)
+{
+	var oEvent = createEventObject();
+	oEvent.rowIndex = rowIndex;
+	eBeforeDelete.fire(oEvent);
+	//wait
+	if(oEvent.returnValue == false)
+		bCancel = true;
+}
+function fnDelete(rowIndex)
+{
+	var oEvent = createEventObject();
+	oEvent.rowIndex = rowIndex;
+	eDelete.fire(oEvent);
+	//If the event defination in the col declaration
+//	if(strFnDelete != "")
+//		eval(strFnDelete);
+}
+
+function fnChangeMapNode(rowIndex,colIndex,value)
+{
+	  var oEvent = createEventObject();
+  	  eChangeMapNode.fire(oEvent);
+ 	  return
+}
+
+function fnChange(rowIndex,colIndex,value)
+{
+	//调用service.js中的notifyChange(true/false)方法
+	
+	if (rowIndex==-1 && colIndex==-1)
+	{
+	  var oEvent = createEventObject();
+  	  eChangeMapNode.fire(oEvent);
+	//wait
+ 	  return
+	 }
+	
+	//20041201:WangJian:税务版本中需要此函数(此函数在税务的service.js中存在)，不能注释调。但其他版本不能包含此函数
+	//20040922:WangJian:因为notifyChange好像已经不用，所以注释掉下行
+	try{
+		notifyChange(true);
+	}catch(e){
+		//alert("编码错误:检测到没有引用Service.js文件,导致notifyChange()函数不可用!");
+	}
+	//
+	var oEvent = createEventObject();
+	oEvent.rowIndex = rowIndex;
+	oEvent.colIndex = colIndex;
+	oEvent.value = value;
+	//alert("yuanzhi(" +rowIndex + "," +colIndex + "):" + value);
+	eChange.fire(oEvent);
+	//htcDatawindow.calcColTotal(colIndex);
+
+	//If the event defination in the col declaration
+	var strExpress = strFnChange[colIndex];
+	if(strExpress[0] == colIndex && strExpress[1] != ""){
+		var event = oEvent;
+		var strImpl = "";
+		strImpl = strExpress[1].replace("event.","");//如果有直接的event.rowIndex语句
+		strImpl = strImpl.replace(";","");
+		strImpl = strImpl.replace(")","");
+		if(strImpl.charAt(strImpl.length-1) != "(")
+			strImpl = strImpl + ",event);"
+		else
+			strImpl = strImpl + "event);"
+		eval(strImpl);
+		}
+}
+//目前将calcColTotal整合进入setCellValue中,对于公式的更新采用onrefreshformula消息通知htc层
+function fnRefreshFormula(rowIndex,colIndex)
+{
+	//这里应该抽象成一个独立的函数,应该有一个onrefreshformula事件!
+	if(hasRelatedCols(colIndex)){
+		//确定要改变的列级
+		var colsList = new Array();
+		colsList = getRelatedColsList(colIndex);
+		for(var i=0;i<colsList.length;i++){
+			var relatedCol = parseInt(colsList[i]);
+			//alert(colHasFormula(relatedCol));
+			if(colHasFormula(relatedCol)){
+				//根据公式计算新的值，然后填充到相应格
+				//Note:注意这里的eval()函数可能造成误差产生!!!!
+				setCellValue(rowIndex,relatedCol,eval(getCellFormula(rowIndex,relatedCol)));
+			}
+		}
+	}
+}
+function fnClick(rowIndex,colIndex)
+{
+	var oEvent = createEventObject();
+	oEvent.rowIndex = rowIndex;
+	oEvent.colIndex = colIndex;
+	eClick.fire(oEvent);
+	//If the event defination in the col declaration
+	var strExpress = strFnClick[colIndex];
+	if(strExpress[0] == colIndex && strExpress[1] != ""){
+		var event = oEvent;
+		var strImpl = "";
+		strImpl = strExpress[1].replace("event.","");//如果有直接的event.rowIndex语句
+		strImpl = strImpl.replace(";","");
+		strImpl = strImpl.replace(")","");
+		if(strImpl.charAt(strImpl.length-1) != "(")
+			strImpl = strImpl + ",event);"
+		else
+			strImpl = strImpl + "event);"
+		eval(strImpl);
+		}
+}
+function fnDblClick(rowIndex,colIndex)
+{
+	var oEvent = createEventObject();
+	oEvent.rowIndex = rowIndex;
+	oEvent.colIndex = colIndex;
+	eDblClick.fire(oEvent);
+	//If the event defination in the col declaration
+	var strExpress = strFnDblClick[colIndex];
+	if(strExpress[0] == colIndex && strExpress[1] != ""){
+		var event = oEvent;
+		var strImpl = "";
+		strImpl = strExpress[1].replace("event.","");//如果有直接的event.rowIndex语句
+		strImpl = strImpl.replace(";","");
+		strImpl = strImpl.replace(")","");
+		if(strImpl.charAt(strImpl.length-1) != "(")
+			strImpl = strImpl + ",event);"
+		else
+			strImpl = strImpl + "event);"
+		eval(strImpl);
+		}
+}
+function fnEnterCell(rowIndex,colIndex)
+{
+	var oEvent = createEventObject();
+	oEvent.rowIndex = rowIndex;
+	oEvent.colIndex = colIndex;
+	eEnterCell.fire(oEvent);
+	//If the event defination in the col declaration
+	var strExpress = strFnEnterCell[colIndex];
+	if(strExpress[0] == colIndex && strExpress[1] != ""){
+		var event = oEvent;
+		var strImpl = "";
+		strImpl = strExpress[1].replace("event.","");//如果有直接的event.rowIndex语句
+		strImpl = strImpl.replace(";","");
+		strImpl = strImpl.replace(")","");
+		if(strImpl.charAt(strImpl.length-1) != "(")
+			strImpl = strImpl + ",event);"
+		else
+			strImpl = strImpl + "event);"
+		eval(strImpl);
+		}
+}
+/*function fnKeyDown(KeyCode,Shift)
+{
+	var oEvent = createEventObject();
+	oEvent.keyCode = KeyCode;
+	oEvent.shift = Shift;
+	eKeyDown.fire(oEvent);
+	//If the event defination in the col declaration
+	if(strFnKeyDown != "")
+		eval(strFnKeyDown);
+}*/
+function fnLeaveCell(rowIndex,colIndex)
+{
+	var oEvent = createEventObject();
+	oEvent.rowIndex = rowIndex;
+	oEvent.colIndex = colIndex;
+	eLeaveCell.fire(oEvent);
+	//If the event defination in the col declaration
+    if(rowIndex == -1 && colIndex == -1)//处理在onchange过程中来处理mapNode之类的行为.
+		return;
+	var strExpress = strFnLeaveCell[colIndex];
+	if(strExpress[0] == colIndex && strExpress[1] != ""){
+		var event = oEvent;
+		var strImpl = "";
+		strImpl = strExpress[1].replace("event.","");//如果有直接的event.rowIndex语句
+		strImpl = strImpl.replace(";","");
+		strImpl = strImpl.replace(")","");
+		if(strImpl.charAt(strImpl.length-1) != "(")
+			strImpl = strImpl + ",event);"
+		else
+			strImpl = strImpl + "event);"
+		eval(strImpl);
+		}
+}
+function fnQueryPage(pageIndex,totalPage)
+{
+	if(cmdNavigatePage(pageIndex)){
+		var oEvent = createEventObject();
+		oEvent.pageIndex = pageIndex;
+		oEvent.totalPage = totalPage;
+		oEvent.rtnCode = _rtnCode;
+		oEvent.code = _code;
+		oEvent.message = _message;
+		oEvent.doc = _doc;
+		eQueryPage.fire(oEvent);
+	}
+}
+//取消以下四个事件,统一成onquerypage事件
+function fnFirstPage(pageIndex, totalPage)
+{
+	/*if(cmdNavigatePage(pageIndex)){
+		var oEvent = createEventObject();
+		oEvent.pageIndex = pageIndex;
+		oEvent.totalPage = totalPage;
+		oEvent.rtnCode = _rtnCode;
+		oEvent.code = _code;
+		oEvent.message = _message;
+		oEvent.doc = _doc;
+		eFirstPage.fire(oEvent);
+	}*/
+}
+function fnPreviousPage(pageIndex, totalPage)
+{
+	/*if(cmdNavigatePage(pageIndex)){
+		var oEvent = createEventObject();
+		oEvent.pageIndex = pageIndex;
+		oEvent.totalPage = totalPage;
+		oEvent.rtnCode = _rtnCode;
+		oEvent.code = _code;
+		oEvent.message = _message;
+		oEvent.doc = _doc;
+		ePreviousPage.fire(oEvent);
+	}*/
+}
+function fnNextPage(pageIndex, totalPage)
+{
+	/*if(cmdNavigatePage(pageIndex)){
+		var oEvent = createEventObject();
+		oEvent.pageIndex = pageIndex;
+		oEvent.totalPage = totalPage;
+		oEvent.rtnCode = _rtnCode;
+		oEvent.code = _code;
+		oEvent.message = _message;
+		oEvent.doc = _doc;
+		eNextPage.fire(oEvent);
+	}*/
+}
+function fnLastPage(pageIndex, totalPage)
+{
+	/*if(cmdNavigatePage(pageIndex)){
+		var oEvent = createEventObject();
+		oEvent.pageIndex = pageIndex;
+		oEvent.totalPage = totalPage;
+		oEvent.rtnCode = _rtnCode;
+		oEvent.code = _code;
+		oEvent.message = _message;
+		oEvent.doc = _doc;
+		eLastPage.fire(oEvent);
+	}*/
+}
+function fnRowChange(lastRowIndex,curRowIndex)
+{
+	var oEvent = createEventObject();
+	oEvent.lastRowIndex = lastRowIndex;
+	oEvent.curRowIndex = curRowIndex;
+	eRowChange.fire(oEvent);
+}
+function fnColChange(lastColIndex,curColIndex)
+{
+	var oEvent = createEventObject();
+	oEvent.lastColIndex = lastColIndex;
+	oEvent.curColIndex = curColIndex;
+	eColChange.fire(oEvent);
+}
+function fnPositionChange()
+{
+	var oEvent = createEventObject();
+	ePositionChange.fire(oEvent);
+}
+function fnBrowseButtonClick(rowIndex,colIndex)
+{
+	var oEvent = createEventObject();
+	oEvent.rowIndex = rowIndex;
+	oEvent.colIndex = colIndex;
+	eBrowseButtonClick.fire(oEvent);
+
+	//If the event defination in the col declaration
+	var strExpress = strFnBrowseButtonClick[colIndex];
+	if(strExpress[0] == colIndex && strExpress[1] != ""){
+		var event = oEvent;
+		var strImpl = "";
+		strImpl = strExpress[1].replace("event.","");//如果有直接的event.rowIndex语句
+		strImpl = strImpl.replace(";","");
+		strImpl = strImpl.replace(")","");
+		if(strImpl.charAt(strImpl.length-1) != "(")
+			strImpl = strImpl + ",event);"
+		else
+			strImpl = strImpl + "event);"
+		eval(strImpl);
+		}
+}
+function fnLink(rowIndex,colIndex,strUrl)
+{
+	var sUrl = strUrl;
+	var oEvent = createEventObject();
+	oEvent.rowIndex = rowIndex;
+	oEvent.colIndex = colIndex;
+	oEvent.url = sUrl;//strUrl;
+	eLink.fire(oEvent);
+	//alert("" + );
+	//打开超链接的窗口
+	if(strUrl != ""){
+		var popwindow = null;
+		if(linkWindowFeature[colIndex][0] == colIndex && linkWindowFeature[colIndex][1] != ""){
+			popwindow = window.open(strUrl,null,linkWindowFeature[colIndex][1]);
+		}else{
+			popwindow = window.open(strUrl,null,"width=" + linkWindowSize[colIndex][0] + ",height=" + linkWindowSize[colIndex][1]);
+		}
+		if(popwindow == null){
+			alert("CTAIS_HTC_编码错误:超链接操作产生错误!");
+			return;
+		}
+	}
+
+	//If the event defination in the col declaration
+	var strExpress = strFnLink[colIndex];
+	if(strExpress[0] == colIndex && strExpress[1] != ""){
+		var event = oEvent;
+		var strImpl = "";
+		strImpl = strExpress[1].replace("event.","");//如果有直接的event.rowIndex语句
+		strImpl = strImpl.replace(";","");
+		strImpl = strImpl.replace(")","");
+		if(strImpl.charAt(strImpl.length-1) != "(")
+			strImpl = strImpl + ",event,popwindow);"
+		else
+			strImpl = strImpl + "event,popwindow);"
+		//trick: "owner" represent the owner component, "me" represent the new created window!
+		//strImpl = strImpl.replace("owner", "this");
+		//strImpl = strImpl.replace("popwindow", "popwindow");
+		eval(strImpl);
+	}
+
+}
+//以下过程的执行必须要有service.js的支持(引用其中的Service类及其方法)
+function queryPageData(strPath,pageIndex)
+{
+	if(queryPageData.arguments.length > 0)
+		strDataPath = strPath;
+	if(queryPageData.arguments.length < 2)
+		pageIndex = 1;
+	//20041027:WangJian:不在htc内部做错误处理，交给外部去做
+	//if(!cmdNavigatePage(pageIndex,true))
+	//	alert("编码错误: 函数[queryPageData]执行过程中产生错误!");
+	cmdNavigatePage(pageIndex,true);
+	
+	var rtnData = new Array(4);
+	rtnData[0] = _rtnCode;
+	rtnData[1] = _code;
+	rtnData[2] = _message;
+	rtnData[3] = _doc;
+	return rtnData;
+}
+function cmdNavigatePage(pageIndex,bInit)
+{
+	if(cmdNavigatePage.arguments.length < 2)
+		eBeforeNavigate.fire(createEventObject());//callback函数
+
+	if(serviceName != null){
+		var service = null;
+		if(workID != null)//针对于在模式窗口中打开的Datawindow,必须传递一个workID的句柄!!!
+			service = new Service(serviceName,workID);
+		else
+			service = new Service(serviceName);
+//		//注意这里把以前的'CURPAGE'改为'PAGEINDEX'!!!!!!!!!!!
+//		//20040819:WangJian:现有格式不对，此处提交分页查询时需拼成需要的格式
+		var strImpl = "service.doService('PAGEINDEX'," + pageIndex.toString();
+		if(paramsName != null){
+			if(paramsValue == null){
+				alert("编码错误:请求参数值指定遗漏!");
+				return;
+			}
+			var arrParamsName = paramsName.split('|');
+			var arrParamsValue = paramsValue.split('|');
+			for(var i=0;i<arrParamsName.length;i++)
+				strImpl = strImpl + ",'" + arrParamsName[i].toString() + "','" + arrParamsValue[i].toString() + "'";
+			strImpl = strImpl + ")";
+		}
+		else
+			strImpl = strImpl + ")";
+		var arg = eval(strImpl);
+		_rtnCode = service.getRtnCode();
+		_code = service.getCode();
+		_message = service.getMessage();
+		if(_rtnCode == "1"){//数据库错误
+			showMessage(_message);
+			return false;
+			}
+		var doc = loadXml(arg);
+		_doc = doc.cloneNode(true);
+		//给开发人员一个修改的机会
+		var oArrivedEvent = createEventObject();
+		oArrivedEvent.doc = doc;      
+		eDataArrived.fire(oArrivedEvent);//callback函数
+		//                            
+		var root = null;              
+		//alert(strDataPath);//记录下数据层次结构
+		//要注意可能向后台请求回来的数据为空,这种情况下不能进行mapNode的操作!
+		if(doc != null){              
+			if(strDataPath == "" || strDataPath.indexOf("/") == -1)
+				root = doc.documentElement;
+			else{                 
+				var arrNode = strDataPath.split("/");
+				var nodeXML = doc.documentElement;
+				for(var j=1;j<arrNode.length;j++)
+					nodeXML = nodeXML.getElementsByTagName(arrNode[j])[0];
+				root = nodeXML;
+			}	              
+			if(root != null)      
+				mapNode(root);
+			else{                 
+				//1.如果存在引用岛,首先清空原来的岛
+				if(refNode != null){
+					while(refNode.childNodes.length>0)
+						refNode.removeChild(refNode.childNodes.item(0));
+				}             
+				//2.删除datawindow的所有数据
+				htcDatawindow.clearAllData();
+				//3.填充空信息
+				htcDatawindow.parseNull();
+				//4.改变修改标记
+				htcDatawindow.setModified(false);
+			}                     
+		}                             
+		else{//如果为空               
+			//1.如果存在引用岛,首先清空原来的岛
+			if(refNode != null){  
+				while(refNode.childNodes.length>0)
+					refNode.removeChild(refNode.childNodes.item(0));
+			}                     
+			//2.删除datawindow的所有数据
+			htcDatawindow.clearAllData();
+			//3.填充空信息        
+			htcDatawindow.parseNull();
+			//4.改变修改标记      
+			htcDatawindow.setModified(false);
+		}                             
+		return true;                  
+	}                                     
+	return false;                         
+}       
+//20040825:WangJian:function part
+
+/*
+ * 创建人: WangJian
+ * 创建日期: 2004-08-25
+ * 最后修改日期: 
+ * 函数功能：根据给定的页索引查询后台数据，写入dw;
+ *当pageIndex=0,表示请求xml不判断分页情况.
+ * 输入参数：pageIndex 查询页号
+ * 输出参数：
+*/
+function ProcessQueryPage(pageIndex){
+	var totalPage =1;
+	var strQryCondition;
+	var arrNodeRequest = m_strNodeRequest.split(":");
+	var strServiceName = arrNodeRequest[0];
+	//alert("strServiceName:" + strServiceName );
+	var arrNodeLevel = arrNodeRequest[2].split("/");
+	var strUseNodeName = arrNodeLevel[arrNodeLevel.length-1];
+	//alert("strUseNodeName:" + strUseNodeName );
+	var str = arrNodeRequest[1];
+	if(pageIndex == 0)//表示没有分页信息
+		strQryCondition = str;
+	else//当调用是从控件触发时，需要拼pageindex，所以只要pageindex!=0 就认为有分页信息。
+		strQryCondition = str.substring(0,str.indexOf("<PAGEINDEX>")) 
+			+ "<PAGEINDEX>" + pageIndex + "</PAGEINDEX>" + str.substring(str.indexOf("</PAGEINDEX>")+12,str.length);
+	//alert("strQryCondition:" + strQryCondition);
+	//alert("workid:" + workID);
+	var service = new Service(strServiceName,workID);
+	var oArg
+	if(strQryCondition != "" )
+		oArg=service.doService(strQryCondition);
+	else
+		oArg=service.doService();
+	if (getCode(service)== "2000")
+	{
+	   	//var strUseNodeName = "T_GRP_GRPCUSTCOMATE_DATA";
+	   	if (strUseNodeName == ""){
+	   		//没有根节点，需补上一个
+	   		oArg = "<ROOT>" + oArg + "</ROOT>";
+	   		strUseNodeName = "ROOT";
+	   	}
+		//oArg = "<ROOT><PAGE><PAGECOUNT>3</PAGECOUNT></PAGE>" + "<T_GRP_GRPCUSTCOMATE_DATA>"
+		//oArg = "<ROOT>" + "<T_GRP_GRPCUSTCOMATE_DATA>"
+		//	//+ "<DW_ATTRIBUTE><PAGESIZE>20</PAGESIZE><PAGECOUNT>5</PAGECOUNT><PAGEINDEX>2</PAGEINDEX><ROWCOUNT>20</ROWCOUNT></DW_ATTRIBUTE>"
+		//	+ "<ITEM>"
+		//	+ "  <COMATESN>1111</COMATESN><GRPCUSTID>2</GRPCUSTID><COMATEID>3</COMATEID>"
+		//	+ "  <COMATETYPE>4</COMATETYPE><TRADETYPE>5</TRADETYPE><NAME>6</NAME>"
+		//	+ "  <ADDRESS>7</ADDRESS><WEB>8</WEB><EMAIL>9</EMAIL><LINKMAN>10</LINKMAN>"
+		//	+ "  <LINKPHONE>11</LINKPHONE><STARTDATE>12</STARTDATE><TERMIDATE>13</TERMIDATE><RMK>14</RMK>"
+		//	+ "  </ITEM>"
+		//	+"</T_GRP_GRPCUSTCOMATE_DATA></ROOT>"
+	   	var oDoc=loadXml(oArg);
+	   	//得到真正的总页数
+	   	var factPageCount = "";
+	   	var oPageNode = oDoc.getElementsByTagName("PAGECOUNT")(0);
+	   	if (oPageNode != null)
+	   		factPageCount = oPageNode.text;
+	   	if (factPageCount != "")
+	   		totalPage = parseInt(factPageCount);
+	   	//alert("totalPage:" + totalPage);
+	   	var refNode = oDoc.getElementsByTagName(strUseNodeName)(0);
+	   	mapNode(refNode);
+	   	//alert("totalPage:"+totalPage+"    pageIndex:"+pageIndex);
+	   	if (totalPage != 1)
+	   		htcDatawindow.setPageCount(totalPage);
+	   	if (pageIndex != 0)
+	   		htcDatawindow.setPageIndex(pageIndex);
+   	}
+   	else{
+   		//alert("wrong service");
+		showMessage(getMessage(service), 0);
+		htcDatawindow.clearAllData();
+		htcDatawindow.parseNull();
+		htcDatawindow.setModified(false);
+   	}
+	
+}
+/*
+ * 创建人: WangJian
+ * 创建日期: 2004-09-24
+ * 最后修改日期: 
+ * 函数功能：翻页事件触发函数
+ * 输入参数：pageIndex:翻页后的当前页，totalPage:总页数
+ * 输出参数：
+*/
+function fnTurnPage(pageIndex,totalPage){
+	var oEvent = createEventObject();
+	oEvent.pageIndex = pageIndex;
+	oEvent.totalPage = totalPage;
+	eTurnPage.fire(oEvent);
+}
+
+
+//end WangJian function part
+
+                                      
+</SCRIPT>
+
+<SCRIPT LANGUAGE="javascript">
+//20041130：Wangjian：发现当在一个script标签内的函数过多时，ie在特定条件下会报错，所以将所有函数分到两个脚本中
+</SCRIPT>                                     
+
+
+
+                                              
+<HTML xmlns:ctais >                           
+<META http-equiv="Content-Type" content="text/html; charset=gb2312">
+<META HTTP-EQUIV="Pragma" CONTENT="no-cache"> 
+
+
+<SCRIPT LANGUAGE="javascript" FOR="htcDatawindow" EVENT="onbeforeadd(rowIndex,bCancel)">
+<!--                                          
+	fnBeforeAdd(rowIndex,bCancel);        
+-->                                           
+</SCRIPT>                                     
+                                              
+<SCRIPT LANGUAGE="javascript" FOR="htcDatawindow" EVENT="onchangemapnode(rowIndex, colIndex, value)">
+<!--                                          
+	fnChangeMapNode(rowIndex,colIndex,value);
+                                              
+-->                                           
+</SCRIPT>                                     
+                                              
+                                              
+                                              
+<SCRIPT LANGUAGE="javascript" FOR="htcDatawindow" EVENT="onadd(rowIndex)">
+<!--                                          
+	fnAdd(rowIndex);                      
+-->                                           
+</SCRIPT>                                     
+<SCRIPT LANGUAGE="javascript" FOR="htcDatawindow" EVENT="onchange(rowIndex, colIndex, value)">
+<!--                                          
+	fnChange(rowIndex,colIndex,value);    
+-->                                           
+</SCRIPT>                                     
+<SCRIPT LANGUAGE="javascript" FOR="htcDatawindow" EVENT="onrefreshformula(rowIndex, colIndex)">
+<!--                                          
+	fnRefreshFormula(rowIndex,colIndex);  
+-->                                           
+</SCRIPT>                                     
+<SCRIPT LANGUAGE="javascript" FOR="htcDatawindow" EVENT="onclick(rowIndex, colIndex)">
+<!--                                          
+	fnClick(rowIndex,colIndex);           
+-->                                           
+</SCRIPT>                                     
+<SCRIPT LANGUAGE="javascript" FOR="htcDatawindow" EVENT="ondblclick(rowIndex, colIndex)">
+<!--                                          
+	fnDblClick(rowIndex,colIndex);        
+-->                                           
+</SCRIPT>                                     
+<SCRIPT LANGUAGE="javascript" FOR="htcDatawindow" EVENT="onbeforedelete(rowIndex,bCancel)">
+<!--                                          
+	fnBeforeDelete(rowIndex,bCancel);     
+-->                                           
+</SCRIPT>                                     
+<SCRIPT LANGUAGE="javascript" FOR="htcDatawindow" EVENT="ondelete(rowIndex)">
+<!--                                          
+	fnDelete(rowIndex);                   
+-->                                           
+</SCRIPT>                                     
+<SCRIPT LANGUAGE="javascript" FOR="htcDatawindow" EVENT="onentercell(rowIndex, colIndex)">
+<!--                                          
+	fnEnterCell(rowIndex,colIndex);       
+-->                                           
+</SCRIPT>                                     
+<!-- <SCRIPT LANGUAGE="javascript" FOR="htcDatawindow" EVENT="onkeydown(KeyCode, Shift)"> -->
+<!--                                          
+	fnKeyDown(KeyCode,Shift);             
+-->                                           
+<!-- </SCRIPT> -->                            
+<SCRIPT LANGUAGE="javascript" FOR="htcDatawindow" EVENT="onleavecell(rowIndex, colIndex)">
+<!--                                          
+	fnLeaveCell(rowIndex,colIndex);       
+-->                                           
+</SCRIPT>                                     
+<SCRIPT LANGUAGE="javascript" FOR="htcDatawindow" EVENT="onquerypage(pageIndex, totalPage)">
+//翻页时，出发此事件
+	//20041027:WangJian:兼容旧的翻页功能做的修改。
+	//默认认为serviceName为空时，使用新的翻页查询功能；不为空使用旧翻页功能
+	//20041028:WangJian:使用serviceName做新旧翻页功能判断有问题，
+	//因为tax代码中的serviceName属性的设置有些在onbeforenavigate事件中才赋值。
+	//if(serviceName == null){
+	//20041029:WangJian:为满足对原有分页功能的兼容，
+	//因此，规定当 m_strNodeRequest=="" && m_bAutoTurnPage==true 表示使用旧的分页功能，否则就使用新分页功能。	
+	if((m_strNodeRequest=="" || m_strNodeRequest==null) && m_bAutoTurnPage)
+		fnQueryPage(pageIndex,totalPage);
+	else{
+		//20040924:WangJian:当m_bAutoTurnPage=true时系统自动处理翻页，false为不处理，由用户操作
+		if(m_bAutoTurnPage){
+			//alert("自动处理分页");
+			ProcessQueryPage(pageIndex);
+		}
+		fnTurnPage(pageIndex,totalPage);
+		//htcDatawindow.setPageIndex(pageIndex);
+	}
+
+</SCRIPT>                                     
+<SCRIPT LANGUAGE="javascript" FOR="htcDatawindow" EVENT="onfirstpage(pageIndex, totalPage)">
+<!--                                          
+	fnFirstPage(pageIndex,totalPage);     
+-->                                           
+</SCRIPT>                                     
+<SCRIPT LANGUAGE="javascript" FOR="htcDatawindow" EVENT="onpreviouspage(pageIndex, totalPage)">
+<!--                                          
+	fnPreviousPage(pageIndex,totalPage);  
+-->                                           
+</SCRIPT>                                     
+<SCRIPT LANGUAGE="javascript" FOR="htcDatawindow" EVENT="onnextpage(pageIndex, totalPage)">
+<!--                                          
+	fnNextPage(pageIndex,totalPage);      
+-->                                           
+</SCRIPT>                                     
+                                              
+<SCRIPT LANGUAGE="javascript" FOR="htcDatawindow" EVENT="onlastpage(pageIndex, totalPage)">
+<!--                                          
+	fnLastPage(pageIndex,totalPage);      
+-->                                           
+</SCRIPT>                                     
+<SCRIPT LANGUAGE="javascript" FOR="htcDatawindow" EVENT="onrowchange(lastRowIndex,curRowIndex)">
+<!--                                          
+	fnRowChange(lastRowIndex,curRowIndex);
+-->                                           
+</SCRIPT>                                     
+<SCRIPT LANGUAGE="javascript" FOR="htcDatawindow" EVENT="oncolchange(lastColIndex,curColIndex)">
+<!--                                          
+	fnColChange(lastColIndex,curColIndex);
+-->                                           
+</SCRIPT>                                     
+<SCRIPT LANGUAGE="javascript" FOR="htcDatawindow" EVENT="onrowcolchange()">
+<!--                                          
+	fnPositionChange();                   
+-->                                           
+</SCRIPT>                                     
+<SCRIPT LANGUAGE="javascript" FOR="htcDatawindow" EVENT="onbrowsebuttonclick(rowIndex, colIndex)">
+<!--                                          
+	fnBrowseButtonClick(rowIndex,colIndex);
+-->                                           
+</SCRIPT>                                     
+<SCRIPT LANGUAGE="javascript" FOR="htcDatawindow" EVENT="onlink(rowIndex, colIndex, strUrl)">
+<!--                                          
+	
+	fnLink(rowIndex,colIndex,strUrl);     
+-->                                           
+</SCRIPT>                                     
+<BODY>  
+    <OBJECT ID="htcDatawindow" CLASSID="CLSID:DDF1E952-F686-42E6-A3AA-8CFDD3D8AE00" 
+	CODEBASE="CTAIS_HTC.CAB#version=1,0,0,110" style="width:100%;height:100%">
+       	<param name="_ExtentX" value="10795">  
+	<param name="_ExtentY" value="7250">
+		<SPAN STYLE="color:red">      
+  			ActiveX 载入失败! -- 请检查您浏览器的安全设置选项.
+		</SPAN>                       
+    </OBJECT>    
+<!--                                          
+    <OBJECT style='width=100%;height:100%' ID="htcDatawindow" CLASSID="CLSID:DDF1E952-F686-42E6-A3AA-8CFDD3D8AE00"
+	CODEBASE="../lib/CTAIS_HTC.CAB#version=1,0,0,100">
+       <param name="_ExtentX" value="10795">  
+	   <param name="_ExtentY" value="7250">
+		<SPAN STYLE="color:red">      
+  			ActiveX 载入失败! -- 请检查您浏览器的安全设置选项.
+		</SPAN>
+    </OBJECT>                                 
+-->                                           
+</BODY>                                       
+</HTML>                                       

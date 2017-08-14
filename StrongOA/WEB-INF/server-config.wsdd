@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<deployment xmlns="http://xml.apache.org/axis/wsdd/"
+    xmlns:java="http://xml.apache.org/axis/wsdd/providers/java"
+    xmlns:handler="http://xml.apache.org/axis/wsdd/providers/handler"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    name="defaultClientConfig" xsi:type="deployment">
+    <globalConfiguration name="defaultClientConfig">
+        <parameter name="disablePrettyXML" value="true"/>
+        <parameter name="dotNetSoapEncFix" value="true"/>
+        <requestFlow name="RequestFlow1" type="">
+            <handler name="Handler1" type="java:org.apache.axis.handlers.JWSHandler">
+                <parameter name="scope" value="session"/>
+            </handler>
+            <handler name="Handler2" type="java:org.apache.axis.handlers.JWSHandler">
+                <parameter name="scope" value="request"/>
+                <parameter name="extension" value=".jwr"/>
+            </handler>
+        </requestFlow>
+    </globalConfiguration>
+    <handler name="URLMapper" type="java:org.apache.axis.handlers.http.URLMapper"/>
+    <handler name="LocalResponder" type="java:org.apache.axis.transport.local.LocalResponder"/>
+    <handler name="Authenticate" type="java:org.apache.axis.handlers.SimpleAuthenticationHandler"/>
+    <transport name="http" type="">
+        <parameter name="qs:list" value="org.apache.axis.transport.http.QSListHandler"/>
+        <parameter name="qs:method" value="org.apache.axis.transport.http.QSMethodHandler"/>
+        <parameter name="qs:wsdl" value="org.apache.axis.transport.http.QSWSDLHandler"/>
+        <requestFlow name="RequestFlow1" type="">
+            <handler name="Handler1" type="URLMapper"/>
+            <handler name="Handler2" type="java:org.apache.axis.handlers.http.HTTPAuthHandler"/>
+        </requestFlow>
+    </transport>
+    <transport name="local" type="">
+        <responseFlow name="ResponseFlow1" type="">
+            <handler name="Handler1" type="LocalResponder"/>
+        </responseFlow>
+    </transport>
+    <service name="AdminService" type="" provider="java:MSG">
+        <parameter name="allowedMethods" value="AdminService"/>
+        <parameter name="enableRemoteAdmin" value="false"/>
+        <parameter name="className" value="org.apache.axis.utils.Admin"/>
+        <namespace>http://xml.apache.org/axis/wsdd/</namespace>
+    </service>
+    <service name="Version" type="" provider="java:RPC">
+        <parameter name="allowedMethods" value="getVersion"/>
+        <parameter name="className" value="org.apache.axis.Version"/>
+    </service>
+    <!--<service name="EFormService" type="" provider="java:RPC" style="rpc" use="encoded">
+        <parameter name="scope" value="Request"/>
+        <parameter name="className" value="com.strongit.eform.ws.EFormService"/>
+        <parameter name="allowedMethods" value="execute, login, logout"/>
+        <namespace>http://ws.eform.strongit.com</namespace>
+        <typeMapping xmlns:ns1="http://vo.eform.strongit.com"
+            encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+            qname="ns1:VoResult"
+            languageSpecificType="java:com.strongit.eform.vo.VoResult"
+            serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+            deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory" name="VoResult"/>
+    </service>
+    -->
+    <!-- ipad OA   WebService服务接口配置 start-->
+    <service name="WorkflowService" type="" provider="java:RPC" style="rpc" use="encoded">
+    	<parameter name="scope" value="Request"/>
+    	<parameter name="className" value="com.strongit.oa.webservice.server.workflow.WorkWebService"/>
+    	<parameter name="allowedMethods" value="*"/>
+    	<ns1:typeMapping deserializer="org.apache.axis.encoding.ser.JAFDataHandlerDeserializerFactory" encodingStyle="http://sechemas.xmlsoap.org/soap/encoding" qname="ns1:DataHandler" serializer="org.apache.axis.encoding.ser.JAFDataHandlerSerializerFactory" type="java:javax.activation.DataHandler" xmlns:ns1="http://xml.apache.org/axis/wsdd/"/>
+    </service>
+    <service name="ipadLoginService" type="" provider="java:RPC" style="rpc" use="encoded">
+    	<parameter name="scope" value="Request"/>
+    	<parameter name="className" value="com.strongit.oa.webservice.server.ipadLoginBg.ipadLoginWebService"/>
+    	<parameter name="allowedMethods" value="*"/>
+    	<ns1:typeMapping deserializer="org.apache.axis.encoding.ser.JAFDataHandlerDeserializerFactory" encodingStyle="http://sechemas.xmlsoap.org/soap/encoding" qname="ns1:DataHandler" serializer="org.apache.axis.encoding.ser.JAFDataHandlerSerializerFactory" type="java:javax.activation.DataHandler" xmlns:ns1="http://xml.apache.org/axis/wsdd/"/>
+    </service>
+    <service name="oaMessageService" type="" provider="java:RPC" style="rpc" use="encoded">
+    	<parameter name="scope" value="Request"/>
+    	<parameter name="className" value="com.strongit.oa.webservice.server.oaMessage.oaMessageWebService"/>
+    	<parameter name="allowedMethods" value="*"/>
+    	<ns1:typeMapping deserializer="org.apache.axis.encoding.ser.JAFDataHandlerDeserializerFactory" encodingStyle="http://sechemas.xmlsoap.org/soap/encoding" qname="ns1:DataHandler" serializer="org.apache.axis.encoding.ser.JAFDataHandlerSerializerFactory" type="java:javax.activation.DataHandler" xmlns:ns1="http://xml.apache.org/axis/wsdd/"/>
+    </service>
+     <service name="columnArticlesService" type="" provider="java:RPC" style="rpc" use="encoded">
+    	<parameter name="scope" value="Request"/>
+    	<parameter name="className" value="com.strongit.oa.webservice.server.columnArticles.columnArticlesWebService"/>
+    	<parameter name="allowedMethods" value="*"/>
+    	<ns1:typeMapping deserializer="org.apache.axis.encoding.ser.JAFDataHandlerDeserializerFactory" encodingStyle="http://sechemas.xmlsoap.org/soap/encoding" qname="ns1:DataHandler" serializer="org.apache.axis.encoding.ser.JAFDataHandlerSerializerFactory" type="java:javax.activation.DataHandler" xmlns:ns1="http://xml.apache.org/axis/wsdd/"/>
+    </service>
+    <!-- ipad OA  WebService服务接口配置 end-->
+    
+    <!-- iphone OA   WebService服务接口配置 start-->
+    <service name="iphoneInitService" type="" provider="java:RPC" style="rpc" use="encoded">
+    	<parameter name="scope" value="Request"/>
+    	<parameter name="className" value="com.strongit.oa.webservice.iphone.server.iphoneInit.iphoneInitWebService"/>
+    	<parameter name="allowedMethods" value="*"/>
+    	<ns1:typeMapping deserializer="org.apache.axis.encoding.ser.JAFDataHandlerDeserializerFactory" encodingStyle="http://sechemas.xmlsoap.org/soap/encoding" qname="ns1:DataHandler" serializer="org.apache.axis.encoding.ser.JAFDataHandlerSerializerFactory" type="java:javax.activation.DataHandler" xmlns:ns1="http://xml.apache.org/axis/wsdd/"/>
+    </service>
+    
+    <service name="iphoneWorkService" type="" provider="java:RPC" style="rpc" use="encoded">
+    	<parameter name="scope" value="Request"/>
+    	<parameter name="className" value="com.strongit.oa.webservice.iphone.server.iphoneWork.iphoneWorkWebService"/>
+    	<parameter name="allowedMethods" value="*"/>
+    	<ns1:typeMapping deserializer="org.apache.axis.encoding.ser.JAFDataHandlerDeserializerFactory" encodingStyle="http://sechemas.xmlsoap.org/soap/encoding" qname="ns1:DataHandler" serializer="org.apache.axis.encoding.ser.JAFDataHandlerSerializerFactory" type="java:javax.activation.DataHandler" xmlns:ns1="http://xml.apache.org/axis/wsdd/"/>
+    </service>
+    <!--公共联系人服务接口 -->
+    <service name="iphonePublicContactService" type="" provider="java:RPC" style="rpc" use="encoded">
+    	<parameter name="scope" value="Request"/>
+    	<parameter name="className" value="com.strongit.oa.webservice.iphone.server.iphonePublicContact.iphonePublicContactWebService"/>
+    	<parameter name="allowedMethods" value="*"/>
+    	<ns1:typeMapping deserializer="org.apache.axis.encoding.ser.JAFDataHandlerDeserializerFactory" encodingStyle="http://sechemas.xmlsoap.org/soap/encoding" qname="ns1:DataHandler" serializer="org.apache.axis.encoding.ser.JAFDataHandlerSerializerFactory" type="java:javax.activation.DataHandler" xmlns:ns1="http://xml.apache.org/axis/wsdd/"/>
+    </service>
+    <!--文档管理服务接口 -->
+    <service name="iphoneDocManageService" type="" provider="java:RPC" style="rpc" use="encoded">
+    	<parameter name="scope" value="Request"/>
+    	<parameter name="className" value="com.strongit.oa.webservice.iphone.server.iphoneDocManage.iphoneDocManageWebService"/>
+    	<parameter name="allowedMethods" value="*"/>
+    	<ns1:typeMapping deserializer="org.apache.axis.encoding.ser.JAFDataHandlerDeserializerFactory" encodingStyle="http://sechemas.xmlsoap.org/soap/encoding" qname="ns1:DataHandler" serializer="org.apache.axis.encoding.ser.JAFDataHandlerSerializerFactory" type="java:javax.activation.DataHandler" xmlns:ns1="http://xml.apache.org/axis/wsdd/"/>
+    </service>
+    <!--领导日程服务接口 -->
+    <service name="iphoneLeaderAgendaService" type="" provider="java:RPC" style="rpc" use="encoded">
+    	<parameter name="scope" value="Request"/>
+    	<parameter name="className" value="com.strongit.oa.webservice.iphone.server.iphoneLeaderAgenda.iphoneLeaderAgendaWebService"/>
+    	<parameter name="allowedMethods" value="*"/>
+    	<ns1:typeMapping deserializer="org.apache.axis.encoding.ser.JAFDataHandlerDeserializerFactory" encodingStyle="http://sechemas.xmlsoap.org/soap/encoding" qname="ns1:DataHandler" serializer="org.apache.axis.encoding.ser.JAFDataHandlerSerializerFactory" type="java:javax.activation.DataHandler" xmlns:ns1="http://xml.apache.org/axis/wsdd/"/>
+    </service>
+    
+    <service name="iphoneArticlesService" type="" provider="java:RPC" style="rpc" use="encoded">
+    	<parameter name="scope" value="Request"/>
+    	<parameter name="className" value="com.strongit.oa.webservice.iphone.server.iphoneArticles.iphoneArticlesWebService"/>
+    	<parameter name="allowedMethods" value="*"/>
+    	<ns1:typeMapping deserializer="org.apache.axis.encoding.ser.JAFDataHandlerDeserializerFactory" encodingStyle="http://sechemas.xmlsoap.org/soap/encoding" qname="ns1:DataHandler" serializer="org.apache.axis.encoding.ser.JAFDataHandlerSerializerFactory" type="java:javax.activation.DataHandler" xmlns:ns1="http://xml.apache.org/axis/wsdd/"/>
+    </service>
+    
+    <service name="iphoneAddressBookService" type="" provider="java:RPC" style="rpc" use="encoded">
+    	<parameter name="scope" value="Request"/>
+    	<parameter name="className" value="com.strongit.oa.webservice.iphone.server.iphoneAddressBook.iphoneAddressBookWebService"/>
+    	<parameter name="allowedMethods" value="*"/>
+    	<ns1:typeMapping deserializer="org.apache.axis.encoding.ser.JAFDataHandlerDeserializerFactory" encodingStyle="http://sechemas.xmlsoap.org/soap/encoding" qname="ns1:DataHandler" serializer="org.apache.axis.encoding.ser.JAFDataHandlerSerializerFactory" type="java:javax.activation.DataHandler" xmlns:ns1="http://xml.apache.org/axis/wsdd/"/>
+    </service>
+      
+    <service name="iphoneMessageService" type="" provider="java:RPC" style="rpc" use="encoded">
+    	<parameter name="scope" value="Request"/>
+    	<parameter name="className" value="com.strongit.oa.webservice.iphone.server.iphoneMessage.iphoneMessageWebService"/>
+    	<parameter name="allowedMethods" value="*"/>
+    	<ns1:typeMapping deserializer="org.apache.axis.encoding.ser.JAFDataHandlerDeserializerFactory" encodingStyle="http://sechemas.xmlsoap.org/soap/encoding" qname="ns1:DataHandler" serializer="org.apache.axis.encoding.ser.JAFDataHandlerSerializerFactory" type="java:javax.activation.DataHandler" xmlns:ns1="http://xml.apache.org/axis/wsdd/"/>
+    </service>
+    <!-- 消息推送服务接口 -->
+    <service name="pushNotifyService" type="" provider="java:RPC" style="rpc" use="encoded">
+    	<parameter name="scope" value="Request"/>
+    	<parameter name="className" value="com.strongit.oa.webservice.iphone.server.pushNotify.pushNotifyWebService"/>
+    	<parameter name="allowedMethods" value="*"/>
+    	<ns1:typeMapping deserializer="org.apache.axis.encoding.ser.JAFDataHandlerDeserializerFactory" encodingStyle="http://sechemas.xmlsoap.org/soap/encoding" qname="ns1:DataHandler" serializer="org.apache.axis.encoding.ser.JAFDataHandlerSerializerFactory" type="java:javax.activation.DataHandler" xmlns:ns1="http://xml.apache.org/axis/wsdd/"/>
+    </service>
+    <!-- android消息推送服务接口 -->
+    <service name="androidPushNotifyService" type="" provider="java:RPC" style="rpc" use="encoded">
+    	<parameter name="scope" value="Request"/>
+    	<parameter name="className" value="com.strongit.oa.webservice.iphone.server.pushNotify.androidPushNotifyWebService"/>
+    	<parameter name="allowedMethods" value="*"/>
+    	<ns1:typeMapping deserializer="org.apache.axis.encoding.ser.JAFDataHandlerDeserializerFactory" encodingStyle="http://sechemas.xmlsoap.org/soap/encoding" qname="ns1:DataHandler" serializer="org.apache.axis.encoding.ser.JAFDataHandlerSerializerFactory" type="java:javax.activation.DataHandler" xmlns:ns1="http://xml.apache.org/axis/wsdd/"/>
+    </service>
+    <!-- iphone OA   WebService服务接口配置 end -->
+    
+    <!-- penghj, rtx整合，写的接口 -->
+    <service name="rtx2010WebService" type="" provider="java:RPC" use="encoded">
+     	<parameter name="scope" value="Request"/>
+        <parameter name="className" value="com.strongit.oa.webservice.server.rtx2010.rtx2010WebService"/>
+        <parameter name="allowedMethods" value="*"/>
+         <ns1:typeMapping deserializer="org.apache.axis.encoding.ser.JAFDataHandlerDeserializerFactory" encodingStyle="http://sechemas.xmlsoap.org/soap/encoding" qname="ns1:DataHandler" serializer="org.apache.axis.encoding.ser.JAFDataHandlerSerializerFactory" type="java:javax.activation.DataHandler" xmlns:ns1="http://xml.apache.org/axis/wsdd/"/>
+    </service>
+    
+    <service name="SmsService" type="" provider="java:RPC" use="encoded">
+     	<parameter name="scope" value="Request"/>
+        <parameter name="className" value="com.strongit.oa.webservice.server.sms.SmsWebService"/>
+        <parameter name="allowedMethods" value="sendSmsbyWS,getSmsListByWS"/>
+    </service>
+    <!--统一用户webservice接口 -->
+    <service name="AuthenticationService" type="" provider="java:RPC" use="encoded">
+     	<parameter name="scope" value="Request"/>
+        <parameter name="className" value="com.strongit.uums.webservice.AuthenticationService"/>
+        <parameter name="allowedMethods" value="*"/>
+    </service>
+    <!--统一用户更改后修建的webservice接口 -->
+    <service name="AuthentiUpdatecationService" type="" provider="java:RPC" use="encoded">
+     	<parameter name="scope" value="Request"/>
+        <parameter name="className" value="com.strongit.oa.webservice.verificationService.AuthentiUpdatecationService"/>
+        <parameter name="allowedMethods" value="*"/>
+    </service>
+    <service name="UserService" type="" provider="java:RPC" use="encoded">
+     	<parameter name="scope" value="Request"/>
+        <parameter name="className" value="com.strongit.uums.webservice.UserService"/>
+        <parameter name="allowedMethods" value="*"/>
+    </service>
+    <service name="DepartmentService" type="" provider="java:RPC" use="encoded">
+     	<parameter name="scope" value="Request"/>
+        <parameter name="className" value="com.strongit.uums.webservice.DepartmentService"/>
+        <parameter name="allowedMethods" value="*"/>
+    </service>
+    <service name="PostService" type="" provider="java:RPC" use="encoded">
+     	<parameter name="scope" value="Request"/>
+        <parameter name="className" value="com.strongit.uums.webservice.PostService"/>
+        <parameter name="allowedMethods" value="*"/>
+    </service>
+    
+    
+  
+</deployment>

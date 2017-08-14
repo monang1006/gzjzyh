@@ -1,0 +1,214 @@
+<!--
+该组件用于继承<SELECT  CLASS="myHTC"/>
+-->
+<PUBLIC:COMPONENT tagName="select"> 
+<PROPERTY NAME="fill" />
+<!-- 要映射的数据岛的句柄（ID） -->
+<PROPERTY NAME="node" />
+<!-- SELECT中的VALUE对应的节点值 -->
+<PROPERTY NAME="key" />
+<!-- SELECT中将被显示的节点值 -->
+<PROPERTY NAME="view" />
+<!-- 初始化时刷新数据，即重新从数据岛映射数据 -->
+<PROPERTY NAME="refresh" />
+<!-- initValue为缺省值 -->
+<PROPERTY NAME="initValue" />
+<PROPERTY NAME="multiple" />
+<PROPERTY NAME="selectedIndex"  put="setSelectedIndex" get="getSelectedIndex" />
+
+<public:defaults viewLinkContent tabStop="true" viewMasterTab=false />
+<public:property name="value" put="setValue" get="getValue"/>
+<public:property name="disable" put="setDisable" get="getDisable"/>
+<public:METHOD NAME="getValue" />
+<public:METHOD NAME="setValue" />
+<public:METHOD NAME="setOptions" />
+
+<public:ATTACH   EVENT="oncontentready"  HANDLER="init" />
+<public:ATTACH   EVENT="onkeydown" HANDLER="listenKey" />
+<public:ATTACH   EVENT="onfocus" HANDLER="doOnFocus" />
+
+<PUBLIC:EVENT NAME="onchange" ID="eChanged" />
+
+</PUBLIC:COMPONENT>
+<SCRIPT LANGUAGE="JavaScript">
+<!--
+var sKey = null;
+var arrView = new Array();
+var bRefresh = false;
+
+function init()
+{
+	//tabIndex = 0;
+	htcSel.attachEvent("onchange",doOnChange);
+	sKey = key;
+	//下面一条语句，用this会导致数组错误！因为this代表该组件！
+	//arrView = (view == null)? this : view.split("|");
+	arrView = (view == null)? arrView : view.split("|");
+
+	bRefresh = (refresh == null)? false : true;
+
+	//多选框
+	if(multiple)
+		htcSel.multiple = true;
+
+	if(fill != null && fill.toLowerCase() == "yes")
+	{
+		htcSel.style.background="#B5E3DF";
+	}
+
+	//因为在数据绑定时，如果该HTC在DATASRC="#DSO" 内部，
+	//则该HTC被初始化两次，导致出现两组<OPTION>、屏幕刷新缓慢
+	if(!bRefresh)
+	{
+		if(htcSel.children.length != 0)
+			return;
+	}
+	else
+		htcSel.innerHTML = "";
+	if(node != null)
+	{
+		addOptions(eval(node));
+		//给select赋缺省值，因为直接在SELECT组件里写value=""不管用
+		if(initValue != null && initValue != "")
+			htcSel.value = initValue;
+	}
+}
+function doOnChange()
+{
+	checkData();
+	eChanged.fire(createEventObject());
+}
+function doOnFocus()
+{
+	//htcSel.focus();
+}
+function addOptions(nodeDoc)
+{
+	if(nodeDoc.nodeType == 9)//Document Type
+		var root = nodeDoc.documentElement;//得到根节点
+	else
+		var root = nodeDoc;//node Type
+	var item;
+	//增加value=""的选项
+	//如果是多行就不增加该项
+	if(!htcSel.multiple)
+	{
+		var defOpt = document.createElement("OPTION");
+		defOpt.value="";
+		defOpt.text = "**请选择**";
+		htcSel.add(defOpt);
+	}
+	for(var i=0;i<root.childNodes.length;i++)
+	{
+		item = root.childNodes(i);
+		var obj = document.createElement("OPTION");
+		if(key != null)
+		{
+			obj.value = item.getElementsByTagName(key)(0).text;
+		}
+		else
+		{
+			obj.value = item.childNodes(0).text;
+		}
+		if(arrView.length != 0)
+		{
+			var str = "";
+			for(var j=0;j<arrView.length;j++)
+			{
+				str += item.getElementsByTagName(arrView[j])(0).text + " ";
+			}
+			obj.text = str;
+		}
+		else
+		{
+			obj.text = item.childNodes(0).text+" "+item.childNodes(1).text;
+		}
+		htcSel.add(obj);
+	}
+}
+//用缺省值val重新初始化下拉菜单
+function setOptions(nodeDoc,val)
+{
+	//删除所有options项
+	while(htcSel.options.length != 0)
+	{
+		htcSel.remove(htcSel.options[0]);
+	}
+	addOptions(nodeDoc);
+	htcSel.value = val;
+}
+function getValue()
+{
+	return htcSel.value;
+}
+function setValue(val)
+{
+	htcSel.value = val;
+}
+//键盘转换
+//把Enter事件转换为Tab事件
+function listenKey()
+{
+	if(event.keyCode == 13)
+		event.keyCode = 9;
+}
+function checkData()
+{
+	if(fill != null && fill.toLowerCase() == "yes")
+	{
+		if(htcSel.value == "")
+		{
+			alert("该项为必填项");
+		}
+	}
+}
+
+function setDisable(bState)
+{
+	htcSel.disabled = bState;
+	//disabled = bState;
+	//hctSel.readOnly = bState;
+	//tabIndex = -1;
+	//this.disabled = true;
+	if(bState)
+		tabIndex = -1;
+	else
+		tabIndex = 0;
+}
+function getDisable()
+{
+	return hctSel.disabled;
+}
+function disable(bState)
+{
+	if(typeof(bState) == "undefined")
+		bState = true;
+	setDisable(bState);
+}
+function getSelectedIndex() {
+	return htcSel.selectedIndex;
+}
+function setSelectedIndex(idx) {
+	htcSel.selectedIndex = idx;
+}
+//图个方便
+function getInnerObject() {
+	return htcSel;
+}
+//-->
+</SCRIPT>
+<body>
+	<select style="width:100%;
+	font-size:12px;color:black;
+	margin-right:0;margin-top:0;margin-left:0;margin-bottom:0;
+	BORDER-TOP-WIDTH: 1px;
+    BORDER-LEFT-WIDTH: 1px;
+    BORDER-LEFT-COLOR: #cecece;
+    BORDER-BOTTOM-WIDTH: 1px;
+    BORDER-BOTTOM-COLOR: #cecece;
+    BORDER-TOP-COLOR: #cecece;
+    BACKGROUND-COLOR: #ffffff;
+    BORDER-RIGHT-WIDTH: 1px;
+    BORDER-RIGHT-COLOR: #cecece"
+	id="htcSel"></select>
+</body>

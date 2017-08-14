@@ -1,0 +1,540 @@
+<!-- 
+	This file defines the "table" HTC
+	不要修改前5行的任何数据！否则通过网络访问时，该文件可能不会被正常解析执行。这个问题极度BT!
+-->
+
+<PUBLIC:COMPONENT tagName="table" > 
+
+<PUBLIC:METHOD NAME="setPage" />
+<PUBLIC:METHOD NAME="setFont" />
+<PUBLIC:METHOD NAME="setWidth" />
+
+<PUBLIC:ATTACH EVENT="oncontentready"	HANDLER="init" />
+
+<SCRIPT LANGUAGE="JavaScript">
+<!--
+
+var	htcTbl = null;
+var	htcCols = null;//要求必需有<colgroup><col/></colgroup>
+var	htcHeader = null;
+
+var PAGE_SIZE = new Array(5);
+PAGE_SIZE["A1"] = new Array(null,null);//认为无法使用A1纸:)
+PAGE_SIZE["A2"] = new Array(1580,2238);//420x594
+PAGE_SIZE["A3"] = new Array(1116,1580);//297x420
+PAGE_SIZE["A4"] = new Array(786,1116);//210x297
+PAGE_SIZE["A5"] = new Array(552,786);//148x210
+
+var PAGE = new Array(5);
+PAGE["A1"] = new Array(null,null);//认为无法使用A1纸:)
+PAGE["A2"] = new Array(1486,2110);//1486,2110
+PAGE["A3"] = new Array(1034,1486);//1034,1486
+PAGE["A4"] = new Array(722,1034);//722,1034
+PAGE["A5"] = new Array(490,722);//490,722
+
+function init() {
+	enableCtrls();
+
+	if(htcErectLine == null || htcTip == null){
+		alert("本组件应用不完整：\n列标记[htcErectLine]、位置提示[htcTip]一个都不能少\n写法见本组件代码的最下端");
+		return;
+	}
+	initTable(this);
+	initParams();
+	if(htcRuler != null){
+		adjustRuler();
+	}
+}
+
+/** 设置纸张（大小、宽度）
+ *
+ */
+function initParams(){
+	var suitPage = getSuitablePage();
+	var pagesize = suitPage[0];
+	var pageori = parseInt(suitPage[1],10);
+	var pageheader = null;
+	var pagefooter = null;//"&b&p/&P&b";
+	var pagemargin = null;//"4.23";
+
+		var params = window.document.URL;
+	var idx = params.indexOf("pagesize=");
+
+	if(idx != -1){
+		var idx1 = params.indexOf("pageori=",idx+9);
+		if(idx1 != -1){
+			var tmp = params.substring(idx+9,idx1-1);
+			//如果为""或"null"时则自动调整
+			if(tmp != "" && tmp != "null" && tmp != "undefined"){
+				pagesize = tmp.toUpperCase();
+			}
+			idx = params.indexOf('&',idx1+8);
+			if(idx != -1){
+				tmp = params.substring(idx1+8,idx);
+			}else{
+				tmp = params.substring(idx1+8);
+			}
+			//如果为""或"null"或不为数字时则自动调整
+			//if(tmp != "" && tmp != "null" && tmp != "undefined" && isNaN(tmp)){
+			if(tmp != "" && tmp.length < 3 && !isNaN(tmp)){
+				pageori = parseInt(tmp,10);
+			}
+		}
+	}
+	idx = params.indexOf("pageheader=");
+	if(idx != -1){
+		var idx1 = params.indexOf("pagefooter=",idx+11);
+		if(idx1 != -1){
+			pageheader = params.substring(idx+11,idx1-1);
+			if(pageheader == "undefined" || pageheader == "null"){
+				pageheader = "";
+			}
+			idx = params.indexOf("pagemargin=",idx1+11);
+			if(idx != -1){
+				pagefooter = params.substring(idx1+11,idx-1);
+				if(pagefooter == "undefined" || pagefooter == "null"){
+					pagefooter = "";
+				}
+				idx1 = params.indexOf("fontsize=",idx+11);
+				if(idx1 == -1){
+					pagemargin = params.substring(idx+11);
+				}else{
+					pagemargin = params.substring(idx+11,idx1-1);
+										var fontsize = params.substring(idx1+9);
+					adjustFontSize(fontsize);
+				}
+				if(pagemargin == "" || pagemargin == "undefined" || pagemargin == "null"){
+					pagemargin = "5";//默认页边距最小为5mm（与IE的默认值基本一致）
+				}
+			}
+		}
+	}
+	if(pagemargin != null){
+		pageSetup(pageheader,pagefooter,pagemargin);
+	}else{
+		var marginArr = getPageMarginFromReg();
+		//设置PAGE数组
+		initPageSize(marginArr[0],marginArr[1],marginArr[2],marginArr[3]);
+	}
+	//alert("pagesize:"+pagesize+",pageori:"+pageori);
+	setPage(pagesize,pageori);
+
+	switch(pagesize){
+		case "A4":
+			idx = 3;
+		break;
+		case "A3":
+			idx = 2;
+		break;
+		case "A5":
+			idx = 4;
+		break;
+		case "A2":
+			idx = 1;
+		break;
+		case "A1":
+			idx = 0;
+		break;
+		default:
+			idx = 3;
+	}
+	//alert("pagesize:"+pagesize+",pageori:"+pageori);
+	sel_pageSize.selectedIndex = idx;
+	ori[pageori].checked = true;
+}
+/**增加调整字号功能，
+ * @param fontsize 字号（pt），字符串
+ */
+function adjustFontSize(fontsize){
+	if(fontsize == null || isNaN(fontsize)){
+		return;
+	}
+	htcTbl.style.fontSize = fontsize+"pt";
+	try{/////////////////////////////////该处调用了toprinter.htm的字号下拉框！！！
+		fontSize.value = fontsize;
+	}catch(e){}
+}
+
+/** 当外部设置了打印参数时，执行
+ * @param pageheader 页眉：&b&b&d
+ * @param pagefooter 页脚：&b&p/&P&b
+ * @param pagemargin 页边距：用“|”线分开的4个值，分别代表上右下左四个边距（与CSS的margin等属性规则相同）。
+ *	如果只有2个值，则上下边取第一个值；左右边取第二个值
+ */
+function pageSetup(pageheader,pagefooter,pagemargin){
+	var hkey_pagesetup = "HKEY_CURRENT_USER\\Software\\Microsoft\\Internet Explorer\\PageSetup\\";
+	var k = 0.03937;
+	var margin = pagemargin.split("|");
+	var arrPageReg = new Array(
+		new Array("header",pageheader),//页眉设置
+		new Array("footer",pagefooter),//页脚设置
+		new Array("margin_top","0.16667"),
+		new Array("margin_right","0.16667"),
+		new Array("margin_bottom","0.16667"),//页边距，为最小
+		new Array("margin_left","0.16667")
+	);
+	switch(margin.length){
+		case 1:
+			var val = parseFloat(margin[0]);
+			val = k*val;
+			arrPageReg[2][1] = val;
+			arrPageReg[3][1] = val;
+			arrPageReg[4][1] = val;
+			arrPageReg[5][1] = val;
+			break;
+		case 2:
+			var val1 = k*parseFloat(margin[0]);
+			var val2 = k*parseFloat(margin[1]);
+			arrPageReg[2][1] = val1;
+			arrPageReg[3][1] = val2;
+			arrPageReg[4][1] = val1;
+			arrPageReg[5][1] = val2;
+			break;
+		case 3:
+			var val1 = k*parseFloat(margin[0]);
+			var val2 = k*parseFloat(margin[1]);
+			var val3 = k*parseFloat(margin[2]);
+			arrPageReg[2][1] = val1;
+			arrPageReg[3][1] = val2;
+			arrPageReg[4][1] = val3;
+			arrPageReg[5][1] = val2;
+			break;
+		case 4:
+			arrPageReg[2][1] = k*parseFloat(margin[0]);
+			arrPageReg[3][1] = k*parseFloat(margin[1]);
+			arrPageReg[4][1] = k*parseFloat(margin[2]);
+			arrPageReg[5][1] = k*parseFloat(margin[3]);
+			break;
+		default:
+	}
+	//设置PAGE数组
+	initPageSize(arrPageReg[2][1],arrPageReg[3][1],arrPageReg[4][1],arrPageReg[5][1]);
+
+	var regEdit = new RegEdit();
+	for(var i=0;i<arrPageReg.length;i++){
+		//alert("["+arrPageReg[i][1]+"]");
+		regEdit.regWrite(hkey_pagesetup+arrPageReg[i][0],arrPageReg[i][1]);
+	}
+}
+function getPageMarginFromReg(){
+	var hkey = "HKEY_CURRENT_USER\\Software\\Microsoft\\Internet Explorer\\PageSetup\\";
+	var reg = new RegEdit();
+	var margin = new Array();
+	margin[0] = reg.regRead(hkey+"margin_top");
+	margin[1] = reg.regRead(hkey+"margin_right");
+	margin[2] = reg.regRead(hkey+"margin_bottom");
+	margin[3] = reg.regRead(hkey+"margin_left");
+	for(var i=0;i<margin.length;i++){
+		if(margin[i] == null){
+			margin[i] = 0.16667;
+		}
+	}
+	return margin;
+}
+/**根据margin初始化PAGE数组
+ * @param margintop 上边距
+ * @param marginright 右边距
+ * @param marginbottom 下边距
+ * @param marginright 左边距
+ */
+function initPageSize(margintop,marginright,marginbottom,marginleft){
+	//alert(margintop+","+marginright+","+marginbottom+","+marginleft);
+	var k = 96;
+	var top = Math.ceil(k * parseFloat(margintop));
+	var right = Math.ceil(k * parseFloat(marginright));
+	var bottom = Math.ceil(k * parseFloat(marginbottom));
+	var left = Math.ceil(k * parseFloat(marginleft));
+	//alert(top+","+right+","+bottom+","+left);
+	var k = 1;
+	for(var i=1;i<PAGE_SIZE.length;i++){
+		k = i+1;
+		PAGE["A"+k][0] = PAGE_SIZE["A"+k][0] - left - right;
+		PAGE["A"+k][1] = PAGE_SIZE["A"+k][1] - left - right;//top - bottom;
+	}
+	//alert("PAGE-A4:"+PAGE["A4"][0]+","+PAGE["A4"][1]);
+}
+
+/** 评估输入的table，得到最适合的纸张
+ * @return 纸张信息的数组{"A3",0}
+ */
+function getSuitablePage(){
+		if(htcTbl.style.width == "" || (htcTbl.style.width+"").indexOf("%")){
+		//if(htcTbl.offsetWidth < (window.screen.width-25)){
+		if(htcTbl.offsetWidth < 775){
+			return new Array("A4","0");
+		}else if(htcTbl.offsetWidth < 1000){
+			return new Array("A3","0");
+		}
+	}else{
+		if(htcTbl.offsetWidth < PAGE["A4"][0]){
+			return new Array("A4","0");
+		}
+	}
+	if (htcTbl.offsetWidth < PAGE["A3"][0]){
+		return new Array("A3","0");
+	}else if(htcTbl.offsetWidth < PAGE["A3"][1]){
+		return new Array("A3","1");
+	}else if(htcTbl.offsetWidth < PAGE["A2"][1]){
+		return new Array("A2","1");
+	}else{
+		return new Array("A1","0");
+	}
+}
+
+/** 初始化TABLE后，根据其宽度，调整存在的标尺
+ */
+function adjustRuler(){
+	if(htcTbl.offsetWidth > 800){
+		var n = Math.ceil((htcTbl.offsetWidth - 800)/50);
+		htcRuler.style.width = 800+50*n;
+		var row = htcRuler.rows(0);
+		var cel = null;
+		for(var i=0;i<n;i++){
+			cel = row.insertCell();
+			cel.style.width = 50;
+			cel.innerText = 800+i*50;
+		}
+	}
+
+	/*
+	if(screen.width == 1024){
+		htcRuler.style.width = 1000;
+		var row = htcRuler.rows(0);
+		var cel = null;
+		for(var i=0;i<4;i++){
+			cel = row.insertCell();
+			cel.style.width = 50;
+			cel.innerText = 800+i*50;
+		}
+	}*/
+}
+function initTable(tbl){
+	htcTbl = tbl;
+	if(htcTbl.nodeName != "TABLE"){
+		alert("非法的输入数据格式：\n输入数据的第一个节点必须为<TABLE>");
+		return;
+	}
+	htcCols = htcTbl.children(0);//要求必需有<colgroup><col/></colgroup>
+	if(htcCols.nodeName != "COLGROUP"){
+		alert("非法的输入数据格式：\n<TABLE>的第一个节点必须为<COLGROUP>");
+		return;
+	}
+
+	htcHeader = htcTbl;//一般情况下只给表头加列宽调整，该组件可在任意行调整列宽
+	htcHeader.attachEvent("onmousedown",doOnMouseDown);
+	htcHeader.attachEvent("onmousemove",doOnMouseMove);
+	htcHeader.attachEvent("onmouseup",doOnMouseUp);
+	htcHeader.attachEvent("onmouseout",doOnMouseOut);
+}
+/** 设置纸张及打印方向，
+ * @param size 纸张：目前为：A3,A4,A5
+ * @param ori 打印方向：0/1,纵/横
+ */
+function setPage(size,ori){
+	var width = PAGE[size][ori];
+	//alert("pagewidth:"+width);
+	if(width == null){
+		return;
+	}
+	setWidth(width);
+}
+/** 设置TABLE宽度
+ * @param iWidth 宽度
+ */
+function setWidth(iWidth){
+	//加一个转换提示层
+	showState(true);
+	var iTbl = htcTbl.offsetWidth;
+	htcTbl.style.width = iWidth;
+	if(iWidth > iTbl){
+		showState(false);
+		return;
+	}
+	if(htcTbl.offsetWidth == iWidth){
+		showState(false);
+		return;
+	}
+	for (var i=0;i<htcCols.children.length;i++){
+		//alert(iWidth*htcCols.offsetWidth/iTbl);
+		htcCols.children(i).style.width = iWidth*htcCols.children(i).offsetWidth/iTbl;
+	}
+	showState(false);
+}
+
+/** 设置字体
+ * @param family 字体名称
+ * //@param style 风格 normal italic/oblique
+ * @param size 大小
+ * //@param color 颜色
+ */
+function setFont(family,size){
+	showState(true);
+	htcTbl.style.fontFamily = family;
+	//htcTbl.style.fontStyle = style;
+	htcTbl.style.fontSize = size+"pt";
+	//htcTbl.style.fontColor = color;
+	showState(false);
+}
+/**	数据量比较大时，调整过程可能会比较长。没办法，执行慢
+ *  加一个转换提示层
+ * @param bl 是否显示状态提示
+ */
+function showState(bl){
+	//var state = bl ? "block" : "none";
+	//htcState.style.display = state;
+	var state = bl ? "正在转换数据，请稍候..." : "数据转换完毕！";
+	window.status = state;
+}
+
+
+//=================调整列宽start======================
+// 警告：不要随意修改<BODY>内任何元素的属性！
+
+var isMouseDown = false;//判断鼠标是否按下
+var changedCol = 0//在第一行设置列宽时选择的是哪一列
+var moveQuantity = 0;//鼠标移动的数量
+var formerLineleft = 0;//竖线的左边距
+
+//===================================================
+
+
+function doOnMouseOut(){
+	htcTip.style.display = "none";
+}
+
+////////////////////////////
+
+//在相应的宽度范围内改变鼠标：move
+function doOnMouseMove() {
+//alert();
+	htcHeader.style.cursor = "default";
+	//鼠标按下时
+	if (isMouseDown == true){
+		htcHeader.style.cursor = "default";
+		htcErectLine.style.left = event.x+window.document.body.scrollLeft;
+	}
+	else {
+		var iCol = 0;
+		for (var i= 0;i < htcCols.childNodes.length; i++){
+			
+			var col = htcCols.childNodes(i);
+			iCol += parseInt(col.offsetLeft+col.offsetWidth);
+			var iWidth = parseInt(htcTbl.offsetLeft-window.document.body.scrollLeft) + iCol;
+
+			if (event.x >= iWidth-5 && event.x <= iWidth+5){
+				changedCol = i;
+				htcHeader.style.cursor = "move";
+				break;
+			}
+		}
+	}
+	if (isMouseDown == true || htcHeader.style.cursor == "move"){
+		htcTip.style.display = "block";
+		htcTip.style.left = event.x-80+window.document.body.scrollLeft;//+10
+		htcTip.style.top = event.y-70+window.document.body.scrollTop;//-20
+
+		//给出当前适合的纸张大小及打印方向的建议
+		var page = "";
+		if(htcTbl.offsetWidth < (PAGE["A5"][0]+6)){//+30允许一定的偏移调整
+			page += "A5 纵向";
+		}else if(htcTbl.offsetWidth < (PAGE["A4"][0]+6)){
+			page += "A5 横向<br/>A4 纵向";
+		}else if(htcTbl.offsetWidth < (PAGE["A3"][0]+6)){
+			page += "A4 横向<br/>A3 纵向";
+		}else if(htcTbl.offsetWidth < (PAGE["A2"][0]+6)){
+			page += "A3 横向<br/>A2 纵向";
+		}else if(htcTbl.offsetWidth < (PAGE["A2"][1]+6)){
+			page += "A2 横向<br/>A1 纵向";
+		}else{
+			page += "A1 横向<br/> 未知";
+		}
+		htcTip.innerHTML = event.x+window.document.body.scrollLeft+","+(event.y-htcTbl.offsetTop+window.document.body.scrollTop)+"<br>"+page;//减去顶端刻度的高度
+
+	}else{
+		htcTip.style.display = "none";
+	}
+}
+//鼠标按下时
+//isMouseDown:true
+function doOnMouseDown() {
+	if (htcHeader.style.cursor == "move"){
+		htcErectLine.style.display = "block";
+		htcHeader.setCapture();
+		htcErectLine.style.left = event.x+window.document.body.scrollLeft;
+		//alert(event.x+","+htcTbl.offsetLeft+","+window.document.body.scrollLeft);
+		formerLineleft = event.x+window.document.body.scrollLeft;
+		htcErectLine.style.top = parseInt(htcRuler.offsetTop);//htcTbl.style.top
+		htcErectLine.style.height = htcHeader.offsetHeight + 15;
+		isMouseDown = true;
+	}
+}
+//鼠标在移动状态的按下到弹起时
+//改变列宽
+function doOnMouseUp() {
+	try{
+		if (isMouseDown == true){
+			moveQuantity = parseInt(htcErectLine.style.left) - parseInt(formerLineleft)
+			var oCol = htcCols.childNodes(changedCol);
+			var iCol = oCol.offsetWidth;
+			//alert(oCol.offsetWidth+","+iCol);
+			//}
+			if (moveQuantity > 0){//向右增加
+			//alert(oCol.style.width+","+(iCol + moveQuantity));
+				oCol.style.width = iCol + moveQuantity;
+
+				htcTbl.style.width = htcTbl.offsetWidth + moveQuantity;
+
+				htcErectLine.style.display = "none";
+				htcHeader.releaseCapture();
+				htcHeader.style.cursor = "default";
+				isMouseDown = false;
+			}
+			else {
+				if ((iCol - Math.abs(moveQuantity)) > 2){
+					oCol.style.width = iCol - Math.abs(moveQuantity);
+
+					htcTbl.style.width = htcTbl.offsetWidth - Math.abs(moveQuantity);
+
+					htcErectLine.style.display = "none";
+					htcHeader.releaseCapture();
+					htcHeader.style.cursor = "default";
+					isMouseDown = false;
+					}
+					else {
+						oCol.style.width = 2;
+						//调整TABLE宽度
+						htcTbl.style.width = htcTbl.offsetWidth - oCol.offsetWidth + 2;
+
+						htcErectLine.style.display = "none";
+						htcHeader.releaseCapture();
+						htcHeader.style.cursor = "default";
+						isMouseDown = false;
+					}
+			}
+		}
+	}
+	catch (exception){
+		alert("exception:onMouseUp:\n"+exception.message);
+		htcErectLine.style.display = "none";
+		htcHeader.releaseCapture();
+		htcHeader.style.cursor = "default";
+	}
+}
+//=================调整列宽end========================
+//-->
+</SCRIPT>
+</PUBLIC:COMPONENT>
+<!-- 
+由于如果该组件自动加入以下HTML可能对原来的HTML结果造成影响，
+所以以下内容由应用该组件的页面手工加上
+<TABLE id="htcRuler" border=1 cellPadding=0 cellSpacing=0 frame=vsides style="BORDER-COLLAPSE: collapse;FONT-SIZE: 12px;top:0;left:0;height:10;width:800" bordercolor=red> 
+<TR>
+	<TD style="width:50px">px</TD>
+	<TD style="width:50px">50</TD>
+	<TD style="width:50px">100</TD>
+	<TD style="width:50px">150</TD>
+</TR>
+</TABLE><DIV id=htcErectLine style="display:none;position: absolute;width:1px;height:30;border:dotted 1 red;z-index:0"></DIV>
+<DIV id=htcTip style="display:none;font-size:12;color:red;position: absolute;left:0;top:0;width:30px;height:20;border:solid 1 blue;z-index:0">0,0</DIV>
+<DIV id="htcPanel" align=center>正在转换数据，请稍候...</DIV>
+-->

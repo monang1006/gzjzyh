@@ -1,0 +1,97 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gbk">
+<script type="text/javascript" src="dialog.js"></script>
+
+<script type="text/javascript">
+
+document.write ("<link href='../skin/" + config.Skin + "/dialog.css' type='text/css' rel='stylesheet'>");
+
+var sAction = URLParams["action"];
+var sCaption = lang["DlgPasteGecko"];
+
+if (sAction=="text"){
+	sCaption += "("+lang["DlgPasteGeckoText"]+")";
+}
+
+
+document.write ("<title>" + sCaption + "</title>");
+
+
+function ok(){
+	var s_Html = "";
+	if (sAction=="text"){
+		s_Html = HTMLEncode($("d_text").value);
+	}else{
+		s_Html = $("d_iframe").contentWindow.document.body.innerHTML;
+	}
+	EWIN.insertHTML(s_Html);
+	parent.Ok();
+}
+
+function HTMLEncode(s_Html){
+	if (s_Html==null){return "";}
+	s_Html = s_Html.replace(/&/gi, "&amp;");
+	s_Html = s_Html.replace(/\"/gi, "&quot;");
+	s_Html = s_Html.replace(/</gi, "&lt;");
+	s_Html = s_Html.replace(/>/gi, "&gt;");
+	s_Html = s_Html.replace(/ (?= )/gi,"&nbsp;");
+	s_Html = s_Html.replace(/\n/gi,"<br>");
+	return s_Html;
+}
+
+function InitDocument(){
+	lang.TranslatePage(document);
+	parent.InnerDialogLoaded(sCaption);
+	if (sAction=="text"){
+		$("d_text").focus();
+	}else{
+		var o_Win = $("d_iframe").contentWindow;
+		o_Win.document.designMode='on';
+		o_Win.focus();
+	}
+}
+
+</script>
+
+</head>
+<body onload="InitDocument()">
+<table border=0 cellpadding=0 cellspacing=5 id=tabDialogSize><tr><td>
+
+
+<table border=0 cellpadding=0 cellspacing=0 align=center>
+<tr>
+	<td>
+
+		<table border=0 cellpadding=0 cellspacing=3>
+		<script type="text/javascript">
+		if (sAction=="text"){
+			document.write("<tr><td>"+lang["DlgPasteGeckoMsg"]+"</td></tr>");
+			document.write("<tr><td><textarea id=d_text style='width:400px;height:240px;'></textarea></td></tr>");
+		}else{
+			document.write("<tr><td>"+lang["DlgPasteGeckoSecurity"]+"<br>"+lang["DlgPasteGeckoMsg"]+"</td></tr>");
+			document.write("<tr><td><iframe id=d_iframe style='width:400px;height:240px;'></iframe></td></tr>");
+		}
+		</script>
+
+		</table>
+
+</tr>
+
+<tr><td height=5></td></tr>
+
+<tr>
+	<td>
+	<table border=0 cellpadding=0 cellspacing=0 width="100%">
+	<tr>
+		<td noWrap align=right>&nbsp; <input type=submit class="dlgBtnCommon dlgBtn" value='' id="btn_ok" onclick="ok()" lang=DlgBtnOK>&nbsp;&nbsp;<input type=button class="dlgBtnCommon dlgBtn" value='' onclick="parent.Cancel()" lang=DlgBtnCancel>
+	</tr>
+	</table>
+	</td>
+</tr>
+</table>
+
+</td></tr></table>
+</body>
+</html>

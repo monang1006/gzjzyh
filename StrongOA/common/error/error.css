@@ -1,0 +1,11 @@
+body{ background:url(images/err0_bodybg.gif) repeat;background-color:f0f0f0; font-family:Microsoft YaHei;}
+p{padding:0; margin:0;white-space: nowrap;}
+.center{ margin:0 auto;}
+.erro_bg{ position:absolute;top:50%; left:50%; height:396px; width:982px; background:url(images/erro_bg.gif) no-repeat; margin:-198px -491px;}
+.erro_content{ width:557px; height:190px; padding:76px 66px 130px 357px;}
+.word1{ color:#676565; font-size:18px; font-family:Microsoft YaHei; line-height:2;}
+.word2{ color:#606060; font-size:28px; font-family:Microsoft YaHei; font-weight:bold; line-height:2;}
+.word2 span{ color:#e92a2a;}
+.erro_back{padding-top:28px;}
+.erro_back_bt{ height:48px; width:143px; border:none; background:url(images/erro_back.gif) no-repeat; cursor:pointer;}
+.erro_back_dl{ height:48px; width:143px; border:none; background:url(images/re_login.gif) no-repeat; cursor:pointer;}

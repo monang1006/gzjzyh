@@ -1,0 +1,27 @@
+*{ margin:0; padding:0;}
+body,td{ font-size:12px; color:#000000;}
+body{ background:url(../images/welcome/bg_01.jpg) center repeat-x;}
+img{ border:0;}
+a:link,a:visited,a:hover{ font-size:12px; color:#000000; text-decoration:none;}
+ul,li{ margin:0; padding:0;}
+.main_box{position:absolute;
+	      top:50%;
+	      left:50%;
+	      margin:-350px 0 0 -501px;
+	      width:1002px;
+	      height:700px;}
+.main_box_top{ height:187px; background:url(../images/welcome/bg_login_01.jpg) no-repeat;}
+.main_box_md{ height:271px; background:url(../images/welcome/bg_login_02.jpg) no-repeat; position:relative;}
+.main_box_bottom{ height:242px; background:url(../images/welcome/bg_login_03.jpg) no-repeat;}
+.main_box_md_vgn{ margin:0px 60px 0px 0px; height:27px; padding-top:2px;}
+.main_box_md_vgn_title{ margin-left:735px;}
+.main_box_md_vgn_title li{ float:left; list-style-type:none; margin-right:5px;}
+.vgn_on{ height:27px; width:97px; background:url(../images/welcome/bg_login_vgn_04.jpg) no-repeat; cursor:pointer;}
+.vgn_off{ height:27px; width:97px; background:url(../images/welcome/bg_login_vgn_06.jpg) no-repeat; cursor:pointer;}
+.vgn_on2{ height:27px; width:97px; background:url(../images/welcome/bg_vgn_on2.jpg) no-repeat; cursor:pointer;}
+.vgn_off2{ height:27px; width:97px; background:url(../images/welcome/bg_vgn_off2.jpg) no-repeat; cursor:pointer;}
+.main_box_md_content{ position:absolute; width:500px; right:85px; top:85px;}
+.main_box_md_content2{ position:absolute; width:500px; right:5px; top:55px;}
+.main_box_md_content_title{ height:35px; width:225px; background:url(../images/welcome/bg_content.gif) no-repeat; list-style-type:none; float:left; margin:10px; line-height:35px; padding-left:15px;}
+.main_box_md_content_title span,.main_box_md_content_title2 span{FILTER: dropshadow(color=#ffffff, offx=1, offy=1, positive=1); float:left;}
+.main_box_md_content_title2{ height:36px; width:288px; background:url(../images/welcome/bg_content2.gif) no-repeat; list-style-type:none; float:left; margin:5px; line-height:36px; padding-left:15px;}

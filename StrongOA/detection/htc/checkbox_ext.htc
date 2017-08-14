@@ -1,0 +1,138 @@
+<!--
+该组件用于继承<CHECKBOX  CLASS="myHTC"/>
+-->
+<PUBLIC:COMPONENT tagName="checkbox"> 
+<public:defaults viewLinkContent tabStop="true" viewMasterTab=false />
+<public:PROPERTY NAME="fill" put="setFill" get="getFill" />
+<public:PROPERTY NAME="tooltip" put='setTooltip' get='getTooltip' />
+<public:PROPERTY NAME="lable" put="setText" get="getText" />
+<public:property name="disable" put="setDisable" get="getDisable" />
+<PROPERTY NAME="title" />
+
+<public:METHOD NAME="getValue" />
+<public:METHOD NAME="setValue" />
+
+<public:ATTACH   EVENT="oncontentready"  HANDLER="init" />
+<public:ATTACH   EVENT="onkeydown"  HANDLER="onKeyDown" />
+<public:ATTACH   EVENT="onfocus" HANDLER="onFocus" />
+<PUBLIC:EVENT NAME="onchange" ID="eChanged" />
+
+</PUBLIC:COMPONENT>
+<SCRIPT LANGUAGE="JavaScript">
+<!--
+var propId = null;
+function init()
+{
+	htcCheckbox.attachEvent("onchange",onChange);
+	htcContent.attachEvent("onclick",onClick);
+	htcCheckbox.style.cursor = 'hand';
+	htcContent.style.cursor = 'hand';
+	if(fill != null && fill.toLowerCase() == "yes")
+	{
+		htcCheckbox.style.backgroundColor="#B5E3DF";
+	}
+}
+function setTooltip(tip)
+{
+	htcCheckbox.title = tip;
+	htcContent.title = tip;
+}
+
+function getTooltip()
+{
+	return htcCheckbox.title;
+}
+function setFill(flag)
+{
+	propId = flag;
+	if(flag == "yes")
+	{
+		htcCheckbox.style.background = "#B5E3DF";
+	}else {
+		htcCheckbox.style.background = "#FFFFFF";
+	}
+}
+function getFill()
+{
+	return propId;
+}
+function onChange()
+{
+	eChanged.fire(createEventObject());
+}
+function onClick()
+{
+	if(getDisable())
+		return;
+	if(htcCheckbox.checked)
+		htcCheckbox.checked=false;
+	else
+		htcCheckbox.checked=true;
+}
+function onKeyDown()
+{
+	if(event.keyCode == 13)
+		event.keyCode = 9;
+}
+function onFocus()
+{
+	if(!getDisable())
+		htcCheckbox.focus();
+}
+function getText()
+{
+	return htcContent.innerText;
+}
+function setText(val)
+{
+	htcContent.innerText = val;
+}
+function getValue()
+{
+	if(htcCheckbox.checked)
+		return "Y";
+	else
+		return "N";
+}
+function setValue(bVal)
+{
+	if(bVal.toString().toUpperCase() == "Y")
+		htcCheckbox.checked = true;
+	else
+		htcCheckbox.checked = false;
+}
+
+function setDisable(bState)
+{
+	if(typeof(disable) == "undefined")
+		bState = false;
+	htcCheckbox.disabled = bState;
+}
+function getDisable()
+{
+	return htcCheckbox.disabled;
+}
+function disable(bState)
+{
+	if(typeof(bState) == "undefined")
+		bState = true;
+	setDisable(bState);
+}
+//-->
+</SCRIPT>
+<body>
+	<input type="checkbox" 
+	id="htcCheckbox">
+	<b id="htcContent" style="
+	font-size:12px;color:#015ebc;
+	margin-right:0;margin-top:0;margin-left:0;margin-bottom:0;
+	BORDER-TOP-WIDTH: 1px;
+    BORDER-LEFT-WIDTH: 1px;
+    BORDER-LEFT-COLOR: #cecece;
+    BORDER-BOTTOM-WIDTH: 1px;
+    BORDER-BOTTOM-COLOR: #cecece;
+    BORDER-TOP-COLOR: #cecece;
+    BACKGROUND-COLOR: #ffffff;
+    BORDER-RIGHT-WIDTH: 1px;
+    BORDER-RIGHT-COLOR: #cecece"/>
+</body>

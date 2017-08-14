@@ -1,0 +1,320 @@
+<ldap-query>
+
+  <!-- ########################### -->
+  <!-- 组织机构管理 -->
+
+  <query name="OrgManager.getNextOrgCode">
+    <![CDATA[
+     select orgSyscode from com.strongit.uums.bo.TUumsBaseOrg where objectClass=orgInfo and orgSyscode like ? order by orgSyscode
+    ]]>
+  </query>
+  
+  <query name="OrgManager.getNextSequenceCode">
+    <![CDATA[
+     select orgSequence from com.strongit.uums.bo.TUumsBaseOrg where objectClass=orgInfo order by orgSequence
+    ]]>
+  </query>
+  
+  <query name="OrgManager.getOrgs">
+    <![CDATA[
+     select * from com.strongit.uums.bo.TUumsBaseOrg where objectClass=orgInfo order by orgSequence,orgSyscode
+    ]]>
+  </query>
+  
+  <query name="OrgManager.getOrgs_1">
+    <![CDATA[
+     select * from com.strongit.uums.bo.TUumsBaseOrg where objectClass=orgInfo and supOrgCode=? order by orgSequence, orgSyscode
+    ]]>
+  </query>
+  
+  <query name="OrgManager.getOrgs_1_1">
+    <![CDATA[
+	 select * from com.strongit.uums.bo.TUumsBaseOrg where objectClass=orgInfo and supOrgCode=? order by orgSequence, orgSyscode
+    ]]>
+  </query>
+  
+  <query name="OrgManager.getOrgs.byOrgIsdel">
+    <![CDATA[
+     select * from com.strongit.uums.bo.TUumsBaseOrg where objectClass=orgInfo and orgIsdel=? order by orgSequence,orgSyscode
+    ]]>
+  </query>
+  
+  <query name="OrgManager.getOrgs.byOrgIsdel_1">
+    <![CDATA[
+     select * from com.strongit.uums.bo.TUumsBaseOrg where objectClass=orgInfo and orgIsdel=? and supOrgCode=? order by orgSequence,orgSyscode
+    ]]>
+  </query>
+
+  <query name="OrgManager.getOrgs.byOrgIsdel_1_1">
+    <![CDATA[
+     select * from com.strongit.uums.bo.TUumsBaseOrg where objectClass=orgInfo and orgIsdel=? and supOrgCode=? order by orgSequence,orgSyscode
+    ]]>
+  </query>
+  
+  <query name="OrgManager.getOrgIds.byOrgIsdel">
+    <![CDATA[
+     select orgId from com.strongit.uums.bo.TUumsBaseOrg where objectClass=orgInfo and orgIsdel=?
+    ]]>
+  </query>
+  
+  <query name="OrgManager.getOrgIds.byOrgIsdel_1">
+    <![CDATA[
+     select orgId from com.strongit.uums.bo.TUumsBaseOrg where objectClass=orgInfo and orgIsdel=? and and supOrgCode = ?
+    ]]>
+  </query>
+  
+  <query name="OrgManager.getOrgIds.byOrgIsdel_1_1">
+    <![CDATA[
+     select orgId from com.strongit.uums.bo.TUumsBaseOrg where objectClass=orgInfo and orgIsdel=? and and supOrgCode = ?
+    ]]>
+  </query>
+  
+  <query name="OrgManager.getOrg.byOrgId">
+    <![CDATA[
+     select * from com.strongit.uums.bo.TUumsBaseOrg where objectClass=orgInfo and orgId=? order by orgSequence,orgSyscode
+    ]]>
+  </query>
+  
+  <query name="OrgManager.deleteUserPostInfo.getUserByOrgId">
+    <![CDATA[
+     select userId from com.strongit.uums.bo.TUumsBaseUser where objectClass=userInfo and orgId=? order by userId
+    ]]>
+  </query>
+  
+  <query name="OrgManager.deleteOrg.getUserByOrg">
+    <![CDATA[
+     select * from com.strongit.uums.bo.TUumsBaseUser where objectClass=userInfo and orgId=? order by userSequence
+    ]]>
+  </query>
+  
+  <query name="OrgManager.moveOrgPositionInTree.up">
+    <![CDATA[
+     select orgSyscode from com.strongit.uums.bo.TUumsBaseOrg where objectClass=orgInfo and baseOrg.orgIsdel like ? and orgSequence<=? and orgSyscode like ? order by orgSequence,orgSyscode
+    ]]>
+  </query>
+  
+  <query name="OrgManager.moveOrgPositionInTree.up_1">
+    <![CDATA[
+     select orgSyscode from com.strongit.uums.bo.TUumsBaseOrg where objectClass=orgInfo and baseOrg.orgIsdel like ? and orgSequence<=? and orgSyscode like ? and supOrgCode=? order by orgSequence,orgSyscode
+    ]]>
+  </query>
+  
+  <query name="OrgManager.moveOrgPositionInTree.up_1_1">
+    <![CDATA[
+     select orgSyscode from com.strongit.uums.bo.TUumsBaseOrg where objectClass=orgInfo and baseOrg.orgIsdel like ? and orgSequence<=? and orgSyscode like ? and supOrgCode=? order by orgSequence,orgSyscode
+    ]]>
+  </query>
+  
+  <query name="OrgManager.moveOrgPositionInTree.down">
+    <![CDATA[
+     select orgSyscode from com.strongit.uums.bo.TUumsBaseOrg where objectClass = orgInfo and baseOrg.orgIsdel like ? and orgSequence>=? and orgSyscode like ? order by orgSequence,orgSyscode
+    ]]>
+  </query>
+  
+  <query name="OrgManager.moveOrgPositionInTree.down_1">
+    <![CDATA[
+     select orgSyscode from com.strongit.uums.bo.TUumsBaseOrg where objectClass = orgInfo and baseOrg.orgIsdel like ? and orgSequence>=? and orgSyscode like ? and supOrgCode=? order by orgSequence,orgSyscode
+    ]]>
+  </query>
+  
+  <query name="OrgManager.moveOrgPositionInTree.down_1_1">
+    <![CDATA[
+     select orgSyscode from com.strongit.uums.bo.TUumsBaseOrg where objectClass = orgInfo and baseOrg.orgIsdel like ? and orgSequence>=? and orgSyscode like ? and supOrgCode=? order by orgSequence,orgSyscode
+    ]]>
+  </query>
+  
+  <query name="OrgManager.getChildOrgsByOrgSyscode">
+    <![CDATA[
+     select * from com.strongit.uums.bo.TUumsBaseOrg where objectClass = orgInfo and orgSyscode like ? and orgIsdel like ? order by orgSequence, orgSyscode
+    ]]>
+  </query>
+  
+  <query name="OrgManager.getChildOrgsByOrgSyscode_1">
+    <![CDATA[
+     select * from com.strongit.uums.bo.TUumsBaseOrg where objectClass = orgInfo and orgSyscode like ? and orgIsdel like ? and supOrgCode=? order by orgSequence, orgSyscode
+    ]]>
+  </query>
+  
+  <query name="OrgManager.getChildOrgsByOrgSyscode_1_1">
+    <![CDATA[
+     select * from com.strongit.uums.bo.TUumsBaseOrg where objectClass = orgInfo and orgSyscode like ? and orgIsdel like ? and supOrgCode=? order by orgSequence, orgSyscode
+    ]]>
+  </query>
+  
+  <query name="OrgManager.getSelfAndChildOrgsByOrgSyscodeAndType">
+    <![CDATA[
+     select * from com.strongit.uums.bo.TUumsBaseOrg where objectClass = orgInfo and orgSyscode like ? and isOrg like ? and orgIsdel like ? order by orgSequence, orgSyscode
+    ]]>
+  </query>
+  
+  <query name="OrgManager.getSelfAndChildOrgsByOrgSyscodeAndType_1">
+    <![CDATA[
+     select * from com.strongit.uums.bo.TUumsBaseOrg where objectClass = orgInfo and orgSyscode like ? and isOrg like ? and orgIsdel like ? and supOrgCode=? order by orgSequence, orgSyscode
+    ]]>
+  </query>
+  
+  <query name="OrgManager.getSelfAndChildOrgsByOrgSyscodeAndType_1_1">
+    <![CDATA[
+     select * from com.strongit.uums.bo.TUumsBaseOrg where objectClass = orgInfo and orgSyscode like ? and isOrg like ? and orgIsdel like ? and supOrgCode=? order by orgSequence, orgSyscode
+    ]]>
+  </query>
+  
+  <query name="OrgManager.getOrgByOrgSyscode">
+    <![CDATA[
+     select * from com.strongit.uums.bo.TUumsBaseOrg where objectClass = orgInfo and orgSyscode like ? and orgIsdel like ? order by orgSequence, orgSyscode
+    ]]>
+  </query>
+  
+  <query name="OrgManager.getOrgByOrgSyscode_1">
+    <![CDATA[
+     select * from com.strongit.uums.bo.TUumsBaseOrg where objectClass = orgInfo and orgSyscode like ? and orgIsdel like ? and supOrgCode=? order by orgSequence, orgSyscode
+    ]]>
+  </query>
+  
+  <query name="OrgManager.getOrgByOrgSyscode_1_1">
+    <![CDATA[
+     select * from com.strongit.uums.bo.TUumsBaseOrg where objectClass = orgInfo and orgSyscode like ? and orgIsdel like ? and supOrgCode=? order by orgSequence, orgSyscode
+    ]]>
+  </query>
+  
+  <query name="OrgManager.checkParentIsExist">
+    <![CDATA[
+     select * from com.strongit.uums.bo.TUumsBaseOrg where objectClass = orgInfo and orgSyscode like ? and not orgId = ?
+    ]]>
+  </query>
+  
+  <query name="OrgManager.getOrgByName">
+    <![CDATA[
+     select * from com.strongit.uums.bo.TUumsBaseOrg where objectClass = orgInfo and orgName like ? and orgIsdel=? order by orgSequence, orgSyscode
+    ]]>
+  </query>
+  
+  <query name="OrgManager.userSearch.getOrgByName">
+    <![CDATA[
+     select * from com.strongit.uums.bo.TUumsBaseOrg where objectClass = orgInfo and orgName like ? and orgIsdel=0 order by orgSequence, orgSyscode
+    ]]>
+  </query>
+  
+  <query name="OrgManager.userSearch.getOrgByName_1">
+    <![CDATA[
+     select * from com.strongit.uums.bo.TUumsBaseOrg where objectClass = orgInfo and orgName like ? and orgIsdel=0 and supOrgCode=? order by orgSequence, orgSyscode
+    ]]>
+  </query>
+  
+  <query name="OrgManager.userSearch.getOrgByName_1_1">
+    <![CDATA[
+     select * from com.strongit.uums.bo.TUumsBaseOrg where objectClass = orgInfo and orgName like ? and orgIsdel=0 and supOrgCode=? order by orgSequence, orgSyscode
+    ]]>
+  </query>
+  
+  <query name="OrgManager.getOrgByRest1">
+    <![CDATA[
+     select * from com.strongit.uums.bo.TUumsBaseOrg where objectClass = orgInfo and orgRest1 like ? and orgIsdel like ? order by orgSequence, orgSyscode
+    ]]>
+  </query>
+
+  
+  <!-- ########################### -->
+  <!-- 人员管理 -->
+  <query name="UserManager.getUserByLoginName">
+    <![CDATA[
+     select * from com.strongit.uums.bo.TUumsBaseUser where objectClass = userInfo and userLoginname = ? order by userSequence, userSyscode
+    ]]>
+  </query>
+  
+  <query name="UserManager.getUserByUserId">
+    <![CDATA[
+     select * from com.strongit.uums.bo.TUumsBaseUser where objectClass = userInfo and userId = ? order by userSequence, userSyscode
+    ]]>
+  </query>
+  
+  <query name="UserManager.getNextUserCode">
+    <![CDATA[
+     select userSyscode from com.strongit.uums.bo.TUumsBaseUser where objectClass = userInfo and userSyscode like ? order by userSyscode
+    ]]>
+  </query>
+  
+  <query name="UserManager.getUserBySyscode">
+    <![CDATA[
+     select * from com.strongit.uums.bo.TUumsBaseUser where objectClass = userInfo and userSyscode like ? order by userSequence, userSyscode
+    ]]>
+  </query>
+  
+  <query name="UserManager.getUsers">
+    <![CDATA[
+     select * from com.strongit.uums.bo.TUumsBaseUser where objectClass = userInfo and orgId in ?
+    ]]>
+  </query>
+  
+  <query name="UserManager.getUsers.isActive">
+    <![CDATA[
+     select * from com.strongit.uums.bo.TUumsBaseUser where objectClass = userInfo and orgId in ? and userIsactive = ?
+    ]]>
+  </query>
+  
+  <query name="UserManager.getUsers.isDel">
+    <![CDATA[
+     select * from com.strongit.uums.bo.TUumsBaseUser where objectClass = userInfo and orgId in ? and userIsdel = ?
+    ]]>
+  </query>
+  
+  <query name="UserManager.getUsers.isActiveAndisDel">
+    <![CDATA[
+     select * from com.strongit.uums.bo.TUumsBaseUser where objectClass = userInfo and orgId in ? and userIsactive = ? and userIsdel = ?
+    ]]>
+  </query>
+  
+  <query name="UserManager.getUserIds.isActiveAndisDel">
+    <![CDATA[
+     select userId from com.strongit.uums.bo.TUumsBaseUser where objectClass = userInfo and orgId in ? and userIsactive = ? and userIsdel = ?
+    ]]>
+  </query>
+  
+  <query name="UserManager.getqueryOrgUsers">
+    <![CDATA[
+     select * from com.strongit.uums.bo.TUumsBaseUser where objectClass = userInfo and orgId like ? and userName like ? and userLoginname like ? and userIsdel like ? and userIsactive like ? order by userSequence, userSyscode
+    ]]>
+  </query>
+  
+  <query name="UserManager.getAllqueryusers">
+    <![CDATA[
+     select * from com.strongit.uums.bo.TUumsBaseUser where objectClass = userInfo and orgId in ? and userName like ? and userLoginname like ? and userIsdel like ? and userIsactive like ? order by userSequence, userSyscode
+    ]]>
+  </query>
+  
+  <query name="UserManager.getUserByInUserId">
+    <![CDATA[
+     select * from com.strongit.uums.bo.TUumsBaseUser where objectClass = userInfo and userId in ? and userIsactive like ? and userIsdel like ? order by userSequence, userSyscode
+    ]]>
+  </query>
+  
+  <query name="UserManager.getUserByInUserIdAndOrgId">
+    <![CDATA[
+     select * from com.strongit.uums.bo.TUumsBaseUser where objectClass = userInfo and userId in ? and userIsactive=? and userIsdel=? and orgId=? order by userSequence
+    ]]>
+  </query>
+  
+  <query name="UserManager.getNextSequenceCode">
+    <![CDATA[
+     select userSequence from com.strongit.uums.bo.TUumsBaseUser where objectClass = userInfo order by userSequence
+    ]]>
+  </query>
+  
+  <query name="UserManager.checkUserName">
+    <![CDATA[
+     select * from com.strongit.uums.bo.TUumsBaseUser where objectClass = userInfo and userLoginname like ? order by userSequence, userSyscode
+    ]]>
+  </query>
+  
+  <query name="UserManager.getUserInfoByUsbkey">
+    <![CDATA[
+     select * from com.strongit.uums.bo.TUumsBaseUser where objectClass = userInfo and userUsbkey like ? order by userSequence, userSyscode
+    ]]>
+  </query>
+  
+  <query name="UserManager.getUserInfoByOrgId">
+    <![CDATA[
+     select * from com.strongit.uums.bo.TUumsBaseUser where objectClass=userInfo and orgId=? and userIsactive like ? and userIsdel like ? order by userSequence, userSyscode
+    ]]>
+  </query>
+</ldap-query>

@@ -1,0 +1,75 @@
+<!-- 
+	History: The last revised time is at 2004-10-28
+-->
+<PUBLIC:COMPONENT tagName=msg> 
+<PUBLIC:PROPERTY NAME=msgStr GET=getMsgStr />
+<PUBLIC:PROPERTY NAME=socketPort PUT=setSocketPort GET=getSocketPort />
+<PUBLIC:PROPERTY NAME=socketState GET=getsocketState />
+
+<PUBLIC:METHOD NAME="getMsgStr" />
+<PUBLIC:METHOD NAME="StartListen" />
+<PUBLIC:METHOD NAME="StopListen" />
+
+<PUBLIC:EVENT NAME="msgArrive" ID="eMsgArrive" />
+
+</PUBLIC:COMPONENT>
+
+<SCRIPT LANGUAGE="javascript">
+var bFocus = false;
+/********************************Properties*******************************/
+function setSocketPort(newPort)
+{
+	htcMsg.socketPortNum=newPort;
+}
+function getSocketPort()
+{
+	return htcMsg.socketPortNum;
+}
+function getsocketState()
+{
+	return htcMsg.State;
+}
+
+/********************************method*******************************/
+function getMsgStr()
+{
+	return htcMsg.msgStr;
+}
+function StartListen()
+{
+	htcMsg.StartListen();
+}
+function StopListen()
+{
+	htcMsg.StopListen
+}
+
+/********************************event process function*******************************/
+function fnMsgArrive(outMsgStr)
+{
+	var oEvent = createEventObject();
+	oEvent.MsgStr = outMsgStr;
+	eMsgArrive.fire(oEvent);
+}
+
+</SCRIPT>
+<HTML xmlns:ctais >
+<META http-equiv="Content-Type" content="text/html; charset=gb2312">
+<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+
+<SCRIPT LANGUAGE="javascript" FOR="htcMsg" EVENT="onDataArrival(outMsgStr)">
+<!--
+	//alert("outMsgStr: " + outMsgStr);
+	fnMsgArrive(outMsgStr);
+-->
+</SCRIPT>
+<BODY>
+<OBJECT ID="htcMsg" CLASSID="CLSID:F5074040-B321-4990-B02B-7FF780AF34C7" 
+	CODEBASE="CTAIS_HTC.CAB#version=1,0,0,001" style='width:100;height:50'>
+	<div style="color:red">CTAIS组件xMessage载入失败，请先
+		<a href="/ctais/work/public/htm/install.htm#download" target="_blank">安装</a>
+		并检查浏览器的安全设置选项
+	</div>
+</OBJECT>
+</BODY>
+</HTML>

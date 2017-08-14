@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<eform>
+  <fontsizerate value="0.75">字体比率</fontsizerate>  
+  <!-- 字体映射 -->
+  <fonts>
+    <font name="FangSong" fileName="simfang.ttf">仿宋</font>  
+	<font name="FangSong_GB2312" fileName="simfang.ttf">仿宋_GB2312</font>  
+	<font name="KaiTi" fileName="simkai.ttf">楷体</font>  
+	<font name="KaiTi_GB2312" fileName="simkai.ttf">楷体_GB2312</font>  
+	<font name="SimHei" fileName="simhei.ttf">黑体	</font>  		
+	<font name="LiSu" fileName="SIMLI.TTF">隶书</font>  
+	<font name="YouYuan" fileName="SIMYOU.TTF">幼圆</font>  			
+	<font name="FZShuTi" fileName="FZSTK.TTF">方正舒体</font>  
+	<font name="FZYaoti" fileName="FZYTK.TTF">方正姚体</font>  
+	<font name="STXihei" fileName="STXIHEI.TTF">华文细黑</font>  			
+	<font name="STZhongsong" fileName="STZHONGS.TTF">华文中宋</font>  
+	<font name="STFangsong" fileName="STFANGSO.TTF">华文仿宋</font>  
+	<font name="STCaiyun" fileName="STCAIYUN.TTF">华文彩云</font>  			
+	<font name="STXinwei" fileName="STXINWEI.TTF">华文新魏</font>  
+	<!--    没有对应的类型
+			//<font name="SimSun,NSimSun">宋体</font>  
+			//<font name="NSimSun">新宋体</font>
+			//<font name="MingLiu">细明体</font>") 
+			//<font name="Microsoft JhengHei">微软正黑体</font> 
+			//<font name="Microsoft YaHei">微软雅黑</font>
+			//<font name="STKaiti">华文楷体</font> 
+			//<font name="STSong">华文宋体</font> 
+			//<font name="STHupo">华文琥珀</font>
+			//<font name="STLiti">华文隶书</font>	
+			//宋体&新宋体    (这种字体的输出不了.有问题)
+	 -->
+  </fonts>
+</eform>

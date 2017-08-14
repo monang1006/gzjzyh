@@ -1,0 +1,72 @@
+@charset "utf-8";
+.kkmenu{border: 1px solid #d2d2d2;width:100%-2px; height:24px; line-height:24px; background: #dfeffc url(../image/datagrid/bg_main_up_list.jpg) repeat-x;outline: none;}
+
+
+#morebtn A{height:24px; line-height:24px; width:12px; border:0; text-align:center; font-size:12px; float:left; cursor:hand;}
+#morebtn A:hover{height:24px; line-height:24px; width:12px; background:url(../image/button_1.jpg) no-repeat;background-position:center;}
+
+#side1_2 ul li A{height:24px; line-height:24px; width:65px; border:0; text-align:center; font-size:12px; float:left; cursor:hand;}
+#side1_2 ul li A:hover{height:24px; line-height:24px; width:65px; background:url(../image/button_4.jpg) no-repeat;background-position:center;}
+
+
+
+#mask {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%!important;
+	height: 1540px;
+	background: #000;
+	filter: ALPHA(opacity =30);
+	z-index: 2000;
+	visibility: hidden
+}
+
+#mask_top {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 76px;
+	background: #000;
+	filter: ALPHA(opacity =30);
+	z-index: 2000;
+	visibility: hidden
+}
+
+             
+#mask_content {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: #000;
+	filter: ALPHA(opacity =30);
+	z-index: 2000;
+	visibility: hidden
+}
+
+.imgspan {position:relative; left:3px; top:-3px; }
+
+#menu_top li button img{
+    margin:0 3px -2px 0 !important;
+    padding:0;
+    border:none;
+}
+
+#moduleTree{ margin:8px 0 0 8px;}
+
+/*超连接*/
+A.linkstyle:link    {text-decoration:underline; color:blue;}
+A.linkstyle:visited {text-decoration:underline; color:blue;}
+A.linkstyle:active  {text-decoration:underline; color:#CC0000;}
+A.linkstyle:hover   {text-decoration:underline; color:#CC0000;}
+
+
+.information_list .labelTd_1{ background-color:#ececec;width:52px; height:26px; text-align:right;}
+.information_list_choose_button4_1{ height:20px; line-height:20px; width:30px; border:0; background:url(../image/button_2_1.jpg) no-repeat; text-align:center; font-size:12px; cursor:pointer;}
+.information_list_choose_button4_1_onfocus{ height:20px; line-height:20px; width:30px; border:0; background:url(../image/button_2_1_onfocus.jpg) no-repeat; text-align:center; font-size:12px; cursor:pointer;}
+.information_out_input_1{ height:18px; line-height:18px; padding-left:10px; font-size:12px; width:80px; border:1px solid #b6b6b6; margin-right:8px; margin-top:3px; color:#134891;}
+.information_out_input_2{ height:18px; line-height:18px; padding-left:10px; font-size:12px; width:120px; border:1px solid #b6b6b6; margin-right:8px; margin-top:3px; color:#134891;}

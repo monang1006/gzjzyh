@@ -1,0 +1,78 @@
+<%@ page contentType="text/html; charset=utf-8"%>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
+<title>信息提示</title>
+<style type="text/css">
+.scroll{
+	 scrollbar-face-color: #eeeeee; 
+	 scrollbar-shadow-color: #9F9F9F; 
+	 scrollbar-highlight-color: #eeeeee; 
+	 scrollbar-3dlight-color: #9F9F9F; 
+	 scrollbar-darkshadow-color: #FFFFFF; 
+	 scrollbar-track-color: #F8F8F8;
+	 scrollbar-arrow-color: #000000;  
+
+}
+</style>
+<SCRIPT LANGUAGE="JavaScript">
+
+function window.onload(){
+	var txt = window.dialogArguments;
+	if (txt != null){
+
+			ALERT.innerText = txt;
+	}
+	var obj = document.body.children(document.body.children.length-1);
+	var height = obj.offsetTop+obj.offsetHeight + 57;
+	window.dialogTop = (window.screen.height - height)/2;
+	window.dialogHeight = height+"px";
+	
+	if(window.dialogHeight == window.screen.height+"px"){
+		ALERT.style.height = window.screen.height-130;
+		ALERT.style.overflow = "auto";
+	}
+}
+function btn_ok_onclick(){
+	window.close();
+}
+//与点击右上方关闭一样
+function btn_cancel_onclick(){
+	window.close();
+}
+
+</SCRIPT>
+<!--<BGSOUND id=sudAlert src="<%=path%>/common/sound/alert.wav"/>-->
+</head>
+
+<body leftmargin="2" topmargin="2" bgcolor=#F8F8F8>
+<img id="FLAG_TITLE" src="resource/images/tab/title-info.gif" width="64" height="13"> 
+<table width="100%" height="10" border="0" cellpadding="0" cellspacing="0">
+  <tr> 
+    <td style="width:65" bgcolor="#EBEBEB"><img src="resource/images/tab/spacer.gif" width="1" height="1"></td>
+    <td width="2"><img src="resource/images/tab/spacer.gif" width="1" height="1"></td>
+    <td bgcolor="#F74809"><img src="resource/images/tab/spacer.gif" width="1" height="1"></td>
+    <td width="2"><img src="resource/images/tab/spacer.gif" width="1" height="1"></td>
+    <td bgcolor="#0B61B4"><img src="resource/images/tab/spacer.gif" width="1" height="1"></td>
+  </tr>
+</table>
+<br>
+<table style="width:100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td style="width:65" align="center" valign="top" style="padding-bottom:10pt"><img id="FLAG_ICON" src="resource/images/tab/left-info.gif" ></td>
+    <td style="width:1" bgcolor="#9D9D9D"><img src="resource/images/tab/spacer.gif" width="1" height="1"></td>
+    <td valign="top" style="padding-left:10pt;font-size:14;height:100%;">
+	<TEXTAREA style="height:100%;background-color:#F8F8F8;width:100%;border:0;word-break:break-all;overflow:visible" readonly id="ALERT" class="scroll"></TEXTAREA>
+	</td>
+  </tr>
+</table>
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td align="right" style="padding-right:15pt"><input type="image" onClick="btn_ok_onclick()" src="resource/images/tab/queding.gif" width="49" height="21"> 
+	
+    </td>
+  </tr>
+</table>
+</body>
+</html>

@@ -1,0 +1,317 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gbk">
+<script type="text/javascript" src="dialog.js"></script>
+
+<script type="text/javascript">
+
+document.write ("<link href='../skin/" + config.Skin + "/dialog.css' type='text/css' rel='stylesheet'>");
+
+var sAction = URLParams["action"] ;
+var s_SubTitle = "";
+if (sAction=="paste"){
+	s_SubTitle = "("+lang["DlgWordPaste"]+")";
+}
+
+var sCaption = lang["DlgExcel"] + s_SubTitle;
+document.write ("<title>" + sCaption + "</title>");
+
+
+
+
+function ok(){
+	if (!CheckActiveXInstall(true)){
+		return;
+	}
+
+	var s_File = "";
+	var n_Index=0;
+	if (sAction!="paste"){
+		if ($("d_sheet").length<=0){
+			alert(lang["DlgExcelInvalidFile"]);
+			return;
+		}
+
+		s_File = $("d_file").value;
+		n_Index = parseInt($("d_sheet").options[$("d_sheet").selectedIndex].value);
+	}
+
+	var s_ImgType="";
+	if ($("d_imgjpg").checked){
+		s_ImgType="jpg";
+	}else if ($("d_imggif").checked){
+		s_ImgType="gif";
+	}else if ($("d_imgpng").checked){
+		s_ImgType="png";
+	}
+
+	var s_Opt = "";
+	s_Opt+="mode:"+($("d_modehtml").checked ? "html" : "img") + ";";
+	s_Opt+="imgtype:"+s_ImgType+";";
+	s_Opt+="optimizemode:"+($("d_opt2").checked ? "2" : "1") + ";";
+	s_Opt+="opt1vml:"+($("d_opt1vml").checked ? "1" : "0") + ";";
+	s_Opt+="opt1space:"+($("d_opt1space").checked ? "1" : "0") + ";";
+	s_Opt+="opt1table:"+($("d_opt1table").checked ? "1" : "0") + ";";
+	s_Opt+="opt1overflow:"+($("d_opt1overflow").checked ? "1" : "0") + ";";
+	s_Opt+="opt2image:"+($("d_opt2image").checked ? "1" : "0") + ";";
+	s_Opt+="opt2space:"+($("d_opt2space").checked ? "1" : "0") + ";";
+	s_Opt+="opt2table:"+($("d_opt2table").checked ? "1" : "0") + ";";
+
+	$("divProcessing").style.display="";
+
+	if (sAction!="paste"){
+		eWebEditorActiveX.ImportExcelSheet(s_File, n_Index, s_Opt);
+	}else{
+		eWebEditorActiveX.PasteExcel(s_Opt);
+	}
+	
+	window.setTimeout("CheckActiveXStatus()", 100);
+}
+
+function CheckActiveXStatus(){
+	if (eWebEditorActiveX.Status!="ok"){
+		window.setTimeout("CheckActiveXStatus()", 100);
+		return;
+	}
+
+	if (CheckActiveXError()){
+		$("divProcessing").style.display="none";
+		return;
+	}
+
+	var s_Style = eWebEditorActiveX.Style;
+	if ($("d_opt2").checked){
+		s_Style = "";
+	}
+
+	var s_Body = eWebEditorActiveX.Body;
+
+	var s_OriginalFiles = eWebEditorActiveX.OriginalFiles;
+	var s_SavedFiles = eWebEditorActiveX.SavedFiles;
+	if (s_OriginalFiles){
+		var a_Original = s_OriginalFiles.split("|");
+		var a_Saved = s_SavedFiles.split("|");
+		for (var i=0; i<a_Original.length; i++){
+			if (a_Saved[i]){
+				var s_OriginalFileName = a_Original[i];
+				var s_SavePathFileName = a_Saved[i];
+				EWIN.addUploadFile(s_OriginalFileName, s_SavePathFileName);
+			}
+		}
+	}
+	
+	if ($("d_pos").checked){
+		EWIN.setHTML(s_Style + s_Body, true);
+	}else{
+		var s_TempTag = "<SPAN id=eWebEditorTempInsertTag></SPAN>";
+		EWIN.insertHTML(s_TempTag);
+		var s_Source=EWIN.getHTML();
+		var n1 = s_Source.indexOf(s_TempTag);
+		var s_HTML=s_Style+s_Source.substring(0,n1)+s_Body+s_Source.substr(n1+s_TempTag.length);
+		EWIN.setHTML(s_HTML, true);
+	}
+
+	eWebEditorActiveX = null;
+	$("divProcessing").style.display="none";
+
+	parent.Ok();
+}
+
+
+
+var s_LastFile = "";
+function DoGetExcelSheet(){
+	if (!CheckActiveXInstall(true)){
+		return;
+	}
+
+	var s_File = BaseTrim($("d_file").value);
+	if ((s_LastFile!=s_File)){
+		$("d_sheet").options.length = 0;
+		s_LastFile="";
+	}
+	if (s_File=="") {return;}
+	if (s_File.indexOf(":")<0){return;}
+	if ((s_LastFile!="")&&(s_LastFile==s_File)) {return;}
+	
+	if (!IsExt(s_File, "xls|xlsx")){
+		return;
+	}
+
+	var s_Sheets = eWebEditorActiveX.GetExcelWorkSheetName(s_File);
+	if (CheckActiveXError()){
+		return;
+	}
+	
+	$("d_sheet").options[0] = new Option(lang["DlgExcelSheetAll"], "0");
+	var a_Sheets = s_Sheets.split("\n");
+	for (var i=0; i<a_Sheets.length; i++){
+		$("d_sheet").options[$("d_sheet").options.length] = new Option(a_Sheets[i], i+1);
+	}
+	s_LastFile = s_File;
+	
+	eWebEditorActiveX = null;
+}
+
+function clickOpt(index){
+	var el_group,els;
+	
+	for (var i=1; i<=2; i++){
+		el_group = $("group_opt"+i);
+		els = el_group.getElementsByTagName("INPUT");
+		for (var j=0; j<els.length; j++){
+			if (index==i){
+				els[j].disabled=false;
+			}else{
+				els[j].disabled=true;
+			}
+		}
+
+		els = el_group.getElementsByTagName("SPAN");
+		for (var j=0; j<els.length; j++){
+			if (index==i){
+				els[j].disabled=false;
+			}else{
+				els[j].disabled=true;
+			}
+		}
+	}
+}
+
+function doClickMode(flag){
+	if (flag==1){
+		$("tab_modehtml").style.display="";
+		$("tab_modeimg").style.display="none";
+	}else{
+		if ($("tab_modehtml").style.display=="none"){
+			return;
+		}
+		$("tab_modeimg").style.height=$("tab_modehtml").offsetHeight;
+		$("tab_modeimg").style.width=$("tab_modehtml").offsetWidth;
+		$("tab_modehtml").style.display="none";
+		$("tab_modeimg").style.display="";
+	}
+}
+
+function InitDocument(){
+	lang.TranslatePage(document);
+	
+	if (config.WIIMode=="2"){
+		$("d_opt2").checked=true;
+		clickOpt(2);
+	}else{
+		$("d_opt1").checked=true;
+		clickOpt(1);
+	}
+
+	if (sAction=="paste"){
+		document.getElementById("d_pos").checked=false;
+	}
+
+	parent.InnerDialogLoaded(sCaption);
+	adjustProcessingPos();
+}
+
+function adjustProcessingPos(){
+	var el = $("divProcessing");
+	el.style.left = ($("tabDialogSize").offsetWidth+6-parseInt(el.style.width))/2 + "px";
+	el.style.top = ($("tabDialogSize").offsetHeight-parseInt(el.style.height))/2 + "px";
+}
+
+</script>
+
+</head>
+<body onload="InitDocument()">
+
+
+
+<table border=0 cellpadding=0 cellspacing=5 id=tabDialogSize><tr><td>
+
+<table border=0 cellpadding=0 cellspacing=0 align=center>
+<script type="text/javascript">
+if (sAction!="paste"){
+	document.write("<tr>");
+	document.write("	<td>");
+	document.write("	<fieldset>");
+	document.write("	<legend><span lang=DlgExcelLegend></span>:</legend>");
+	document.write("	<table border=0 cellpadding=5 cellspacing=0 width='100%'>");
+	document.write("	<tr><td>");
+	document.write("		<table border=0 cellpadding=0 cellspacing=2 width='100%'>");
+	document.write("		<tr>");
+	document.write("			<td noWrap><span lang=DlgExcelFile></span>:</td>");
+	document.write("			<td noWrap width='100%'><input type=file id='d_file' size=30 style='width:100%' onchange='DoGetExcelSheet()' onkeyup='DoGetExcelSheet()'></td>");
+	document.write("		</tr>");
+	document.write("		<tr>");
+	document.write("			<td noWrap><span lang=DlgExcelSheet></span>:</td>");
+	document.write("			<td noWrap><select id='d_sheet' size=1 style='width:100%'></select></td>");
+	document.write("		</tr>");
+	document.write("		</table>");
+	document.write("	</td></tr>");
+	document.write("	</table>");
+	document.write("	</fieldset>");
+	document.write("	</td>");
+	document.write("</tr>");
+	document.write("<tr><td height=5></td></tr>");
+}
+</script>
+<tr>
+	<td>
+	<fieldset>
+	<legend><span lang=DlgExcelOptimize></span>: <input type=radio id=d_modehtml name=g_mode checked onclick="doClickMode(1)"><label for=d_modehtml><span lang=DlgWordModeHTML></span></label>&nbsp;<input type=radio id=d_modeimg name=g_mode onclick="doClickMode(2)"><label for=d_modeimg><span lang=DlgWordModeIMG></span></label></legend>
+	<table border=0 cellpadding=5 cellspacing=0 width="100%">
+	<tr><td>
+
+		<table border=0 cellpadding=0 cellspacing=3 id=tab_modehtml>
+		<tr><td colspan=5 noWrap><input type=radio name="d_optimize" id="d_opt1" checked onclick="clickOpt(1)"><label for=d_opt1><span lang=DlgExcelOpt1></span></label></td></tr>
+		<tr id=group_opt1>
+			<td>&nbsp;&nbsp;&nbsp; </td>
+			<td noWrap><input type=checkbox id=d_opt1vml><label for=d_opt1vml><span lang=DlgExcelOpt1VML></span></label></td>
+			<td noWrap><input type=checkbox id=d_opt1space><label for=d_opt1space><span lang=DlgExcelOpt1Space></span></label></td>
+			<td noWrap><input type=checkbox id=d_opt1table><label for=d_opt1table><span lang=DlgExcelOpt1Table></span></label></td>
+			<td noWrap><input type=checkbox id=d_opt1overflow><label for=d_opt1overflow><span lang=DlgExcelOpt1Overflow></span></label></td>
+		</tr>
+		<tr><td colspan=5 noWrap><input type=radio name="d_optimize" id="d_opt2" onclick="clickOpt(2)"><label for=d_opt2><span lang=DlgExcelOpt2></span></label></td></tr>
+		<tr id=group_opt2>
+			<td>&nbsp; </td>
+			<td noWrap><input type=checkbox id=d_opt2image checked><label for=d_opt2image><span lang=DlgExcelOpt2Image></span></label></td>
+			<td noWrap><input type=checkbox id=d_opt2space><label for=d_opt2space><span lang=DlgExcelOpt2Space></span></label></td>
+			<td noWrap><input type=checkbox id=d_opt2table checked><label for=d_opt2table><span lang=DlgExcelOpt2Table></span></label></td>
+			<td></td>
+		</tr>
+		</table>
+
+		<table border=0 cellpadding=0 cellspacing=3 id=tab_modeimg style="display:none">
+		<tr>
+			<td noWrap><span lang=DlgWordImgType></span>: <input type=radio id=d_imggif name=d_imgtype checked><label for=d_imggif>GIF</label> <input type=radio id=d_imgjpg name=d_imgtype><label for=d_imgjpg>JPG</label> <input type=radio id=d_imgpng name=d_imgtype><label for=d_imgpng>PNG</label></td>
+		</tr>
+		<tr><td><span lang=DlgWordImgAlt></span></td></tr>
+		</table>
+
+	</td></tr>
+	</table>
+	</fieldset>
+	</td>
+</tr>
+
+<tr><td height=5></td></tr>
+<tr>
+	<td>
+	<table border=0 cellpadding=0 cellspacing=0 width="100%">
+	<tr>
+		<td noWrap><input type=checkbox id=d_pos checked><label for=d_pos><span lang=DlgComInsertReplace></span></label></td>
+		<td noWrap align=right><input type=submit class="dlgBtnCommon dlgBtn" value='' id="btn_ok" onclick="ok()" lang=DlgBtnOK>&nbsp;&nbsp;<input type=button class="dlgBtnCommon dlgBtn" value='' onclick="parent.Cancel()" lang=DlgBtnCancel>
+	</tr>
+	</table>
+	</td>
+</tr>
+</table>
+
+</td></tr></table>
+
+<div id=divProcessing style="width:200px;height:30px;position:absolute;left:60px;top:85px;display:none">
+<table border=0 cellpadding=0 cellspacing=1 bgcolor="#000000" width="100%" height="100%"><tr><td bgcolor=#3A6EA5 align=center><marquee align="middle" behavior="alternate" scrollamount="5"><font color=#FFFFFF><span lang=DlgExcelImporting></span></font></marquee></td></tr></table>
+</div>
+
+</body>
+</html>

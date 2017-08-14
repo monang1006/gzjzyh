@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+	<!-- name  属性为需要配置的action的包名 -->
+	<!-- extends属性为strongmvc-default -->
+	<!-- namespace 属性为去除actionPackages（com.strongit.uums）后的包路径 -->
+	<package namespace="/usermanage" name="com.strongit.uums.usermanage" extends="strongmvc-default">		
+		<!-- name 属性为访问url中的action -->
+		<!-- class 属性为对应的action类 -->
+		<!-- method属性为action的方法名 -->
+		<action name="usermanage" class="com.strongit.uums.usermanage.UsermanageAction" method="list">
+			<!-- name 属性为方法返回值名称 -->
+			<!-- 标签的值为对应的跳转页面 -->
+			<result name="success">/WEB-INF/jsp/usermanage/oa/MyJsp.jsp</result>
+		</action>
+	</package>
+</struts>

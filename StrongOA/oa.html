@@ -1,0 +1,199 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+	<HEAD>
+		<TITLE>OA系统_RTX</TITLE>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+		<META NAME="Generator" CONTENT="EditPlus">
+		<META NAME="Author" CONTENT="">
+		<META NAME="Keywords" CONTENT="">
+		<META NAME="Description" CONTENT="">
+		
+		<style type="text/css">
+*{ padding:0; margin:0; }
+img{ border:none; }
+table{ border-collapse:collapse; border-spacing:0; width:100%; }
+a{ color: #000; cursor:pointer; text-decoration:none; }
+a:hover{ color:#000; text-decoration:underline; }
+html{ color: #000; background:#fff; }
+body{ font-family:"\5b8b\4f53", sans-serif; font-size:12px; }
+.dcon{ background:url(images/drtx02.jpg) repeat-x center top; }
+.dclog{ height:39px; background:url(images/drtx01.jpg) no-repeat center 8px; }
+.dclogb{ width:124px; height:28px; padding-top:8px; margin:0 auto; }
+.dclog input{ float:left; width:62px; height:23px; border:none; background:none; }
+.dctit{ height:25px; padding:6px 0 2px 14px; }
+.dctit span{ display:block; width:69px; height:25px; line-height:21px; text-align:center; background:url(images/drtx03.jpg) no-repeat center top; color:#fff; }
+.dcmain{ background:#fff; padding:10px; }
+.dcmain a{ color:#566777; }
+.dcmain a:hover{ color:#000; }
+.dcmain td{ height:19px; line-height:19px; border-bottom:1px dashed #c0d5e2; } 
+</style>
+	</HEAD>
+	<SCRIPT LANGUAGE="JavaScript">
+<!--
+  //进行编码转换
+  String.prototype.UrlEncode = function() 
+  { 
+	var str = this; 
+	str = str.replace(/./g,function(sHex) { 
+		window.EnCodeStr = ""; 
+		window.sHex = sHex; 
+		window.execScript('window.EnCodeStr=Hex(Asc(window.sHex))',"vbscript"); 
+		return window.EnCodeStr.replace(/../g,"%$&"); 
+	}); 
+	return str; 
+  } 
+  //通过RTX自动登陆OA系统
+  function loginOaSystem()
+  {
+    var basePath=window.location.host;
+    if(basePath.indexOf(":")==-1)
+    {
+      basePath+=":"+window.location.port;//加上端口号
+    }
+	var urlPath=document.location.pathname;
+	var index=urlPath.substr(1).indexOf("/");
+	var contextPath=urlPath.substr(0,index+1);
+	try
+	{
+		var RTXAX=document.getElementById("RTXAX");
+		var objKernal = RTXAX.GetObject("KernalRoot");
+		if (objKernal.MyPresence==0)
+		{
+		   alert("RTX已离线，不能能过RTX直接登陆OA");
+		   return;
+		}
+		/*
+		alert(objKernal.Account);
+		alert(objKernal.sign.GetString("Sign"));
+		document.writeln(objKernal.sign.GetString("Sign"));
+		*/
+		var rtxSign=objKernal.sign.GetString("Sign");
+		//当前RTX账号
+		var userCode = objKernal.Account;//进行BASE64位加密
+		var w=window.screen.width-10;
+		var h=window.screen.height-80;
+		var sStyle="width="+w+"px,height="+h+"px,left=0px,top=0px,toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no";//window.location.host
+		//对签名进行编码，防止签名字符中带可能会过滤掉了字符，如“+”
+		var url="http://"+basePath+contextPath+"/default.jsp?j_username="+userCode+"&j_usersign="+rtxSign.UrlEncode()+"&j_flag=rtx&random="+new Date().getTime();
+		//alert(rtxSign);
+		//return;
+		//打开OA主界面
+        window.open(url,"",sStyle);
+	}catch(e)
+	{
+	    alert(e.message);
+	    return;
+	    var w=window.screen.width-10;
+		var h=window.screen.height-80;
+		var sStyle="width="+w+"px,height="+h+"px,left=0px,top=0px,toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no";
+	    window.open("http://"+basePath+contextPath+"/index.jsp","",sStyle);
+	}
+  }  //oncontextmenu="return(false)"
+  //刷新数据
+  function refreshFrmData(){
+  try
+	{
+		var RTXAX=document.getElementById("RTXAX");
+		var objKernal = RTXAX.GetObject("KernalRoot");
+		if (objKernal.MyPresence!=0)
+		{
+			var rtxSign=objKernal.sign.GetString("Sign");
+			//当前RTX账号
+			var userCode = objKernal.Account;//进行BASE64位加密
+			var w=window.screen.width-10;
+			var h=window.screen.height-80;
+			var sStyle="width="+w+"px,height="+h+"px,left=0px,top=0px,toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no";//window.location.host
+			//对签名进行编码，防止签名字符中带可能会过滤掉了字符，如“+”
+			//senddoc/sendDoc
+			var url="http://"+basePath+contextPath+"/senddoc/sendDoc!listTodoDoc.action?j_username="+userCode+"&j_usersign="+rtxSign.UrlEncode()+"&j_flag=rtx&random="+new Date().getTime();
+			//alert(document.getElementById("toLoDocFlowFrm").style.height);
+			document.getElementById("toLoDocFlowFrm").style.height=document.body.clientHeight-40;
+			//alert(url);
+			//加载待办事宜
+			document.getElementById("toLoDocFlowFrm").src=url;
+		}
+	}catch(e)
+	{
+	    alert("加载待办公文出错:"+e.message);
+	}
+   //  document.getElementById("toLoDocFlowFrm").src=document.getElementById("toLoDocFlowFrm").src;
+  } 
+//-->
+</SCRIPT>
+	<BODY >
+		<OBJECT id=RTXAX
+			data=data:application/x-oleobject;base64,fajuXg4WLUqEJ7bDM/7aTQADAAAaAAAAGgAAAA==
+			classid=clsid:5EEEA87D-160E-4A2D-8427-B6C333FEDA4D VIEWASTEXT
+			style="display: none;" width="0" height"0"></OBJECT>
+	   <!-- <table border="0" width="100%" cellpadding="2"   cellspacing="0">
+	     <tr align="center" style="background-color:f0f0f0;">
+		   <td><input type='button' value='登陆' style='cursor: hand;' onclick='loginOaSystem();' title='登陆OA系统'></td>
+		   <td><input type='button' value='刷新' style='cursor: hand;' onclick='refreshFrmData();' title='刷新待办事宜'></td>
+		 </tr>
+		 <tr>
+		   <td colspan="2"><iframe id="toLoDocFlowFrm" name="toLoDocFlowFrm" border="0" frameborder="0" src="" width="100%" height="400px" scrolling="no" style="height:400px;"></iframe></td>
+		 </tr>
+	   </table> -->
+	   
+	   
+	   <div align="center" class="dcon">
+  <div class="dclog">
+    <div class="dclogb">
+      <input type="button"  onclick='loginOaSystem();'  />
+      <input type="button" onclick='refreshFrmData()' />
+    </div>
+  </div>
+  <div class="dctit">
+    <span>待办事宜</span>
+  </div>
+  <div class="dcmain">
+    <iframe id="toLoDocFlowFrm" name="toLoDocFlowFrm" border="0" frameborder="0" src="" width="100%" height="400px" scrolling="no" style="height:400px;"></iframe>
+  </div>
+</div>
+	</BODY>
+</HTML>
+<script type="text/javascript">
+<!--
+    //加载待办事宜
+    var basePath=window.location.host;
+    if(basePath.indexOf(":")==-1)
+    {
+      basePath+=":"+window.location.port;//加上端口号
+    }
+	var urlPath=document.location.pathname;
+	var index=urlPath.substr(1).indexOf("/");
+	var contextPath=urlPath.substr(0,index+1);
+	try
+	{
+		var RTXAX=document.getElementById("RTXAX");
+		var objKernal = RTXAX.GetObject("KernalRoot");
+		if (objKernal.MyPresence!=0)
+		{
+			/*
+			alert(objKernal.Account);
+			alert(objKernal.sign.GetString("Sign"));
+			document.writeln(objKernal.sign.GetString("Sign"));
+			*/
+			var rtxSign=objKernal.sign.GetString("Sign");
+			//当前RTX账号
+			var userCode = objKernal.Account;//进行BASE64位加密
+			var w=window.screen.width-10;
+			var h=window.screen.height-80;
+			var sStyle="width="+w+"px,height="+h+"px,left=0px,top=0px,toolbar=no, menubar=no, scrollbars=no, resizable=no, location=no, status=no";//window.location.host
+			//对签名进行编码，防止签名字符中带可能会过滤掉了字符，如“+”
+			//senddoc/sendDoc
+			var url="http://"+basePath+contextPath+"/senddoc/sendDoc!listTodoDoc.action?j_username="+userCode+"&j_usersign="+rtxSign.UrlEncode()+"&j_flag=rtx&random="+new Date().getTime();
+			//alert(document.getElementById("toLoDocFlowFrm").style.height);
+			document.getElementById("toLoDocFlowFrm").style.height=document.body.clientHeight-40;
+			//alert(url);
+			//加载待办事宜
+			document.getElementById("toLoDocFlowFrm").src=url;
+		}
+	}catch(e)
+	{
+	    alert("加载待办公文出错:"+e.message);
+	}
+	//三分钟刷新一次,更新数据
+    //window.setInterval("refreshFrmData();", 1000*60*3);
+//-->
+</script>

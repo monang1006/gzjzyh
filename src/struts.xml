@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+	<package name="default" extends="strongmvc-default">
+		<!-- 基于jasperreport报表结果,jfreechart图表结果，增加jasper,chart -->
+		<result-types>
+    		<result-type name="jasper" class="org.apache.struts2.views.jasperreports.JasperReportsResult"/>
+    		<result-type name="chart" class="org.apache.struts2.dispatcher.ChartResult">
+    			<param name="height">150</param>
+    			<param name="width">200</param>
+    		</result-type>
+    	</result-types>
+		<!-- 基于paramsPrepareParamsStack,增加store interceptor --><!--
+		<interceptors>
+			<interceptor-stack name="DemoStack">
+				<interceptor-ref name="StrongMVCStack" />
+				<interceptor-ref name="defaultStack" />
+				<interceptor-ref name="exceptionInterceptor">
+					<param name="bundlePath">resource.Message</param>
+				</interceptor-ref>
+			</interceptor-stack>
+		</interceptors>
+		
+		-->
+		<interceptors>
+			<interceptor-stack name="DemoStack">
+				<!--<interceptor-ref name="StrongMVCStack" />
+				<interceptor-ref name="defaultStack" />-->
+				<interceptor-ref name="store">
+  						<param name="operationMode">AUTOMATIC</param> 
+			  	</interceptor-ref>
+			  	<interceptor-ref name="paramsPrepareParamsStack" /> 
+				<interceptor-ref name="exceptionInterceptor">
+					<param name="bundlePath">com.strongit.uums.resource.Message</param>
+				</interceptor-ref>
+			</interceptor-stack>
+		</interceptors>
+		
+		<default-interceptor-ref name="DemoStack" />
+		<action name="basePrivil1" class="com.strongit.uums.privilmanage.BasePrivilAction">
+	        <!-- Chain to another namespace -->
+	        <result name="move" type="chain">
+	            <param name="actionName">basePrivil</param>
+	            <param name="method">priviltree</param>
+	        </result>
+    	</action>
+    	<action name="orgmanage1" class="com.strongit.uums.organisemanage.OrgmanageAction">
+	        <!-- Chain to another namespace -->
+	        <result name="move" type="chain">
+	            <param name="actionName">orgmanage</param>
+	            <param name="method">tree</param>
+	        </result>
+    	</action>
+    	<action name="baseGroup1" class="com.strongit.uums.usergroup.BaseGroupAction">
+	        <!-- Chain to another namespace -->
+	        <result name="move" type="chain">
+	            <param name="actionName">baseGroup</param>
+	            <param name="method">groupTree</param>
+	        </result>
+    	</action>
+		<action name="report_*" class="com.strongit.workflow.workflowreport.WorkFlowReportAction" method="report">
+			<result name="report" type="jasper">
+				<param name="location">
+					/WEB-INF/jsp/workflowreport/jasperfile/jasper_template.jasper
+				</param>
+				<param name="dataSource">processTypeDataList</param>
+				<param name="format">{1}</param>
+			</result>
+			<result name="notdate" type="jasper">
+				<param name="location">
+					/WEB-INF/jsp/workflowreport/jasperfile/jasper_notdate.jasper
+				</param>
+				<param name="dataSource">processTypeDataList</param>
+				<param name="format">{1}</param>
+			</result>
+		</action>
+		<action name="chart" class="com.strongit.workflow.workflowreport.WorkFlowReportAction" method="chart">
+			<result name="chart" type="chart">			
+				<param name="width">650</param>
+				<param name="height">370</param>
+			</result>
+		</action>
+		
+	<action name="answerImage" class="com.strongit.oa.survey.SurveyAnswerAction" method="answerImage">
+			<result name="chart" type="chart">			
+				<param name="width">400</param>
+				<param name="height">300</param>
+			</result>
+     </action>
+		
+		
+	</package>
+</struts>

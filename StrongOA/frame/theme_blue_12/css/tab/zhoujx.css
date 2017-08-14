@@ -1,0 +1,304 @@
+/*定义整体风：字体、边界、滚动条...*/
+BODY{
+	font-size:11pt;font-weight:500;
+	color:#0155A9;
+	margin-right:0;margin-top:2;margin-left:2;margin-bottom:0;
+	background-color:#F2F2F2/*#D9D5CE=buttonface|#F1F0EF*/;
+	 scrollbar-face-color: buttonface/*#BBBBBB*/; 
+	 scrollbar-shadow-color: #9F9F9F; 
+	 scrollbar-highlight-color: #eeeeee; 
+	 scrollbar-3dlight-color: #9F9F9F; 
+	 scrollbar-darkshadow-color: #FFFFFF; 
+	 scrollbar-track-color: #F4F4F4;
+	 scrollbar-arrow-color: #000000;  
+}
+.text {
+	FONT-SIZE: 12px;
+	FONT-FAMILY: Tahoma
+}
+.bt1_bg1 {
+	background-image: url(../images/perspective_leftside/qh1_1.jpg);
+	text-align: center;
+	vertical-align: middle;
+	background-repeat: no-repeat;
+	background-position: center center;
+	height: 22px;
+	width:5px;
+}
+.bt1_bg2 {
+	background-image: url(../images/perspective_leftside/qh1_2.jpg);
+}
+.bt1_bg3 {
+	background-image: url(../images/perspective_leftside/qh1_3.jpg);
+	text-align: center;
+	vertical-align: middle;
+	background-repeat: no-repeat;
+	background-position: center center;
+	height: 22px;
+	width:5px;
+}
+.bt2_bg1 {
+	background-image: url(../images/perspective_leftside/qh2_1.jpg);
+	text-align: center;
+	vertical-align: middle;
+	background-repeat: no-repeat;
+	background-position: center center;
+	height: 22px;
+	width:5px;
+}
+.bt2_bg2 {
+	background-image: url(../images/perspective_leftside/qh2_2.jpg);
+}
+.bt2_bg3 {
+	background-image: url(../images/perspective_leftside/qh2_3.jpg);
+	text-align: center;
+	vertical-align: middle;
+	background-repeat: no-repeat;
+	background-position: center center;
+	height: 22px;
+	width:5px;
+}
+/*字体样式*/
+.font1{
+	font-size: 11pt;font-weight:500;
+	color: #FFFFFF
+}
+/*链接样式*/
+A{text-decoration:none}
+A:link {color:#FF6000 ; text-decoration: none}
+A:visited {color: #A30000; text-decoration: none }
+A:hover {color: #007FFF; text-decoration: underline;}
+/*定义TABLE通用样式，仅在这里定义字体大小即可，
+随便给TABLE内部的TR、TD定义会影响打印时对表格的字体大小调整*/
+TABLE{
+	font-size:11pt;font-weight:500;
+	color:#0155A9/*#015ebc*/;
+	margin:0px;
+	width:100%;
+}
+/*特定的table的背景颜色及其他样式，即标签（那些非输入框）的背景，应用于整个TABLE，
+ *如需定制TABLE里的某TR或TD，则可用.td_bg。目前无用处
+*/
+.tbl_bg{
+	background-color:#eaeaea;
+}
+/*
+ *用做打印预览的修饰
+*/
+.tbl_prt{
+	/*BORDER-COLLAPSE: collapse;会造成重新计算显示/隐藏列可能造成花屏，*/
+	/*TABLE-LAYOUT: fixed; LEFT: 0;TOP:0;*/BORDER-COLLAPSE: collapse; border-width:1px;
+}
+/* 定义打印的页眉
+*/
+.tbl_head{
+	display:table-header-group;
+}
+/*定义打印的页脚
+*/
+.tbl_foot{
+	display:table-footer-group;
+}
+/*通用TR*/
+TR{
+	/*随便给TABLE内部的TR、TD定义会影响打印时对表格的字体大小调整font-size:15px*/;
+}
+/*标题行（表头）的背景及其他样式*/
+.tr_header{
+	height:25;font-weight:bold;background-color:#E0E0E0;/*
+	filter:progid:DXImageTransform.Microsoft.Gradient(
+    endColorstr='#ececec', startColorstr='#E3E3E3',gradientType='0')*/
+}
+/*可收缩的tr*/
+.tr_s{
+	filter:progid:DXImageTransform.Microsoft.Gradient(
+    endColorstr='#C7D4F7', startColorstr='#ffffff',gradientType='1')
+}
+/*每行的交替颜色变换样式*/
+.tr_bg{
+	background-color: #eaeaea;
+}
+TD{
+	/*td默认为凹线，如需修改可用以下方式修改其边框。
+	=>注：必须对每个table加：
+	<table bordercolor="#000000" bordercolordark="#ffffff"
+	cellpadding="0" cellspacing="0">
+	border-left-color:white;
+	border-top-color: white;
+	border-bottom-color: green;
+	border-right-color:  green;
+	*/
+}
+/*每列的交替颜色变换样式*/
+.col_bg{
+	background-color: #EFF3FF;
+}
+/*TABLE里特定的TR、TD的背景颜色及其他样式，即标签（那些非输入框）的背景
+ *要求每个需要背景色的TR、TD都要加入该class，并不是单纯在TABLE上加上该class
+*/
+.td_bg{
+	background-color:#eaeaea;
+	height:20px;
+}
+/*因为在无边框table内的input较多，所以默认的input为带边框。*/
+INPUT{
+	font-size:11pt;font-weight:500;color:#000000;
+	margin-right:0;margin-top:0;margin-left:0;margin-bottom:0;
+	BORDER-TOP-WIDTH: 1px;
+    BORDER-LEFT-WIDTH: 1px;
+    BORDER-LEFT-COLOR: #cecece;
+    BORDER-BOTTOM-WIDTH: 1px;
+    BORDER-BOTTOM-COLOR: #cecece;
+    BORDER-TOP-COLOR: #cecece;
+    
+    BORDER-RIGHT-WIDTH: 1px;
+    BORDER-RIGHT-COLOR: #cecece;
+	width:100%;
+}
+/*在有边框table内的无边框的input/textarea，必须应用*/
+.input_no{
+	font-size:11pt;font-weight:500;color:#000000;
+	margin-right:0;margin-top:0;margin-left:0;margin-bottom:0;
+	border:0;
+	width:100%;
+}
+/*在有边框table内的无边框的input/textarea， font必须应用*/
+.input_font{
+	font-size:11pt;font-weight:500;color:#000000;
+	margin-right:0;margin-top:0;margin-left:0;margin-bottom:0;
+	border:0;
+	width:100%;
+}
+/*只有底边有边框的input,内容居中*/
+.input1{
+	font-size:11pt;font-weight:500;color:#000000;
+	margin-right:0;margin-top:0;margin-left:0;margin-bottom:0;
+	BORDER-TOP-WIDTH: 0px;
+    BORDER-LEFT-WIDTH: 0px;
+    BORDER-LEFT-COLOR: #cecece;
+    BORDER-BOTTOM-WIDTH: 1px;
+    BORDER-BOTTOM-COLOR: #cecece;
+    BORDER-TOP-COLOR: #cecece;
+    BORDER-RIGHT-WIDTH: 0px;
+    BORDER-RIGHT-COLOR: #cecece;
+	text-align:center;
+	width:100%;
+}
+/*有边框的input,内容居中*/
+.input2{
+	font-size:11pt;font-weight:500;color:#000000;
+	margin-right:0;margin-top:0;margin-left:0;margin-bottom:0;
+	BORDER-TOP-WIDTH: 1px;
+    BORDER-LEFT-WIDTH: 1px;
+    BORDER-LEFT-COLOR: #cecece;
+    BORDER-BOTTOM-WIDTH: 1px;
+    BORDER-BOTTOM-COLOR: #cecece;
+    BORDER-TOP-COLOR: #cecece;
+    BORDER-RIGHT-WIDTH: 1px;
+    BORDER-RIGHT-COLOR: #cecece;
+	text-align:center;
+	width:100%;
+}
+/*通用TEXTAREA*/
+TEXTAREA{
+	font-size:11pt;font-weight:500;color:#000000;
+	margin-right:0;margin-top:0;margin-left:0;margin-bottom:0;
+	BORDER-TOP-WIDTH: 1px;
+    BORDER-LEFT-WIDTH: 1px;
+    BORDER-LEFT-COLOR: #cecece;
+    BORDER-BOTTOM-WIDTH: 1px;
+    BORDER-BOTTOM-COLOR: #cecece;
+    BORDER-TOP-COLOR: #cecece;
+    BACKGROUND-COLOR: #fffbff;
+    BORDER-RIGHT-WIDTH: 1px;
+    BORDER-RIGHT-COLOR: #cecece;
+	width:100%;
+}
+/*通用SELECT*/
+SELECT{
+	font-size:11pt;font-weight:500;
+	margin-right:0;margin-top:0;margin-left:0;margin-bottom:0;
+	BORDER-TOP-WIDTH: 1px;
+    BORDER-LEFT-WIDTH: 1px;
+    BORDER-LEFT-COLOR: #cecece;
+    BORDER-BOTTOM-WIDTH: 1px;
+    BORDER-BOTTOM-COLOR: #cecece;
+    BORDER-TOP-COLOR: #cecece;
+    BACKGROUND-COLOR: #fffbff;
+    BORDER-RIGHT-WIDTH: 1px;
+    BORDER-RIGHT-COLOR: #cecece;
+	width:100%;
+}
+/*通用FIELDSET*/
+FIELDSET{
+	border-width:1px;
+	BORDER-COLOR:#336699
+}
+/*通用BUTTON*/
+BUTTON{
+	color:block;
+	font-size:11pt;font-weight:500;
+	BORDER-TOP-WIDTH: 1px;
+    BORDER-LEFT-WIDTH: 1px;
+    BORDER-LEFT-COLOR: #428AD6;
+    BORDER-BOTTOM-WIDTH: 1px;
+    BORDER-BOTTOM-COLOR: #428AD6;
+    BORDER-TOP-COLOR: #428AD6;
+    BORDER-RIGHT-WIDTH: 1px;
+    BORDER-RIGHT-COLOR: #FFdd00;
+	background:#80BCFB;
+    filter:
+	progid:DXImageTransform.Microsoft.Gradient(
+    endColorstr='#B3D8FF', startColorstr='#428AD6',gradientType='0');
+}
+
+/*通用BUTTON*/
+.btn_4{
+	color:black;
+	font-size:11pt;font-weight:500;
+	BORDER-TOP-WIDTH: 1px;
+    BORDER-LEFT-WIDTH: 1px;
+    BORDER-LEFT-COLOR: #E7C653;
+    BORDER-BOTTOM-WIDTH: 1px;
+    BORDER-BOTTOM-COLOR: #E7C653;
+    BORDER-TOP-COLOR: #E7C653;
+    BACKGROUND-COLOR: #E7C653;
+    BORDER-RIGHT-WIDTH: 1px;
+    BORDER-RIGHT-COLOR: #F4E19F;
+	background:#80BCFB;
+    filter:progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, 
+        Color='#AFB8CF', Positive='true')
+	progid:DXImageTransform.Microsoft.Gradient(
+    endColorstr='#FBEAB2', startColorstr='#E7C653',gradientType='0');
+}
+/*自定义的组件的样式。通用：鼠标、宽、高，如需要其他修饰，只能加在组件内部*/
+ctais\:input{
+/*
+    border:0;
+	font-size:15px
+	*/
+}
+ctais\:select{
+/*
+	font-size:15px
+	*/
+}
+/*仅可设字体颜色*/
+ctais\:datawindow{
+	color:#015ebc;
+	/*
+	header-color:#ececec;
+	font-size:12px
+	选中行颜色:color:#4A8EE7;
+	必填项BACKGROUND-COLOR: #B5E3DF;
+	*/
+}
+/*不需要！*/
+ctais\:tab{
+/*tab页颜色:#ececec/#D6DBE7*/
+}
+/*有边框表格中无边框ＴＤ的设置*/
+.td_none
+{
+	border:none;
+}

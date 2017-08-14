@@ -1,0 +1,29 @@
+/* ͨ��CSS */
+*{ margin:0; padding:0;}
+body td{ font-size:12px; font-family:"����"; color:#000000;}
+a:link,a:visited,a:hover{font-size:12px; font-family:"����"; color:#000000; text-decoration:none;}
+img{ border:0;}
+.center{ margin:0 auto;}
+/* ��ҳ */
+.topbg {background: url(resource/images/home_01.jpg); background-repeat: no-repeat;background-position: left;}
+.numbg {background: url(resource/images/home_02.jpg); background-repeat: repeat-x;border:0;}
+.num-left-bg {background-image: url(resource/images/home_05.jpg);background-repeat: no-repeat;	border:0;}
+.num-right-bg {background-image: url(resource/images/home_08.jpg);background-repeat: no-repeat;	border:0;background-position: right;}
+.num-content-bg {background: url(resource/images/home_06.jpg); background-repeat: repeat-x;border:0;}
+.num2-left-bg {background-image: url(resource/images/home_26.jpg);background-repeat: no-repeat;	border:0;background-position: left;}
+.num2-right-bg {background-image: url(resource/images/home_29.jpg);background-repeat: no-repeat;	border:0;background-position: right;}
+.num2-content-bg {background: url(resource/images/home_27.jpg); background-repeat: repeat-x;border:0;}
+.num3-left-bg {background-image: url(resource/images/home_19.jpg);background-repeat: no-repeat;	border:0;background-position: left;}
+.num3-right-bg {background-image: url(resource/images/home_21.jpg);background-repeat: no-repeat;	border:0;background-position: right;}
+.num3-content-bg {background: url(resource/images/home_20.jpg); background-repeat: repeat-x;border:0;}
+.num4-left-bg {background-image: url(resource/images/home_23.jpg);background-repeat: no-repeat;	border:0;background-position: left;}
+.num4-right-bg {background-image: url(resource/images/home_24.jpg);background-repeat: no-repeat;	border:0;background-position: right;}
+.bottom-bg {background: url(resource/images/home_52.jpg); background-repeat: repeat-x;border:0;}
+.tableboder {border: 1px solid #d2d2d2;	background-color: #FFFFFF;}
+.tableboder2 {border: 1px solid #e2ddc0;	background-color: #FFFFFF;}
+.bg {background: url(resource/images/home_15.jpg); background-repeat: repeat-x;border:0;}
+.people_title{ color:#ffffff; font-size:14px; font-weight:bold; margin-left:30px;}
+.people_title a:link,.people_title a:visited,.people_title a:hover{ color:#ffffff; font-size:14px; text-decoration:underline;}
+.white_title{ font-weight:bold; color:#FFFFFF; font-size:12px; margin-left:22px; float:left;}
+.title{ color:#aa0000; font-size:14px; font-weight:bold; margin-left:30px;}
+.title a:link,.title a:visited,.title a:hover{ color:#aa0000; font-size:14px; text-decoration:underline;}.titleword {	font-family: "微软雅黑", "黑体";font-size: 36px;font-weight: bolder;color: #FFFFFF;text-decoration: none;filter: DropShadow(Color=#964a02, OffX=1, OffY=1, Positive=1);}

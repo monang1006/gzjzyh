@@ -1,0 +1,102 @@
+.text {
+	FONT-SIZE: 12px; FONT-FAMILY: Tahoma
+}
+A {
+	FONT-SIZE: 12px; COLOR: blue; FONT-STYLE: normal; TEXT-DECORATION: none
+}
+IMG {
+	BORDER-TOP-WIDTH: 0px; BORDER-LEFT-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; BORDER-RIGHT-WIDTH: 0px
+}
+.gtoolbarbodymargin {
+	BACKGROUND: #f3f3f3; MARGIN: 0px 1px 3px 0px
+}
+#globaltoolbar {
+	BORDER-RIGHT: #DBDBDB 1px solid; BORDER-TOP: white 1px solid; BACKGROUND: #f3f3f3; BORDER-LEFT: white 1px solid; BORDER-BOTTOM: #DBDBDB 1px solid; HEIGHT: 100%
+}
+.leftsidetoolbarbodymargin {
+	BACKGROUND: #f3f3f3; MARGIN: 0px
+}
+#leftsidetoolbar {
+	BORDER-RIGHT: #DBDBDB 1px solid; BORDER-TOP: #EBEBEB 0px solid; BACKGROUND: #F3F3F3; BORDER-LEFT: #EBEBEB 3px solid; BORDER-BOTTOM: #EBEBEB 0px solid; HEIGHT: 100%
+}
+TD {
+	FONT-SIZE: 12px; FONT-FAMILY: Tahoma
+}
+.normal {
+	BORDER-RIGHT: #EBEBEB 1px solid; BORDER-TOP: #EBEBEB 1px solid; BORDER-LEFT: #EBEBEB 1px solid; BORDER-BOTTOM: #EBEBEB 1px solid
+}
+.hover {
+	BORDER-RIGHT: #DBDBDB 1px solid; BORDER-TOP: white 1px solid; BORDER-LEFT: white 1px solid; CURSOR: hand; BORDER-BOTTOM: #DBDBDB 1px solid
+}
+.down {
+	BORDER-RIGHT: white 1px solid; BORDER-TOP: #DBDBDB 1px solid; BORDER-LEFT: #DBDBDB 1px solid; CURSOR: hand; BORDER-BOTTOM: white 1px solid
+}
+.select {
+	BORDER-RIGHT: white 1px solid; BORDER-TOP: #DBDBDB 1px solid; BORDER-LEFT: #DBDBDB 1px solid; CURSOR: hand; BORDER-BOTTOM: white 1px solid
+}
+IMG {
+	BORDER-TOP-WIDTH: 0px; BORDER-LEFT-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; BORDER-RIGHT-WIDTH: 0px
+}
+a:link,a:visited,a:hover,a:active{
+	font-family: "宋体";
+	font-size: 12px;
+	color: #000000;
+}
+
+/**/
+#toolbarborder {
+	BORDER-RIGHT: #DBDBDB 0px solid; BORDER-TOP: #DBDBDB 1px solid; BORDER-LEFT: #DBDBDB 1px solid; WIDTH: 100%; HEIGHT: 26px;
+}
+.toolbarbodymargin {
+	BACKGROUND: #F3F3F3; MARGIN: 5px 2px 0px;
+}
+#toolbar {
+	BORDER-RIGHT: #DBDBDB 1px solid; BORDER-TOP: white 1px solid; BACKGROUND: url(../images/perspective_leftside/toolbar_bg.jpg); MARGIN: 0px; BORDER-LEFT: white 1px solid; WIDTH: 100%; BORDER-BOTTOM: #DBDBDB 1px solid; HEIGHT: 25px
+}
+.bt1_bg1 {
+	background-image: url(../images/perspective_leftside/tab_bg_17.jpg);
+	text-align: center;
+	vertical-align: middle;
+	background-repeat: no-repeat;
+	background-position: center center;
+	height: 23px;
+	width:5px;
+}
+.bt1_bg2 {
+	background-image: url(../images/perspective_leftside/tab_bg_18.jpg);
+	color:#fff;
+	font-weight:bold;
+}
+.bt1_bg3 {
+	background-image: url(../images/perspective_leftside/tab_bg_20.jpg);
+	text-align: center;
+	vertical-align: middle;
+	background-repeat: no-repeat;
+	background-position: center center;
+	height: 23px;
+	width:8px;
+}
+.bt2_bg1 {
+	background-image: url(../images/perspective_leftside/tab_bg_22.jpg);
+	text-align: center;
+	vertical-align: middle;
+	background-repeat: no-repeat;
+	background-position: center center;
+	height: 23px;
+	width:5px;
+}
+.bt2_bg2 {
+	background-image: url(../images/perspective_leftside/tab_bg_23.jpg);
+}
+.bt2_bg3 {
+	background-image: url(../images/perspective_leftside/tab_bg_25.jpg);
+	text-align: center;
+	vertical-align: middle;
+	background-repeat: no-repeat;
+	background-position: center center;
+	height: 23px;
+	width:5px;
+}
+.setFontColor{
+	cursor: hand;color:#ffffff; padding-left:2px;
+}

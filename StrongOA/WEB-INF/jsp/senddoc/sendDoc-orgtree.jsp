@@ -1,0 +1,317 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@taglib prefix="s" uri="/struts-tags"%>
+<%@ taglib uri="/tags/c.tld" prefix="c" %>
+<%@include file="/common/include/rootPath.jsp"%>
+<% 
+	response.setHeader("Cache-Control","no-store");
+	response.setHeader("Pragrma","no-cache");
+	response.setDateHeader("Expires",0);
+%>
+<HTML>
+	<HEAD>
+		<TITLE>选择分发机构</TITLE>
+		<%@include file="/common/include/meta.jsp" %>
+		<link href="<%=root%>/doc/sends/dtree.css" type="text/css" rel="stylesheet">
+		<link href="<%=root%>/doc/sends/windows.css" type="text/css" rel="stylesheet">
+		<script language="javascript" src="<%=root%>/doc/sends/dtree_checkbox.js" type="text/javascript"></script>
+		<script src="<%=path%>/common/js/jquery/jquery-1.2.6.js" type="text/javascript"></script>
+		<style type="text/css">
+		.Operation{
+			height:19px;
+			line-height:19px;
+			text-align:center;
+			text-decoration:none;
+			display:block;
+			FILTER:progid:DXImageTransform.Microsoft.Gradient(gradientType=0,startColorStr=#fbf9f6,endColorStr=#d5d2ca);
+			border:1px solid #848285;
+			CURSOR: hand;
+		}
+		</style>
+		
+		<script type="text/javascript">
+		
+		$(document).ready(function(){
+			//提交
+			$("#btnOK").click(function(){
+				var orgName = "";
+				$("#selectOrg > option").each(function(){
+					orgName += $(this).text() + ",";
+					//orgIds += $(this).val()+","+$(this).html()+";";
+				});
+				orgName = orgName.substring(0, orgName.length-1);
+				
+				if(orgName.length == 0){
+					alert("请选择迁移线!");
+					return;
+				}
+				returnValue = orgName;
+				window.close();
+			});
+
+			//关闭窗口
+			$("#btnNO").click(function(){
+				returnValue="0";
+				window.close();
+			});
+		
+		});
+		
+		function gotoSelectCheck(checkFlag,nodeValue){	
+			//alert("gotoSelectCheck:"+"checkFlag("+checkFlag+")"+"nodeValue("+nodeValue+")");
+			if(nodeValue.indexOf("grp_")==0){
+				//alert($("#"+nodeValue).parent().next().children("[type=checkbox ]").length);
+				$("#"+nodeValue).parent().next().children().find("input[name='rightCheckBox'][disabled!='disabled']").each(function(){
+					var chk = $("input[name='rightCheckBox'][disabled!='false'][value='"+$(this).val()+"']");
+					if(chk.attr("disabled")==false){
+						chk.attr("checked",checkFlag);
+					}
+				});
+				var sel = $("#selectOrg");
+				$("#selectOrg").html("");
+				$("input[name='rightCheckBox']").each(function(){
+					if($(this).attr("checked")&&$(this).val().indexOf("grp_")<0){
+						var val = $(this).val();
+						var text = $(this).parent().text();
+						var flag = true;
+						$("option").each(function(){
+							if(val==$(this).val()){
+								flag = false;
+							}
+						});
+						if(flag){
+							sel.append($("<option value="+$(this).val()+">"+$(this).parent().find("span").text()+"</option>"));
+						}
+					}
+				});
+			}else{
+				addOpt(checkFlag,nodeValue);
+			}
+		}
+		function selectTreeNode(checkFlag, nodeValue) {
+			alert("selectTreeNode");
+		}
+		function SelectNodeItem(checkFlag,nodeValue) {
+			alert("SelectNodeItem:");
+    	}
+		
+		function setNodeItem(checkFlag, id, name) {
+			alert("setNodeItem");
+		}
+		
+		function  addOption(alias, strName, strValue){
+			alert("addOption");
+		}
+		
+		function  removeOption(alias, strName, strValue){ 
+			alert("removeOption");
+		}
+		
+		function initChecked() {
+			alert("initChecked");
+		}
+		
+		//选择人员到列表
+		function addOpt(checkFlag,nodeValue){
+			var sel = $("#selectOrg");
+			$("#selectOrg").html("");
+			if(checkFlag){
+				$("input[name='rightCheckBox']").each(function(){
+					if($(this).attr("checked")&&$(this).val().indexOf("grp_")<0){
+						var val = $(this).val();
+						var text = $(this).parent().text();
+						var flag = true;
+						$("option").each(function(){
+							if(val==$(this).val()){
+								flag = false;
+							}
+						});
+						if(flag){
+							sel.append($("<option value="+$(this).val()+">"+$(this).parent().find("span").text()+"</option>"));
+						}
+						$("input[name='rightCheckBox'][value='"+$(this).val()+"']").attr("checked",true);
+					}
+				});
+			}else{
+				$("input[name='rightCheckBox'][value='"+nodeValue+"']").attr("checked",false);
+				$("input[name='rightCheckBox']").each(function(){
+					if($(this).attr("checked")&&$(this).val().indexOf("grp_")<0){
+						var val = $(this).val();
+						var text = $(this).parent().text();
+						var flag = true;
+						$("option").each(function(){
+							if(val==$(this).val()){
+								flag = false;
+							}
+						});
+						if(flag){
+							sel.append($("<option value="+$(this).val()+">"+$(this).parent().find("span").text()+"</option>"));
+						}
+					}
+				});
+			}
+			
+		}
+			
+		//双击已经选中的人员,删除人员 
+		function dblclickRemove(sel){
+			if(sel.selectedIndex!=-1){
+				var opt = sel.options[sel.selectedIndex];
+				sel.removeChild(opt);
+				$("input[name='rightCheckBox'][value='"+opt.value+"']").attr("checked",false);
+			}
+		}
+		
+		//切换机构树
+		function switchTree(treeTd){
+			if("orgtree"==treeTd){
+				$("#orgtree").show();
+				$("#switchOrgTree").html("<b>所有机构</b>");
+				$("#grouptree").hide();
+				$("#switchGroupTree").html("机构分组");
+			}else{
+				$("#orgtree").hide();
+				$("#switchOrgTree").html("所有机构");
+				$("#grouptree").show();
+				$("#switchGroupTree").html("<b>机构分组</b>");
+			}
+		}
+		
+		function OpenWindow(Url, Width, Height, WindowObj) {
+			var ReturnStr = showModalDialog(Url,
+											WindowObj,
+											"dialogWidth:" + Width + "pt;dialogHeight:" + Height + "pt;"+
+											"status:no;help:no;scroll:no;");
+			return ReturnStr;
+		}
+		</script>
+	</HEAD>
+	<base target="_self"/>
+	<body class=contentbodymargin oncontextmenu="return false;"  topmargin="0" leftmargin="0">
+			<table border="0" cellpadding="2" cellspacing="0" width="100%">
+				<tr>
+					<td height="30"
+									style="FILTER:progid:DXImageTransform.Microsoft.Gradient(gradientType=0,startColorStr=#ededed,endColorStr=#ffffff);">
+									<table height="100%" width="100%" border="0" cellspacing="0" cellpadding="0">
+										<tr>
+								            <td width="5%" align="center"><img src="<%=frameroot%>/images/ico.gif" width="9" height="9"></td>
+								            <td width="20%">选择分发机构</td>
+								            <td>&nbsp;</td>
+								            <td width="75%">
+											</td>
+										</tr>
+									</table>
+								</td>
+				</tr>
+			</table>
+			
+			<select style="display: none ;" id="select_person"></select>
+			
+			<table width="100%" height="391" border="0" cellpadding="0" cellspacing="0" bordercolor="#FFFFFF">
+				<tr height="80%" >
+					<td width="100%" height="307">
+						<table width="100%" height="386" border="1" cellpadding="0" cellspacing="0" bordercolor="#FFFFFF">
+							<tr>
+							<td width="42%" height="350" valign="top" style="border-top-color: gray;background-color: white;OVERFLOW: auto;">
+				<table width="100%" height="30" border="1" cellpadding="0" cellspacing="0" bordercolor="#FFFFFF">
+				<tr>
+				<td width="50%" id="switchOrgTree" align="center" class="Operation" onclick="switchTree('orgtree')" ><b>所有机构</b>
+				</td>
+				<td width="50%" id="switchGroupTree" align="center" class="Operation" onclick="switchTree('grouptree')" >机构分组
+				</td>
+				</tr>
+				</table>
+				<table width="100%" height="360" border="1" cellpadding="0" cellspacing="0" bordercolor="#FFFFFF">
+				<tr>
+				<td id="orgtree" width="100%" >
+								<div id=contentborder class="dtree" style="top:20px; padding:20px;background-color: white;OVERFLOW: auto;">
+								<script language="javascript" type="text/javascript">
+		                          var imageRootPath='<%=root%>/workflow';
+								  var dd = new dTree('dd');
+								  dd.config.useSelection = false;
+						//所有机构  
+								  dd.add('0','-1','所有机构','','','','<%=root%>/workflow/images/tree/folder_closed.gif','2');
+								 <c:forEach items="${orgList}" var="tree" varStatus="status">
+								 	if("${tree.orgSyscode}".length==3){
+								 	  dd.add('${tree.orgSyscode}','0','${tree.orgName}','','','','<%=root%>/workflow/images/tree/folder_closed.gif','-2');
+								 	  //dd.config.useIcons=false;
+								 	  //dd.config.useSelection=false;
+								 	}else{
+								 	  var temp = "${tree.orgSyscode}".substring(0,"${tree.orgSyscode}".length-3);
+									  dd.add('${tree.orgSyscode}',temp,'${tree.orgName}','','','','<%=root%>/workflow/images/tree/folder_closed.gif','-2');
+								 	  //dd.config.useSelection=false;
+								 	}
+								 </c:forEach>
+								 dd.config.useSelection=true;
+								 document.write(dd);
+								</script>
+								</div>
+				</td>
+				<td  id="grouptree" width="100%" style="display: none">
+								<div id=contentborder class="dtree" style="top:20px; padding:20px;background-color: white;OVERFLOW: auto;">
+									<script language="javascript" type="text/javascript">
+		                          var imageRootPath='<%=root%>/workflow';
+		                          var valueArray = new Array();
+		                          
+								  var d = new dTree('d');
+						//机构分组  
+								  d.add('0','-1','机构分组','','','','<%=root%>/workflow/images/tree/folder_closed.gif','2');
+								  <c:forEach items="${orgGroupList}" var="orgGroup" varStatus="status">
+								  	
+								  	if(valueArray['<c:out value="${orgGroup[0]}"/>'] != "true"){
+								  		valueArray['<c:out value="${orgGroup[0]}"/>'] = "true";
+								  		d.add('grp_${orgGroup[0]}','0','${orgGroup[1]}','','','','<%=root%>/workflow/images/tree/folder_closed.gif','-2');
+								  	}
+								  	d.add('<c:out value="${orgGroup[2]}"/>','grp_<c:out value="${orgGroup[0]}"/>','<c:out value="${orgGroup[3]}"/>','','','', '<%=root%>/workflow/images/tree/folder_closed.gif','-2');
+								  	
+								 </c:forEach>
+								  document.write(d);
+								  
+								  $("input[name='rightCheckBox']").each(function(){
+								  		var id = $(this).attr("id");
+								     	var childNum = $("input[name='rightCheckBox'][id^='"+id+"'][id!='"+id+"']").length;
+								     	if(childNum != 0){
+								     		$(this).attr({"disabled":"disabled"});
+								     	}
+								  });
+								  
+								 
+								</script>
+								</div>
+				</td>
+				</tr>
+				</table>
+								
+					  	    </td>
+					  	    <td width="9%" style="border-top-color: #FFFFFF;">
+								<DIV id=contentborder style="background-color: white;" cellpadding="0">
+						  		</DIV>	
+							</td>
+							<td width="37%" style="border-top-color: #FFFFFF;">
+								<DIV id=contentborder style="background-color: white;" cellpadding="0">
+									<table width="100%" height="360" border="0" cellpadding="0" cellspacing="0" bordercolor="#FFFFFF">
+										<tr><td >
+										<p>&nbsp;&nbsp;新分发单位： 
+										<br>
+										  <select id="selectOrg" ondblclick="dblclickRemove(this);" title="双击单位名移去"
+										  		multiple="multiple" size="25" style="width:254px;">
+									      </select>
+									      </p></td>
+										</tr>
+									</table>
+								</DIV>	
+							</td>
+							
+							
+						</tr>
+					  </table>
+				  </td>
+				</tr>
+				<tr>
+					<td align="center"><br>
+						<input type="button" id="btnOK"  class="input_bg"  value="提交"/>&nbsp;&nbsp;&nbsp;&nbsp;
+						<input type="button" id="btnNO"  class="input_bg"  value="关闭"/>
+					</td>
+				</tr>
+			</table>
+	</body>
+</HTML>

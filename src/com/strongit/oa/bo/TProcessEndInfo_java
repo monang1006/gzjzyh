@@ -1,0 +1,125 @@
+package com.strongit.oa.bo;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+import org.hibernate.annotations.GenericGenerator;
+
+/**
+ * 保存流程办结信息
+ * 
+ * @author 严建
+ * @company Strongit Ltd. (C) copyright
+ * @date Mar 29, 2012 3:33:25 PM
+ * @version 1.0.0.0
+ * @classpath com.strongit.oa.bo.TProcessEndInfo
+ */
+@SuppressWarnings("serial")
+@Entity
+@Table(name = "T_PROCESSEND_INFO")
+public class TProcessEndInfo {
+	/**
+	 * 主键值
+	 */
+	private String id;
+
+	/**
+	 * 流程实例id
+	 */
+	private String processInstanceId;
+
+	/**
+	 * 办结人id
+	 */
+	private String actorId;
+
+	/**
+	 * 办结人姓名
+	 */
+	private String actorName;
+
+	/**
+	 * 办结人所在部门id
+	 */
+	private String orgId;
+
+	/**
+	 * 办结人所在部门
+	 */
+	private String orgName;
+
+	/**
+	 * 流程结束方式
+	 */
+	private String endStyle;
+
+	@Column(name = "ACTOR_ID", nullable = false)
+	public String getActorId() {
+		return actorId;
+	}
+
+	public void setActorId(String actorId) {
+		this.actorId = actorId;
+	}
+
+	public String getActorName() {
+		return actorName;
+	}
+
+	@Column(name = "ACTOR_NAME", nullable = false)
+	public void setActorName(String actorName) {
+		this.actorName = actorName;
+	}
+
+	@Column(name = "END_STYLE", nullable = false)
+	public String getEndStyle() {
+		return endStyle;
+	}
+
+	public void setEndStyle(String endStyle) {
+		this.endStyle = endStyle;
+	}
+
+	@Id
+	@Column(name = "ID", nullable = false, length = 32)
+	@GeneratedValue(generator = "hibernate-uuid")
+	@GenericGenerator(name = "hibernate-uuid", strategy = "uuid")
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	@Column(name = "ORG_ID", nullable = false)
+	public String getOrgId() {
+		return orgId;
+	}
+
+	public void setOrgId(String orgId) {
+		this.orgId = orgId;
+	}
+
+	@Column(name = "ORG_NAME", nullable = false)
+	public String getOrgName() {
+		return orgName;
+	}
+
+	public void setOrgName(String orgName) {
+		this.orgName = orgName;
+	}
+
+	@Column(name = "PROCESSINSTANCE_ID", nullable = false)
+	public String getProcessInstanceId() {
+		return processInstanceId;
+	}
+
+	public void setProcessInstanceId(String processInstanceId) {
+		this.processInstanceId = processInstanceId;
+	}
+
+}

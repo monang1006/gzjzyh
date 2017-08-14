@@ -1,0 +1,357 @@
+<!-- 
+	History: The last revised time is at 2004-11-04
+-->
+<PUBLIC:COMPONENT tagName=list >
+<PUBLIC:DEFAULTS viewLinkContent tabStop="true" viewMasterTab=false  />
+<PUBLIC:PROPERTY NAME="label" />
+<PROPERTY NAME="view" />
+<PROPERTY NAME="node" />
+<PROPERTY NAME="selectedIndex" get=getSelectedRowIndex />
+<PROPERTY NAME="xml" get=getXml />
+<PROPERTY NAME="colsWidth" />
+<PROPERTY NAME="checkedRows" get=getCheckedRows/>
+<!-- <PUBLIC:PROPERTY NAME=debugMode get=getDebugMode put=setDebugMode /> -->
+<!-- 20040908:王健  -->
+<PROPERTY NAME="noderequest" />
+
+
+<METHOD NAME="hasFocus" />
+<METHOD NAME="rowIsChecked" />
+<METHOD NAME="clear" />
+<METHOD NAME="addRow" />
+<METHOD NAME="deleteRow" />
+<METHOD NAME="selectRow" />
+<METHOD NAME="getCellValue" />
+<METHOD NAME="setCellValue" />
+<METHOD NAME="getRowCount" />
+<METHOD NAME="getColCount" />
+<METHOD NAME="getRowData" />
+<METHOD NAME="setRowData" />
+<METHOD NAME="setColWidth" />
+<METHOD NAME="mapNode" />
+<METHOD NAME="findRows" />
+
+<METHOD NAME="loadXMLFromFile" />
+<METHOD NAME="getSelectedRowIndex" />
+<METHOD NAME="setSelectedRow" />
+<!-- 输入参数为数组<METHOD NAME="setSelectedRows" /> -->
+<METHOD NAME="reload" />
+<METHOD NAME="removeRow" />
+<!--200401103:WangJian:增加list的颜色，字体的设置 -->
+<PUBLIC:METHOD NAME="setColor" />
+<PUBLIC:METHOD NAME="setFont" />
+
+
+
+<public:ATTACH   EVENT="oncontentready"  HANDLER="init" />
+<public:ATTACH   EVENT="onresize" for="window"  HANDLER="fnResize" />
+<PUBLIC:EVENT NAME="onrowclick" ID="eClick" />
+<PUBLIC:EVENT NAME="onrowcheck" ID="eCheck" />
+<PUBLIC:EVENT NAME="onrowselect" ID="eSelect" />
+<public:ATTACH   EVENT="onfocus"  HANDLER="fnFocus" />
+<public:ATTACH   EVENT="onblur"  HANDLER="fnLostFocus" />
+
+</PUBLIC:COMPONENT>
+<SCRIPT LANGUAGE="javascript">
+var bFocus = false;
+///////用户自定义功能区//////////////////////////////////////////////////
+//可通过修改UserCustom中的代码，实现对list的缺省初始自定义设置
+function UserCustom()
+{
+	//setColor("DEFAULT_COLOR","&H80000018");
+	//setColor("FILL_COLOR","&H80000018");
+	//setColor("TEXT_CONTENT_COLOR",12409088);
+	//setFont("TEXT","隶书","false","12");
+	return;
+}
+var START = new Date().getTime();
+function fnResize(){
+	len = new Date().getTime() - START;
+	if (len > 600){
+		htcList.style.width = htcList.style.width == "100%"?"99.6%":"100%";
+		START = new Date().getTime();
+	}
+}
+
+/////////////////////////////////////////////////////////////////////////
+
+function init()
+{
+	//20041104:WangJian:用户通过修改下边函数，实现自定义的缺省初始设置
+	UserCustom();
+
+	if(label !=null)
+		htcList.strLabel = label;
+	if(view != null)
+		htcList.strView = view;
+		//3.引用数据岛
+	if(node != null){
+		if(node.indexOf("/") != -1){
+			//var arrNode = new Array();
+			var arrNode = node.split("/");
+			var nodeXML = eval(arrNode[0]);
+			for(var j=1;j<arrNode.length;j++)
+				htcList.XMLData = nodeXML.getElementsByTagName(arrNode[j])[0];
+		}else{
+			htcList.XMLData = eval(node).documentElement;
+		}
+	}else
+	{
+		//20040811:王健:增加noderequest属性，当node为空时主动查询service，得到select的xml内容，
+		//通过list.xmldata方法写数据到list中
+		if (noderequest != null)
+		{
+			var arrNodeRequest = noderequest.split(":");
+			var arrNodeLevel = arrNodeRequest[2].split("/");
+			var strUseNodeName = arrNodeLevel[arrNodeLevel.length-1];
+			var sid=createWorkId();
+			var service = new Service(arrNodeRequest[0],sid);
+			var oArg
+			if(arrNodeRequest[1] != "" )
+				oArg=service.doService(arrNodeRequest[1]);
+			else
+				oArg=service.doService();
+			if (getCode(service)== "2000")
+			{
+	   			if (strUseNodeName == ""){
+	   				//没有根节点，需补上一个
+	   				oArg = "<ROOT>" + oArg + "</ROOT>";
+	   				strUseNodeName = "ROOT";
+	   			}
+	   			var oDoc=loadXml(oArg);
+	   			var refNode = oDoc.getElementsByTagName(strUseNodeName)(0);
+				htcList.XMLData = refNode
+   			}
+   			else
+	   			showMessage(getMessage(service), 0);
+		}		
+	}
+	//设置列宽度
+	if(colsWidth != null){
+		var arrWidth = colsWidth.split("|");
+		for(var i=0;i<arrWidth.length;i++)
+			htcList.setColWidth(i,parseInt(arrWidth[i]));
+	}
+}
+
+/*
+	调用方法：findRows("节点名1","节点值1","节点名2","节点值2")
+	查找符合条件的行，数组形式返回,如没有找到，则返回的数组长度为0
+*/
+function findRows(){
+	var args = findRows.arguments;
+	var oNode = null;
+	if(node != null){
+		if(node.indexOf("/") != -1){
+			var arrNode = node.split("/");
+			oNode = eval(arrNode[0]);
+			for(var j=1;j<arrNode.length;j++)
+				oNode = oNode.getElementsByTagName(arrNode[j])[0];
+		}else{
+			oNode = eval(node).documentElement;
+		}
+	}
+	var oNodes = oNode.childNodes;
+	var rtns = new Array();
+	var idx = 0;
+	for(var i=0;i<oNodes.length;i++){
+		var flag = 0;
+		for(var j=0;j<args.length-1;j+=2){
+			if(oNodes(i).getElementsByTagName(args[j])(0).text == args[j+1])
+				flag ++;
+			else
+				continue;
+		}
+		if(flag == args.length/2)
+			rtns[idx++] = i;
+	}
+	return rtns;
+}
+function getCellValue(x,y){
+	return htcList.getCellValue(x,y);
+}
+function setCellValue(x,y,val){
+	htcList.setCellValue(val,x,y);
+}
+function fnFocus()
+{
+	bFocus = true;
+}
+function fnLostFocus()
+{
+	bFocus = false;
+}
+function hasFocus()
+{
+	return bFocus;
+}
+function getRowCount()
+{
+	return htcList.getRowCount();
+}
+function getColCount()
+{
+	return htcList.getColCount();
+}
+function getRowData(index)
+{
+	return htcList.getRowData(index);
+}
+function setRowData(rowIndex,val)
+{
+	var arrData = val.split("|");
+	for(var i=0;i<arrData.length;i++)
+		setCellValue(rowIndex,i,arrData[i]);
+}
+function setColWidth(colIndex,nWidth)
+{
+	htcList.setColWidth(colIndex,nWidth);
+}
+function clear()
+{
+	htcList.clear();
+}
+function rowIsChecked(rowIndex)
+{
+	return htcList.rowIsChecked(rowIndex);
+}
+function reload()
+{
+	htcList.reload();
+}
+function deleteRow(index)
+{
+	htcList.removeRow(index);
+}
+function addRow(strRowData)
+{
+	htcList.addRow(strRowData);
+}
+function getSelectedRowIndex()
+{
+	return htcList.getSelectedRowIndex();
+}
+function loadXMLFromFile(strFileName)
+{
+	htcList.loadXMLFromFile(strFileName);
+}
+function selectRow(rowIndex)
+{
+	setSelectedRow(rowIndex);
+}
+function setSelectedRow(index)
+{
+	htcList.setSelectedRow(index);
+}
+function getXml()
+{
+	return htcList.xml;
+}
+function getCheckedRows()
+{
+	return htcList.checkedRows;
+}
+function mapNode(oNode)
+{
+	//if type of the passed parameter is DOM style
+	if(typeof(oNode) == "object"){
+		if(oNode == null){
+			alert("编程错误:组件[DataWindow]的成员函数[mapNode]中的参数'oNode'为空!");
+			return;
+		}
+		if(oNode.nodeType == 9)
+			htcList.XMLData = oNode.documentElement ;
+		else
+			htcList.XMLData = oNode;
+	}
+	else{
+		if(oNode.indexOf("/") != -1){//支持分层节点类型
+			var arrNode = oNode.split("/");
+			var nodeXML = eval(arrNode[0]);
+			for(var j=1;j<arrNode.length;j++)
+				nodeXML = nodeXML.getElementsByTagName(arrNode[j])[0];
+			htcList.XMLData = nodeXML;
+		}else
+			htcList.XMLData = eval(oNode).documentElement;
+	}
+}
+/*
+ * 创建人: WangJian
+ * 创建日期: 2004-11-03
+ * 最后修改日期: 
+ * 函数功能：设置背景和前景颜色
+ * 输入参数：string:strType设置什么部位的颜色;int32:lColor颜色的16进制数值
+ * 输出参数：
+*/
+function setColor(strType,lColor){
+	htcList.SetColor(strType,lColor);
+}
+/*
+ * 创建人: WangJian
+ * 创建日期: 2004-11-03
+ * 最后修改日期: 
+ * 函数功能：设置文本的字体的类型和粗细
+ * 输入参数：string:strType设置什么部位的字体;string:strFontName字体名称;bool:bIsBold是否加粗显示;int:iFontSize字体尺寸
+ * 输出参数：
+*/
+function setFont(strType,strFontName,bIsBold,iFontSize){
+	if(setFont.arguments.length == 2)
+		htcList.SetFont(strType,strFontName);
+	if(setFont.arguments.length == 3)
+		htcList.SetFont(strType,strFontName,bIsBold);
+	if(setFont.arguments.length == 4)
+		htcList.SetFont(strType,strFontName,bIsBold,iFontSize);
+}
+
+
+
+//////////////////////////Event Processing////////////////////////
+function fnClick(rowIndex)
+{
+	var oEvent = createEventObject();
+	oEvent.rowIndex = rowIndex;
+	eClick.fire(oEvent);
+}
+function fnCheck(rowIndex,bChecked)
+{
+	var oEvent = createEventObject();
+	oEvent.rowIndex = rowIndex;
+	oEvent.checked = bChecked;
+	eCheck.fire(oEvent);
+}
+function fnSelect(rowIndex)
+{
+	var oEvent = createEventObject();
+	oEvent.rowIndex = rowIndex;
+	eSelect.fire(oEvent);
+}
+</SCRIPT>
+
+<HTML xmlns:ctais>
+<SCRIPT LANGUAGE="javascript" FOR="htcList" EVENT="onrowclick(rowIndex)">
+<!--
+	fnClick(rowIndex);
+-->
+</SCRIPT>
+<SCRIPT LANGUAGE="javascript" FOR="htcList" EVENT="onrowselect(rowIndex)">
+<!--
+	fnSelect(rowIndex);
+-->
+</SCRIPT>
+<SCRIPT LANGUAGE="javascript" FOR="htcList" EVENT="onrowcheck(rowIndex,bChecked)">
+<!--
+	fnCheck(rowIndex,bChecked);
+-->
+</SCRIPT>
+<BODY>
+
+<BODY>
+	<object style='width:100%;height:100%' id="htcList" CLASSID="CLSID:8DD15C76-6FCC-411E-BBC2-92306D9AFA33"
+CODEBASE="../lib/ctais_htc.cab#version=1,0,0,125">
+	  <param name="_ExtentX" value="6482">
+	  <param name="_ExtentY" value="5027">
+<div style="color:red">CTAIS组件xlist载入失败，请先<a href="/ctais/work/public/htm/install.htm#download" target="_blank">安装</a>并检查浏览器的安全设置选项</div>
+	</object>
+
+</BODY>
+</HTML>

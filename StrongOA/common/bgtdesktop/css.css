@@ -1,0 +1,84 @@
+@charset "utf-8";
+/* CSS Document */
+
+body,h1,h2,h3,h4,h5,h6,hr,p,blockquote,dl,dt,dd,ul,ol,li,pre,form,fieldset,legend,button,input,textarea,th,td{margin:0;padding:0;}body,button,input,select,textarea{font:12px/1.5 tahoma,arial,simsun,sans-serif;}h1,h2,h3,h4,h5,h6{font-size:100%;}address,cite,dfn,em,var{font-style:normal;}code,kbd,pre,samp{font-family:courier new,courier,monospace;}small{font-size:12px;}ul,ol,li{list-style:none;}a{text-decoration:none;}a:hover{text-decoration:underline;}sup{vertical-align:text-top;}sub{vertical-align:text-bottom;}legend{color:#5d5d5d;}fieldset,img{border:0;}button,input,select,textarea{font-size:100%;}table{border-collapse:collapse;border-spacing:0;}
+html{ color: #000; background:#fff; }
+body{ font-family:"\5b8b\4f53", sans-serif; }
+.fle{ float:left; display:inline;}
+.fri{ float:right; display:inline;}
+.top{ background:url(resource/images/index/dtopbg.jpg) repeat-x left top; height:120px;}
+.toppic{ margin-top:40px; margin-left:80px;}
+.topname{ text-align:center; float:right; display:inline; margin-right:8px; margin-top:5px;}
+.yonghu{ color:#1357c8; background:url(resource/images/index/yonghu.jpg) no-repeat center; margin-right:10px; width:100px; height:25px; line-height:25px;}
+.topbotton{ width:65px; height:25px; color:#1357c8; margin-left:5px;}
+.nav{ width:100%; background:url(resource/images/index/nav01.jpg) repeat-x top; height:30px; text-align:center;}
+.navbox{  margin:auto auto; float:right;}
+.navbox li span{ width:73px; height:23px; background:url(resource/images/index/nav_bt_09.jpg) no-repeat center; text-align:center; line-height:23px; display: block; float:left; margin-left:6px; margin-top:3px; font-weight:bold; cursor:pointer; color:#FF0000;}
+.btn{width:110px; height:23px; background:url(resource/images/index/bt_09.jpg) no-repeat center; text-align:center; line-height:23px; display: block; float:left; margin-left:6px; margin-top:3px; font-weight:bold; cursor:pointer; }
+.btn a:link,.btn a:visited,.btn a:hover{ color:#015baf; FILTER: dropshadow(color=#ffffff, offx=1, offy=1, positive=1); font-size:14px;}
+.nav li{ float:left; width:95px; height:32px; line-height:30px; background:url(resource/images/index/nav02.jpg) top right no-repeat;}
+.nav li a{ font-size:14px; color:#015baf; FILTER: dropshadow(color=#ffffff, offx=1, offy=1, positive=1); text-align:center;}
+.nav li a:hover{ text-decoration:none; font-weight:bold; FILTER: dropshadow(color=#ffffff, offx=1, offy=1, positive=1);}
+.d1002{ width:100%; height:690px;}
+.left241{ width:241px; float:left; display:inline; margin:4px 0 0 8px;}
+.huany{ font-size:14px; background:url(resource/images/index/huany.jpg) no-repeat top; height:70px; width:241px;}
+.name{ padding:5px 0 0 30px; color:#5baed4;}
+.word1{ width:120px; margin-top:15px; text-align:center;}
+.word1 a{ font-weight:bold; color:#5baed4;}
+.word1 a:hover{ color:#333; text-decoration:none;}
+.leftbox{ background:url(resource/images/index/leftbox.jpg) no-repeat top; height:238px; width:241px; margin-top:6px;}
+.left_title a{ color:#FFF; font-weight:bold; font-size:14px; margin-left:36px; line-height:28px; FILTER: dropshadow(color=#306a92, offx=1, offy=1, positive=1);}
+.left_title a:hover{ color:#3c7ba1; text-decoration:none;}
+.left_con{ padding:0px 0 0 10px; line-height:24px;}
+.left_con a:link,.left_con a:visited,.left_con a:hover{ color:#3286ad; font-weight:normal;font-size:14px;}
+.leftpic{ width:241px; height:84px; margin-top:6px;}
+.shipin{ background:url(resource/images/index/shipin.jpg) top no-repeat; height:84px; width:119px;}
+.xuexi{ background:url(resource/images/index/xuexi.jpg) top no-repeat; height:84px; width:122px;}
+.leftpic a{ font-size:14px; color:#FFF; font-weight:bold; FILTER: dropshadow(color=#306a92, offx=1, offy=1, positive=1); float:left; padding:57px 0 0 32px;}
+.leftpic a:hover{ text-decoration:none; color:#225b7d; FILTER: dropshadow(color=#71c1f2, offx=1, offy=1, positive=1);}
+.right736{ float:left; display:inline; margin:0 8px 0 8px;width: 99%;}
+.right01{ float:left;  height:275px;}
+.zhengw{ background:url(resource/images/index/zhengwumid.jpg) repeat-x; height:35px;}
+.zhengwlef{ background:url(resource/images/index/zhengwulef.jpg) no-repeat; width:365px; height:35px; float:left;}
+.zhengwrig{ background:url(resource/images/index/zhengwuright.jpg) no-repeat; width:371px; height:35px; float:right;}
+.zhengw a{ color:#7baccb; FILTER: dropshadow(color=#ffffff, offx=1, offy=1, positive=1); float:right; padding:9px 77px 0 0;}
+.zhengw a:hover{ text-decoration:none; color:#225a7e; FILTER: dropshadow(color=#ffffff, offx=1, offy=1, positive=1);}
+.zhengw02{ width:100%; height:240px; background:url(resource/images/index/zhengw02.jpg) repeat-x;}
+.zwli01{ background:url(resource/images/index/zhengw01.jpg); width:5px; height:240px; float:left;}
+.zwli02{ width:auto; height:240px; float:left;}
+.zwli03{ background:url(resource/images/index/zhengw03.jpg); width:5px; height:240px; float:right;}
+.rigbox491{ margin-top:6px; width:100%; }
+.bluebox{ overflow:hidden; background:url(resource/images/index/blue_re.jpg) repeat-x; height:159px; width:100%; margin-bottom:4px; }
+.bluelef{ background:url(resource/images/index/blue_03.jpg) no-repeat; width:15px; height:127px;}
+.bluerig{ background:url(resource/images/index/blue_04.jpg) no-repeat; width:5px; height:127px;}
+.bbox01{ font-size:14px; font-weight:bold; color:#1162af; padding-left:39px; background:url(resource/images/index/blue_01.jpg) no-repeat; width:111px; height:32px; line-height:32px;}
+.bluebox a{ font-weight:bold; color:#1162af;}
+.bluebox a:hover{ text-decoration:none; color:#333;}
+.bbox02{ font-size:14px;}/*background:url(resource/images/index/blue_05.jpg) repeat-x bottom center; height:35px;}*/
+.blueanniu{ background:url(resource/images/index/blue_06.jpg) no-repeat; width:87px; height:22px; text-align:center; margin-top:5px; margin-left:10px;}
+.bbox04{ height:60px; padding:3px 0 0 15px;}
+.blueborder{ border-bottom:1px dashed #999;}
+.midbox169{ height:169px; }
+.box169bar{ background:url(resource/images/index/bartop03.jpg) repeat-x; height:31px;}
+.bartoplef{ background:url(resource/images/index/bartop01.jpg) no-repeat; width:243px; height:31px;}
+.{ background:url(resource/images/index/bartop02.jpg) no-repeat; width:248px; height:31px;}
+.box169bar span{ color:#1162af; font-size:14px; margin-left:35px; line-height:31px; font-weight:bold; FILTER: dropshadow(color=#ffffff, offx=1, offy=1, positive=1);}
+.box169bar a{ color:#4797ca; line-height:13px; float:right; margin:9px 15px 0 0; FILTER: dropshadow(color=#ffffff, offx=1, offy=1, positive=1);}
+.box169bar a:hover{ color:#175d8a; text-decoration:none;}
+.midmid{ background:url(resource/images/index/barmid.jpg) repeat-x; height:138px;}
+.reboxlef{ background:url(resource/images/index/barlef.jpg) no-repeat; height:138px; width:6px;}
+.reboxrig{ background:url(resource/images/index/barrig.jpg) no-repeat; height:138px; width:6px;}
+
+.rig237{ width:237px; margin:6px 0 0 8px;}
+.rightbox{ background:url(resource/images/index/rigbox.jpg) no-repeat bottom; height:217px; width:237px; margin-bottom:8px;}
+.rightboxbar{ font-size:14px; font-weight:bold; color:#0158aa; height:32px; line-height:32px; padding-left:63px;}
+.rightboxbar a{ font-size:12px; font-weight:normal; color:#7baccb; margin-left:45px;}
+.rightboxbar a:hover{ color:#0158aa; text-decoration:none;}
+.weituo{ margin-top:4px;cursor:pointer;}
+.rightbox2{ background-image:url(resource/images/index/rigbox3.jpg); }
+.rightbox2 span{ color:#666; cursor:pointer; }
+.rightbox2 span.rtbxsping{ color:#0158aa; }
+.rightboxbar2{ padding:0; text-align:center; }
+.rightbox3{ background-image:url(resource/images/index/rigbox2.jpg); }
+
+.bottom{ width:100%; background:url(resource/images/index/bottom.jpg) repeat-x top; height:87px; text-align:center; padding-top:30px; font-size:14px;}

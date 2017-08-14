@@ -1,0 +1,144 @@
+﻿body, ul, ol, li, p, h1, h2, h3, h4, h5, h6, form, fieldset, table, td, img, div {
+	margin:0;
+	padding:0;
+	border:0;
+}
+body{
+	background:#ffffff;
+	color:#0070ac;
+}
+td, p, li, select, input, textarea, div {
+	font-size:12px;
+}
+ul, ol {
+	list-style-type:none;
+}
+select, input {
+	vertical-align:middle;
+}
+
+body,html{height: 100%;}
+#outer {height: 100%; overflow: hidden; position: relative;width: 100%;}
+#outer[id] {display: table; position: static;}
+#middle {
+position: absolute;
+top: 50%;
+left:50%;
+}/* for explorer only*/
+#middle[id] {display: table-cell; vertical-align: middle; position: static;}
+.login {
+position: relative;
+top:-50%;
+left:-50%;
+margin: 0 auto;
+ } /* for explorer only */
+
+#box{width:100%; height:100%;}
+.login {
+	width:465px;
+	height:298px;
+	margin:0 auto;
+	background:url(../images/login_03.jpg);
+}
+.login ul .inp, .login ul .yz {
+	height:23px;
+	border:1px solid #0070ac;
+	background:url(../images/inpbg_06.jpg);
+	line-height:19px;
+}
+.logo{
+font-family:"黑体";
+font-size:24px;
+height:39px;
+line-height:39px;
+color:#FFFFFF;
+font-weight:bold;
+margin:18px auto auto 25px;
+}
+.logo img{
+margin-right:5px;
+float:left;
+}
+.inp {
+	background-color: #FFFFFF;
+	border: 1px solid #B31001;
+	height: 18px;
+	width: 148px;
+}
+.gaybold {
+	font-family: "??";
+	font-size: 14px;
+	line-height: 150%;
+	text-decoration: none;
+	color: #E7E7E7;
+	font-weight: bold;
+	filter: DropShadow(Color=#5E1A07, OffX=1, OffY=1, Positive=left);
+}
+.gaybold a:link,.gaybold a:visited,.gaybold a:hover,.gaybold a:active {
+	font-family: "??";
+	font-size: 14px;
+	line-height: 150%;
+	text-decoration: none;
+	color: #E7E7E7;
+	font-weight: bold;
+	filter: DropShadow(Color=#5E1A07, OffX=1, OffY=1, Positive=left);
+}
+.yz {
+	background-color: #FFFFFF;
+	border: 1px solid #B31001;
+	width:50px;
+	font-family:Verdana, Geneva, sans-serif;
+	font-size:14px;
+}
+
+.dlfs {
+	background-color: #FFFFFF;
+	border: 1px solid #B31001;
+}
+
+.login li {
+	margin-top:5px;
+}
+.btn {
+	width:66px;
+	height:28px;
+	line-height:28px;
+	color:#FFF;
+	font-weight:bold;
+	background:url(../images/btnbg_06.jpg);
+	border:0;
+	margin-top:10px;
+}
+.copyright{
+width:465px;
+text-align:center;
+display:block;
+margin-top:12px;
+FILTER: dropshadow(color=#ffffff, offx=1, offy=1, positive=1);
+}
+.forgetpass{
+height:20px;
+vertical-align:bottom;
+padding-left:10px;
+}
+.forgetpass a{
+font-family:"宋体";
+font-size:12px;
+color:#E7E7E7;
+text-decoration:none;
+}
+.forgetpass a:hover{text-decoration:underline;}
+
+
+.login ul {
+	display:block;
+	margin:10px auto auto 200px;
+	width:220px;
+}
+.login ul .inp, .login ul .yz {
+	height:23px;
+	border:1px solid #0070ac;
+	background:url(../images/inpbg_06.jpg);
+	line-height:19px;
+}
+.rtx{ padding-left:55px;}

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
+		http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-2.5.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd"
+	default-lazy-init="true">
+	<!-- ldap数据源 -->
+	<bean id="contextSourceTarget" class="org.springframework.ldap.core.support.LdapContextSource">
+		<property name="url" value="ldap://localhost:389" />
+		<property name="base" value="DC=strongit,DC=com" />
+		<property name="userDn"
+			value="cn=Manager,dc=strongit,dc=com" />
+		<property name="password" value="secret" />
+   </bean>
+   
+	<!-- ldap数据源 -->
+	<!--<bean id="contextSourceTarget" class="org.springframework.ldap.core.support.LdapContextSource">
+		<property name="url" value="ldap://192.168.2.20:389" />
+		<property name="base" value="o=lkoa" />
+		<property name="userDn"
+			value="cn=admin,o=lkoa" />
+		<property name="password" value="pass123" />
+   </bean>-->
+
+   <!-- ldap数据源代理类 -->
+   <bean id="ldapContextSource" 
+            class="org.springframework.ldap.transaction.compensating.manager.TransactionAwareContextSourceProxy">
+      <constructor-arg ref="contextSourceTarget" />
+   </bean>
+   
+   <!-- ldap操作模板 -->
+   <bean id="ldapTemplate" class="com.strongit.ldap.dao.LdapTemplateForSortPaged">
+      <constructor-arg ref="ldapContextSource" />
+   </bean>
+
+   <!-- ldap数据操作类 -->
+   <bean id="ldapDao" class="com.strongit.ldap.dao.LdapDaoImpl">
+		<property name="ldapTemplate" ref="ldapTemplate" />
+   </bean>
+   
+   <!-- ldap初始配置类 -->
+   <bean class="com.strongit.ldap.configuration.LdapConfiguration" lazy-init="false">
+   		<constructor-arg index="0" value="ldapMapping.xml"/>
+   		<constructor-arg index="1" value="ldapQuery.xml"/>
+   		<property name="isSupportSort"><value>false</value></property>
+   </bean>
+</beans>

@@ -1,0 +1,129 @@
+
+.dtree {
+	font-size: 16px;
+	color: #000000;
+	white-space: nowrap;
+}
+.dtree img {
+	border: 0px;
+	vertical-align: middle;
+}
+.dtree a {
+	color: #FFFFFF;
+	text-decoration: none;
+}
+.dtree a.node, .dtree a.nodeSel, a:visited.node {
+	color: #000000;
+	white-space: nowrap;
+	padding: 1px 2px 1px 2px;
+	text-decoration:none;
+	
+}
+.dtree a:hover.node, .dtree a:hover.nodeSel {
+	color: #000000;
+	text-decoration: underline;
+	text-decoration:none;
+}
+
+.dtree .clip {
+	overflow: hidden;
+}
+
+.node {
+	color: #FFFFFF;
+}
+
+.node tr {
+	font-size: 14px;
+	line-height: 100%;
+}
+
+.node td {
+	font-size: 14px;
+	line-height: 100%;
+}
+
+.white {
+	color: #FFFFFF;
+}
+
+.white tr {
+	font-size: 14px;
+	line-height: 150%;
+}
+
+.white td {
+	font-size: 14px;
+	line-height: 150%;
+}
+
+.nodemem {
+	color: #000000;
+}
+
+.nodemem tr {
+	font-size: 12px;
+	border-bottom: 1px solid #d8d8d0;
+}
+
+.nodemem td {
+	font-size: 12px;
+	border-bottom: 1px solid #d8d8d0;
+}
+
+.mail {
+	color: #000000;
+}
+
+.mail tr {
+	font-size: 12px;
+	border-bottom: 1px solid #d8d8d0;
+}
+
+.mail td {
+	font-size: 12px;
+	border-bottom: 1px solid #d8d8d0;
+}
+
+.mailview {
+	color: #000000;
+}
+
+.mailview tr {
+	font-size: 12px;
+	border-bottom: 1px solid #ACA899;
+}
+
+.mailview td {
+	font-size: 12px;
+	border-bottom: 1px solid #ACA899;
+}
+
+body {
+	font-size: 12px;
+    line-height: 150%;
+}
+
+td {
+	font-size: 12px;
+}
+
+a            { color: #ffff; text-decoration:none; line-height: 100% }
+a:visited    { color: #000000;text-decoration:none}
+a:link       { color: #000000; text-decoration:none }
+a:hover      { color: #000000; text-decoration:none}
+
+.flowlist  {
+ line-height: 120%;
+}
+
+.flowlist td {
+  border-left-width: 1px; border-right-width: 1px; border-top-width: 1px; border-bottom: 1px solid #CCCCCC;
+  line-height: 130%;
+}
+
+.tableborder		{ background: #D6E0EF; border: 1px solid #698CC3 } 
+.smalltxt		{ font-family: Tahoma, Verdana; font-size: 8pt }
+.header			{ font-family: Tahoma, Verdana; font-size: 8pt; color: #FFFFFF; font-weight: bold; background-color: #698CC3 }
+
+.page				{ text-decoration: none; color:#000044; font-size: 8pt }

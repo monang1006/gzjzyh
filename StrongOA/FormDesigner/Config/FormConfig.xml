@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<config convertofficeformat="true" >
+  <help>http://127.0.0.1:8080/FormService/FormDesigner/Help/HelpHome.html</help>
+  <assembly>  
+  	<part name="表单样式文件" path="StrongFormStyleLibrary.dll" update='2014-09-10'/>
+    <part name="表单基础控件库" path="StrongFormControlLibrary.dll" update='2014-09-10'/>
+    <part name="表单工作流控件库" path="FormWorkControlLibrary.dll" update='2014-09-10'/>
+  </assembly>
+  <fonts>
+    <font name="SimSun,NSimSun">宋体</font>
+    <font name="NSimSun">新宋体</font>
+    <font name="FangSong">仿宋</font>
+    <font name="FangSong_GB2312">仿宋_GB2312</font>
+    <font name="KaiTi">楷体</font>
+    <font name="KaiTi_GB2312">楷体_GB2312</font>
+    <font name="SimHei">黑体</font>
+    <font name="MingLiu">细明体</font>
+    <font name="LiSu">隶书</font>
+    <font name="YouYuan">幼圆</font>
+    <font name="Microsoft JhengHei">微软正黑体</font>
+    <font name="Microsoft YaHei">微软雅黑</font>
+    <font name="FZShuTi">方正舒体</font>
+    <font name="FZYaoti">方正姚体</font>
+    <font name="STXihei">华文细黑</font>
+    <font name="STKaiti">华文楷体</font>
+    <font name="STSong">华文宋体</font>
+    <font name="STZhongsong">华文中宋</font>
+    <font name="STFangsong">华文仿宋</font>
+    <font name="STCaiyun">华文彩云</font>
+    <font name="STHupo">华文琥珀</font>
+    <font name="STLiti">华文隶书</font>
+    <font name="STXingkai">华文行楷</font>
+    <font name="STXinwei">华文新魏</font>
+  </fonts>
+  <dictionary>
+    <item key="True">是</item>
+    <item key="False">否</item>
+    <item key="Yes">是</item>
+    <item key="No">否</item>
+    <!--图像拉伸方式-->
+    <item key="System.Windows.Media.Stretch.None">无</item>
+    <item key="System.Windows.Media.Stretch.Fill">填充</item>
+    <item key="System.Windows.Media.Stretch.Uniform">保留纵横比的同时调整内容的大小</item>
+    <item key="System.Windows.Media.Stretch.UniformToFill">剪裁以适合保留纵横比调整内容的大小</item>
+    <!--表单表格选择方式-->
+    <item key="Strong.Form.Designer.FormGridTab+FormGridSelectMode.None">无</item>
+    <item key="Strong.Form.Designer.FormGridTab+FormGridSelectMode.Single">单选</item>
+    <item key="Strong.Form.Designer.FormGridTab+FormGridSelectMode.Multi">多选</item>
+    <!--DataGrid网络线显示样式-->
+    <item key="System.Windows.Controls.DataGridGridLinesVisibility.None">不显示任何网格线</item>
+    <item key="System.Windows.Controls.DataGridGridLinesVisibility.Horizontal">仅显示水平网格线</item>
+    <item key="System.Windows.Controls.DataGridGridLinesVisibility.Vertical">仅显示垂直网格线</item>
+    <item key="System.Windows.Controls.DataGridGridLinesVisibility.All">同时显示水平和垂直网格线</item>
+    <!--线段方向-->
+    <item key="Strong.Form.Controls.LineslopeType.isup">向上</item>
+    <item key="Strong.Form.Controls.LineslopeType.isdown">向下</item>
+    <!--水平对齐-->
+    <item key="System.Windows.HorizontalAlignment.Left">左侧对齐</item>
+    <item key="System.Windows.HorizontalAlignment.Center">中心对齐</item>
+    <item key="System.Windows.HorizontalAlignment.Right">右侧对齐</item>
+    <item key="System.Windows.HorizontalAlignment.Stretch">拉伸</item>
+    <!--垂直对齐-->
+    <item key="System.Windows.VerticalAlignment.Top">顶端对齐</item>
+    <item key="System.Windows.VerticalAlignment.Center">中心对齐</item>
+    <item key="System.Windows.VerticalAlignment.Bottom">底端对齐</item>
+    <item key="System.Windows.VerticalAlignment.Stretch">拉伸</item>
+    <!--文字对齐方式-->
+    <item key="System.Windows.TextAlignment.Center">居中</item>
+    <item key="System.Windows.TextAlignment.Left">左对齐</item>
+    <item key="System.Windows.TextAlignment.Right">右对齐</item>
+    <!--<item key="System.Windows.TextAlignment.Justify">两端对齐</item>-->
+    <!--自定义文字对齐方式-->
+    <item key="Strong.Form.Controls.FormTextAlignment.Center">居中</item>
+    <item key="Strong.Form.Controls.FormTextAlignment.Left">左对齐</item>
+    <item key="Strong.Form.Controls.FormTextAlignment.Right">右对齐</item>
+    <!--线条风格-->
+    <item key="Strong.Form.Controls.ControlLineStyleEnum.psSolid">实线</item>
+    <item key="Strong.Form.Controls.ControlLineStyleEnum.psDash">长划线</item>
+    <item key="Strong.Form.Controls.ControlLineStyleEnum.psDot">点线</item>
+    <item key="Strong.Form.Controls.ControlLineStyleEnum.psDashDot">长划点线</item>
+    <item key="Strong.Form.Controls.ControlLineStyleEnum.psDashDotdot">长划点点线</item>
+    <!--文字对齐方向-->
+    <item key="System.Windows.System.Windows.Center">居中</item>
+    <item key="System.Windows.System.Windows.Left">左对齐</item>
+    <item key="System.Windows.System.Windows.Right">右对齐</item>
+    <!--<item key="System.Windows.System.Windows.Stretch">拉伸</item>-->
+    <!--按钮类型-->
+    <item key="Strong.Form.Controls.ButtonType.Commit">提交</item>
+    <item key="Strong.Form.Controls.ButtonType.Reset">重置</item>
+    <item key="Strong.Form.Controls.ButtonType.None">无</item>
+    <!--文字对齐方向-->
+    <item key="System.Windows.FlowDirection.LeftToRight">从左向右</item>
+    <item key="System.Windows.FlowDirection.RightToLeft">从右向左</item>
+    <!--树型显示类型-->
+    <item key="Strong.Form.Controls.TreeViewControl.TreeShowType.CodeName">代码和名称</item>
+    <item key="Strong.Form.Controls.TreeViewControl.TreeShowType.Name">名称</item>
+    <item key="Strong.Form.Controls.TreeViewControl.TreeShowType.Code">代码</item>
+    <item key="Strong.Form.Controls.TreeViewControl.TreeShowType.NameCode">名称和代码</item>
+    <!--粗细System.Windows.FontWeight.-->
+    <item key="Normal">正常</item>
+    <item key="Bold">粗体</item>
+    <!--样式System.Windows.FontStyle.-->
+    <item key="Italic">斜体</item>
+    <!--显示-->
+    <item key="Visible">显示</item>
+    <item key="Collapsed">隐藏</item>
+    <!--换行-->
+    <item key="Wrap">换行</item>
+    <item key="NoWrap">不换行</item>
+    <!--数据类型-->
+    <item key="Strong.Form.Controls.Common.EditDataCheckType.None">无</item>
+    <item key="Strong.Form.Controls.Common.EditDataCheckType.Email">电子邮件</item>
+    <item key="Strong.Form.Controls.Common.EditDataCheckType.Url">Url地址</item>
+    <item key="Strong.Form.Controls.Common.EditDataCheckType.DateTime">日期</item>
+    <item key="Strong.Form.Controls.Common.EditDataCheckType.Mobile">移动电话</item>
+    <item key="Strong.Form.Controls.Common.EditDataCheckType.IP">IP地址</item>
+    <item key="Strong.Form.Controls.Common.EditDataCheckType.IDCard">身份证</item>
+    <item key="Strong.Form.Controls.Common.EditDataCheckType.Int">正整数</item>
+    <item key="Strong.Form.Controls.Common.EditDataCheckType.Money">金额</item>
+    <item key="Strong.Form.Controls.Common.EditDataCheckType.Double">数值</item>
+    <item key="Strong.Form.Controls.Common.EditDataCheckType.Tel">电话</item>
+    <item key="Strong.Form.Controls.Common.EditDataCheckType.PostCode">邮政编码</item>
+    <item key="Strong.Form.Controls.Common.EditDataCheckType.Chinese">中文</item>
+    <item key="Strong.Form.Controls.Common.EditDataCheckType.NormalChar">有效字符</item>
+    <item key="Strong.Form.Controls.Common.EditDataCheckType.User">用户自定义</item>
+    <!--返回值类型-->
+    <item key="Strong.Form.Controls.Common.ListDataType.iscode">代码</item>
+    <item key="Strong.Form.Controls.Common.ListDataType.isname">名称</item>
+    <item key="Strong.Form.Controls.Common.ListDataType.iscodename">代码和名称</item>
+    <!--下拉类型-->
+    <item key="Strong.Form.Controls.ListShowType.isname">名称</item>
+    <item key="Strong.Form.Controls.ListShowType.iscodename">代码和名称</item>
+    <!--日期类型-->
+    <item key="Strong.Form.Controls.DateTimeType.tdkDate">日期</item>
+    <item key="Strong.Form.Controls.DateTimeType.tdkDateTime">日期和时间</item>
+    <!--控件值类型-->
+    <item key="Strong.Form.Controls.FormValueType.None">无返回值</item>
+    <item key="Strong.Form.Controls.FormValueType.String">返回字符串值</item>
+    <item key="Strong.Form.Controls.FormValueType.MutliField">返回多字段值</item>
+    <item key="Strong.Form.Controls.FormValueType.Form">返回多记录值</item>
+    <!--编辑框的按钮类型-->
+    <item key="Strong.Form.Controls.EditButtonDisplayType.Never">不显示</item>
+    <item key="Strong.Form.Controls.EditButtonDisplayType.Focus">获焦点显示</item>
+    <item key="Strong.Form.Controls.EditButtonDisplayType.Always">一直显示</item>
+    <!--下拉列表下拉显示类型-->
+    <item key="Strong.Form.Controls.ComboDropDisplayType.DropCodeNameInput">代码名称输入码</item>
+    <item key="Strong.Form.Controls.ComboDropDisplayType.DropCodeName">代码名称</item>
+    <item key="Strong.Form.Controls.ComboDropDisplayType.DropNameInput">名称输入码</item>
+    <item key="Strong.Form.Controls.ComboDropDisplayType.DropName">名称</item>
+    <!--数据表格行指示或列表头可见值-->
+    <item key="System.Windows.Controls.DataGridHeadersVisibility.None">不显示标题</item>
+    <item key="System.Windows.Controls.DataGridHeadersVisibility.Column">仅显示列标题</item>
+    <item key="System.Windows.Controls.DataGridHeadersVisibility.Row">仅显示行标题</item>
+    <item key="System.Windows.Controls.DataGridHeadersVisibility.All">显示行列标题</item>
+    <!--附件保存类型-->
+    <item key="Strong.Form.Controls.AccessoryIMP.SaveAccessoryType.IsDatabase">数据库</item>
+    <item key="Strong.Form.Controls.AccessoryIMP.SaveAccessoryType.IsFile">文件</item>
+    <!--自动完成筛选模式-->
+    <item key="Strong.Form.Controls.FormAutoCompleteFilterMode.StartsWith">右模糊</item>
+    <item key="Strong.Form.Controls.FormAutoCompleteFilterMode.Contains">包含</item>
+    <!--转pdf样式-->
+    <item key="Strong.Form.WorkControls.TurnPDFStyle.Zoom">缩放</item>
+    <item key="Strong.Form.WorkControls.TurnPDFStyle.SelfAdaption">自适应</item>
+    <!--树的数据类型-->
+    <item key="Strong.Form.Controls.Common.TreeDistgType.Code">编号区分</item>
+    <item key="Strong.Form.Controls.Common.TreeDistgType.Field">字段区分</item>
+    <item key="Strong.Form.Controls.Common.TreeDistgType.Custom">自定义</item>
+    <!--签章显示形式-->
+    <item key="Strong.Form.WorkControls.OpinionShowType.iscolumn">默认</item>
+    <item key="Strong.Form.WorkControls.OpinionShowType.isrow">多行一列</item>
+    <item key="Strong.Form.WorkControls.OpinionShowType.isonerowmulcol">一行多列</item>
+    <item key="Strong.Form.WorkControls.OpinionShowType.isonerow">一行一列</item>
+    <item key="Strong.Form.WorkControls.OpinionShowType.isselfdefine">自定义</item>
+  </dictionary>
+</config>

@@ -1,0 +1,54 @@
+package com.strongit.oa.common.business.processendinfo;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.strongit.oa.bo.TProcessEndInfo;
+import com.strongit.oa.common.user.IUserService;
+import com.strongit.oa.mylog.MyLogManager;
+import com.strongit.oa.util.OALogInfo;
+import com.strongit.oa.util.annotation.OALogger;
+import com.strongmvc.orm.hibernate.GenericDAOHibernate;
+
+/**
+ * 流程办结信息manager
+ * 
+ * @author       严建
+ * @company      Strongit Ltd. (C) copyright
+ * @date         Mar 29, 2012 3:38:59 PM
+ * @version      1.0.0.0
+ * @classpath    com.strongit.oa.common.business.processendinfo.ProcessEndInfoManager
+ */
+@Service
+@Transactional
+@OALogger
+public class ProcessEndInfoManager {
+	private GenericDAOHibernate<TProcessEndInfo, java.lang.String> dao;
+	@Autowired
+	private MyLogManager logService;
+	@Autowired
+	IUserService userService; // 注入统一用户接口
+	Logger logger = LoggerFactory.getLogger(this.getClass());
+	/**
+	 * 注入SessionFactory
+	 * 
+	 * @param session
+	 *            会话对象.
+	 */
+	@Autowired
+	public void setSessionFactory(org.hibernate.SessionFactory session) {
+		dao = new GenericDAOHibernate<TProcessEndInfo, java.lang.String>(
+				session, TProcessEndInfo.class);
+	}
+	private void save(TProcessEndInfo model, OALogInfo... infos) {
+		dao.save(model);
+	}
+	
+	public void saveModel(TProcessEndInfo model, OALogInfo... infos){
+		save(model);
+		logService.defaultSaveObj("保存流程办结信息");
+	}
+}

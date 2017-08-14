@@ -1,0 +1,226 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gbk">
+<script type="text/javascript" src="dialog.js"></script>
+
+<script type="text/javascript">
+
+document.write ("<link href='../skin/" + config.Skin + "/dialog.css' type='text/css' rel='stylesheet'>");
+
+var sCaption = lang["DlgMap"];
+document.write ("<title>" + sCaption + "</title>");
+
+var oControl;
+var oSeletion;
+var sRangeType;
+var oMap = null;
+
+var sSrc = "";
+var sUseMap = "";
+var sWidth = "";
+var sHeight = "";
+
+var aHref = new Array();
+var aTarget = new Array();
+var aCoords = new Array();
+
+var aLeft = new Array();
+var aTop = new Array();
+var aWidth = new Array();
+var aHeight = new Array();
+
+var aMapName = new Array();
+var sBody = "";
+
+var mapWindow;
+var mapDocument;
+
+oControl = EWEBSelection.GetSelectedElement();
+
+sSrc = oControl.src;
+sUseMap = oControl.useMap;
+sWidth = oControl.offsetWidth;
+sHeight = oControl.offsetHeight;
+
+var oAllMap = EWEB.EditorDocument.body.getElementsByTagName("MAP");
+for (var i=0; i<oAllMap.length; i++){
+	aMapName[i] = oAllMap[i].name.toUpperCase();
+	if (("#"+aMapName[i])==sUseMap.toUpperCase()){
+		oMap = oAllMap[i];
+	}
+}
+
+
+
+sBody = "<img id='SOURCEIMAGE' border=0 src='"+sSrc+"' width='"+sWidth+"' height='"+sHeight+"'>";
+if (oMap){
+	for (var i=0; i<oMap.areas.length; i++){
+		aHref[i] = oMap.areas(i).href;
+		aTarget[i] = oMap.areas(i).target;
+		aCoords[i] = oMap.areas(i).coords;
+		var a = aCoords[i].split(",");
+		aLeft[i] = parseInt(a[0]);
+		aTop[i] = parseInt(a[1]);
+		aWidth[i] = parseInt(a[2])-aLeft[i];
+		aHeight[i] = parseInt(a[3])-aTop[i];
+		sBody += "<img id='myIMAGE"+i+"' border=1 src='../sysimage/space.gif' style='position:absolute;left:"+aLeft[i]+"px;top:"+aTop[i]+"px;width:"+aWidth[i]+"px;height:"+aHeight[i]+"px;zIndex:"+(i+1)+"'>";
+	}
+}
+
+
+function doInit(){
+	mapWindow = $("mapIframe").contentWindow;
+	mapDocument = mapWindow.document;
+
+	mapDocument.designMode="On";
+	mapDocument.open();
+	mapDocument.write("<head><style>body,a,table,td {font-size:9pt;font-family:Verdana, Arial, Helvetica, sans-serif;Color:#000000;}</style></head><body MONOSPACE>");
+	mapDocument.body.innerHTML = sBody;
+	mapDocument.body.contentEditable = "true";
+	mapDocument.execCommand("2D-Position",true,true);
+	//doc.execCommand("MultipleSelection", true, true);
+	mapDocument.execCommand("LiveResize", true, true);
+	mapDocument.close();
+
+	EWEBTools.AddEventListener( mapDocument, 'paste',  EWEBTools.CancelEvent );
+	EWEBTools.AddEventListener( mapDocument, 'help',  EWEBTools.CancelEvent );
+	EWEBTools.AddEventListener( mapDocument, 'keydown', EWEBTools.CancelEvent );
+	EWEBTools.AddEventListener( mapDocument, 'keyup',  EWEBTools.CancelEvent );
+	EWEBTools.AddEventListener( mapDocument, 'contextmenu', EWEBTools.CancelEvent ) ;
+	EWEBTools.AddEventListener( mapDocument, 'dblclick', _Iframe_OnDblClick ) ;
+}
+
+var ReturnLinkObject = new Object();
+function _Iframe_OnDblClick(e){
+	if (!e){
+		e = mapIframe.event;
+	}
+	var o_Target = e.target || e.srcElement;
+	if (o_Target){
+		if ((o_Target.tagName=="IMG")&&(o_Target.id!="SOURCEIMAGE")){
+			var sID = o_Target.id;
+			var nID = parseInt(sID.substr(7));
+			ReturnLinkObject.Href = aHref[nID];
+			ReturnLinkObject.Target = aTarget[nID];
+			ReturnLinkObject.Index = nID;
+			
+			EWEBDialog.OpenDialog("hyperlink.htm?action=other&returnfieldflag="+nID);
+		}
+	}
+	return EWEBTools.CancelEvent(e);
+}
+
+
+function ISetReturnValue(){
+	aHref[ReturnLinkObject.Index] = ReturnLinkObject.Href;
+	aTarget[ReturnLinkObject.Index] = ReturnLinkObject.Target;
+}
+
+function newMap(){
+	var n = aHref.length;
+	aHref[n]="";
+	aTarget[n]="";
+	mapDocument.body.innerHTML += "<img id='myIMAGE"+n+"' border=1 src='../sysimage/space.gif' style='position:absolute;zIndex:"+(n+1)+";width:20;height:20;left:0;top:0'>";
+	//mapIframe.scrollBy(0,0);
+	//mapIframe.focus();
+}
+
+
+function getAutoMapName(){
+	var b=true;
+	var n=0;
+	var s=""
+	while (b){
+		n++;
+		s = "AutoMap" + n;
+		if (isValidMapName(s)){
+			b=false;
+		}
+	}
+	return s;
+
+}
+
+
+function isValidMapName(str){
+	str=str.toUpperCase();
+	for (var i=0; i<aMapName.length; i++){
+		if (aMapName[i]==str){
+			return false;
+		}
+	}
+	return true;
+}
+
+function ok(){
+	var b=false;
+	for (var i=0; i<aHref.length; i++){
+		var obj = mapDocument.getElementById("myIMAGE"+i);
+		if (obj){
+			b=true;
+		}
+	}
+
+	
+	if (b){
+		var html = "";
+		for (var i=0; i<aHref.length; i++){
+			var obj =mapDocument.getElementById("myIMAGE"+i);
+			if (obj){
+				var nLeft = parseInt(obj.style.left);
+				var nTop = parseInt(obj.style.top);
+				var nWidth = parseInt(obj.style.width);
+				var nHeight = parseInt(obj.style.height);
+				var nRight = nLeft+nWidth;
+				var nBottom = nTop+nHeight;
+				html += "<area shape='rect' href='"+aHref[i]+"' target='"+aTarget[i]+"' coords='"+nLeft+","+nTop+","+nRight+","+nBottom+"'>";
+			}
+		}
+
+		if (oMap){
+			oMap.innerHTML = html;
+		}else{
+			sUseMap = getAutoMapName();
+			oControl.useMap = "#" + sUseMap;
+			EWIN.appendHTML("<map name='"+sUseMap+"'>"+html+"</map>");
+		}
+	}else{
+		if (oMap){
+			//oMap.outerHTML = "";
+			EWEBTools.RemoveNode(oMap);
+		}
+		oControl.useMap = "";
+	}
+	oControl.width=mapDocument.getElementById("SOURCEIMAGE").width;
+	oControl.height=mapDocument.getElementById("SOURCEIMAGE").height;
+
+	parent.Ok();
+}
+
+function InitDocument(){
+	lang.TranslatePage(document);
+	doInit();
+	parent.InnerDialogLoaded(sCaption);
+}
+
+</script>
+
+</head>
+
+<body onload="InitDocument()">
+<table border=0 cellpadding=0 cellspacing=5 id=tabDialogSize><tr><td>
+
+
+<table border=0 cellpadding=0 cellspacing=3 align=center width="600" height="400">
+<tr><td colspan=2 height="100%"><iframe ID="mapIframe" MARGINHEIGHT="1" MARGINWIDTH="1" width="100%" scrolling="yes" height="100%" src="blank.htm"></iframe></td></tr>
+<tr><td colspan=2 height=5></td></tr>
+<tr>
+	<td><input type=button class="dlgBtnCommon dlgBtn" value='' id=btnNew onclick="newMap()" lang=DlgMapNew>&nbsp;(<span lang=DlgMapDesc></span>)</td>
+	<td align=right><input type=button class="dlgBtnCommon dlgBtn" value='' id="btn_ok" onclick="ok()" lang=DlgBtnOK>&nbsp;&nbsp;<input type=button class="dlgBtnCommon dlgBtn" value='' onclick="parent.Cancel()" lang=DlgBtnCancel></td>
+</tr>
+</table>
+
+</td></tr></table>
+</body>
+</html>

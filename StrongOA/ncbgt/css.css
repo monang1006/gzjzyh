@@ -1,0 +1,63 @@
+@charset "utf-8";
+/* CSS Document */
+
+*{ margin:0; padding:0;}
+body{ font-family:"宋体", "黑体"; font-size:12px; color:#000; background-color:#e2e2e2;}
+a{ text-decoration:none; font-family:"宋体", "黑体"; font-size:12px; color:#000;}
+img{ border:0;}
+.center{ margin:0 auto;}
+.menu,.menu a:link,.menu a:visited{ text-align:center; font-family:"微软雅黑","宋体", "黑体"; font-size:16px; font-weight:bold; color:#606060;}
+.menu a:hover{ color:#F60;}
+.line{ background:url(../ncbgt/images/line_04.jpg) no-repeat right;}
+.time{ color:#FFF; padding-right:13px;}
+.input{ width:161px; padding-left:10px; border:none; background:url(../ncbgt/images/search_11.jpg); height:20px; color:#999; line-height:20px;  font-family:"宋体", "黑体"; font-size:12px;}
+.md{ width:1002px; background-color:#FFF;}
+.jg{ margin:5px 0px 5px 0px;}
+.login{ height:172px; background:url(../ncbgt/images/nc_index_05.jpg) no-repeat;}
+.title_right{ float:left; color:#d90f03;  font-family:"微软雅黑","宋体", "黑体"; font-size:14px; font-weight:bold; padding-left:55px; height:20px; line-height:20px;}
+.more_yl{ float:right; height:20px; line-height:20px;}
+.more_yl a{ color:#b0820a; padding-right:20px; font-family:"宋体", "黑体"; }
+.list{ padding:10px; line-height:1.8; height:245px; overflow:hidden;}
+.list li{ list-style-type:none; padding-left:16px; background:url(../ncbgt/images/icon_38.jpg) no-repeat 0px 9px;}
+.list2 li span{ float:right; color:#999; <font-size:12></font-size:12>px; font-family:Arial, Helvetica, sans-serif;}
+.list2{ padding:10px; line-height:2; height:245px; overflow:hidden;}
+.list2 li{ clear:both; list-style-type:none; border-bottom:1px dotted #CCC; }
+.list2 li a{ float:left; background:url(../ncbgt/images/icon_38.jpg) no-repeat 0px 9px;  padding-left:16px;}
+.list a:link,.list a:visited,.list2 a:link,.list2 a:visited{color:#606060; font-size:14px;}
+.list a:hover,.list2 a:hover{ color:#F60; text-decoration:underline; font-size:14px;}
+.white_title{ color: #FFF; font-size:14px; font-weight:bold;}
+.banner{ margin:8px; border:1px solid #e2e2e2;}
+.banner img{ border:3px solid #FFF; margin-left:10px;}
+.foot{ height:89px; width:987px; background:url(../ncbgt/images/foot.jpg) no-repeat center; color:#FFF; line-height:2; text-align:center; padding-top:20px; margin-top:5px; }
+.md_right{ border:1px solid #d3d3d3; height:278px; background:url(../ncbgt/images/line_73.jpg) repeat-x bottom;}
+.red_title{ padding-left:5px; font-size:14px; font-weight:bold; color:#d60101; height:26px; line-height:26px;}
+.login_input{ width:110px; height:22px; line-height:22px; border:1px solid #eca7a8; background-color:#fff6f5; padding-left:10px;}
+.login_input2{ width:60px; height:22px; line-height:22px; border:1px solid #eca7a8; background-color:#fff6f5; padding-left:10px;}
+.login_name{ color:#b5b6b3; font-size:14px; padding-right:3px;}
+.oa_name{ color:#b51302; font-size:16px; font-weight:bold; padding-left:30px; font-family:"微软雅黑","宋体", "黑体";}
+.news_titile{position: relative; background:url(../ncbgt/images/ny_06.jpg) repeat-x top; text-align:center;}
+.news_titile p{ font-size:20px; font-weight:bold; color:#b10200; line-height:1.8; padding:10px;}
+.news_time{ line-height:2;}
+.news_line{ background:url(../ncbgt/images/ny_08.jpg) repeat-x top; height:20px;}
+.news_ct{ padding:20px; font-size:14px; line-height:2;}
+.news_ct p{ text-indent:2em;}
+.ma_14zi3,.ma_14zi3 a:link,.ma_14zi3 a:visited{ font-size:14px; color:#404040;}
+.ma_14zi3 a:hover{ color:#F00; text-decoration:underline;}
+<!-- 简约版登录界面css  -->
+* { margin:0; padding:0; }
+img { border:0; }
+html{ color: #000; background-color:#fff; }
+body{ font-family:"\5b8b\4f53", sans-serif; font-size:14px;  }
+.midbg { background:url(../resource/images/index_News/midbg.jpg) no-repeat top center; height:100%; }
+.midcon{ width:308px; padding-left:104px; margin:0 auto; }
+.logintable { text-align:center; }
+.wordbox { border:none; background:none; width:193px; height:30px; line-height:30px; padding-left:10px; font-size:14px; }
+.word { padding-top:4px; padding-right:39px; }
+.word select { margin-left:10px; }
+.loginbutton { background:none; height:66px; width:76px; border:none; }
+span.dbotsp01 a { display:block; width:72px; height:20px; float:left; }
+span.dbotsp02 a { display:block; width:105px; height:20px; float:left; }
+span.dbotsp03 a { display:block; width:78px; height:20px; float:left; }
+.sel{ display:block; width:64px; height:20px; line-height:20px; overflow:hidden; }
+.sel select{ margin:-1px; vertical-align:middle; border:none; }
+.dlinput{ padding-top:304px; }

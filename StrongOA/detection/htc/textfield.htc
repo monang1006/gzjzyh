@@ -1,0 +1,1874 @@
+<!-- 
+	1.revised some errors regarding the float number round by Zhang Fan at 2003-08-01.
+	2.add  round  method by maxlb at 2004-09-03 for round a number to a specified number of decimal places.
+	3.revised setValue method by wangjian as 2004-10-27 for float number round.
+	4.reconstructed by zhanggx 20041205
+Notes:
+	我现在发现一个防止在javascript下防止浮点型数据误差的好方法,那就是对于一个数据先将其转化成为字符串,然后再利用
+	parseFloat或者其他转化函数,得到的值目前来看比较精确.
+-->
+<!--
+Attribute:
+	preset, 
+		can be set value each below:
+		INT_NUMBER, indicate the type of the textfield htc is the purely integeral number. In this case, value only contain numbers whthin 0-9(e.g 1333) and this type is used to denote value of ID card or post number.
+		NUMBER(x,y), 	indicate the type of textfield htc is the number and x,y are respectively the digit of the number's integer and decimal Index fraction.(e.g 2,000,123.023,22)
+		CURRENCY,	indicate the type of textfield htc is the currency.(e.g $2,233.939.33)
+		PERCENT,	indicate the type of textfield htc is the pcercent.(e.g 33.22%)
+		DATE,		indicate the type of textfield htc is the date.(e.g 2002-07-15)
+		NOQUOT,		indicate the type of textfield htc is the normal text but without quot.(e.g 4jfts)
+		NOMINUS,	indicate the type of textfield htc is the normal text but without minus.(e.g 8786.07)
+	       fill:yes/no 控制背景颜色及是否允许空
+	f9:
+-->
+<PUBLIC:COMPONENT tagName="input" lightweight="true">  
+<PUBLIC:PROPERTY NAME="preset"  />
+<PUBLIC:PROPERTY NAME="without" />
+<PUBLIC:PROPERTY NAME="fill" put="setFill" get="getFill" />
+
+<!-- 没有被外部应用，先注释 -->
+<!-- <PUBLIC:PROPERTY NAME="abate" put="setAbate" get="getAbate" /> -->
+
+<PUBLIC:PROPERTY NAME="f9" />
+
+<PUBLIC:PROPERTY NAME="selectStart" /><!-- left 光标居左 right 光标居右 否则全选-->
+
+<PUBLIC:METHOD NAME="getValue" />
+<PUBLIC:METHOD NAME="setValue" />
+
+<!-- 这个方法已被外部应用 -->
+<PUBLIC:METHOD NAME="checkData" />
+
+<!-- 没有被外部应用，先注释 -->
+<!-- <PUBLIC:METHOD NAME="checkDate" /> -->
+
+<!-- 没有被外部应用，先注释 -->
+<!-- <PUBLIC:METHOD NAME="getMessage" /> -->
+
+<PUBLIC:METHOD NAME="formatData" />
+<PUBLIC:METHOD NAME="unformatData" />
+
+<PUBLIC:ATTACH   EVENT="oncontentready"  HANDLER="init" />
+<PUBLIC:ATTACH   EVENT="onkeydown" HANDLER="onKeyDown" />
+<PUBLIC:ATTACH   EVENT="onkeyup" HANDLER="onKeyUp" />
+<PUBLIC:ATTACH   EVENT="onchange" HANDLER="onChange" />
+
+
+<PUBLIC:ATTACH   EVENT="onfocus" HANDLER="onFocus" />
+<PUBLIC:ATTACH   EVENT="onblur" HANDLER="onBlur" />
+
+<script language="javascript">
+var bAllSelect = false;
+var bFill = false;
+//var bAbate = false;
+
+//Define all constant variables which determine the type of textfield
+var TYPE_DEFAULT = -1;
+var TYPE_PURE_NUMBER = 0;
+var TYPE_NUMBER = 1;
+var TYPE_CURRENCY = 2;
+var TYPE_PERCENT = 3;
+var TYPE_DATE = 4;
+var TYPE_NOQUOT = 5;
+var TYPE_NOMINUS = 6;
+
+var TYPE_PRESET = -1;//记录preset值
+var TYPE_1 = -1;//number(*,2)TYPE_1:-1;TYPE_2:2
+var TYPE_2 = -1;
+
+var strError = "";
+
+/************************************************************
+EVENT:
+	init;
+		initializes the textfield htc.
+	onKeyDown;
+		processes some particular response when users press a key.
+	onKeyUp;
+		processes some particular response when users release a key.
+	onChange;
+		formats the value of the textfield htc in some specified type when users submit changes.
+	onFocus;
+		highlights the content of the txtfield htc when this htc gets the focus.
+**************************************************************/
+function init()
+{
+	TYPE_PRESET = parseType();
+	//implement relevant operations based on the field type
+	switch(TYPE_PRESET){
+		case TYPE_NUMBER:
+			style.imeMode = 'disabled';
+			style.textAlign = "right";//set the show style
+			break;
+		case TYPE_PURE_NUMBER:
+			style.imeMode = 'disabled';
+			style.textAlign = "right";
+			break;
+		case TYPE_PERCENT:
+			style.imeMode = 'disabled';
+			style.textAlign = "right";
+			break;
+		case TYPE_DATE:
+			style.imeMode = 'disabled';
+			maxLength = 10;
+			break;
+		case TYPE_CURRENCY:
+			style.imeMode = 'disabled';
+			style.textAlign = "right";
+			break;
+		case TYPE_NOQUOT:
+			style.textAlign = "left";
+			break;
+		case TYPE_NOMINUS:
+			style.imeMode = 'disabled';
+			style.textAlign = "right";
+	}
+}
+function onKeyDown() {
+	strError = "";
+	//keycode transfering, transfer "Enter" to "Tab".
+	if(event.keyCode == without)
+		event.returnValue = false;
+	if(event.keyCode == 13){//denotes "Tab" key
+		event.keyCode = 9;
+	} else if(event.ctrlKey && (event.keyCode == 67 || event.keyCode == 86 || event.keyCode == 88)){
+		//now we doesn't process this case
+		return;
+	}//denotes the "Ctrl + C" and "Ctrl + X" and "Ctrl + V" behaviors
+	else if(event.keyCode == 120 && f9 != null) {
+		eval(f9);
+	}
+	else{
+		switch(TYPE_PRESET){
+		case TYPE_PURE_NUMBER:
+			if(!( 
+			(event.keyCode == 8) || //"backspace" of the left keyboard
+			(event.keyCode == 9) ||	//"tab" of the left keyboard
+			(event.keyCode == 46) || //del" of the right keyboard
+			(event.keyCode >=35 && event.keyCode <=40) || // direction keys of the right key board 
+			(event.keyCode>=48 && event.keyCode <=57) || //0-9 of the left keyboard		
+			(event.keyCode >= 96 && event.keyCode <=105 //0-9 of the right keyboard
+		  ))){
+			//alert("Sorry, You can't input characters except 1~9 and '-' !");
+			event.returnValue = false;
+		}
+		case TYPE_NUMBER:
+		case TYPE_CURRENCY:
+		case TYPE_PERCENT:
+		if(!( 
+			(event.keyCode == 8) || //"backspace" of the left keyboard
+			(event.keyCode == 9) ||	//"tab" of the left keyboard
+			(event.keyCode == 46) || //del" of the right keyboard
+			(event.keyCode == 109) || //"-" of the right keyboard
+			(event.keyCode == 110) || //"." of the left keyboard
+			(event.keyCode == 189) || //"-" of the left keyboard
+			(event.keyCode == 190) || //"." of the right keyboard
+			(event.keyCode >=35 && event.keyCode <=40) || // direction keys of the right key board 
+			(event.keyCode>=48 && event.keyCode <=57) || //0-9 of the left keyboard		
+			(event.keyCode >= 96 && event.keyCode <=105 //0-9 of the right keyboard
+		  ))){
+			//alert("Sorry, You can't input characters except 1~9 and '-' !");
+			event.returnValue = false;
+		}
+		/*
+		Exceptions that will be processed below:
+		1. Don't permit two "." in one input number.
+		2. Don't permit the symbol of "-" exists in anywhere unless the head of the input string. And we should change the input number's positive or negative signal when the number of "-" character in user input is above one.
+		3. Don't permit the format of current input that doesn't accord with the specified style by params fieldProperties[2],fieldProperties[3].
+		*/
+		//1.process the 1st case
+		if(event.keyCode == 110 || event.keyCode ==190){
+			//if(value.indexOf(".") != -1)
+			//增加bAllSelect属性，增加方便输入性 20031219 hanxq
+			if((value.indexOf(".") != -1) && !bAllSelect)  event.returnValue = false;
+		}
+		//2.process the 2rd case
+		if(event.keyCode == 109 ||event.keyCode == 189){
+			if(value.indexOf("-") == -1){
+				//修改当前值等于零时，输入负号时的问题  20031226 hanxq
+				if(getFieldValue()==0){
+					setFieldValue("-");
+					//添加以下代码解决无法得到焦点的问题，解决当值为零时，数据从左侧输入的问题。  20031230 hanxq
+					var num=this.value.length;
+					range=this.createTextRange(); 
+					range.collapse(true); 
+					range.moveStart('character',num); 
+					range.select();
+				}else{
+				  	setFieldValue("-" + getFieldValue());
+					//添加以下代码解决光标定位的问题  20031230 hanxq
+					var num=this.value.length;
+					range=this.createTextRange(); 
+					range.collapse(true); 
+					range.moveStart('character',1); 
+					range.select();
+				 }
+				 //setFieldValue("-" + getFieldValue());
+//          	      var oEvent = createEventObject();
+//	              oEvent.returnValue = true;//
+				 if(getFieldValue() != '-'){
+					fireEvent("onchange");//只有不为"-"时才触发onchangge，防止外部计算出NaN
+				 }
+//         	      eChanged.fire(oEvent);//这样得到的事件源srcElement为ctais:input
+      			  event.returnValue = false;
+				}
+			else{
+				var fieldText = getFieldValue();
+				setFieldValue(fieldText.substr(1,fieldText.length-1));
+    			event.returnValue = false;
+				//添加以下代码解决光标定位的问题。  20031230 hanxq
+				var num=this.value.length;
+				range=this.createTextRange(); 
+				range.collapse(true); 
+				range.moveStart('character',0); 
+				range.select();
+			}
+		}
+
+		//3.process the 3th case
+		//if(!isValidData(getFieldValue()))
+		//	event.returnValue = false;
+		
+		break;
+		case TYPE_DATE:
+		if(!(
+			(event.keyCode == 8) || //"backspace" of the left keyboard
+			(event.keyCode == 9) ||	//"tab" of the left keyboard
+			(event.keyCode == 46) || //del" of the right keyboard
+			(event.keyCode == 110) || //"." of the left keyboard
+			(event.keyCode == 190) || //"." of the right keyboard
+			(event.keyCode == 109) || //"-" of the right keyboard
+			(event.keyCode == 189) || //"-" of the left keyboard
+			(event.keyCode == 111) || //"/" of the left keyboard
+			(event.keyCode == 191) || //"/" of the right keyboard
+			(event.keyCode >=35 && event.keyCode <=40) || // direction keys of the right key board 
+			(event.keyCode>=48 && event.keyCode <=57) || //0-9 of the left keyboard		
+			(event.keyCode >= 96 && event.keyCode <=105 //0-9 of the right keyboard
+		   ))){
+			event.returnValue = false;
+		}
+		/*
+		Here we list some cases need to be processed below:
+		1.Requires just two "-" or "." in the string.
+		2.Requires just eight numbers in the input string.
+		*/
+		//1.handle the case 1:
+		if(event.keyCode == 109 ||event.keyCode == 189){//denote the "-" key
+			if(value.indexOf(".") != -1 || value.indexOf("/") != -1){
+				event.returnValue = false;
+			}
+			else{
+				if(charCounter(value,"-") >= 2)
+					event.returnValue = false;
+			}
+			
+		}
+		if(event.keyCode == 110 || event.keyCode == 190){//denote the "." key
+			if(value.indexOf("-") != -1 || value.indexOf("/") != -1){
+				event.returnValue = false;
+			}
+			else{
+				if(charCounter(value,".") >= 2)
+					event.returnValue = false;
+			}
+		}
+		if(event.keyCode == 111 || event.keyCode == 191){//denote the "/" key
+			if(value.indexOf(".") != -1 || value.indexOf("-") != -1){
+				event.returnValue = false;
+			}
+			else{
+				if(charCounter(value,"/") >= 2)
+					event.returnValue = false;
+			}
+		}
+		//2.handle the case 2:
+		/*if(
+			(event.keyCode>=48 && event.keyCode <=57) || //0-9 of the left keyboard		
+			(event.keyCode >= 96 && event.keyCode <=105) //0-9 of the right keyboard
+		   ){
+				
+				var number = 0;
+				for(var i = 0;i<value.length;i++)
+				if(!isNaN(parseInt(value.charAt(i))))
+					number++;
+				if(number>=8)
+					event.returnValue = false;
+		}*/
+		break;
+		case TYPE_NOQUOT:
+		if( event.keyCode == 222)  //"'" of the keyboard
+		{
+		//alert("Sorry, You can't input characters except 1~9 and '-' !");
+		event.returnValue = false;
+		}
+		break;
+		case TYPE_NOMINUS:
+		if(	!(
+			(event.keyCode == 8) || //"backspace" of the left keyboard
+			(event.keyCode == 9) ||	//"tab" of the left keyboard
+			(event.keyCode == 46) || //del" of the right keyboard
+			(event.keyCode == 110) || //"." of the left keyboard
+			(event.keyCode == 190) || //"." of the right keyboard
+			(event.keyCode >=35 && event.keyCode <=40) || // direction keys of the right key board 
+			(event.keyCode>=48 && event.keyCode <=57) || //0-9 of the left keyboard		
+			(event.keyCode >= 96 && event.keyCode <=105) //0-9 of the right keyboard
+			)
+		){
+			event.returnValue = false;
+		}
+		break;
+		}
+	}
+	bAllSelect = false;
+}
+function setFill(flag){
+	bFill = flag;
+	var f = flag.toString().toLowerCase();
+	if(f == "yes" || f == "true") {
+		style.background = "#B5E3DF";
+	}else {
+		style.background = "#FFFFFF";
+	}
+}
+function getFill(){
+	return bFill;
+}
+//disabled 特性及外观
+/*
+function setAbate(flag) {
+	bAbate = flag;
+	var f = flag.toString().toLowerCase();
+	if(f == "yes" || f == "true")
+	{
+		style.background = "#D0D0D0";
+		disabled = true;
+	}else {
+		style.background = "#FFFFFF";
+		disabled = false;
+	}
+}
+function getAbate()
+{
+	return bAbate;
+}
+
+*/
+
+function onKeyUp()
+{
+	strError = "";
+	switch(TYPE_PRESET){
+		case TYPE_PURE_NUMBER:
+		break;
+		case TYPE_NUMBER:
+		break;
+		case TYPE_CURRENCY:
+		break;
+		case TYPE_PERCENT:
+		break;
+		case TYPE_DATE:
+		if(event.keyCode != 8 && event.keyCode != 46){//denote "backspace" and "del" keys.
+			if((value.length == 4 || value.length == 7) && (value.indexOf(".") == -1) && (value.indexOf("/") == -1))
+			{
+				if(charCounter(value,"-")<2){
+					value += "-";
+				}
+			}
+			//日期数据使用.或者/分隔符时，自动在第五位添加.或者/  20031229 hanxq
+			if(value.length == 5){
+				if(value.indexOf(".") != -1){
+					if(charCounter(value,".")<2)
+						 value += ".";
+				}
+				else if(value.indexOf("/") != -1){
+					if(charCounter(value,"/")<2)
+						 value += "/";
+				}
+			}
+		}
+		break;
+		case TYPE_NOQUOT:
+		break;
+		case TYPE_NOMINUS:
+		break;
+	}
+}
+function onChange()
+{
+	//checkData();
+	strError = "";
+	//alert("changing!");
+	//onBlur()
+	if(getValue()== null){
+			alert(getLastError());
+			event.returnValue = false;
+			select();
+		
+	}
+	//select();
+	//invoke the module processes outer change
+}
+
+function onFocus() {
+	strError = "";
+	//必须写下边这行，不然不能获得焦点
+	//如果是纳税人识别号，设置光标到最后一位。 zhangcw add 2003-10-21
+	if ((this.maxLength==20 && this.id.indexOf("nsrsbh")!=-1) || selectStart=="right"){
+		var num=this.value.length;
+		range=this.createTextRange(); 
+		range.collapse(true); 
+		range.moveStart('character',num); 
+		range.select();
+	} else if (selectStart=="left"){
+		range=this.createTextRange(); 
+		range.collapse(true); 
+		range.moveStart('character',0); 
+		range.select();
+	} else {
+		bAllSelect = true;
+	    select();
+	}
+}
+
+function onBlur() {
+	if(TYPE_PRESET == TYPE_PERCENT && value.indexOf("%") == -1)
+		setFieldValue(formatData(100*unformatData(value)));
+	else
+		setFieldValue(formatData(unformatData(value)));
+}
+/************************************************************
+METHOD:
+	getFieldValue;//NOT equal getValue
+		gets the content showed in the htc.
+	setFieldValue;//NOT equal setValue
+		sets the content showed in the htc.
+	getValue;
+		gets the real value of the htc.
+	setValue;
+		sets the real value of the htc.
+
+	formatData;
+		formats the data to the specified formatting.
+	unformatData;
+		makes the type of the data revert to the naked formatting.
+	formatInt;
+		formats the pure number to the specified formatting.
+	unformatInt;
+		removes all formattings from the pure number.
+	formatNumber;
+		formats the number to the specified formatting.
+	unformatNumber;
+		makes the type of the number revert to the naked formatting.
+	formatCurrency;
+		formats the type of the currency specified formatting.
+	unformatCurrency;
+		makes the type of the currency revert to the naked formatting.
+	formatPercent;
+		formats the type of the percent specified formatting.
+	unformatPercent;
+		makes the type of the percent revert to the naked formatting.
+	formatDate;
+		formats the type of the date specified formatting.
+	unformatDate;
+		makes the type of the date revert to the naked formatting.
+
+	isValidData;
+		verifies whether the data formatting r validated.
+	isValidNumber;
+		verifies whether the number formatting r validated.
+	isValidPercent;
+		verifies whether the percent formatting r validated.
+	isValidCurrency;
+		verifies whether the currency formatting r validated.
+	isValidDate;
+		verifies whether the date formatting r validated.
+
+	buildErrorDiscription;
+		provides a easier way to show the exception message dialog box.
+	charCounter;
+		caculate the total number of the specified character in the whole string.
+	isInRange;
+		verify whether a number is in the specified range.
+**************************************************************/
+function parseType(){
+	//strError = "";
+	if(preset == null)
+		return TYPE_DEFAULT;
+	var p = preset.toString().toLowerCase();
+	if(p.indexOf("number") != -1){
+		var idx = p.indexOf('(',6);
+		if(idx != -1){
+			var idx1 = p.indexOf(',',idx+1);
+			var arg = parseInt(p.substring(idx+1,idx1),10);
+			TYPE_1 = isNaN(arg)? -1 : arg;
+			idx = idx1 + 1;
+			idx1 = p.indexOf(')',idx);
+			arg = parseInt(p.substring(idx,idx1));
+			TYPE_2 = isNaN(arg)? -1 : arg;
+
+			return TYPE_NUMBER;
+		}
+		return TYPE_PURE_NUMBER;
+	}
+	var c = p.charAt(0);
+	//if(p.indexOf("percent") != -1)
+	if(c == 'p'){
+		TYPE_2 = 2;
+		return TYPE_PERCENT;
+	}
+	//if(p.indexOf("date") != -1)
+	if(c == 'd')
+		return TYPE_DATE;
+	//if(p.indexOf("currency") != -1)
+	if(c == 'c'){
+		TYPE_2 = 2;
+		return TYPE_CURRENCY;
+	}
+	if(p.indexOf("noquot") != -1){
+		TYPE_2 = 2;
+		return TYPE_NOQUOT;
+	}
+	var idx = p.indexOf("nominus");
+	if(idx != -1){
+		idx = p.indexOf('(',7);
+		if(idx != -1){
+			var idx1 = p.indexOf(',',idx+1);
+			var arg = parseInt(p.substring(idx+1,idx1),10);
+			TYPE_1 = isNaN(arg)? -1 : arg;
+			idx = idx1 + 1;
+			idx1 = p.indexOf(')',idx);
+			arg = parseInt(p.substring(idx,idx1));
+			TYPE_2 = isNaN(arg)? -1 : arg;
+		}
+		return TYPE_NOMINUS;
+	}
+}
+/**	
+getFieldValue
+	gets the field's original content that includes possibly seperator characters(e.g "," or "-").
+	
+	Params: null, 
+	Return value: content showed in the text field.
+	Remarks: users can get the value showed in the textfield, but there is a most important point which all users 
+	should pay attention to: getFieldValue is NOT identical to getValue, the former one's return value is a "ORIGINAL" 
+	value which possibly contais some particular artificial sperators, but the latter one's return value is a "PURE" value of field.
+	
+	Here it is a example to instruct how to use this method below:
+
+	//if we set htc's value to 12345.6789 and its type is TYPE_CURRENCY
+	fieldValue = getFieldValue();
+	realValue = getValue();
+	docuemtn.write("the showed value is " + fieldValue);
+	document.write("the real value is " + realValue);
+
+	//Output
+	the showed value is $12,345.6,789
+	the real value is 12345.6789
+	
+*/
+function getFieldValue()//NOT equal getValue
+{
+	strError = "";
+	return value;
+}
+/**	
+setFieldValue
+	sets the value showed in the field.
+	
+	Params: val, value showed in the field.
+	Return value: null.
+	Remarks: users can call this method to set the showed value of the text field. As above, 
+	here users should be reminded of difference between setFieldValue and setValue. The value passed by setFieldValue 
+	will be showed immediately in the field without any formatting, but the one passed by setValue possibly
+	 will be formatted for meeting to the specified field type.
+	
+	Here it is a example to instruct how to use this method below:
+	//if the field's type is TYPE_CURRENCY
+	setValue(12345.6789);
+	fieldValue = getFieldValue();
+	realValue = getValue();
+	document.write("the fieldValue is" + fieldValue);
+	document.write("the realValue is" + realValue);
+	setFieldValue(12345.6789);
+	fieldValue = getFieldValue();
+	realValue = getValue();
+	document.write("the fieldValue is" + fieldValue);
+	document.write("the realValue is" + realValue);
+	//Output
+	the fieldValue is $12,345.67
+	the realValue is 12345.67
+	the fieldValue is 12345.6789
+	the realValue is 12345.67
+	
+*/
+function setFieldValue(val)//NOT equal setValue
+{
+    var digitPos = val.indexOf(".");
+
+	var digitLen = val.substring(digitPos+1,val.length - digitPos).length;
+	strError = "";
+	if (val.indexOf("NaN") == 0){
+		switch(TYPE_PRESET){
+		case TYPE_NUMBER:
+		case TYPE_PURE_NUMBER:
+		case TYPE_PERCENT:
+			value = "0"+val.substring(3);
+			return;
+		}
+	}
+
+	if (val!=value)
+	 {
+	   if ( digitLen <=2 && val.indexOf(",")!=-1 && value.indexOf(",")!=-1 && value.indexOf("-")!=-1)
+	    {
+//  	      var oEvent = createEventObject();
+//	      oEvent.returnValue = true;//
+			//添加格式化，在触发change方法前，现格式化日期数据  20031229 hanxq
+			if(TYPE_PRESET==TYPE_DATE) formatData(value);
+			fireEvent("onchange")
+//			eChanged.fire(oEvent);//这样得到的事件源srcElement为ctais:input
+		}
+	 }
+	value = val;
+}
+/**	
+getValue
+	gets the real value of the textfield htc.
+	
+	Params: null, 
+	Return value: real value of htc.
+	Remarks: users can get the real value of the htc by calling this method. 
+	
+	Here it is a example to instruct how to use this method below:
+
+	//if the htc's type is TYPE_NUMBER(5,4)
+	setFieldValue(12,222,222.00,222);
+	showedValue = getFieldValue();
+	realValue = getValue();
+	document.write("the showedValue is" + showedValue);
+	document.write("the realValue is" + realValue);
+	
+	//if the htc's type is TYPE_CURRENCY
+	setFieldValue($52,555.00,678);
+	showedValue = getFieldValue();
+	realValue = getValue();
+	document.write("the showedValue is" + showedValue);
+	document.write("the realValue is" + realValue);
+
+	//output
+	the showedValue is 22,222.0,022;
+	the realValue is 22222.0022
+	
+	the showedValue is $52,555.00;
+	the realValue is 52555.00
+
+*/
+function getValue()
+{
+	strError = "";
+	var result = unformatData(value);
+	if(!isValidData(value)){
+		return null;
+	}
+	switch(TYPE_PRESET){
+		case TYPE_PURE_NUMBER:
+			return parseInt(result,10);
+			break;
+		case TYPE_NUMBER:{
+            var n = parseInt(TYPE_2,10);
+            return round(parseFloat(result,10),n);
+		}
+		break;
+		case TYPE_PERCENT:
+			if(value.indexOf("%") == -1)
+				return parseFloat(result,10);
+			else
+				return parseFloat(result,10)/100;
+		case TYPE_DATE:
+			return formatData(value);
+		case TYPE_CURRENCY:
+   			return parseFloat(result,10);
+		case TYPE_NOQUOT:
+		case TYPE_NOMINUS:
+		default:
+			return value;
+	}
+}
+
+/**	
+setValue
+	sets the real value of the textfield htc.
+	
+	Params: val, 
+	Return value: true indicate the operation success, otherwise false.
+	Remarks: users can set the htc's Truely(intrinsic) value by calling this method. And users doesn't worry about the formatting process of the data, so this method can provide users an easy and immediate way to format data set in textfield.
+	
+	Here it is a example to instruct how to use this method below:
+	//suppose the htc's type is TYPE_NUMBER
+	setValue(12300.1111);
+	showedValue = getFieldValue();
+	document.write("the showed value is" + showedValue);
+	//output
+	the showed value is 12,300.1,111
+	
+*/
+function setValue(val)
+{
+	strError = "";
+	val = val.toString();
+	//////////////////////////////Notice: the following codes improve some bug in the case of the date type
+	if(TYPE_PRESET == TYPE_DATE)
+		val = val.substr(0,10);
+	////////////////////////////////////////////////////////////////////////////////
+	var	bResult = true;//show the default value
+	if(!isValidData(val,false))
+		bResult = false;
+	var str;
+	if(TYPE_PRESET == TYPE_PERCENT && val.toString().indexOf("%")==-1){
+		//var wj =  unformatData(val);
+		//alert("val:" + wj);
+		//wj = round(wj*100,2);
+		//alert("val*100: " + wj);
+		//20041027:WangJian:当100*0.011时，结果为1.09999999998，导致formatData函数出问题
+		//因为百分比缺省精确到0.01%，所以提前截取
+		str = formatData(round(100*unformatData(val),2));
+	}else {
+		str = formatData(unformatData(val));
+	}
+	setFieldValue(str);
+	return bResult;
+}
+function checkData()
+{
+	strError = "";
+	return isValidData(value);
+}
+
+function checkDate()
+{
+	return isValidDate(value);
+}
+
+
+/**	
+document.selection.createRange().text
+formatData
+	formats the data to the specified formatting.
+	
+	Params: val, represent the value prepared to be formatted. 
+	Return value: the value with the specified formatting.
+	Remarks: users can format htc's value through calling this method. 
+	
+	Here it is a example to instruct how to use this method below:
+	//if the field type is TYPE_NUMBER
+	number = 12345678.9012
+	fNumber = formatData(number);
+	document.write("the foramtted number is" + fNumber);
+	//if the field type is TYPE_CURRENCY
+	currency = 12345678.9012
+	fCurrency = formatData(currency);
+	document.write("the foramtted currency is" + fcurrency);
+	//if the field type is TYPE_PERCENT
+	percent = 12345678.9012
+	fPerncent = formatData(percent);
+	document.write("the foramtted percent is" + fPerncent);
+	//if the field type is TYPE_DATE
+	date = 20021201
+	fDate = formatData(date);
+	document.write("the formatted date is" + fDate);
+	
+	//output results
+	the formatted number is 12,345,678.9,012
+	the formatted currency is ￥12,345,678.9,012
+	the formatted percent is 12,345,678.9,012%
+	the formatted number is 2002-12-01
+*/
+function formatData(val)
+{
+	strError = "";
+
+	var EXCEPTION_EMPTY_VALUE = 0;
+	var DISCRIPTION_EMPTY_VALUE = "该项为必填项,不能为空!";
+	val = val.toString();
+	if(val == ""){
+		if((fill != null) && (fill == "yes" || fill == "true")){
+			val = defaultValue(true);//set the default htcTxt.value
+			buildErrorDiscription("formatData",EXCEPTION_EMPTY_VALUE,DISCRIPTION_EMPTY_VALUE);
+		}
+		return val;
+	}
+	switch(TYPE_PRESET){
+		case TYPE_PURE_NUMBER:
+			return formatInt(val);
+		case TYPE_NUMBER:
+			return formatNumber(val);
+		case TYPE_CURRENCY:
+			return formatCurrency(val);
+		case TYPE_PERCENT:
+			return formatPercent(val);
+		case TYPE_DATE:
+			return formatDate(val);
+		case TYPE_NOQUOT:
+			return val;
+		case TYPE_NOMINUS:
+			//return formatNumber(val); //modified at 2004-09-14 by maxlb
+			return val;
+		default:
+			return val;//buildErrorDiscription("formatData",EXCEPTION_LACK_PRESET,DISCRIPTION_LACK_PRESET);
+	}
+}
+/**	
+unformatData
+	removes the formatting from the data.
+	
+	Params: val, represent the value prepared to be unformatted. 
+	Return value: the value without any formatting.
+	Remarks: users can remove the formatting wrapped on the data by calling this method. 
+	
+	Here it is a example to instruct how to use this method below:
+	//TYPE_CURRENCY
+	unformatCurrency = unformatData("$29,222.3,454");
+	document.write("unformat currency is" + unformatCurrency);
+	//TYPE_NUMBER
+	unformatNumber = unformatData("123,55.3,666");
+	document.write("unformat number is" + unformatNumber);
+	//output
+	unformat currency is 29222.3454
+	unformat number is 12355.3666
+*/
+function unformatData(val)
+{
+	strError = "";
+
+	var EXCEPTION_EMPTY_VALUE = 0;
+	var DISCRIPTION_EMPTY_VALUE = "该项为必填项,不能为空!";
+	
+	if(val == ""){
+		if(fill != null && (fill == "yes" || fill == "true")){
+			val = defaultValue();//set the default value
+			buildErrorDiscription("unformatData",EXCEPTION_EMPTY_VALUE,DISCRIPTION_EMPTY_VALUE);
+		}
+		else if(TYPE_PRESET != TYPE_DEFAULT && TYPE_PRESET != TYPE_DATE)
+			val = defaultValue();
+		return val;
+	}
+
+	switch(TYPE_PRESET){
+		case TYPE_PURE_NUMBER:
+			return unformatInt(val);
+		case TYPE_NUMBER:
+			return unformatNumber(val);
+		case TYPE_CURRENCY:
+			return unformatCurrency(val);
+		case TYPE_PERCENT:
+			return unformatPercent(val);
+		case TYPE_DATE:
+			return unformatDate(val);
+		case TYPE_NOQUOT:
+			return val;
+		case TYPE_NOMINUS:
+			return unformatNumber(val);
+		default:
+			return val;
+	}
+}
+/**	
+formatInt
+	wraps a PURE number a specified formatting.
+	
+	Params: val, represent the PURE number value prepared to be formatted. 
+	Return value: the value with the specified formatting.
+	Remarks: users can format the data with the type of PURE number by calling this method. In fact, users don't need know the type of the data because the formatData method can automatic detect the type of the data and then call the relevant formatting method(e.g formatNumber or formatCurrency), so users needn't call methods like this(e.g formatCurrency, formatDate and so on) immediately.
+	
+*/
+function formatInt(val)
+{
+	strError = "";
+	return val.toString();
+}
+/**	
+unformatInt
+	removes the formatting from the data.
+	
+	Params: val, represent the PURE number value prepared to be unformatted. 
+	Return value: the value without any formatting.
+	Remarks: users can remove all formattings from the PURE number represented by val. In fact, users rarely call this method explicitly because the unformatData method contains the call for it.
+	
+*/
+function unformatInt(val)
+{
+	strError = "";
+	if(val == "")
+		val = defaultValue();//set the defalt value
+	//return parseInt(val);
+	return val;
+}
+/**	
+
+formatNumber
+	wraps the formatting from the data.
+	
+	Params: val, represent the number value prepared to be formatted. 
+	Return value: the value with the specified formatting.
+	Remarks: users can format the data with the type of number by calling this method. 
+	 	In fact, users don't need know the type of the data because the formatData 
+	 	method can automatic detect the type of the data and then call the relevant 
+	 	formatting method(e.g formatNumber or formatCurrency), 
+	 	so users needn't call methods like this(e.g formatCurrency, formatDate and so on) immediately.
+		Here it is a example to instruct how to use this method below:
+
+	formatNumber = formatNumber("12355.3666");//this directive equal 'formatData("12355.3666")'
+	document.write("format number is" + formatNumber);
+	//output
+	format number is $12,355.3,666
+*/
+
+function formatNumber(val){
+	strError = "";
+    val=round(val,TYPE_2);
+	return formatNumberByDigit(val,TYPE_1,TYPE_2,TYPE_NUMBER);;
+}
+/**
+round
+	round a number to a specified number of decimal places.
+	
+Arguments: 
+	val, the value needing formatting. 
+	n,   specifies the decimal digits of the formatted value
+	
+Remarks:
+    val = 12345678.2234;
+    roundVal = formatNumberByDigit(val,2);
+	document.write("The roundVal value is" + roundVal);
+    //output
+		TThe roundVal value is 12345678.22
+	
+*/
+function round(val,length){
+	var numberField = parseFloat(val,10); // Field where the number appears
+	var rlength = length; // The number of decimal places to round to
+	var newnumber = Math.round(numberField*Math.pow(10,rlength))/Math.pow(10,rlength);
+	return newnumber;
+}
+
+/** 
+formatNumberByDigit
+	Called by the formatNumber method,
+
+Arguments: 
+		val, the value needing formatting. 
+		m,   specifies the integeral digits of the formatted value.
+		n,   specifies the decimal digits of the formatted value
+Remarks: this method is the essential and core implementation and it is the instrinsic method that formats number data. 
+	This method is the key to achive the formatting funtion by its specified
+	parameters, for example m and n r used to specify the digit of integer and decimal portions, contain
+	the most important information represent the formatting request.
+	Example:
+		//if users want set a number format named "SampleStandard" which wraps every number indicated
+		by val to a formatting number. The "SampleStandard" specifies the formatting number's integer
+		and decimal digit r repecitively m and n. In this case we set the type to TYPE_NUMBER, all
+		steps r listed as follows:
+		
+		val = 12345678.2234;
+		formattingVal = formatNumberByDigit(val,5,2,TYPE_NUMBER);
+		document.write("The formatting value is" + formattingVal);
+		//output
+		The formatting value is 45,678.22
+		
+		Notes that the redunant single numbers in the integeral and decimal portions r deleted by the 
+		parameters m and n. So we should pay attention to the truncating affect to the original value(val) when formatting the val variable.
+*/
+function formatNumberByDigit(val,m,n,type)
+{
+	strError = "";
+/******************USER EXCEPTION MACRO********************/
+	//define a list of constant user exceptions macros
+	var EXCEPTION_NEGATIVE = 0;//m or n is a negative number
+	var DISCRIPTION_NEGATIVE = "必须正确指定'preset(m,n)'属性中的m,n值";
+	var EXCEPTION_INVALIDATE_VALUE = 1;//the val param incorporates some illegal characters
+	var DISCRIPTION_INVALIDATE_VALUE = "准备格式化的参数值不正确(例如含有非法字符等)";
+/**********************************************************/
+	//assure the val variable is a string
+	val = val.toString();
+	if(val == "")
+		return defaultValue(true);
+	//if the number string includes the minus, first we should delete this signal from this string to make following computation convenient.
+	var ifNegative = false;
+	if(val.indexOf("-") != -1){
+		val = val.substr(1,val.length-1);
+		ifNegative = true;
+	}
+	//indicate the zero-based index of decimal point
+	var decimalIndex = (val.indexOf(".")==-1) ? val.length : val.indexOf(".");
+	//make the format of the htcTxt.value according with the specified format
+	var intPart = null;
+	var decimalPart = null;
+	if(m < 0 || decimalIndex<=m)
+		intPart = val.substr(0,decimalIndex);
+	else
+		intPart = val.substr(decimalIndex-m,m);
+	if(n < 0)
+		decimalPart = val.substr(decimalIndex,val.length-decimalIndex);
+	else{
+		if((val.length-decimalIndex-1)<=n){
+			if(decimalIndex < val.length)
+				decimalPart = 	val.substr(decimalIndex,val.length-decimalIndex);
+			else
+				decimalPart = ".";
+			
+			//supplement the 0 to the end of the string
+			var supDigit = 0;
+			if(decimalIndex < val.length)
+				supDigit = n -(val.length - decimalIndex - 1);
+			else
+				supDigit = n;
+			for(var i=0;i<supDigit;i++)
+				decimalPart += "0";
+		}
+		else{
+			//要考虑 .06 在经过parseInt()处理之后变成6的情况
+			decimalPart = parseInt(val.substr(decimalIndex+1,n),10);
+			var lastChar = parseInt(val.charAt(decimalIndex+n+1),10);
+			if(lastChar >= 5){
+				//var endChar = parseInt(decimalPart.charAt(decimalPart.length-1)) + 1;
+				//decimalPart = decimalPart.substr(0,decimalPart.length-1) + endChar;
+				//decimalPart = (parseFloat(decimalPart)+Math.pow(0.1,n)).toString();
+				decimalPart += 1;
+				//如果增加1后进位了,则应该考虑整数部分增加1
+				if(decimalPart.toString().length != (decimalPart-1).toString().length){
+					//alert("big");
+					//整数部分增加1,还要考虑之后可能超过m定义的位数限制!
+					var originalInt = intPart;
+					intPart = (parseInt(intPart,10) + 1).toString();
+					if(originalInt.length != intPart.length)
+						intPart = intPart.substr(intPart.length-originalInt.length);
+					//alert(intPart);
+					//小数部分重新确定
+					decimalPart = parseInt(decimalPart - parseInt(Math.pow(10,n)),10).toString();
+					//alert(decimalPart);
+					//alert(decimalPart.length);
+					if(decimalPart.length < n){
+						for(var i=0;i<n-decimalPart.length;i++)
+							decimalPart += "0";
+					}
+					//alert(decimalPart);
+				}
+				else{
+					//要考虑 .06 在经过parseInt()处理之后变成6的情况
+					decimalPart = decimalPart.toString();
+					if(decimalPart.length < n){
+						for(var i=0;i<n-decimalPart.length;i++)
+							decimalPart = "0" + decimalPart;
+					}
+				}
+			}
+			decimalPart = "." + decimalPart.toString();
+		}
+	}
+	if(intPart!=null && decimalPart!=null)
+		val = intPart + decimalPart;
+
+	/**important!
+	calculate the htcTxt.value of the decimalIndex variable again to accord with the new htcTxt.value
+	*/
+	var decimalIndex = (val.indexOf(".")==-1) ? val.length : val.indexOf(".");
+
+	var startIndex = 0; 
+	var formatResult = "";
+	var bstopformat=false;
+	while(startIndex< val.length){
+		var residue = decimalIndex - 3*parseInt(decimalIndex/3);
+		if(startIndex ==0 && residue !=0){
+			formatResult = val.substr(startIndex,residue);
+			startIndex = residue;
+			}
+		else{
+		    //如果小数点后，就不格式化操作了。
+		    if (val.substr(startIndex,3).indexOf(".")!=-1){
+			    bstopformat=true;
+			}
+
+			if(val.substr(startIndex,3).indexOf(".")==-1){
+				if(startIndex == 0) {
+					formatResult += val.substr(startIndex,3);	
+				} else {
+				    if (bstopformat){
+						formatResult +=val.substr(startIndex,3);	
+					} else {
+					    formatResult += "," + val.substr(startIndex,3);	
+					}
+				}
+	
+				startIndex += 3;
+			}
+			else{
+				formatResult += val.substr(startIndex,4);
+				startIndex += 4;
+			}
+		}
+	}
+
+	
+	if(ifNegative == true){
+		val = "-" + val;
+		formatResult = "-" + formatResult;//important!
+	}
+	switch(type){
+	case TYPE_PURE_NUMBER:
+	case TYPE_NUMBER:
+	case TYPE_CURRENCY://now this method doesn't wrap the "$" prefix on the currency htcTxt.value
+	break;
+	case TYPE_PERCENT:
+	formatResult += "%";
+	break;
+	case TYPE_NOQUOT:
+	case TYPE_NOMINUS:
+	}
+	return formatResult;
+}
+/**	
+unformatNumber
+	removes the formatting from the data.
+	
+	Params: val, represent the number value prepared to be unformatted. 
+	Return value: the value without any formatting.
+	Remarks: users can remove all formattings from the number represented by val. 
+	In fact, users rarely call this method explicitly because the unformatData method contains the call for it.
+	
+	Here it is a example to demonstrate how to use this method below:
+	//
+	unformatNumber = unformatNumber("-199,111.022");
+	document.write("the unformatted number is" + unformatNumber);
+	//output
+	the unformatted number is -199111.022
+*/
+function unformatNumber(val)
+{
+	strError = "";
+	if(val == "")
+		return parseFloat(defaultValue(),10);
+    //处理科学计数法 add zhangcw 20031018
+	if (val.indexOf("e")!=-1) {
+	    var n = parseInt(TYPE_2,10);
+	    val=round(val,n).toString();
+	}
+
+	var unformatResult = "";
+	var i = 0;
+
+    //负数处理忘了,dingyg 20030914
+
+	var isNegtiveVal=false;
+
+	while(i < val.length){
+		if(val.substr(i,1) == "-")
+		  isNegtiveVal=true;
+		  
+		if((val.substr(i,1) == "-") || (val.substr(i,1) == ".") || !isNaN(parseInt(val.substr(i,1)))) //assure every char be a pure number
+			unformatResult += val.substr(i,1);
+		i++;
+	}
+/*	
+	if (isNegtiveVal==true)
+	{
+  	   return 0-parseFloat(unformatResult,10);
+//	   unformatResult = "-"+unformatResult;
+	}
+*/	
+	return parseFloat(unformatResult,10);
+}
+/**	
+formatCurrency
+	formats the data with the formatting of currency.
+	
+	Params: val, represent the data prepared to be formatted. 
+	Return value: the currency wrapped with the currency formatting.
+	Remarks: users can format data with the currency formatting by calling this method.
+	 If wantting to know more about its usage u can refer to the specification of the formatNumber method.
+	
+*/
+function formatCurrency(val)
+{
+	strError = "";
+	return formatNumberByDigit(val,TYPE_1,TYPE_2,TYPE_CURRENCY);
+}
+/**	
+unformatCurrency
+	removes the formatting from the data.
+	
+	Params: val, represent the number value prepared to be unformatted. 
+	Return value: the value without any formatting.
+	Remarks: users can remove all formattings from the number represented by val.
+	 In fact, users rarely call this method explicitly because the unformatData method contains the call for it.
+	
+*/
+function unformatCurrency(val)
+{
+	strError = "";
+	return unformatNumber(val);
+}
+/**	
+formatPercent
+	formats the data with the formatting of percent.
+	
+	Params: val, represent the data prepared to be formatted. 
+	Return value: the value wrapped with the percent formatting.
+	Remarks: users can format data with the percent formatting by calling this method.
+	 If wantting to know more about its usage u can refer to the specification of the formatNumber method.
+	
+*/
+function formatPercent(val)
+{
+	strError = "";
+	return formatNumberByDigit(val,TYPE_1,TYPE_2,TYPE_PERCENT);
+}
+/**	
+unformatPercent
+	removes the formatting from the data.
+	
+	Params: val, represent the number value prepared to be unformatted. 
+	Return value: the value without any formatting.
+	Remarks: users can remove all formattings from the value represented by val. 
+	In fact, users rarely call this method explicitly because the unformatData method contains the call for it.
+	If wantting to know more about its usage u can refer to the specification of the unformatNumber method.
+	
+*/
+function unformatPercent(val)
+{
+	strError = "";
+	return unformatNumber(val);
+}
+/**	
+formatDate
+	formats the data with the formatting of date.
+	
+	Params: val, represent the data prepared to be unformatted. 
+	Return value: the value wrapped with the date formatting.
+	Remarks: users can format data with the date formatting by calling this method. 
+	If wantting to know more about its usage u can refer to the specification of the formatNumber method.
+	
+*/
+function formatDate(val)
+{
+	strError = "";
+	//assure the val variable is a string
+	val = "" + val + "";
+
+	//set the defaul value
+	if(val == "")
+		return defaultValue(true);
+
+	var strResult = val;
+	//verify the validity of the date
+//	if(isValidDate(val)){
+		var year;
+		var month;
+		var day;
+		var strFilter;
+		//verify whether the val string includes two "-" or "." sperators
+		if((val.indexOf("-") == -1) && (val.indexOf(".") == -1) && (val.indexOf("/") == -1)){
+			year = val.substr(0,4);
+			month = val.substr(4,2);
+			day = val.substr(6,2);
+			strResult = year + "-" + month + "-" + day;// format the value of val
+		}	
+		else{
+			//get the corresponding value of the year, month and day
+			var firstSepratorIndex;
+			var lastSepratorIndex;
+			var idx = val.indexOf("-");
+			if(idx != -1){
+				firstSepratorIndex = idx;
+				lastSepratorIndex = val.lastIndexOf("-");
+				}
+			else if((idx = val.indexOf("/")) != -1){
+				firstSepratorIndex = idx;
+				lastSepratorIndex = val.lastIndexOf("/");
+				}
+			else{
+				firstSepratorIndex = val.indexOf(".");
+				lastSepratorIndex = val.lastIndexOf(".");
+				}
+			year = val.substring(0,firstSepratorIndex);
+			month = val.substring(firstSepratorIndex+1,lastSepratorIndex);
+			day = val.substring(lastSepratorIndex+1,val.length);
+			if(year.length == 2){
+				var tempDate = new Date();
+				year = tempDate.getFullYear().toString().substr(0,2) + year;
+			}
+			
+			if(month.length == 0){
+				alert("月长度不能为0");
+			}else if(month.length == 1){
+				month = "0" + month;
+			}
+			if(day.length == 0){
+				alert("日期长度不能为0");
+			}else if(day.length == 1){
+				day = "0" + day;
+			}
+			strResult = year + "-" + month + "-" + day;
+		}
+	//}
+	return strResult;
+}
+/**	
+unformatDate
+	removes the formatting from the data.
+	
+	Params: val, represent the number value prepared to be unformatted. 
+	Return value: the value without any formatting.
+	Remarks: users can remove all formattings from the date represented by val. In fact,
+	 users rarely call this method explicitly because the unformatData method contains the call for it.
+	 If wantting to know more about its usage u can refer to the specification of the unformatNumber method.
+	
+*/
+function unformatDate(val)
+{
+	strError = "";
+	return val;
+}
+/**	
+isValidData
+	judges whether the data has a valid formatting.
+	
+	Params: 
+		val, the checked value
+	Return value: 
+		true denotes param val is a valid value, otherwise false.
+	Remarks: 
+		users can filter most of illegal input by calling this mehod.
+	Here it is two example to instruct how to use this method below:
+	//1.first suppose the type of textfield is TYPE_NUMBER
+	val = 123**33./; //includes some illegal characters(e.g "*")
+	valValid = 12322.0023
+	result = isValidData(val);
+	resultValid = isValidData(valValid);
+	document.write("the val is" + result?"valid":"invalid");
+	document.write("the valValid is" + resultValid?"valid":"invalid");
+	//output in the case 1
+	the val is invalid
+	the valValid is valid
+	
+	//2.then suppose the type of texfield is TYPE_DATE
+	val = 20080483;
+	valValid = 20020101;
+	result = isValidData(val);
+	resultValid = isValidData(valValid);
+	document.write("the val is" + result?"valid":"invalid");
+	document.write("the valValid is" + result?"valid":"invalid");
+	//output in the case 2
+	the val is invalid
+	the valValid is valid
+*/
+function isValidData(val,bNotice)
+{
+	if(isValidData.arguments.length == 0) 
+		bNotice = true;
+	strError = "";
+	var EXCEPTION_EMPTY_VALUE = 0;//this constant indicate that the length of the val variable is not meeting to that we need
+	var DISCRIPTION_EMPTY_VALUE = "此项不允许为空!";//string showed in the alert box is used to prompt the error discription
+	val = val.toString();//revert val to a string
+	if(val == "" && bNotice){
+		if(fill !=null && (fill.toString().toLowerCase() == "yes" || fill.toString().toLowerCase() == "true")){
+			buildErrorDiscription("isValidData", EXCEPTION_EMPTY_VALUE, DISCRIPTION_EMPTY_VALUE);
+			return false;
+		}
+		return true;
+	}
+
+	var result = true;
+	switch(TYPE_PRESET){
+	case TYPE_DEFAULT:
+		result = true;
+		break;
+	case TYPE_PURE_NUMBER:
+	case TYPE_NUMBER:
+		result = isValidNumber(val);
+		break;
+	case TYPE_NOMINUS:
+		result = isValidNumber(val);
+		break;
+	case TYPE_CURRENCY:
+		result = isValidCurrency(val);
+		break;
+	case TYPE_PERCENT:
+		result = isValidPercent(val);
+		break;
+	case TYPE_DATE:
+		result = isValidDate(val);
+		break;
+	}
+	return result;
+}
+/**
+verify whether the val variable is the number with the correct format
+Arguments: val 
+Remarks: 
+Example:
+*/
+function isValidNumber(val)
+{		
+	strError = "";
+	var i = 0;
+	
+		//the pure type number consist of the pure numbers(0-9) and comma.
+		//NOTE that in fact there isn't "," in user's input data, the commas r inserted by program during formatting!
+		strFilter = "";
+		var EXCEPTION_INVALID_CHAR = 0;
+		var DISCRIPTION_INVALID_CHAR = "含有非法字符!";
+		while(i<val.length){
+			var str = val.substr(i,1);
+			if(TYPE_PRESET == TYPE_PURE_NUMBER){
+				if(str!="," && isNaN(parseInt(str))){
+					buildErrorDiscription("isValidNumber", EXCEPTION_INVALID_CHAR, DISCRIPTION_INVALID_CHAR);
+					return false;
+				}
+			}
+			else{
+				if(str!="." && str!="-" &&	str!="," && isNaN(parseInt(str))){
+					buildErrorDiscription("isValidNumber", EXCEPTION_INVALID_CHAR, DISCRIPTION_INVALID_CHAR);
+					return false;
+				}
+			}
+		
+			//strFilter += (str != "," && str != "-") ? str : "";
+			i++;
+		}
+	return true;
+}
+
+function isValidCurrency(val)
+{
+	strError = "";
+	return isValidNumber(val);
+}
+
+function isValidPercent(val)
+{
+	strError = "";
+	var EXCEPTION_INVALID_CHAR = 0;
+	var EXCEPTION_INVALID_CHAR = "不能含有多个'%'符号!";
+	if(charCounter(val,"%") > 1){
+		buildErrorDiscription("isValidPercent", EXCEPTION_INVALID_CHAR, DISCRIPTION_INVALID_CHAR);
+		return false;
+	}
+	var qual = /%/g;
+	var noQualifierVal = val;
+	noQualifierVal = noQualifierVal.replace(qual, "");
+	return isValidNumber(noQualifierVal);
+}
+function replace(val,chr)
+{
+	var result = "";
+	for(var i=0;i<val.length;i++){
+		if(val.substr(i,1) != chr) result += val.substr(i,1);
+	}
+	return result;
+}
+function isValidDate(val) 
+{
+	if(val.length == 0)
+		return true;
+	strError = "";
+	/**********************Exception Macro********************/
+	var EXCEPTION_ILLIGAL_LENGTH = 0;//this constant indicate that the length of the val variable is not meeting to that we need
+	var DISCRIPTION_ILLIGAL_LENGTH = "日期输入长度错误,日期输入格式应为yyyy-mm-dd或者yy/mm/dd!";//string showed in the alert box is used to prompt the error discription.
+	var EXCEPTION_VALIDATION_ERROR = 1;//this constant represent that the formatting date is a wrong value.
+	var DISCRIPTION_VALIDATION_ERROR = "时间格式输入错误,日期输入格式应为yyyy-mm-dd!";//string specifies that the meaning of this kind of exception
+	var EXCEPTION_LACK_SEPERATOR = 2;//this constant represent that the formatting date is a wrong value.
+	var DISCRIPTION_LACK_SEPERATOR = "缺少分隔符!\n您可以使用yyyy-mm-dd或者yyyy.mm.dd的分割格式。";//string specifies that the meaning of this kind of exception
+	var EXCEPTION_ERROR_DATE = 3;//this constant represent that the formatting date is a wrong value.
+	var DISCRIPTION_ERROR_DATE = "日期数值错误，年月日输入不完整!";//string specifies that the meaning of this kind of exception
+	var EXCEPTION_ILLIGAL_CHAR = 4;//this constant represent that the formatting date is a wrong value.
+	var DISCRIPTION_ILLIGAL_CHAR = "含有非法字符!";//string specifies that the meaning of this kind of exception
+	var EXCEPTION_OVER_RANGE = 5;//this constant represent that the formatting date is a wrong value.
+	var DISCRIPTION_OVER_RANGE = "取值越界!";//string specifies that the meaning of this kind of exception
+	var EXCEPTION_OVER_DATE = 6;//this constant represent that the formatting date is a wrong htcTxt.value.
+	var DISCRIPTION_OVER_DATE = "不在合法日期范围(应大于1970年)";//(1950--2050)内!";//string specifies that the meaning of this kind of exception
+	/**********************************************************/
+
+	var DATE_LENGTH = 8;//commonly the date's format is a 8-digit string if we ignore all characters except number.
+	var year;
+	var month;
+	var day;
+	var strFilter;/*
+	if((val.length) != 10){
+		buildErrorDiscription("formatDate",EXCEPTION_ILLIGAL_LENGTH,DISCRIPTION_ILLIGAL_LENGTH);		
+		return false;
+	}*/		
+	//verify whether the val string includes two "-" or "." or "/" sperators
+	if((val.indexOf("-") == -1) && (val.indexOf(".") == -1) && (val.indexOf("/") == -1)){
+		//get the filter string that dosen't include seperating characters.
+		strFilter = parseInt(val).toString();
+		//handle the exception case and return a exception string
+		if(isNaN(strFilter) || (strFilter.length != DATE_LENGTH)){
+			if(strFilter.length > DATE_LENGTH)
+				buildErrorDiscription("formatDate",EXCEPTION_LACK_SEPERATOR,DISCRIPTION_LACK_SEPERATOR);
+			else
+				buildErrorDiscription("formatDate",EXCEPTION_ILLIGAL_LENGTH,DISCRIPTION_ILLIGAL_LENGTH);
+			return false;
+		}
+		//
+		year = val.substr(0,4);
+		month = val.substr(4,2);
+		day = val.substr(6,2);
+		val = year + "-" + month + "-" + day;// format the value of val
+	}	
+	else{
+		if(val.indexOf("-") != -1){
+			if(charCounter(val,"-") != 2){
+			buildErrorDiscription("formatDate",EXCEPTION_LACK_SEPERATOR,DISCRIPTION_LACK_SEPERATOR);
+			return false;
+			}
+		}
+		if(val.indexOf(".") != -1){
+			if(charCounter(val,".") != 2){
+			buildErrorDiscription("formatDate",EXCEPTION_LACK_SEPERATOR,DISCRIPTION_LACK_SEPERATOR);
+			return false;
+			}
+		}
+		if(val.indexOf("/") != -1){
+			if(charCounter(val,"/") != 2){
+			buildErrorDiscription("formatDate",EXCEPTION_LACK_SEPERATOR,DISCRIPTION_LACK_SEPERATOR);
+			return false;
+			}
+		}
+		
+		//get the filter string that dosen't include seperating characters.
+		strFilter = "";
+		for(var i = 0;i< val.length;i++){
+			if(!isNaN(parseInt(val.charAt(i))))
+				strFilter += val.charAt(i);
+		}
+		//handle the exception case and return a exception string
+		if(strFilter.length > DATE_LENGTH){
+			buildErrorDiscription("formatDate",EXCEPTION_ILLIGAL_LENGTH,DISCRIPTION_ILLIGAL_LENGTH);
+			return false;
+		}
+
+		//get the corresponding value of the year, month and day
+		var firstSepratorIndex;
+		var lastSepratorIndex;
+		var idx = val.indexOf("-");
+		if(idx != -1){
+			firstSepratorIndex = idx;
+			lastSepratorIndex = val.lastIndexOf("-");
+			}
+		else if((idx = val.indexOf("/")) != -1){
+			firstSepratorIndex = idx;
+			lastSepratorIndex = val.lastIndexOf("/");
+			}
+		else{
+			firstSepratorIndex = val.indexOf(".");
+			lastSepratorIndex = val.lastIndexOf(".");
+			}
+		year = val.substring(0,firstSepratorIndex);
+		month = val.substring(firstSepratorIndex+1,lastSepratorIndex);
+		day = val.substring(lastSepratorIndex+1,val.length);
+
+		if(!(year.length == 2 || year.length == 4) || !isInRange(month.length,1,2) || !isInRange(day.length,1,2)){
+			buildErrorDiscription("formatDate",EXCEPTION_ILLIGAL_LENGTH,DISCRIPTION_ILLIGAL_LENGTH);
+			return false;
+			}
+		if(year.length == 2){
+			var tempDate = new Date();
+			year = tempDate.getFullYear().toString().substr(0,2) + year;
+		}
+		if(month.length == 1)
+			month = "0" + month;
+		if(day.length == 1)
+			day = "0" + day;
+		val = year + "-" + month + "-" + day;
+	}
+
+	//mainly detect the validation of relation that locates among the year,month and day
+	var strDateArray;
+	var strDay = "";
+	var strMonth = "";
+	var strYear = "";
+	var intday;
+	var intMonth;
+	var intYear;
+	var booFound = false;
+	var datefield = val;
+	var strSeparatorArray = new Array("-","."," ","/");
+	var intElementNr;
+	// var err = 0;
+	var strMonthArray = new Array(12);
+	strMonthArray[0] = "Jan";
+	strMonthArray[1] = "Feb";
+	strMonthArray[2] = "Mar";
+	strMonthArray[3] = "Apr";
+	strMonthArray[4] = "May";
+	strMonthArray[5] = "Jun";
+	strMonthArray[6] = "Jul";
+	strMonthArray[7] = "Aug";
+	strMonthArray[8] = "Sep";
+	strMonthArray[9] = "Oct";
+	strMonthArray[10] = "Nov";
+	strMonthArray[11] = "Dec";
+
+	if (val.length < 1) {
+	return true;
+	}
+	for (var intElementNr = 0; intElementNr < strSeparatorArray.length; intElementNr++) {
+		if (val.indexOf(strSeparatorArray[intElementNr]) != -1) {
+			strDateArray = val.split(strSeparatorArray[intElementNr]);
+			if (strDateArray.length != 3) {
+				err = 1;
+				buildErrorDiscription("isValidDate",EXCEPTION_ERROR_DATE,DISCRIPTION_ERROR_DATE);
+				return false;
+			}
+			else {
+				strDay = strDateArray[2];
+				strMonth = strDateArray[1];
+				strYear = strDateArray[0];
+			}
+			
+			booFound = true;
+	   }
+	}
+
+	if (booFound == false) {
+		if (val.length>5) {
+			strYear = val.substr(0, 2);
+			strMonth = val.substr(2, 2);
+			strDay = val.substr(4);
+		   }
+	}
+	//verify whether the date lacks of some item among year, month and day.
+	var EXCEPTION_LACK_ITEM = 3;//indicates whether the exception refered above occured.
+	var DISCRIPTION_LACK_ITEM = "输入日期长度错误,缺少: ";
+	if(strYear == "" || strMonth == "" || strDay == ""){
+			//DISCRIPTION_LACK_ITEM += (strYear == "")?"年份":"" + (strMonth == "")?",月份":"," + (strDay == "")?"天数":"" + "!";
+			DISCRIPTION_LACK_ITEM = "日期输入长度错误,日期输入格式应为yyyy-mm-dd!";
+			buildErrorDiscription("isValidDate", EXCEPTION_LACK_ITEM, DISCRIPTION_LACK_ITEM);
+			return false;
+		}
+
+	//Adjustment for short years entered
+	if (strYear.length == 2) {
+		var tempDate = new Date();
+		strYear = tempDate.getFullYear().toString().substr(0,2) + strYear;
+	}
+	
+	intday = parseInt(strDay, 10);
+	if (isNaN(intday)) {
+		err = 2;
+		buildErrorDiscription("isValidDate",EXCEPTION_ILLIGAL_CHAR,"日期"+DISCRIPTION_ILLIGAL_CHAR);
+		return false;
+	}
+
+	intMonth = parseInt(strMonth, 10);
+	if (isNaN(intMonth)) {
+		for (i = 0;i<12;i++) {
+			if (strMonth.toUpperCase() == strMonthArray[i].toUpperCase()) {
+				intMonth = i+1;
+				strMonth = strMonthArray[i];
+				i = 12;
+		   }
+		}
+		if (isNaN(intMonth)) {
+			err = 3;
+			buildErrorDiscription("isValidDate",EXCEPTION_ILLIGAL_CHAR,"月份"+DISCRIPTION_ILLIGAL_CHAR);
+			return false;
+		}
+	}
+
+	intYear = parseInt(strYear, 10);
+	if (isNaN(intYear)) {
+		err = 4;
+		buildErrorDiscription("isValidDate",EXCEPTION_ILLIGAL_CHAR,"年份"+DISCRIPTION_ILLIGAL_CHAR);
+		return false;
+	}/*
+	if (intYear<1970){//(intYear>2050 || intYear<1950) {
+		err = 77;
+		buildErrorDiscription("isValidDate",EXCEPTION_OVER_DATE,"年份"+DISCRIPTION_OVER_DATE);
+		return false;
+	}*/
+	if (intMonth>12 || intMonth<1) {
+		err = 5;
+		buildErrorDiscription("isValidDate",EXCEPTION_OVER_RANGE,"月份"+DISCRIPTION_OVER_RANGE);
+		return false;
+	}
+	if ((intMonth == 1 || intMonth == 3 || intMonth == 5 || intMonth == 7 || intMonth == 8 || intMonth == 10 || intMonth == 12) && (intday > 31 || intday < 1)) {
+		err = 6;
+		buildErrorDiscription("isValidDate",EXCEPTION_OVER_RANGE,"日期"+DISCRIPTION_OVER_RANGE);
+		return false;
+	}
+	if ((intMonth == 4 || intMonth == 6 || intMonth == 9 || intMonth == 11) && (intday > 30 || intday < 1)) {
+		err = 7;
+		buildErrorDiscription("isValidDate",EXCEPTION_OVER_RANGE,"日期"+DISCRIPTION_OVER_RANGE);
+		return false;
+	}
+	if (intMonth == 2) {
+		if (intday < 1) {
+			err = 8;
+			buildErrorDiscription("isValidDate",EXCEPTION_OVER_RANGE,"日期"+DISCRIPTION_OVER_RANGE);
+			return false;
+		}
+		if (LeapYear(intYear) == true) {
+			if (intday > 29) {
+				err = 9;
+				buildErrorDiscription("isValidDate",EXCEPTION_OVER_RANGE,"日期"+DISCRIPTION_OVER_RANGE);
+				return false;
+			}
+		}
+		else {
+			if (intday > 28) {
+				err = 10;
+				buildErrorDiscription("isValidDate",EXCEPTION_OVER_RANGE,"日期"+DISCRIPTION_OVER_RANGE);
+				return false;
+			}
+	   }
+	}
+
+	return true;
+
+}
+/**	
+leapYear
+	determine whether the specified year is a leap year.
+	
+	Params: intYear, specifies the checked year. 
+	Return value: true indicates the intYear is a leap year and otherwise false.
+	Remarks: 
+*/
+function LeapYear(intYear) {
+	strError = "";
+	if (intYear % 100 == 0) {
+	if (intYear % 400 == 0) { return true; }
+	}
+	else {
+	if ((intYear % 4) == 0) { return true; }
+	}
+	return false;
+}
+/**	
+buildErrorDiscription
+	shows a exception prompt dialog box.
+	
+	Params: 
+		functionName, the name of the function call this method
+		exceptionCode, the exception code
+		discriptOfException, the exception's discription
+	Return value: the exception discription string that includes the exception code and discription.
+	Remarks: a easy way to show exception prompt dialog box.
+	
+	Here it is a example to instruct how to use this method below:
+	//if a code splice in a function named exampleFunction possibly occurs a exception that its exception code is 
+	//defined to EXCEPTION_NULL_POINTER and its exception discription is described to "空值针错误!". Then we call this method:
+	
+	var ex =  buildErrorDiscription("exampleFunction",EXCEPTION_NULL_POINTER,"空值针错误!");
+	
+	//then we can judge whether exceptions occur through the returnvalue of this method
+	if(ex.indexOf("UserException") != -1)
+		alert("Exceptions occuring!);
+*/
+function buildErrorDiscription(functionName,exceptionCode,discriptOfException)
+{
+	strError = "操作提示: \n" + discriptOfException;// + "\n Error Code: UserException_"+ functionName + "_" + exceptionCode;
+	return strError;
+}
+
+function getLastError()
+{
+	if(strError.indexOf("操作提示:") != -1)
+		return strError;
+	else
+		return null;
+}
+
+function getMessage()
+{
+	return getLastError();
+}
+/**	
+charCounter
+	caculates how many specified characters a string contains.
+	
+	Params: 
+		str, represents the string
+		c,	specifies the character
+	Return value: the number of the c character contained in the str.
+	Remarks:
+	
+	Here it is a example to instruct how to use this method below:
+	//
+	str = "digitalchina";
+	c = 'i';
+	count = charCounter(str,c);
+	document.write("str includes " + count + c + "characters");
+	//output
+	str includes 3 i characters.
+*/
+function charCounter(str,c)
+{
+	strError = "";
+	var count = 0;
+	for(var i=0;i<str.length;i++){
+		if(str.charAt(i) == c)
+			count++;
+	}
+	return count;
+}
+
+/**	
+isInRange
+	judges a number is in the range of the specified range.
+	
+	Params: 
+		val, detected value
+		begin, the lower value of the range
+		end, the upper value of the range
+	Return value: true denotes the val in the range sppecified by param begin and end, otherwise false.
+	Remarks: 
+	this method is identical to the expression below,
+	"if(val >= begin && val <= end)"
+	
+*/
+function isInRange(val,begin,end)
+{
+	if(val >= begin && val <= end)
+		return true;
+	return false;
+}
+
+function defaultValue(bHasDecorator)
+{
+	var defaultValue;
+	switch(TYPE_PRESET){
+	//现在让number型的默认值为空
+	case TYPE_PURE_NUMBER:
+		//defaultValue = 0;
+		defaultValue = "";
+		break;
+	case TYPE_NUMBER:
+	case TYPE_CURRENCY://now this method doesn't wrap the "$" prefix on the currency htcTxt.value
+	case TYPE_PERCENT:
+		defaultValue = "0.";
+		//supplement some "0" to the end of this string for meeting the specified format
+		for(var i=0;i<TYPE_2;i++)
+			defaultValue += "0";
+	break;
+	case TYPE_DATE:
+		//defaultValue = "0000-00-00";
+		defaultValue = "";
+	break;
+	case TYPE_NOQUOT:
+		defaultValue = "";
+	break;
+	case TYPE_NOMINUS:
+	default:
+		defaultValue = "";
+	}
+	if(bHasDecorator != null && bHasDecorator){
+		if(TYPE_PRESET == TYPE_PERCENT)
+			defaultValue += "%";//append the qualifier to the end of the htcTxt.value
+	}
+	return defaultValue;
+}
+</script>
+
+</PUBLIC:COMPONENT>

@@ -1,0 +1,8 @@
+@charset "utf-8";
+body{ font-size:12px; color: #000000;}
+*{ margin:0px; padding:0px;}
+.tt td{ padding:8px; font-size:14px; color:#666666; line-height:2;}
+a:link,a:visited{color: #666666; text-decoration:none;}
+a:hover{ color:#39669d;}
+.tnt td{padding:1px; font-size:14px; color:#666666; line-height:1.8; padding-left:6px;}
+.tnt{ margin-bottom:10px;}

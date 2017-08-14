@@ -1,0 +1,10 @@
+<Context>
+<Resource name="jdbc/oracle" type="javax.sql.DataSource" username="oa_ncbgt_0314"
+	password="password"
+	driverClassName="oracle.jdbc.driver.OracleDriver"
+	maxIdle="2" maxWait="5000"
+	url="jdbc:oracle:thin:@192.168.2.88:1521:oracle"
+	maxActive="4" />
+</Context>	
+
+

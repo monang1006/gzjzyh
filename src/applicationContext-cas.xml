@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:security="http://www.springframework.org/schema/security" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+	http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-2.0.4.xsd"
+	default-autowire="byType" default-lazy-init="true">
+	
+	<!-- CAS Configration -->
+	<bean id="filterChainProxy" class="org.springframework.security.util.FilterChainProxy">
+		<property name="filterInvocationDefinitionSource">
+			<value>
+                CONVERT_URL_TO_LOWERCASE_BEFORE_COMPARISON
+                PATTERN_TYPE_APACHE_ANT
+                /**=exceptionTranslationFilter,httpSessionContextIntegrationFilter,logoutFilter,casSingleSignOutFilter,securityContextHolderAwareRequestFilter,filterSecurityInterceptor
+			</value>
+		</property>
+	</bean>    
+
+	<!-- this is what hooks up the CAS entry point -->
+	<bean id="exceptionTranslationFilter" class="org.springframework.security.ui.ExceptionTranslationFilter">
+		<property name="authenticationEntryPoint">
+			<ref local="casProcessingFilterEntryPoint"/>
+		</property>
+	</bean>
+    
+	<!-- where do I go when I need authentication from CAS-->
+	<bean id="casProcessingFilterEntryPoint" 
+		class="org.springframework.security.ui.cas.CasProcessingFilterEntryPoint"> 
+		<property name="loginUrl" value="http://192.168.2.92:8088/cas/login"/> 
+		<property name="serviceProperties" ref="serviceProperties"/> 
+	</bean>
+	
+	<!-- Defines the relation of http resoures and roles-->
+	<bean id="databaseFilterInvocationDefinitionSource"
+		class="org.springframework.security.intercept.web.DefaultFilterInvocationDefinitionSource">
+		<!--匹配url的matcher -->
+		<constructor-arg type="org.springframework.security.util.UrlMatcher"
+			ref="antUrlPathMatcher" />
+		<!--url对应authority的map -->
+		<constructor-arg type="java.util.LinkedHashMap" ref="requestMap" />
+	</bean>
+	
+	<bean id="antUrlPathMatcher" class="org.springframework.security.util.AntUrlPathMatcher" />
+	
+	<!-- defines which roles are allowed to access http resources -->
+	<bean id="filterSecurityInterceptor"
+		class="org.springframework.security.intercept.web.FilterSecurityInterceptor">
+		<security:custom-filter before="FILTER_SECURITY_INTERCEPTOR" />
+		<property name="authenticationManager" ref="authenticationManager" />
+		<property name="accessDecisionManager" ref="accessDecisionManager" />
+		<property name="objectDefinitionSource" ref="databaseFilterInvocationDefinitionSource" />
+	</bean>
+	
+	<!-- hooks up CAS ticket validator and user details loader -->
+	<bean id="authenticationManager" class="org.springframework.security.providers.ProviderManager">
+		<property name="providers">
+			<list>
+				<ref bean="casAuthenticationProvider"/>
+			</list>
+		</property>
+	</bean>
+    
+	<!-- supporting class for filterInvocationInterceptor -->
+	<bean id="accessDecisionManager" class="org.springframework.security.vote.AffirmativeBased">
+		<property name="allowIfAllAbstainDecisions" value="false"/>
+		<property name="decisionVoters">
+			<list>
+				<bean class="org.springframework.security.vote.RoleVoter">
+					<property name="rolePrefix" value="" />
+				</bean>
+				<bean class="org.springframework.security.vote.AuthenticatedVoter"/>
+			</list>
+		</property>
+	</bean>
+    
+	<!-- setup method level security using annotations -->
+	<security:global-method-security jsr250-annotations="enabled" secured-annotations="enabled"/>
+	<alias name="authenticationManager" alias="_authenticationManager"/>
+    
+	<bean id="passwordEncoder" class="org.springframework.security.providers.encoding.Md5PasswordEncoder"/>
+    
+	<!-- which service (application) am I authenticating -->
+	<bean id="serviceProperties" class="org.springframework.security.ui.cas.ServiceProperties">
+		<!-- 使用CAS的客户端地址 -->
+		<property name="service" value="http://192.168.2.65:6012/bgt/start.jsp"/> 
+		<property name="sendRenew" value="false"/> 
+	</bean>
+  	
+	<!-- handles a logout request from the CAS server -->
+	<bean id="casSingleSignOutFilter" class="org.jasig.cas.client.session.SingleSignOutFilter"/>
+    
+	<!-- performs CAS authentication -->
+	<bean id="casProcessingFilter" class="org.springframework.security.ui.cas.CasProcessingFilter"> 
+		<security:custom-filter after="CAS_PROCESSING_FILTER"/> 
+		<property name="authenticationManager" ref="authenticationManager"/> 
+		<property name="authenticationFailureUrl" value="/common/error/403.jsp"/> 
+		<property name="defaultTargetUrl" value="http://192.168.2.65:6012/bgt/start.jsp"/> 
+	</bean>
+	
+	<!-- Does the CAS ticket validation and user details loading --> 
+	<bean id="casAuthenticationProvider" class="org.springframework.security.providers.cas.CasAuthenticationProvider"> 
+		<security:custom-authentication-provider /> 
+		<property name="userDetailsService" ref="userDetailsService"/> 
+		<property name="serviceProperties" ref="serviceProperties" /> 
+		<property name="ticketValidator">
+			<ref bean="cas10TicketValidator"/>
+		</property> 
+		<property name="key" value="an_id_for_this_auth_provider_only"/> 
+	</bean>
+	
+	<bean id="cas.validationfilter" class="com.strongmvc.cas.filter.CasValidationFilter"> 
+        <property name="ticketValidator"> 
+            <ref bean="cas10TicketValidator"/> 
+        </property> 
+        <property name="useSession"> 
+            <value>true</value> 
+        </property> 
+        <!-- 客户端应用服务地址--> 
+        <property name="serverName"> 
+            <value>http://192.168.2.65:6012</value> 
+        </property> 
+        <property name="redirectAfterValidation"> 
+            <value>false</value> 
+        </property> 
+    </bean> 
+       
+    <bean id="cas10TicketValidator" class="org.jasig.cas.client.validation.Cas10TicketValidator"> 
+    <!-- 这里参数是cas服务器的地址--> 
+        <constructor-arg index="0" value="http://192.168.2.92:8088/cas" /> 
+    </bean> 
+  	
+	<bean id="userDetailsService" class="com.strongit.uums.security.UserDetailServiceImpl" />
+  	
+	<!-- Log failed authentication attempts to commons-logging -->
+	<bean id="loggerListener" class="org.springframework.security.event.authentication.LoggerListener"/>
+    
+	<!-- 从Session中获得用户信息并放入SecurityContextHolder -->
+	<bean id="httpSessionContextIntegrationFilter" class="org.springframework.security.context.HttpSessionContextIntegrationFilter"/>
+    
+	<bean id="securityContextHolderAwareRequestFilter"
+		class="org.springframework.security.wrapper.SecurityContextHolderAwareRequestFilter"/>
+          
+    
+	<!-- ===================== SSL SWITCHING ==================== -->
+	<bean id="channelProcessingFilter" class="org.springframework.security.securechannel.ChannelProcessingFilter">
+		<property name="channelDecisionManager" ref="channelDecisionManager"/>
+		<property name="filterInvocationDefinitionSource">
+			<value>
+                PATTERN_TYPE_APACHE_ANT
+                **=REQUIRES_SECURE_CHANNEL
+			</value>
+		</property>
+	</bean>
+ 
+	<bean id="channelDecisionManager" class="org.springframework.security.securechannel.ChannelDecisionManagerImpl">
+		<property name="channelProcessors">
+			<list>
+				<bean class="org.springframework.security.securechannel.SecureChannelProcessor">
+					<property name="entryPoint" ref="channelEntryPoint"/>
+				</bean>
+				<bean class="org.springframework.security.securechannel.InsecureChannelProcessor">
+					<property name="entryPoint" ref="channelEntryPoint"/>
+				</bean>
+			</list>
+		</property>
+	</bean>
+ 
+	<bean id="channelEntryPoint" class="org.springframework.security.securechannel.RetryWithHttpsEntryPoint">
+		<property name="portMapper" ref="portMapper"/>
+	</bean>
+ 
+	<bean id="portMapper" class="org.springframework.security.util.PortMapperImpl">
+		<property name="portMappings">
+			<map>
+				<entry key="80" value="443"/>
+				<entry key="8080" value="8443"/>
+				<entry key="5580" value="5543"/>
+			</map>
+		</property>
+	</bean>
+    
+    
+	<!-- Invoked when the user clicks logout -->
+	<bean id="logoutFilter" class="org.springframework.security.ui.logout.LogoutFilter">
+		<!-- URL redirected to after logout success -->
+		<constructor-arg value="http://192.168.2.92:8088/cas/logout"/>
+		<constructor-arg>
+			<list>
+				<bean class="org.springframework.security.ui.logout.SecurityContextLogoutHandler">
+					<property name="invalidateHttpSession" value="false"/>
+				</bean>
+			</list>
+		</constructor-arg>
+	</bean>
+    
+    
+	<!--
+			在此定义URL与授权的关系. 注意此处ROLE_*代表的是授权,而非角色.用户、角色、授权及三者关系的数据保存在数据库中.
+		-->
+	<!--
+		<security:http auto-config="true">
+			<security:anonymous granted-authority="BASIC" />
+				<security:form-login login-page="/fileNameRedirectAction.action&#63;toPage=login.jsp"
+				default-target-url="/fileNameRedirectAction.action&#63;toPage=test.jsp"
+				authentication-failure-url="/fileNameRedirectAction.action&#63;toPage=login.jsp&#38;error=true" 
+				login-processing-url="/j_spring_security_check" always-use-default-target="true" />
+			<security:logout logout-success-url="/fileNameRedirectAction.action&#63;toPage=login.jsp" />
+			<security:remember-me key="e37f4b31-0c45-11dd-bd0b-0800200c9a66" />
+			<security:concurrent-session-control max-sessions="1" exception-if-maximum-exceeded="true" expired-url="/fileNameRedirectAction.action&#63;toPage=login.jsp"/>
+		</security:http>
+		-->
+	
+	<!--
+			认证的provider userDetailsService 根据用户名获取用户信息 userCache ehcache缓存user信息。
+		-->
+	<bean id="daoAuthenticationProvider"
+		class="org.springframework.security.providers.dao.DaoAuthenticationProvider">
+		<property name="userDetailsService" ref="userDetailsService" />
+		<property name="userCache" ref="userCache" />
+	</bean>
+	
+	<bean id="userCache"
+		class="org.springframework.security.providers.dao.cache.EhCacheBasedUserCache">
+		<property name="cache" ref="userCacheBacked" />
+	</bean>
+	
+	<bean id="userCacheBacked" class="org.springframework.cache.ehcache.EhCacheFactoryBean">
+		<property name="cacheManager" ref="cacheManager" />
+		<property name="cacheName" value="myUserCache" />
+	</bean>
+	
+	<bean id="cacheManager"
+		class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
+		<property name="configLocation" value="classpath:ehcache-security.xml" />
+	</bean>
+	
+	<!--    负责认证处理的filter  -->
+	<bean id="authenticationProcessingFilter"
+		class="org.springframework.security.ui.webapp.AuthenticationProcessingFilter">
+		<!--此行说明此filter会覆盖ss2默认配置的filter，before 被覆盖filter的别名-->
+		<security:custom-filter before="AUTHENTICATION_PROCESSING_FILTER" />
+		<!--认证管理器-->
+		<property name="authenticationManager" ref="authenticationManager" />
+		<!--认证失败后跳转到的页面，/spring_security_login是ss2默认的登录入口-->
+		<!-- <property name="authenticationFailureUrl" value="/fileNameRedirectAction.action&#63;toPage=login.jsp&#38;error=true" /> -->
+		<!--认证成功后跳转到的页面-->
+		<property name="defaultTargetUrl" value="http://192.168.2.65:6012/bgt/start.jsp" />
+	</bean>
+	
+	<bean id="authenticationProcessingFilterEntryPoint"
+		class="org.springframework.security.ui.webapp.AuthenticationProcessingFilterEntryPoint">
+		<property name="forceHttps" value="false" />
+	</bean>
+	
+	<bean id="accessDeniedHandler"
+		class="org.springframework.security.ui.AccessDeniedHandlerImpl"
+		p:errorPage="/common/error/403.jsp"/>
+	
+	<bean id="authenticationEntryPoint"
+		class="org.springframework.security.ui.webapp.AuthenticationProcessingFilterEntryPoint"
+		p:loginFormUrl="/start.jsp"
+		p:forceHttps="false"/>
+	
+	<!--可设置hash使用sha1或md5散列密码后再存入数据库 -->
+	<!--security:authentication-provider
+			user-service-ref="userDetailsService">
+			<security:password-encoder hash="plaintext" />
+		</security:authentication-provider-->
+</beans>

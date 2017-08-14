@@ -1,0 +1,57 @@
+html {
+	overflow-y: scroll;
+}
+
+body {
+	font-family: Tahoma, Arial, Helvetica, Sans-Serif;
+	background: #E7F1F8;
+	margin: 0px;
+	padding: 0px;
+}
+
+ul {
+	margin: 0;;
+	margin-left: 3px;;
+	padding: 0;;
+	line-height: 20px;
+}
+
+li {
+	margin: 0 0 0 15px;;
+	padding: 0px 0 0px 0;;
+	list-style-type: disc;;
+	line-height: 20px;
+}
+
+.module {
+	border: 1px #dedcd8 solid;
+	background: white;
+	padding: 1px;;
+	margin-bottom: 10px;;
+	margin-left: 10px;
+}
+
+.moduleHeader {
+	border-bottom: 1px #dedcd8 dotted;
+	padding: 3px 1%;
+	margin: 0;
+	font-size: 12px;
+	overflow: hidden;
+	font-weight: normal;
+	line-height: 14px;
+}
+
+.moduleHeader .icon {
+	float: left;
+	padding: 5px 0px 0px 0px;
+}
+
+.listColor {
+	border: 1px #b8d1e2 solid;
+	color: #003366;
+}
+
+.listColor .moduleHeader {
+	background: #e3eef2 repeat-x scroll left top;
+	border-bottom: 1px #b8d1e2 dotted;
+}

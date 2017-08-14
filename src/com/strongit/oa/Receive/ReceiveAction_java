@@ -1,0 +1,154 @@
+package com.strongit.oa.Receive;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
+
+import org.apache.struts2.config.ParentPackage;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.strongit.oa.bo.ToaRecvdoc;
+import com.strongit.oa.bo.ToaSenddoc;
+import com.strongmvc.orm.hibernate.Page;
+import com.strongmvc.webapp.action.BaseActionSupport;
+
+@ParentPackage("default")
+//@Results( {@Result(name = "query", value = "/WEB-INF/jsp/Receive/receive-query.jsp", type = ServletDispatcherResult.class) })
+public class ReceiveAction extends BaseActionSupport {
+
+	private String SendId;// 公文业务ID
+
+	private Page<ToaRecvdoc> page = new Page<ToaRecvdoc>(10, true);
+
+	private ToaRecvdoc model = new ToaRecvdoc();
+
+	private ReceiveManage receiveManage;
+
+	private int curpage;
+
+	private int unitpage = 10;
+
+	private String id;
+
+	public ReceiveAction() {
+
+	}
+
+	@Override
+	public String delete() throws Exception {
+		return null;
+	}
+
+	@Override
+	public String input() throws Exception {
+		return INPUT;
+	}
+
+	public String query() throws Exception {
+		InputStream inputStream = this.getClass().getClassLoader()
+				.getResourceAsStream("dataSource.properties");
+		Properties p = new Properties();
+		try {
+			p.load(inputStream);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		System.out.println("dbType:" + p.getProperty("dbType") + ",port:"
+				+ p.getProperty("dbPath"));
+		String dbType = p.getProperty("dbType");
+		String dbPath = p.getProperty("dbPath");
+		String dbName = p.getProperty("dbName");
+		String dbUser = p.getProperty("dbUser");
+		String dbPass = p.getProperty("dbPass");
+		String dbChar = p.getProperty("dbChar");
+		page = receiveManage.query(page, dbType, dbPath, dbName, dbUser,
+				dbPass, dbChar);
+
+		return "query";
+	}
+
+	@Override
+	public String list() throws Exception {
+		return SUCCESS;
+	}
+
+	@Override
+	protected void prepareModel() throws Exception {
+
+	}
+
+	@Override
+	public String save() throws Exception {
+		InputStream inputStream = this.getClass().getClassLoader()
+				.getResourceAsStream("dataSource.properties");
+		Properties p = new Properties();
+		try {
+			p.load(inputStream);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		String dbType = p.getProperty("dbType");
+		String dbPath = p.getProperty("dbPath");
+		String dbName = p.getProperty("dbName");
+		String dbUser = p.getProperty("dbUser");
+		String dbPass = p.getProperty("dbPass");
+		String dbChar = p.getProperty("dbChar");
+		this.receiveManage.saveDoc(id, dbType, dbPath, dbName, dbUser, dbPass,
+				dbChar);
+
+		return renderHtml("<script>alert('导入成功！');location='"
+				+ getRequest().getContextPath()
+				+ "/Receive/receive!query.action';</script>");
+	}
+
+	public ToaRecvdoc getModel() {
+
+		return model;
+	}
+
+	public String getSendId() {
+		return SendId;
+	}
+
+	public void setSendId(String sendId) {
+		SendId = sendId;
+	}
+
+	public ReceiveManage getReceiveManage() {
+		return receiveManage;
+	}
+
+	@Autowired
+	public void setReceiveManage(ReceiveManage receiveManage) {
+		this.receiveManage = receiveManage;
+	}
+
+	public Page<ToaRecvdoc> getPage() {
+		return page;
+	}
+
+	public int getCurpage() {
+		return curpage;
+	}
+
+	public void setCurpage(int curpage) {
+		this.curpage = curpage;
+	}
+
+	public int getUnitpage() {
+		return unitpage;
+	}
+
+	public void setUnitpage(int unitpage) {
+		this.unitpage = unitpage;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+}

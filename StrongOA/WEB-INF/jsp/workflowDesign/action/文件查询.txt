@@ -1,0 +1,11 @@
+一、用户
+http://localhost:8080/bgt/workflowDesign/action/processMonitor!mainFrameOrg.action?model=person&mytype=user&state=1	//办结
+http://localhost:8080/bgt/workflowDesign/action/processMonitor!mainFrameOrg.action?model=person&mytype=user&state=0     //在办
+
+二、处领导
+http://localhost:8080/bgt/workflowDesign/action/processMonitor!mainFrameOrg.action?model=person&mytype=dept&state=1	//办结
+http://localhost:8080/bgt/workflowDesign/action/processMonitor!mainFrameOrg.action?model=person&mytype=dept&state=0     //在办
+
+三、厅领导
+http://localhost:8080/bgt/workflowDesign/action/processMonitor!mainFrameOrg.action?model=person&mytype=org&state=1	//办结
+http://localhost:8080/bgt/workflowDesign/action/processMonitor!mainFrameOrg.action?model=person&mytype=org&state=0     //在办

@@ -1,0 +1,56 @@
+.b-m-mpanel .contextmenu {
+	font-size: 14px;
+	font-family: "宋体" ,Verdana;
+}
+.b-m-mpanel {
+	background: #F0F0F0 url(../image/contextmenu/menu_bg.gif) left repeat-y;
+	border: 1px solid #b78171;
+	padding: 2px 0;
+	position: absolute;
+	z-index: 99997;
+	left:0px;
+	top:0px;
+}
+.b-m-mpanel .b-m-split {
+	height: 6px;
+	background: url(../image/contextmenu/m_splitLine.gif) center repeat-x;
+	font-size: 0px;
+	margin: 0 2px;
+}
+.b-m-mpanel .b-m-item, .b-m-mpanel .b-m-idisable
+{
+    padding: 4px 2px;
+    margin: 0 2px 0 3px;
+    cursor: normal;
+    line-height:100%;
+}
+.b-m-mpanel .b-m-idisable
+{
+    color:#808080;
+}
+.b-m-mpanel .b-m-ibody, .b-m-mpanel .b-m-arrow {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	
+}
+.b-m-mpanel .b-m-arrow {
+	background: url(../image/contextmenu/m_arrow.gif) right  no-repeat;	
+}
+.b-m-mpanel .b-m-idisable .b-m-mpanel .b-m-arrow
+{
+    background:none;
+}
+.b-m-mpanel .b-m-item img, .b-m-mpanel .b-m-ifocus img, .b-m-mpanel .b-m-idisable img {
+	margin-right: 8px;
+}
+.b-m-mpanel .b-m-ifocus {
+	background: url(../image/contextmenu/m_item.gif) repeat-x bottom;
+	border: 1px solid #f6baaa;
+	padding: 3px 1px ;
+    margin: 0 2px 0 3px;
+    cursor: normal;
+    line-height:100%;
+}
+.b-m-mpanel .b-m-idisable img {
+	visibility:hidden;
+}

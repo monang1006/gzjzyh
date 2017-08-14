@@ -1,0 +1,56 @@
+@charset "utf-8";
+/* CSS Document */
+body,h1,h2,h3,h4,h5,h6,hr,p,blockquote,dl,dt,dd,ul,ol,li,pre,form,fieldset,legend,button,input,textarea,th,td{margin:0;padding:0;}body,button,input,select,textarea{font:12px/1.5 tahoma,arial,simsun,sans-serif;}h1,h2,h3,h4,h5,h6{font-size:100%;}address,cite,dfn,em,var{font-style:normal;}code,kbd,pre,samp{font-family:courier new,courier,monospace;}small{font-size:12px;}ul,ol,li{list-style:none;}a{text-decoration:none;}a:hover{text-decoration:underline;}sup{vertical-align:text-top;}sub{vertical-align:text-bottom;}legend{color:#000;}fieldset,img{border:0;}button,input,select,textarea{font-size:100%;}table{border-collapse:collapse;border-spacing:0;}
+/* common */
+html{ color: #000; background:#fff; }
+body{ font-family:"\5b8b\4f53", sans-serif; }
+a{ color: #333; cursor:pointer; }
+a:hover{ color:#000; }
+.inline-block{ display: inline-block; zoom: 1; *display: inline; vertical-align: middle; }
+.clearfix:after{ content: '\0020'; display: block; height: 0; clear: both; }
+.clearfix{ *zoom: 1; }
+.clear{ clear:both; height:0; line-height:0; font-size:0; width:100%; overflow:hidden; }
+.fri{ float: right; }
+.fle{ float: left; }
+.cred{ color:#f00; }
+a.ered{ color: #c00; }
+a.ered:hover{ color:#000; }
+.tecen{ text-align:center; }
+.tit{ font-size:14px; font-weight:bold; }
+.dtmore{ font-size:12px; font-weight:normal; float:right; }
+/* container */
+#dcon{ margin:0 auto; padding:0 22px; }
+.mtop{ background-color:#f5f9fc; border:1px solid #cedbeb; padding:16px; margin:10px 0; color:#6f8cad; font-size:14px; font-weight:bold; }
+.mtop dt{ height:32px; }
+.mtop dt span{ display:block; float:left; width:220px; height:32px; line-height:32px; background:url(../images/dzf03.gif) no-repeat center top; overflow:hidden; margin-right:10px; text-align:center; cursor:pointer; }
+.mtop dt span.mtopsping{ background-image:url(../images/dzf02.gif); color:#f35d22; }
+.mtop dd{ border:1px solid #cedbeb; padding:10px 14px; background-color:#fff; line-height:28px; }
+.mtop dd span{ color:#f35d22; padding:0 3px; }
+.dmlef{ }
+.dmrig{ width:237px; }
+.dm01{ border:1px solid #d8d8d8; background-color:#fcfcfc; height:248px }
+.dm01 dl{ border:1px solid #fff; background:url(../images/dzf04.gif) repeat-x center top; }
+.dm01 dt{ height:26px; line-height:26px; padding:0 12px; }
+.dm01 dt span{ width:103px; height:26px; display:block; overflow:hidden; background:url(../images/dzf05.gif) no-repeat center top; color:#fff; text-align:center; font-size:14px; font-weight:bold; }
+.dm01 dd{ padding:10px 12px; }
+.dm01 dd td{ height:29px; line-height:29px; border-bottom:1px dashed #333; font-size:14px; }
+.dm01 dd td a{ color:#3286ad; }
+.dm01 dd td a:hover{ color:#000; }
+.dm02,.dm03,.dm04{ border:1px solid #bad6e0; margin-top:10px; }
+.dmdls dt{ height:26px; line-height:26px; background:url(../images/dzf07.gif) repeat-x center top; border-bottom:1px solid #d3e8f2; }
+.dmdls dt b{ display:block; overflow:hidden; width:133px; height:26px; background:url(../images/dzf06.gif) no-repeat center top; color:#fff; text-align:center; }
+.dmdls dt div{ float:right; height:26px; }
+.dmdls dt div span{ display:inline-block; height:26px; line-height:26px; padding:0 20px; border-left:1px solid #bad6e0; cursor:pointer; }
+.dmdls dt div span.dm02sping{ color:#fff; background-color:#ca3637; }
+.dmdls dd{ padding:1px 0; text-align:center; }
+.dmdls dd div{ padding:1px 0; text-align:center; height:260px;}
+.dmrid01,.dmrid02,.dmrid03,.dmrid04,.dmrid05,.dmrid06{ margin-top:10px; }
+.dmrid02 dt{ height:31px; line-height:31px; background:url(../images/dzf08.gif) no-repeat center top; padding-left:32px; font-size:14px; font-weight:bold; color:#fff; }
+.dmrid02 dd{ padding:8px 0; text-align:center; background-color:#e5e5e5; }
+.dmridls dt{ height:31px; line-height:31px; background:url(../images/dzf08.gif) no-repeat center top; padding-left:32px; font-size:14px; font-weight:bold; color:#fff; }
+.dmridls dd td,.dmridls dd th{ height:24px; line-height:24px; border:1px solid #c7d6e4; border-top:none; }
+.dmridls dd th p{ background-color:#dbe9f6; color:#295b89; line-height:24px; text-align:center; cursor:pointer; }
+.dmridls dd th p.dmridping{ color:#d12d42; background-color:#fff; }
+.dmridls dd td p{ padding-left:16px; color:#333; }
+.dmridls dd td p span{ padding-left:12px; color:#f35d22; }
+.dmridls dd td p.dmrdsplast{ padding-left:28px; font-size:14px; font-weight:bold; color:#f35d22; }

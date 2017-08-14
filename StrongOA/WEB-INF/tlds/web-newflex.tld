@@ -1,0 +1,744 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE taglib PUBLIC "-//Sun Microsystems, Inc.//DTD JSP Tag Library 1.2//EN" "http://java.sun.com/j2ee/dtds/web-jsptaglibrary_1_2.dtd">
+<taglib>
+	<tlib-version>1.0</tlib-version>
+	<jsp-version>1.2</jsp-version>
+	<short-name>webflex</short-name>
+	<uri>/tags/web-flex</uri>
+
+	<tag>
+		<name>flexTable</name><!--列表标签 -->
+		<tag-class>com.strongit.tag.web.grid.stronger.FlexTableTag</tag-class><!--列表标签解析类 -->
+		<body-content>JSP</body-content>
+		<attribute><!--标签属性 -->
+			<name>name</name><!--标签属性名称（列表名称） -->
+			<required>true</required><!--是否必填 -->
+			<rtexprvalue>true</rtexprvalue><!--是否可嵌套标签 -->
+			<type>java.lang.String</type><!--标签属性数据类型 -->
+		</attribute>
+		<attribute>
+			<name>headCss</name><!--标签属性名称（表头样式） -->
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<name>wholeCss</name><!--标签属性名称（整体样式） -->
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<name>detailCss</name><!--标签属性名称（表内容样式） -->
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<name>sumCss</name><!--标签属性名称（表尾样式） -->
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<name>leftCss</name><!--标签属性名称（左边列样式） -->
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<name>height</name><!--标签属性名称（列表高度） -->
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<name>width</name><!--标签属性名称（列表宽度） -->
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<name>property</name><!--标签属性名称（对应主键属性名称或主键对应数组位置） -->
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<name>isCanDrag</name><!--标签属性名称（是否可拖拉） -->
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>boolean</type>
+		</attribute>
+		<attribute>
+			<name>isCanFixUpCol</name><!--标签属性名称（是否可固定行列） -->
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>boolean</type>
+		</attribute>
+		<attribute>
+			<name>clickColor</name><!--标签属性名称（点击列显示颜色） -->
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<name>pageSize</name><!--每页显示行数 -->
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<name>footShow</name><!--标签属性名称（表尾展现方式） -->
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<name>collection</name><!--标签属性名称（数据列表名称） -->
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.util.List</type>
+		</attribute>
+		<attribute>
+			<name>getValueType</name><!--标签属性名称（获取数据方式） -->
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<name>isShowMenu</name><!--标签属性名称（是否显示右键菜单） -->
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>boolean</type>
+		</attribute>
+		<attribute>
+			<name>isCanSplit</name><!--标签属性名称（是否可分页） -->
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>boolean</type>
+		</attribute>
+		<attribute>
+			<name>nameColNum</name><!--标签属性名称（右键菜单获取值列） -->
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>int</type>
+		</attribute>
+		<attribute>
+			<name>showZebraLine</name><!--标签属性名称（是否展现斑马线） -->
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>boolean</type>
+		</attribute>
+		<attribute>
+			<name>showSearch</name><!--标签属性名称（是否展现搜索栏） -->
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>boolean</type>
+		</attribute>
+		<attribute>
+			<name>onclick</name><!--标签属性名称（行点击事件） -->
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>boolean</type>
+		</attribute>
+		<attribute>
+			<name>ondblclick</name><!--标签属性名称（行双击事件） -->
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>boolean</type>
+		</attribute>
+		<attribute>
+			<name>page</name><!--标签属性名称（分页对象） -->
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>com.strongmvc.orm.hibernate.Page</type>
+		</attribute>
+		<attribute>
+			<name>pagename</name><!--标签属性名称（分页辅助对象参数名称） -->
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+		</attribute>
+	</tag>
+
+	<tag>
+		<name>flexCheckBoxCol</name><!--复选框列标签 -->
+		<tag-class>com.strongit.tag.web.grid.stronger.CheckBoxTag</tag-class>
+		<attribute>
+			<name>caption</name><!--标签属性名称（表头显示文字） -->
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<name>property</name><!--标签属性名称（属性值对应字段） -->
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<name>showValue</name><!--标签属性名称（显示值对应字段） -->
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<name>valuepos</name><!--标签属性名称（属性值对应数组位置） -->
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<name>valueshowpos</name><!--标签属性名称（显示值对应数组位置） -->
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<name>width</name><!--标签属性名称（单元格宽度） -->
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<name>isCheckAll</name><!--标签属性名称（是否有全选框） -->
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>boolean</type>
+		</attribute>
+		<attribute>
+			<name>isCanDrag</name><!--标签属性名称（是否可拖动） -->
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>boolean</type>
+		</attribute>
+		<attribute>
+			<name>isCanSort</name><!--标签属性名称（是否可排序） -->
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>boolean</type>
+		</attribute>
+	</tag>
+
+	<tag>
+		<name>flexTextCol</name><!--文本列标签 -->
+		<tag-class>com.strongit.tag.web.grid.stronger.TextColTag</tag-class>
+		<attribute>
+			<name>caption</name><!--标签属性名称（表头显示文字） -->
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<name>property</name><!--标签属性名称（属性值对应字段） -->
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<name>showValue</name><!--标签属性名称（显示值对应字段） -->
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<name>align</name><!--标签属性名称（对齐方式） -->
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<name>valuepos</name><!--标签属性名称（属性值对应数组位置） -->
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<name>valueshowpos</name><!--标签属性名称（显示值对应数组位置） -->
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<name>width</name><!--标签属性名称（单元格宽度） -->
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<name>isCanDrag</name><!--标签属性名称（是否可拖动） -->
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>boolean</type>
+		</attribute>
+		<attribute>
+			<name>isCanSort</name><!--标签属性名称（是否可排序） -->
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>boolean</type>
+		</attribute>
+		<attribute>
+			<name>onclick</name><!--标签属性名称（单元格点击事件） -->
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>boolean</type>
+		</attribute>
+		<attribute>
+			<name>ondblclick</name><!--标签属性名称（单元格双击事件） -->
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>boolean</type>
+		</attribute>
+		<attribute>
+			<name>showsize</name><!--标签属性名称（单元格显示字符数） -->
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.Integer</type>
+		</attribute>
+		<attribute>
+			<name>fontColor</name><!--标签属性名称（单元格td显示的字体颜色） -->
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+		</attribute>
+	</tag>
+
+	<tag>
+		<name>flexFlagCol</name><!--文本列标签 -->
+		<tag-class>com.strongit.tag.web.grid.stronger.FlagColTag</tag-class>
+		<attribute>
+			<name>caption</name><!--标签属性名称（表头显示文字） -->
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<name>property</name><!--标签属性名称（属性值对应字段） -->
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<name>showValue</name><!--标签属性名称（显示值对应字段） -->
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<name>valuepos</name><!--标签属性名称（属性值对应数组位置） -->
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<name>valueshowpos</name><!--标签属性名称（显示值对应数组位置） -->
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<name>width</name><!--标签属性名称（单元格宽度） -->
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<name>isCanDrag</name><!--标签属性名称（是否可拖动） -->
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>boolean</type>
+		</attribute>
+		<attribute>
+			<name>isCanSort</name><!--标签属性名称（是否可排序） -->
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>boolean</type>
+		</attribute>
+		<attribute>
+			<name>onclick</name><!--标签属性名称（单元格点击事件） -->
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>boolean</type>
+		</attribute>
+		<attribute>
+			<name>ondblclick</name><!--标签属性名称（单元格双击事件） -->
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>boolean</type>
+		</attribute>
+		<attribute>
+			<name>showsize</name><!--标签属性名称（单元格显示字符数） -->
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.Integer</type>
+		</attribute>
+		<attribute>
+			<name>fontColor</name><!--标签属性名称（单元格td显示的字体颜色） -->
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+		</attribute>
+	</tag>
+
+	<tag>
+		<name>flexDateCol</name><!--日期列标签 -->
+		<tag-class>com.strongit.tag.web.grid.stronger.DateColTag</tag-class>
+		<attribute>
+			<name>caption</name><!--标签属性名称（表头显示文字） -->
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<name>dateFormat</name><!--标签属性名称（日期显示格式） -->
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<name>property</name><!--标签属性名称（属性值对应字段） -->
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<name>showValue</name><!--标签属性名称（显示值对应字段） -->
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<name>valuepos</name><!--标签属性名称（属性值对应数组位置） -->
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<name>valueshowpos</name><!--标签属性名称（显示值对应数组位置） -->
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<name>width</name><!--标签属性名称（单元格宽度） -->
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<name>isCanDrag</name><!--标签属性名称（是否可拖动） -->
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>boolean</type>
+		</attribute>
+		<attribute>
+			<name>isCanSort</name><!--标签属性名称（是否可排序） -->
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>boolean</type>
+		</attribute>
+		<attribute>
+			<name>onclick</name><!--标签属性名称（单元格点击事件） -->
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>boolean</type>
+		</attribute>
+		<attribute>
+			<name>ondblclick</name><!--标签属性名称（单元格双击事件） -->
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>boolean</type>
+		</attribute>
+		<attribute>
+			<name>showsize</name><!--标签属性名称（单元格显示字符数） -->
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>boolean</type>
+		</attribute>
+	</tag>
+
+	<tag>
+		<name>flexRadioCol</name><!--单选框列标签 -->
+		<tag-class>com.strongit.tag.web.grid.stronger.RadioBoxTag</tag-class>
+		<attribute>
+			<name>caption</name><!--标签属性名称（表头显示文字） -->
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<name>property</name><!--标签属性名称（属性值对应字段） -->
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<name>showValue</name><!--标签属性名称（显示值对应字段） -->
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<name>valuepos</name><!--标签属性名称（属性值对应数组位置） -->
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<name>valueshowpos</name><!--标签属性名称（显示值对应数组位置） -->
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<name>width</name><!--标签属性名称（单元格宽度） -->
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<name>isCanDrag</name><!--标签属性名称（是否可拖动） -->
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>boolean</type>
+		</attribute>
+		<attribute>
+			<name>isCanSort</name><!--标签属性名称（是否可排序） -->
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>boolean</type>
+		</attribute>
+	</tag>
+
+	<tag>
+		<name>flexNumricCol</name><!--数值列标签 -->
+		<tag-class>com.strongit.tag.web.grid.stronger.NumricColTag</tag-class>
+		<attribute>
+			<name>caption</name><!--标签属性名称（表头显示文字） -->
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<name>property</name><!--标签属性名称（属性值对应字段） -->
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<name>showValue</name><!--标签属性名称（显示值对应字段） -->
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<name>valuepos</name><!--标签属性名称（属性值对应数组位置） -->
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<name>valueshowpos</name><!--标签属性名称（显示值对应数组位置） -->
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<name>width</name><!--标签属性名称（单元格宽度） -->
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<name>isCanDrag</name><!--标签属性名称（是否可拖动） -->
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>boolean</type>
+		</attribute>
+		<attribute>
+			<name>isCanSort</name><!--标签属性名称（是否可排序） -->
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>boolean</type>
+		</attribute>
+		<attribute>
+			<name>onclick</name><!--标签属性名称（单元格点击事件） -->
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>boolean</type>
+		</attribute>
+		<attribute>
+			<name>ondblclick</name><!--标签属性名称（单元格双击事件） -->
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>boolean</type>
+		</attribute>
+		<attribute>
+			<name>showsize</name><!--标签属性名称（单元格显示字符数） -->
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>boolean</type>
+		</attribute>
+	</tag>
+
+	<tag>
+		<name>flexImgCol</name><!--图片列标签 -->
+		<tag-class>com.strongit.tag.web.grid.stronger.ImgColTag</tag-class>
+		<attribute>
+			<name>caption</name><!--标签属性名称（表头显示文字） -->
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<name>property</name><!--标签属性名称（属性值对应字段） -->
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<name>showValue</name><!--标签属性名称（显示值对应字段） -->
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<name>valuepos</name><!--标签属性名称（属性值对应数组位置） -->
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<name>valueshowpos</name><!--标签属性名称（显示值对应数组位置） -->
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<name>width</name><!--标签属性名称（单元格宽度） -->
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<name>isCanDrag</name><!--标签属性名称（是否可拖动） -->
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>boolean</type>
+		</attribute>
+		<attribute>
+			<name>isCanSort</name><!--标签属性名称（是否可排序） -->
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>boolean</type>
+		</attribute>
+		<attribute>
+			<name>onclick</name><!--标签属性名称（单元格点击事件） -->
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>boolean</type>
+		</attribute>
+		<attribute>
+			<name>ondblclick</name><!--标签属性名称（单元格双击事件） -->
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>boolean</type>
+		</attribute>
+		<attribute>
+			<name>imgWidth</name><!--标签属性名称（图片宽度） -->
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<name>imgHigh</name><!--标签属性名称（图片高度） -->
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+		</attribute>
+	</tag>
+
+	<tag>
+		<name>flexEnumCol</name><!--枚举列标签 -->
+		<tag-class>com.strongit.tag.web.grid.stronger.EnumColTag</tag-class>
+		<attribute>
+			<name>caption</name><!--标签属性名称（表头显示文字） -->
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<name>property</name><!--标签属性名称（属性值对应字段） -->
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<name>showValue</name><!--标签属性名称（显示值对应字段） -->
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<name>align</name><!--标签属性名称（对齐方式） -->
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<name>valuepos</name><!--标签属性名称（属性值对应数组位置） -->
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<name>valueshowpos</name><!--标签属性名称（显示值对应数组位置） -->
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<name>width</name><!--标签属性名称（单元格宽度） -->
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<name>isCanDrag</name><!--标签属性名称（是否可拖动） -->
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>boolean</type>
+		</attribute>
+		<attribute>
+			<name>isCanSort</name><!--标签属性名称（是否可排序） -->
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>boolean</type>
+		</attribute>
+		<attribute>
+			<name>onclick</name><!--标签属性名称（单元格点击事件） -->
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>boolean</type>
+		</attribute>
+		<attribute>
+			<name>ondblclick</name><!--标签属性名称（单元格双击事件） -->
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>boolean</type>
+		</attribute>
+		<attribute>
+			<name>mapobj</name><!--标签属性名称（枚举映射对象） -->
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>java.util.HashMap</type>
+		</attribute>
+		<attribute>
+			<name>showsize</name><!--标签属性名称（单元格显示字符数） -->
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<type>boolean</type>
+		</attribute>
+	</tag>
+</taglib>

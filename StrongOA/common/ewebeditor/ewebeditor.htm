@@ -1,0 +1,37 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gbk" />
+<title>eWebEditor</title>
+<script type="text/javascript" src="js/buttons.js"></script>
+
+<script type="text/javascript">
+function LoadScript(s_Url){
+	document.write( '<scr' + 'ipt type="text/javascript" src="' + s_Url + '"><\/scr' + 'ipt>' );
+}
+
+LoadScript("js/ewebeditor_" + (( /*@cc_on!@*/false ) ? "ie" : "gecko") + ".js") ;
+</script>
+
+<script type="text/javascript">
+LoadScript("jsp/i.jsp?action=config&style=" + EWEBParam.StyleName + "&skey=" + EWEBParam.SKey);
+</script>
+
+<script type="text/javascript">
+LoadScript("js/zh-cn.js");
+</script>
+
+<script type="text/javascript">
+EWEB.Init();
+document.write ("<link href='" + EWEB.RootPath + "/skin/" + config.Skin + "/editor.css' type='text/css' rel='stylesheet'>");
+</script>
+
+</head>
+<body scrolling="no">
+
+<script type="text/javascript">
+ShowEWEBEditorBody();
+</script>
+
+</body>
+</html>

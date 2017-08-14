@@ -1,0 +1,171 @@
+update stronginfo.t_info_query_tree set name ='省政府各有关部门' where id=2;
+
+update stronginfo.t_info_query_tree set name ='各设区政府' where id=3;
+
+update stronginfo.t_info_query_tree set name ='各县（市区）政府' where id=25;
+
+
+alter table  stronginfo.t_info_base_publish  ADD   pub_code int
+
+
+ALTER TABLE STRONGINFO.T_INFO_BASE_PUBLISH ADD  PUB_ADOPT_CODE INT
+
+ALTER TABLE STRONGINFO.T_INFO_BASE_PUBLISH ADD  PUB_ADOPT_ORG_ID VARCHAR(32)
+
+ALTER TABLE STRONGINFO.T_INFO_BASE_PUBLISH ADD  PUB_ADOPT_USER_ID VARCHAR(32)
+
+ALTER TABLE STRONGINFO.T_INFO_BASE_COLUMN ADD  COL_CODE numeric(10,0)
+
+ALTER TABLE STRONGINFO.T_INFO_BASE_ISSUE ADD  ISS_TIME timestamp(6) 
+
+ALTER TABLE STRONGINFO.T_INFO_BASE_JOURNAL ADD  JOUR_CODE numeric(10,0)
+
+ALTER TABLE STRONGINFO.T_INFO_BASE_PIECE ADD  PIECE_OPEN VARCHAR(1)
+
+ALTER TABLE STRONGINFO.T_INFO_BASE_PUBLISH ADD  PUB_FILE1 VARCHAR(100)
+
+ALTER TABLE STRONGINFO.T_INFO_BASE_PUBLISH ADD  PUB_FILE2 VARCHAR(100)
+
+ALTER TABLE STRONGINFO.T_INFO_BASE_PUBLISH ADD  PUB_FILE1NAME VARCHAR(100)
+
+ALTER TABLE STRONGINFO.T_INFO_BASE_PUBLISH ADD  PUB_FILE2NAME VARCHAR(100)
+
+ALTER TABLE STRONGINFO.T_INFO_BASE_PUBLISH ADD  PUB_SORT INT
+
+ALTER TABLE STRONGINFO.T_INFO_BASE_PUBLISH ADD  PUB_MERGE_NAME VARCHAR(200) 
+
+ALTER TABLE STRONGINFO.T_INFO_BASE_PUBLISH ADD  ORG_NAME VARCHAR(100)
+
+ALTER TABLE STRONGINFO.T_OA_MESSAGE ALERT TYPE  MSG_DATE TIMESTAMP 
+
+ALTER TABLE STRONGINFO.T_INFO_BASE_PUBLISH ADD  IS_OA VARCHAR(1)
+
+ALTER TABLE STRONGINFO.T_OA_LOG ALERT TYPE  OPE_TIME TIMESTAMP 
+
+ALTER TABLE STRONGINFO.T_INFO_BASE_PIECE ALERT TYPE PIECE_OPEN VARCHAR(2)
+
+DELETE FROM T_INFO_QUERY_TREE WHERE ID IN('1','2','3','4','5','6','25','26')
+
+create table T_OA_SYSTEM_PARAM_CONFIG  (
+   ID                   VARCHAR2(32)                    not null,
+   UserId             VARCHAR2(32),
+   Module             VARCHAR2(5),
+   ConfigSize              VARCHAR2(100),
+   Rest1              VARCHAR2(1000),
+   Rest2             VARCHAR2(1000),
+   Rest3              VARCHAR2(1000),
+   Rest4              VARCHAR2(1000),
+   constraint PK_T_OA_SYSTEM_PARAM_CONFIG primary key (ID)
+);
+
+comment on table T_OA_SYSTEM_PARAM_CONFIG is
+'系统参数配置，个人文件柜大小配置，消息模块附件大小配置；';
+
+
+prompt
+prompt Creating table T_OA_ATTACHMENT
+prompt ==============================
+prompt
+create table T_OA_ATTACHMENT
+(
+  ATTACH_ID     VARCHAR2(32) not null,
+  ATTACH_NAME   VARCHAR2(50),
+  ATTACH_TYPE   VARCHAR2(5),
+  ATTACH_CON    BLOB,
+  IS_PRIVACY    CHAR(1),
+  ATTACH_TIME   DATE,
+  ATTACH_SIZE   VARCHAR2(10),
+  ATTACH_REMARK VARCHAR2(4000),
+  USER_ID       VARCHAR2(32)
+)
+;
+alter table T_OA_ATTACHMENT
+  add constraint PK_T_OA_ATTACHMENT primary key (ATTACH_ID);
+
+
+
+create table T_OA_LOG  (
+   LOG_ID               VARCHAR2(32)                    not null,
+   OPE_USER             VARCHAR2(100),
+   OPE_TIME             DATE,
+   OPE_IP               VARCHAR2(50),
+   LOG_INFO             VARCHAR2(3000),
+   LOG_STATE            CHAR(1),
+   LOG_MODULE           VARCHAR2(32),
+   INTERVAL		VARCHAR2(40),
+   ORG_ID		VARCHAR2(40),
+   SITE_ID		VARCHAR2(40),
+   USER_ID		VARCHAR2(40),
+   constraint PK_T_OA_LOG primary key (LOG_ID)
+);
+
+create table T_OA_MESSAGE_FOLDER
+(
+  MSG_FOLDER_ID   VARCHAR2(32) not null,
+  MSG_FOLDER_NAME VARCHAR2(25),
+  MSG_FOLDER_TYPE CHAR(1),
+  USER_ID         VARCHAR2(32)
+)
+;
+alter table T_OA_MESSAGE_FOLDER
+  add constraint PK_T_OA_MESSAGE_FOLDER primary key (MSG_FOLDER_ID);
+
+prompt
+prompt Creating table T_OA_MESSAGE
+prompt ===========================
+prompt
+create table T_OA_MESSAGE
+(
+  MSG_ID         VARCHAR2(32) not null,
+  MSG_FOLDER_ID  VARCHAR2(32) not null,
+  MSG_SENDER     VARCHAR2(200),
+  MSG_TITLE      VARCHAR2(500),
+  MSG_DATE       DATE,
+  MSG_SIZE       VARCHAR2(20),
+  MSG_RECEIVER   CLOB,
+  MSG_CONTENT    CLOB,
+  IS_SEND_BACK   CHAR(1),
+  IS_RETURN_BACK CHAR(1),
+  IS_REPLY       CHAR(1),
+  IS_READ        CHAR(1),
+  MSG_PRI        CHAR(1),
+  PARENT_MSG_ID  VARCHAR2(32),
+  MSG_CC         CLOB,
+  MSG_ISHASATTR  CHAR(1),
+  BUSINESS_MODULE_CODE VARCHAR2(2),
+  MSG_ISDEL      VARCHAR2(1),
+  MESSAGE_CODE   VARCHAR2(32),
+  MSG_TYPE 	 VARCHAR2(50)
+)
+;
+alter table T_OA_MESSAGE
+  add constraint PK_T_OA_MESSAGE primary key (MSG_ID);
+alter table T_OA_MESSAGE
+  add constraint FK_T_OA_MES_MSG_FOLDE_T_OA_MES foreign key (MSG_FOLDER_ID)
+  references T_OA_MESSAGE_FOLDER (MSG_FOLDER_ID);
+create index MSG_FOLDER_INC_MSG_FK on T_OA_MESSAGE (MSG_FOLDER_ID);
+
+prompt
+prompt Creating table T_OA_MESSAGE_ATTACH
+prompt ==================================
+prompt
+create table T_OA_MESSAGE_ATTACH
+(
+  MESSAGE_ATTACH_ID VARCHAR2(32) not null,
+  MSG_ID            VARCHAR2(32) not null,
+  ATTACH_ID7        VARCHAR2(32)
+)
+;
+alter table T_OA_MESSAGE_ATTACH;
+
+
+
+CREATE TABLE STRONGINFO.T_INFO_BASE_PIECE
+(
+PIECE_ID varchar(32) NOT NULL, 
+ORG_ID varchar(32) , 
+PIECE_TITLE varchar(200) , 
+PIECE_TIME timestamp(6) , 
+PIECE_CODE numeric(10,0) , 
+PIECE_FLAG varchar(1) 
+);

@@ -1,0 +1,72 @@
+.menu {
+	BORDER-RIGHT: buttonhighlight 2px outset;
+	PADDING-RIGHT: 2px;
+	BORDER-TOP: buttonhighlight 2px outset;
+	PADDING-LEFT: 2px;
+	Z-INDEX: 9999;
+	VISIBILITY: hidden;
+	PADDING-BOTTOM: 2px;
+	BORDER-LEFT: buttonhighlight 2px outset;
+	WIDTH: 180px;
+	PADDING-TOP: 2px;
+	BORDER-BOTTOM: buttonhighlight 2px outset;
+	POSITION: absolute;
+	BACKGROUND-COLOR: inactiveborder
+}
+
+.menu140 {
+	BORDER-RIGHT: buttonhighlight 2px outset;
+	PADDING-RIGHT: 2px;
+	BORDER-TOP: buttonhighlight 2px outset;
+	PADDING-LEFT: 2px;
+	Z-INDEX: 9999;
+	VISIBILITY: hidden;
+	PADDING-BOTTOM: 2px;
+	BORDER-LEFT: buttonhighlight 2px outset;
+	WIDTH: 140px;
+	PADDING-TOP: 2px;
+	BORDER-BOTTOM: buttonhighlight 2px outset;
+	POSITION: absolute;
+	BACKGROUND-COLOR: inactiveborder
+}
+
+.item {
+	BORDER-RIGHT: inactiveborder 1px solid;
+	PADDING-RIGHT: 2px;
+	BORDER-TOP: inactiveborder 1px solid;
+	PADDING-LEFT: 2px;
+	FONT-SIZE: 12px;
+	PADDING-BOTTOM: 2px;
+	BORDER-LEFT: inactiveborder 1px solid;
+	WIDTH: 100%;
+	CURSOR: default;
+	PADDING-TOP: 2px;
+	BORDER-BOTTOM: inactiveborder 1px solid
+}
+
+.item IMG {
+	VERTICAL-ALIGN: middle;
+	MARGIN-RIGHT: 10px
+}
+
+.item SPAN {
+	VISIBILITY: hidden;
+	WIDTH: 21px;
+	HEIGHT: 12px
+}
+
+.line {
+	BORDER-TOP: #848284 1px solid;
+	MARGIN: 2px;
+	BORDER-BOTTOM: white 1px solid
+}
+
+.newtitle {
+	font-family: "瀹嬩綋";
+	font-size: 12px;
+	font-style: normal;
+	font-weight: normal;
+	color: #1B4AC0;
+	text-decoration: none;
+	text-align: center;
+}

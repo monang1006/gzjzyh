@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<usertree>
+	<organization>
+		<props>
+			<prop key="organization.id">01</prop>
+			<prop key="organization.name">本级机构</prop>
+		</props>
+		<positions>
+			<position>
+				<props>
+					<prop key="position.id">01001</prop>
+					<prop key="position.name">本级职位1</prop>
+				</props>
+				<users>
+					<user>
+						<props>
+							<prop key="user.id">01001001</prop>
+							<prop key="user.name">用户1</prop>
+							<prop key="user.loginname">user1</prop>
+							<prop key="user.password">1</prop>
+							<prop key="user.mail">user1@user1.com</prop>
+						</props>
+					</user>
+					<user>
+						<props>
+							<prop key="user.id">01001002</prop>
+							<prop key="user.name">用户2</prop>
+							<prop key="user.loginname">user2</prop>
+							<prop key="user.password">1</prop>
+							<prop key="user.mail">user2@user2.com</prop>
+						</props>
+					</user>
+				</users>
+			</position>
+			<position>
+				<props>
+					<prop key="position.id">01002</prop>
+					<prop key="position.name">本级职位2</prop>
+				</props>
+				<users>
+					<user>
+						<props>
+							<prop key="user.id">01002001</prop>
+							<prop key="user.name">用户3</prop>
+							<prop key="user.loginname">user3</prop>
+							<prop key="user.password">1</prop>
+							<prop key="user.mail">user3@user3.com</prop>
+						</props>
+					</user>
+					<user>
+						<props>
+							<prop key="user.id">01002002</prop>
+							<prop key="user.name">用户4</prop>
+							<prop key="user.loginname">user4</prop>
+							<prop key="user.password">1</prop>
+							<prop key="user.mail">user4@user4.com</prop>
+						</props>
+					</user>
+				</users>
+			</position>
+		</positions>
+		<suborganizations>
+			<organization>
+				<props>
+					<prop key="organization.id">02</prop>
+					<prop key="organization.name">一级机构1</prop>
+				</props>
+				<positions>
+					<position>
+						<props>
+							<prop key="position.id">02001</prop>
+							<prop key="position.name">一级机构1职位1</prop>
+						</props>
+						<users>
+							<user>
+								<props>
+									<prop key="user.id">02001001</prop>
+									<prop key="user.name">用户5</prop>
+									<prop key="user.loginname">
+										user5
+									</prop>
+									<prop key="user.password">1</prop>
+									<prop key="user.mail">
+										user5@user5.com
+									</prop>
+								</props>
+							</user>
+							<user>
+								<props>
+									<prop key="user.id">02001002</prop>
+									<prop key="user.name">用户6</prop>
+									<prop key="user.loginname">
+										user6
+									</prop>
+									<prop key="user.password">1</prop>
+									<prop key="user.mail">
+										user6@user6.com
+									</prop>
+								</props>
+							</user>
+						</users>
+					</position>
+					<position>
+						<props>
+							<prop key="position.id">02002</prop>
+							<prop key="position.name">一级机构1职位2</prop>
+						</props>
+						<users>
+							<user>
+								<props>
+									<prop key="user.id">02002001</prop>
+									<prop key="user.name">用户7</prop>
+									<prop key="user.loginname">
+										user7
+									</prop>
+									<prop key="user.password">1</prop>
+									<prop key="user.mail">
+										user7@user7.com
+									</prop>
+								</props>
+							</user>
+							<user>
+								<props>
+									<prop key="user.id">02002002</prop>
+									<prop key="user.name">用户8</prop>
+									<prop key="user.loginname">
+										user8
+									</prop>
+									<prop key="user.password">1</prop>
+									<prop key="user.mail">
+										user8@user8.com
+									</prop>
+								</props>
+							</user>
+						</users>
+					</position>
+				</positions>
+			</organization>
+			<organization>
+				<props>
+					<prop key="organization.id">03</prop>
+					<prop key="organization.name">一级机构2</prop>
+				</props>
+				<positions>
+					<position>
+						<props>
+							<prop key="position.id">03001</prop>
+							<prop key="position.name">一级机构2职位1</prop>
+						</props>
+						<users>
+							<user>
+								<props>
+									<prop key="user.id">03001001</prop>
+									<prop key="user.name">用户9</prop>
+									<prop key="user.loginname">
+										user9
+									</prop>
+									<prop key="user.password">1</prop>
+									<prop key="user.mail">
+										user9@user9.com
+									</prop>
+								</props>
+							</user>
+							<user>
+								<props>
+									<prop key="user.id">03001002</prop>
+									<prop key="user.name">用户10</prop>
+									<prop key="user.loginname">
+										user10
+									</prop>
+									<prop key="user.password">1</prop>
+									<prop key="user.mail">
+										user10@user10.com
+									</prop>
+								</props>
+							</user>
+						</users>
+					</position>
+					<position>
+						<props>
+							<prop key="position.id">03002</prop>
+							<prop key="position.name">一级机构2职位2</prop>
+						</props>
+						<users>
+							<user>
+								<props>
+									<prop key="user.id">03002001</prop>
+									<prop key="user.name">用户11</prop>
+									<prop key="user.loginname">
+										user11
+									</prop>
+									<prop key="user.password">1</prop>
+									<prop key="user.mail">
+										user11@user11.com
+									</prop>
+								</props>
+							</user>
+							<user>
+								<props>
+									<prop key="user.id">03002002</prop>
+									<prop key="user.name">用户12</prop>
+									<prop key="user.loginname">
+										user12
+									</prop>
+									<prop key="user.password">1</prop>
+									<prop key="user.mail">
+										user12@user12.com
+									</prop>
+								</props>
+							</user>
+						</users>
+					</position>
+				</positions>
+			</organization>
+		</suborganizations>
+	</organization>
+</usertree>

@@ -1,0 +1,50 @@
+/*--style 2--*/
+.progressbar
+{
+	margin-top: 10px;
+	padding:0px;
+    height: 17px;
+    border:solid 2px #0000CC;
+    border-color:#0000CC;
+    position: relative;
+    
+	}
+.progressbar .jquery-completed
+{
+	margin:0px;
+	padding:0px;
+	height: 13px;
+    background:url(../image/progress.gif) left center;
+    top: 0;
+    left:0;
+    position: absolute;    
+    color:#0000CC;
+    text-align: center;
+    font-size:14px;
+	}
+
+
+.progressbar1
+{
+	margin-top: 10px;
+	padding:0px;
+    height: 42px;
+    border:solid 2px #99FF00;
+    border-color:#0000CC;
+    position: relative;
+    
+	}
+
+	.progressbar1 .jquery-completed1
+{
+	margin:0px;
+	padding:0px;
+	height: 38px;
+    background:#99FF00 left center;
+    top: 0;
+    left:0;
+    position: absolute;    
+    color:#0000CC;
+    text-align: center;
+    font-size:30px;
+	}

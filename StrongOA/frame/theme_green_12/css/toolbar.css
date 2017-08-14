@@ -1,0 +1,99 @@
+form{
+	padding:0;
+	margin:0;
+}
+#toolbar {
+	BORDER-RIGHT: #848284 1px solid; BORDER-TOP: white 1px solid; BACKGROUND: #d4d0c8; MARGIN: 0px; BORDER-LEFT: white 1px solid; WIDTH: 100%; BORDER-BOTTOM: #848284 1px solid; HEIGHT: 25px
+}
+#toolbarborder {
+	BORDER-RIGHT: #848284 0px solid; BORDER-TOP: #848284 1px solid; BORDER-LEFT: #848284 1px solid; WIDTH: 100%; BORDER-BOTTOM: #848284 0px solid; HEIGHT: 26px
+}
+.toolbarbodymargin {
+	BACKGROUND: #d4d0c8; MARGIN: 5px 2px 0px
+}
+A {
+	FONT-SIZE: 12px; COLOR: blue; FONT-STYLE: normal; TEXT-DECORATION: none
+}
+.gtoolbarbodymargin {
+	MARGIN: 0px 1px 3px 0px
+}
+#globaltoolbar {
+	BORDER-RIGHT: #848284 1px solid; BORDER-TOP: white 1px solid; BACKGROUND: #d4d0c8; BORDER-LEFT: white 1px solid; BORDER-BOTTOM: #848284 1px solid; HEIGHT: 100%
+}
+.leftsidetoolbarbodymargin {
+	BACKGROUND: #d4d0c8; MARGIN: 0px
+}
+#leftsidetoolbar {
+	BORDER-RIGHT: #848284 1px solid; BORDER-TOP: #d4d0c8 0px solid; BACKGROUND: #d4d0c8; BORDER-LEFT: #d4d0c8 3px solid; BORDER-BOTTOM: #d4d0c8 0px solid; HEIGHT: 100%
+}
+TD ,.text{
+	FONT-SIZE: 12px; FONT-FAMILY: Tahoma;
+}
+.normal {
+	BORDER-RIGHT: #d4d0c8 1px solid; BORDER-TOP: #d4d0c8 1px solid; BORDER-LEFT: #d4d0c8 1px solid; BORDER-BOTTOM: #d4d0c8 1px solid
+}
+.hover {
+	BORDER-RIGHT: #8c8e8c 1px solid; BORDER-TOP: white 1px solid; BORDER-LEFT: white 1px solid; CURSOR: hand; BORDER-BOTTOM: #8c8e8c 1px solid
+}
+.down {
+	BORDER-RIGHT: white 1px solid; BORDER-TOP: #8c8e8c 1px solid; BORDER-LEFT: #8c8e8c 1px solid; CURSOR: hand; BORDER-BOTTOM: white 1px solid
+}
+.select {
+	BORDER-RIGHT: white 1px solid; BORDER-TOP: #8c8e8c 1px solid; BORDER-LEFT: #8c8e8c 1px solid; CURSOR: hand; BORDER-BOTTOM: white 1px solid
+}
+IMG {
+	BORDER: 0;
+}
+.logo{
+	font-family: "黑体";
+	font-size: 32px;
+	font-weight: bold;
+	color: #FFFFFF;}
+.input1 {
+	font-family: "宋体";
+	font-size: 12px;
+	border: 1px solid #aca899;
+}
+body {
+    font-size: 12px;
+	margin-left: 0;
+	BACKGROUND:#dae6f2;
+}
+a:link,a:visited,a:hover,a:active{
+	font-family: "宋体";
+	font-size: 12px;
+	color: #000000;
+	text-decoration:none;
+}
+.help,.help a:link,.help a:visited,.help a:hover,.help a:active{
+	font-family: "宋体";
+	font-size: 12px;
+	color: #fff;
+	text-decoration:none;
+}
+.btbg{
+    font-size: 12px;
+	margin:0;
+	background:url(../images/perspective_toolbar/top_bg_03.jpg) left;
+}
+.logo_bg{background:url(../images/perspective_toolbar/top_bg_01.jpg) left no-repeat;}
+.keyword{color: #000;}
+
+.top_help_bg{
+background:url(../images/perspective_toolbar/top_bg_05.jpg) right no-repeat;
+width:450px;
+text-align:right;
+}
+.nav{background:url(../images/perspective_toolbar/nav_bg_06.jpg) left;}
+.brightline{background:#fff;}
+.darkline{background:#6f8ba6;}
+
+body {
+	background-color: #F3F3F3;
+}
+
+.input_bg {
+	font-family: "宋体";
+	background-image: url(../images/perspective_leftside/input_bg.jpg);
+	border: 1px solid #b8b8b8;
+}

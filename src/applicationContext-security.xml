@@ -1,0 +1,669 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+                        http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-2.0.4.xsd"
+	default-autowire="byType" default-lazy-init="true">
+
+	<!--
+		在此定义URL与授权的关系. 注意此处ROLE_*代表的是授权,而非角色.用户、角色、授权及三者关系的数据保存在数据库中.
+	-->
+	<!-- 
+		<http auto-config="true">
+		<intercept-url pattern="/fileNameRedirectAction.action&#63;toPage=login*"
+		access="IS_AUTHENTICATED_ANONYMOUSLY" />
+		<intercept-url pattern="/person/person!save.action*"
+		access="ROLE_MODIFY_USER" />
+		<intercept-url pattern="/person/person!delete.action*"
+		access="ROLE_MODIFY_USER" />
+		<intercept-url pattern="/person/person*.action*" access="ROLE_VIEW_USER" />
+		<intercept-url pattern="/person/role!save.action*"
+		access="ROLE_MODIFY_ROLE" />
+		<intercept-url pattern="/person/role!delete.action*"
+		access="ROLE_MODIFY_ROLE" />
+		<intercept-url pattern="/person/role*.action*" access="ROLE_VIEW_ROLE" />
+		<form-login login-page="/fileNameRedirectAction.action&#63;toPage=login.jsp"
+		default-target-url="/fileNameRedirectAction.action&#63;toPage=test.jsp"
+		authentication-failure-url="/fileNameRedirectAction.action&#63;toPage=login.jsp&#38;error=true" />
+		<logout logout-success-url="/" />
+		<remember-me key="e37f4b31-0c45-11dd-bd0b-0800200c9a66" />
+		<concurrent-session-control max-sessions="1"
+		exception-if-maximum-exceeded="true" />
+		</http>
+	-->
+
+	<!-- 
+		<http auto-config="true">
+		<anonymous granted-authority="BASIC" />
+		<form-login login-page="/fileNameRedirectAction.action&#63;toPage=login.jsp"
+		default-target-url="/fileNameRedirectAction.action&#63;toPage=test.jsp"
+		authentication-failure-url="/fileNameRedirectAction.action&#63;toPage=login.jsp&#38;error=true" />
+		<logout logout-success-url="/" />
+		<remember-me key="e37f4b31-0c45-11dd-bd0b-0800200c9a66" />
+		<concurrent-session-control max-sessions="1"
+		exception-if-maximum-exceeded="true" />
+		</http>
+	-->
+
+	<!-- 去除auto-config属性，保证remember-me功能不启用 -->
+	<!-- <http auto-config="true"> -->
+	<http>
+		<anonymous granted-authority="BASIC" />
+		<form-login login-page="/index.jsp"
+			default-target-url="/default.jsp"
+			authentication-failure-url="/index.jsp"
+			login-processing-url="/j_spring_security_check"
+			always-use-default-target="true" />
+		<logout logout-success-url="/index.jsp" />
+		<!-- 指定唯一UserDetailService -->
+		<!--<remember-me key="e37f4b31-0c45-11dd-bd0b-0800200c9a66" user-service-ref="userDetailsService" />-->
+		<!-- 添加session-registry-ref属性 -->
+		<concurrent-session-control max-sessions="1"
+			exception-if-maximum-exceeded="false" expired-url="/index.jsp"
+			session-registry-ref="sessionRegistry" />
+	</http>
+
+	<!--    负责认证处理的filter  -->
+
+	<!-- <beans:bean id="authenticationProcessingFilter"
+		class="org.springframework.security.ui.webapp.AuthenticationProcessingFilter"> -->
+	<beans:bean id="authenticationProcessingFilter"
+		class="com.strongit.uums.security.MyAuthenticationProcessingFilter">
+		<!--此行说明此filter会覆盖ss2默认配置的filter，before 被覆盖filter的别名-->
+		<custom-filter before="AUTHENTICATION_PROCESSING_FILTER" />
+		<!--认证管理器-->
+		<beans:property name="authenticationManager"
+			ref="authenticationManager" />
+		<!--认证失败后跳转到的页面，/spring_security_login是ss2默认的登录入口-->
+		<!-- <beans:property name="authenticationFailureUrl" value="/fileNameRedirectAction.action&#63;toPage=login.jsp&#38;error=true" /> -->
+		<!--认证成功后跳转到的页面-->
+		<beans:property name="defaultTargetUrl" value="/useronline/userLogin.action" />
+		<!-- 将rememberMeService注入到authenticationProcessFilter 
+		<beans:property name="rememberMeServices" ref="rememberMeServices" />-->
+		<!-- 验证失败后继续进行rememberMe验证 -->
+		<!--<beans:property name="continueChainBeforeSuccessfulAuthentication">
+			<beans:value>true</beans:value>
+		</beans:property>-->
+	</beans:bean>
+
+	<!-- 负责RTX用户名与签名认证处理的filter -->
+	<beans:bean id="rtxSignProcessingFilter"
+		class="com.strongit.uums.security.rtxsign.RtxSignProcessingFilter">
+		<!--认证管理器-->
+		<beans:property name="authenticationManager"
+			ref="authenticationManager" />
+		<!--认证成功后跳转到的页面-->
+		<beans:property name="defaultTargetUrl" value="/default.jsp" />
+	</beans:bean>
+
+	<!-- 负责用户名和密码认证处理的filter 
+	class="com.strongit.uums.security.usernameandpassword.UserNameAndPasswordAuthenticationProcessingFilter"> -->
+	<beans:bean id="userNameAndPasswordAuthenticationProcessingFilter"
+		class="com.strongit.uums.security.MyAuthenticationProcessingFilter">
+		<!--认证管理器-->
+		<beans:property name="authenticationManager"
+			ref="authenticationManager" />
+		<!--认证成功后跳转到的页面-->
+		<beans:property name="defaultTargetUrl" value="/default.jsp" />
+	</beans:bean>
+
+	<!--    负责USBKEY认证处理的filter  -->
+	<beans:bean id="usbkeyAuthenticationProcessingFilter"
+		class="com.strongit.uums.security.usbkey.UsbkeyAuthenticationProcessingFilter">
+		<!--认证管理器-->
+		<beans:property name="authenticationManager"
+			ref="authenticationManager" />
+		<!--认证成功后跳转到的页面-->
+		<beans:property name="defaultTargetUrl" value="/useronline/userLogin.action" />
+		<!-- 将rememberMeService注入到authenticationProcessFilter 
+		<beans:property name="rememberMeServices" ref="rememberMeServices" />-->
+		<!-- 验证失败后继续进行rememberMe验证 -->
+		<!--<beans:property name="continueChainBeforeSuccessfulAuthentication">
+			<beans:value>true</beans:value>
+		</beans:property>-->		
+	</beans:bean>
+
+	<!--    负责CA认证处理的filter  -->
+	<beans:bean id="caAuthenticationProcessingFilter"
+		class="com.strongit.uums.security.ca.CaAuthenticationProcessFilter">
+		<!--认证管理器-->
+		<beans:property name="authenticationManager"
+			ref="authenticationManager" />
+		<!--认证成功后跳转到的页面-->
+		<beans:property name="defaultTargetUrl" value="/default.jsp" />
+		<!-- 将rememberMeService注入到authenticationProcessFilter 
+		<beans:property name="rememberMeServices" ref="rememberMeServices" />-->
+		<!-- 验证失败后继续进行rememberMe验证 -->
+		<!--<beans:property name="continueChainBeforeSuccessfulAuthentication">
+			<beans:value>true</beans:value>
+		</beans:property>-->		
+	</beans:bean>
+
+	<beans:bean id="logoutFilter"
+		class="org.springframework.security.ui.logout.LogoutFilter">
+		<beans:constructor-arg value="/index.jsp" />
+		<beans:constructor-arg>
+			<beans:list>
+				<!-- 实现了LogoutHandler接口(logout方法) -->
+				<!--            <beans:ref bean="rememberMeServices"/>-->
+				<beans:bean
+					class="org.springframework.security.ui.logout.SecurityContextLogoutHandler" />
+			</beans:list>
+		</beans:constructor-arg>
+	</beans:bean>
+
+	<!-- huzw domino验证start -->
+	<!--    负责Domino认证处理的filter  -->
+	<beans:bean id="dominoAuthenticationProcessingFilter"
+		class="com.strongit.uums.security.domino.DominoAuthenticationProcessingFilter">
+		<!--认证管理器-->
+		<beans:property name="authenticationManager"
+			ref="authenticationManager" />
+		<!--认证成功后跳转到的页面 根据需求手动修改-->
+		<beans:property name="defaultTargetUrl" value="/uums.jsp" />
+	</beans:bean>
+	<!-- huzw domino验证end -->
+
+
+	<!--Ant path风格的匹配器-->
+	<beans:bean id="antUrlPathMatcher"
+		class="org.springframework.security.util.AntUrlPathMatcher" />
+
+	<beans:bean id="accessDeniedHandler"
+		class="org.springframework.security.ui.AccessDeniedHandlerImpl"
+		p:errorPage="/common/error/403.jsp" />
+
+	<beans:bean id="authenticationEntryPoint"
+		class="org.springframework.security.ui.webapp.AuthenticationProcessingFilterEntryPoint"
+		p:loginFormUrl="/common/error/406.jsp" p:forceHttps="false" />
+
+	<!--<authentication-provider user-service-ref="userDetailsService">
+		可设置hash使用sha1或md5散列密码后再存入数据库 
+		<password-encoder hash="plaintext" />
+		</authentication-provider>-->
+		
+	<!--	配置用户管理，一人多岗 	按机构取权限
+	<beans:bean id="userDetailsService"
+		class="com.strongit.uums.security.UserDetailServiceImpl" />
+	-->
+	<!--	配置用户管理，一人多岗 	不按机构取权限
+	-->
+	<beans:bean id="userDetailsService"
+		class="com.strongit.uums.security.UserDetailAllPrivilServiceImpl" />
+
+	<beans:bean id="usbkeyUserDetailsService"
+		class="com.strongit.uums.security.usbkey.UsbkeyUserDetailServiceImpl" />
+
+	<!-- RTX -->
+	<beans:bean id="rtxSignUserDetailsService"
+		class="com.strongit.uums.security.rtxsign.RtxSignUserDetailServiceImpl" />
+
+	<beans:bean id="userNameAndPasswordUserDetailsService"
+		class="com.strongit.uums.security.usernameandpassword.UserNameAndPasswordUserDetailServiceImpl" />
+
+	<beans:bean id="caUserDetailsService"
+		class="com.strongit.uums.security.ca.CaUserDetailServiceImpl" />
+
+
+
+	<beans:bean id="channelProcessingFilter"
+		class="org.springframework.security.securechannel.ChannelProcessingFilter">
+		<beans:property name="channelDecisionManager">
+			<beans:ref local="channelDecisionManager" />
+		</beans:property>
+		<beans:property name="filterInvocationDefinitionSource">
+			<beans:value>
+				CONVERT_URL_TO_LOWERCASE_BEFORE_COMPARISON
+				PATTERN_TYPE_APACHE_ANT
+				/j_spring_security_check=REQUIRES_CAPTCHA_BELOW_AVERAGE_TIME_IN_MILLIS_REQUESTS
+			</beans:value>
+		</beans:property>
+	</beans:bean>
+
+	<beans:bean id="channelDecisionManager"
+		class="org.springframework.security.securechannel.ChannelDecisionManagerImpl">
+		<beans:property name="channelProcessors">
+			<beans:list>
+				<beans:ref
+					local="alwaysTestBelowAverageTimeInMillisBetweenRequestsChannelProcessor" />
+			</beans:list>
+		</beans:property>
+	</beans:bean>
+
+	<beans:bean
+		id="alwaysTestBelowAverageTimeInMillisBetweenRequestsChannelProcessor"
+		class="org.springframework.security.captcha.AlwaysTestBelowAverageTimeInMillisBetweenRequestsChannelProcessor">
+		<beans:property name="threshold">
+			<beans:value>20000</beans:value>
+		</beans:property>
+		<beans:property name="entryPoint">
+			<beans:ref bean="captchaEntryPoint" />
+		</beans:property>
+	</beans:bean>
+
+	<beans:bean id="captchaEntryPoint"
+		class="org.springframework.security.captcha.CaptchaEntryPoint">
+		<beans:property name="captchaFormUrl">
+			<beans:value>/common/error/401.jsp</beans:value>
+		</beans:property>
+	</beans:bean>
+
+	<beans:bean id="captchaValidationProcessingFilter"
+		class="org.springframework.security.captcha.CaptchaValidationProcessingFilter">
+		<beans:property name="captchaService">
+			<beans:ref bean="captchaService" />
+		</beans:property>
+		<beans:property name="captchaValidationParameter">
+			<beans:value>j_captcha_response</beans:value>
+		</beans:property>
+	</beans:bean>
+
+	<beans:bean id="captchaService"
+		class="com.strongit.uums.captcha.JCaptchaServiceProxyImpl">
+		<beans:property name="jcaptchaService" ref="jcaptchaService" />
+	</beans:bean>
+
+
+	<!-- 生成图片的代理类 -->
+
+	<beans:bean id="jcaptchaService"
+		class="com.octo.captcha.service.multitype.GenericManageableCaptchaService">
+		<beans:constructor-arg index="0">
+			<beans:ref bean="imageEngine" />
+		</beans:constructor-arg>
+		<beans:constructor-arg index="1">
+			<beans:value>180</beans:value>
+		</beans:constructor-arg>
+		<beans:constructor-arg index="2">
+			<beans:value>180000</beans:value>
+		</beans:constructor-arg>
+	</beans:bean>
+	<beans:bean id="imageEngine"
+		class="com.octo.captcha.engine.GenericCaptchaEngine">
+		<beans:constructor-arg index="0">
+			<beans:list>
+				<beans:ref bean="CaptchaFactory" />
+			</beans:list>
+		</beans:constructor-arg>
+	</beans:bean>
+
+	<beans:bean id="CaptchaFactory"
+		class="com.octo.captcha.image.gimpy.GimpyFactory">
+		<beans:constructor-arg>
+			<beans:ref bean="wordgen" />
+		</beans:constructor-arg>
+		<beans:constructor-arg>
+			<beans:ref bean="wordtoimage" />
+		</beans:constructor-arg>
+	</beans:bean>
+	<!--使用字典单词作为验证码-->
+	<!--  <beans:bean id="wordgen" class= "com.octo.captcha.component.word.wordgenerator.DictionaryWordGenerator" > 
+		<beans:constructor-arg><beans:ref bean="filedict"/></beans:constructor-arg> 
+		</beans:bean> 
+	-->
+	<!--使用随机数作为验证码-->
+	<beans:bean id="wordgen"
+		class="com.octo.captcha.component.word.wordgenerator.RandomWordGenerator">
+		<beans:constructor-arg>
+			<beans:value>0123456789</beans:value>
+		</beans:constructor-arg>
+	</beans:bean>
+
+	<beans:bean id="wordtoimage"
+		class="com.octo.captcha.component.image.wordtoimage.ComposedWordToImage">
+		<beans:constructor-arg index="0">
+			<beans:ref bean="fontGenRandom" />
+		</beans:constructor-arg>
+		<beans:constructor-arg index="1">
+			<beans:ref bean="backGenUni" />
+		</beans:constructor-arg>
+		<beans:constructor-arg index="2">
+			<beans:ref bean="simpleWhitePaster" />
+		</beans:constructor-arg>
+	</beans:bean>
+
+	<beans:bean id="filedict"
+		class="com.octo.captcha.component.word.FileDictionary">
+		<beans:constructor-arg index="0">
+			<beans:value>toddlist</beans:value>
+		</beans:constructor-arg>
+	</beans:bean>
+
+	<beans:bean id="fontGenRandom"
+		class="com.octo.captcha.component.image.fontgenerator.RandomFontGenerator">
+		<!-- 验证码 字体最小值 -->
+		<beans:constructor-arg index="0">
+			<beans:value>10</beans:value>
+		</beans:constructor-arg>
+		<!-- 验证码 字体最大值 -->
+		<beans:constructor-arg index="1">
+			<beans:value>15</beans:value>
+		</beans:constructor-arg>
+		<beans:constructor-arg index="2">
+			<beans:list>
+				<beans:ref bean="fontArial" />
+			</beans:list>
+		</beans:constructor-arg>
+	</beans:bean>
+
+	<beans:bean id="fontArial" class="java.awt.Font">
+		<beans:constructor-arg index="0">
+			<beans:value>Arial</beans:value>
+		</beans:constructor-arg>
+		<beans:constructor-arg index="1">
+			<beans:value>0</beans:value>
+		</beans:constructor-arg>
+		<beans:constructor-arg index="2">
+			<beans:value>10</beans:value>
+		</beans:constructor-arg>
+	</beans:bean>
+
+	<beans:bean id="backGenUni"
+		class="com.octo.captcha.component.image.backgroundgenerator.UniColorBackgroundGenerator">
+		<!-- 验证码 图片长度 -->
+		<beans:constructor-arg index="0">
+			<beans:value>55</beans:value>
+		</beans:constructor-arg>
+		<!-- 验证码 图片高度 -->
+		<beans:constructor-arg index="1">
+			<beans:value>20</beans:value>
+		</beans:constructor-arg>
+	</beans:bean>
+
+	<beans:bean id="simpleWhitePaster"
+		class="com.octo.captcha.component.image.textpaster.SimpleTextPaster">
+		<!-- 验证码 个数最小值 -->
+		<beans:constructor-arg type="java.lang.Integer" index="0">
+			<beans:value>4</beans:value>
+		</beans:constructor-arg>
+		<!-- 验证码 个数最大值 -->
+		<beans:constructor-arg type="java.lang.Integer" index="1">
+			<beans:value>5</beans:value>
+		</beans:constructor-arg>
+		<!-- 验证码 颜色 -->
+		<beans:constructor-arg type="java.awt.Color" index="2">
+			<beans:ref bean="colorRed" />
+		</beans:constructor-arg>
+	</beans:bean>
+
+	<beans:bean id="colorRed" class="java.awt.Color">
+		<beans:constructor-arg index="0">
+			<beans:value>255</beans:value>
+		</beans:constructor-arg>
+		<beans:constructor-arg index="1">
+			<beans:value>0</beans:value>
+		</beans:constructor-arg>
+		<beans:constructor-arg index="2">
+			<beans:value>0</beans:value>
+		</beans:constructor-arg>
+	</beans:bean>
+
+
+
+
+	<beans:bean id="filterChainProxy"
+		class="org.springframework.security.util.FilterChainProxy">
+		<beans:property name="filterInvocationDefinitionSource">
+			<beans:value>
+				<!-- 
+					CONVERT_URL_TO_LOWERCASE_BEFORE_COMPARISON 
+					PATTERN_TYPE_APACHE_ANT 
+					/**=httpSessionContextIntegrationFilter,captchaValidationProcessingFilter, channelProcessingFilter, authenticationProcessingFilter 
+				-->
+				<!-- 增加一种RTX2010用户签名认证:rtxSignProcessingFilter -->
+				CONVERT_URL_TO_LOWERCASE_BEFORE_COMPARISON
+				PATTERN_TYPE_APACHE_ANT
+				/**=exceptionTranslationFilter,httpSessionContextIntegrationFilter,rtxSignProcessingFilter,userNameAndPasswordAuthenticationProcessingFilter,authenticationProcessingFilter,usbkeyAuthenticationProcessingFilter,caAuthenticationProcessingFilter,logoutFilter,filterSecurityInterceptor
+			</beans:value>
+		</beans:property>
+	</beans:bean>
+
+	<beans:bean id="httpSessionContextIntegrationFilter"
+		class="org.springframework.security.context.HttpSessionContextIntegrationFilter">
+		<beans:property name="contextClass">
+			<beans:value>
+				org.springframework.security.captcha.CaptchaSecurityContextImpl
+			</beans:value>
+		</beans:property>
+	</beans:bean>
+
+	<!--
+		认证管理器 根据用户名和密码，使用多个provider进行认证
+		认证成功会生成一个Authentication，否则抛出AuthenticationException
+	-->
+	<beans:bean id="authenticationManager"
+		class="org.springframework.security.providers.ProviderManager">
+		<beans:property name="providers">
+			<beans:list>
+				<!-- 新增一种RTX用户签名认证 -->
+				<beans:ref local="rtxSignAuthenticationProvider" />
+				<beans:ref
+					local="userNameAndPasswordAuthenticationProvider" />
+				<beans:ref local="caAuthenticationProvider" />
+				<beans:ref local="usbkeyDaoAuthenticationProvider" />
+				<beans:ref local="daoAuthenticationProvider" />
+				<!-- huzw domino验证 -->
+				<beans:ref local="dominoAuthenticationProvider" />
+				<beans:bean
+					class="org.springframework.security.providers.anonymous.AnonymousAuthenticationProvider"
+					p:key="springsecurity" />
+				<beans:bean
+					class="org.springframework.security.providers.rememberme.RememberMeAuthenticationProvider"
+					p:key="springsecurity" />
+				<!-- 加入remember me验证提供类 -->
+				<!--<beans:ref local="rememberMeAuthenticationProvider" />-->
+			</beans:list>
+		</beans:property>
+	</beans:bean>
+
+	<!--
+		认证的provider userDetailsService 根据用户名获取用户信息 userCache ehcache缓存user信息。
+	-->
+	<!-- <beans:bean id="daoAuthenticationProvider"
+		class="org.springframework.security.providers.dao.DaoAuthenticationProvider"> -->
+	<beans:bean id="daoAuthenticationProvider"
+		class="com.strongit.uums.security.MyDaoAuthenticationProvider">
+		<beans:property name="userDetailsService"
+			ref="userDetailsService" />
+		<beans:property name="userCache" ref="userCache" />
+		<!-- 增加ldap模板，处理ldap验证 -->
+		<beans:property name="ldapTemplate" ref="ldapTemplate"></beans:property>
+		<!-- ldap验证时的唯一标识属性名 -->
+		<beans:property name="userKeyAttribute">
+			<beans:value>CN</beans:value>
+		</beans:property>
+		<!-- ldap验证时的DN -->
+		<beans:property name="baseDn">
+			<beans:value>OU=测试数据2,OU=南昌航空大学</beans:value>
+		</beans:property>
+		<!-- 验证类型，扩展为以后ldap和数据库切换功能使用 -->
+		<beans:property name="authenticationType">
+			<!-- 数据库验证 -->
+			<beans:value>database</beans:value>
+			<!-- ldap验证 -->
+			<!-- <beans:value>ldap</beans:value> -->
+		</beans:property>
+		<beans:property name="passwordEncoder">
+			<beans:bean
+				class="org.springframework.security.providers.encoding.Md5PasswordEncoder">
+			</beans:bean>
+		</beans:property>
+		<!-- 显示用户未找到或未启用等异常信息 -->
+		<beans:property name="hideUserNotFoundExceptions">
+			<beans:value>false</beans:value>
+		</beans:property>
+	</beans:bean>
+
+
+	<!-- RTX -->
+	<beans:bean id="rtxSignAuthenticationProvider"
+		class="com.strongit.uums.security.rtxsign.RtxSignAuthenticationProvider">
+		<beans:property name="userDetailsService"
+			ref="rtxSignUserDetailsService" />
+		<beans:property name="userCache" ref="userCache" />
+		<!-- 显示用户未找到或未启用等异常信息 -->
+		<beans:property name="hideUserNotFoundExceptions">
+			<beans:value>false</beans:value>
+		</beans:property>
+	</beans:bean>
+
+	<beans:bean id="userNameAndPasswordAuthenticationProvider"
+		class="com.strongit.uums.security.usernameandpassword.UserNameAndPasswordAuthenticationProvider">
+		<beans:property name="userDetailsService"
+			ref="userNameAndPasswordUserDetailsService" />
+		<beans:property name="userCache" ref="userCache" />
+		<!-- 显示用户未找到或未启用等异常信息 -->
+		<beans:property name="hideUserNotFoundExceptions">
+			<beans:value>false</beans:value>
+		</beans:property>
+	</beans:bean>
+
+	<!--
+		usbkey认证的provider userDetailsService 根据usbkey获取用户信息 userCache ehcache缓存user信息。
+	-->
+
+	<beans:bean id="usbkeyDaoAuthenticationProvider"
+		class="com.strongit.uums.security.usbkey.UsbkeyAuthenticationProvider">
+		<beans:property name="userDetailsService"
+			ref="usbkeyUserDetailsService" />
+		<beans:property name="userCache" ref="userCache" />
+		<!-- 显示用户未找到或未启用等异常信息 -->
+		<beans:property name="hideUserNotFoundExceptions">
+			<beans:value>false</beans:value>
+		</beans:property>
+	</beans:bean>
+
+	<!-- 吉大正元CA认证实现类 -->
+	<beans:bean id="caAuthentication"
+		class="com.strongit.uums.security.ca.CinasCaAuthentication" />
+
+	<!--
+		ca认证的provider
+	-->
+	<beans:bean id="caAuthenticationProvider"
+		class="com.strongit.uums.security.ca.CaAuthenticationProvider">
+		<beans:property name="userDetailsService"
+			ref="caUserDetailsService" />
+		<!-- 吉大正元CA认证实现类 -->
+		<beans:property name="caAuthentication" ref="caAuthentication" />
+		<beans:property name="userCache" ref="userCache" />
+		<!-- 显示用户未找到或未启用等异常信息 -->
+		<beans:property name="hideUserNotFoundExceptions">
+			<beans:value>false</beans:value>
+		</beans:property>
+	</beans:bean>
+
+	<!-- 添加将用户验证具体出错信息分类保存到Session功能 -->
+	<beans:bean id="exceptionTranslationFilter"
+		class="com.strongit.uums.security.MyExceptionTranslationFilter"
+		p:accessDeniedHandler-ref="accessDeniedHandler"
+		p:authenticationEntryPoint-ref="authenticationEntryPoint" 
+		p:createSessionAllowed="false"/>
+
+	<!-- 相同用户登录限制filter -->
+	<beans:bean id="concurrentSessionFilter"
+		class="com.strongit.uums.security.MyConcurrentSessionFilter">
+		<beans:property name="expiredUrl">
+			<beans:value>/index.jsp</beans:value>
+		</beans:property>
+		<beans:property name="sessionRegistry" ref="sessionRegistry" />
+		<beans:property name="logoutHandlers">
+			<beans:list>
+				<beans:ref local="securityContextLogoutHandler" />
+			</beans:list>
+		</beans:property>
+	</beans:bean>
+	
+	<!-- huzw domino验证start -->
+	<beans:bean id="dominoUserDetailsService"
+		class="com.strongit.uums.security.domino.DominoUserDetailServiceImpl" />
+	<beans:bean id="dominoAuthenticationProvider"
+		class="com.strongit.uums.security.domino.DominoAuthenticationProvider">
+		<beans:property name="userDetailsService"
+			ref="dominoUserDetailsService" />
+		<beans:property name="userCache" ref="userCache" />
+		<!-- 显示用户未找到或未启用等异常信息 -->
+		<beans:property name="hideUserNotFoundExceptions">
+			<beans:value>false</beans:value>
+		</beans:property>
+	</beans:bean>
+	<!-- huzw domino验证end -->
+
+	<!-- 用户登录信息注册器,增加concurrentsessionFilter时使用 -->
+	<beans:bean id="sessionRegistry"
+		class="org.springframework.security.concurrent.SessionRegistryImpl">
+	</beans:bean>
+
+	<!-- remember me过滤器 -->
+	<!--<beans:bean id="rememberMeProcessingFilter"
+		class="org.springframework.security.ui.rememberme.RememberMeProcessingFilter">
+		<beans:property name="rememberMeServices" ref="rememberMeServices" />
+		<beans:property name="authenticationManager"
+		ref="authenticationManager" />
+		</beans:bean>-->
+
+	<!-- remember me验证类 -->
+	<!--<beans:bean id="rememberMeServices"
+		class="org.springframework.security.ui.rememberme.TokenBasedRememberMeServices">
+		<beans:property name="userDetailsService" ref="userDetailsService" />
+		<beans:property name="key" value="e37f4b31-0c45-11dd-bd0b-0800200c9a66" />
+		</beans:bean>-->
+
+	<!-- remember me提供类 -->
+	<!--<beans:bean id="rememberMeAuthenticationProvider"
+		class="org.springframework.security.providers.rememberme.RememberMeAuthenticationProvider">
+		<beans:property name="key" value="e37f4b31-0c45-11dd-bd0b-0800200c9a66" />
+		</beans:bean>-->
+
+	<!-- 设置session注销为false，实现用户被剔除的出错信息显示功能(未启用) -->
+	<beans:bean id="securityContextLogoutHandler"
+		class="org.springframework.security.ui.logout.SecurityContextLogoutHandler">
+		<!--<beans:property name="invalidateHttpSession" value="false" />-->
+	</beans:bean>
+	
+	<beans:bean id="filterSecurityInterceptor"
+		class="org.springframework.security.intercept.web.FilterSecurityInterceptor">
+		<custom-filter before="FILTER_SECURITY_INTERCEPTOR" />
+		<beans:property name="authenticationManager" ref="authenticationManager" />
+		<beans:property name="accessDecisionManager" ref="accessDecisionManager" />
+		<beans:property name="objectDefinitionSource" ref="databaseFilterInvocationDefinitionSource" />
+	</beans:bean>
+
+	<beans:bean id="accessDecisionManager" class="org.springframework.security.vote.AffirmativeBased">
+		<beans:property name="allowIfAllAbstainDecisions" value="false" />
+		<beans:property name="decisionVoters">
+			<beans:list>
+				<beans:bean class="org.springframework.security.vote.RoleVoter">
+					<beans:property name="rolePrefix" value="" />
+				</beans:bean>
+				<beans:bean class="org.springframework.security.vote.AuthenticatedVoter" />
+			</beans:list>
+		</beans:property>
+	</beans:bean>
+
+	<beans:bean id="databaseFilterInvocationDefinitionSource" 
+		class="org.springframework.security.intercept.web.DefaultFilterInvocationDefinitionSource">
+		<!--匹配url的matcher -->
+		<beans:constructor-arg type="org.springframework.security.util.UrlMatcher"
+			ref="antUrlPathMatcher" />
+		<!--url对应authority的map -->
+		<beans:constructor-arg type="java.util.LinkedHashMap" ref="requestMap" />
+	</beans:bean>
+
+	<beans:bean id="userCache"
+		class="org.springframework.security.providers.dao.cache.EhCacheBasedUserCache">
+		<beans:property name="cache" ref="userCacheBacked" />
+	</beans:bean>
+	
+	<beans:bean id="userCacheBacked" class="org.springframework.cache.ehcache.EhCacheFactoryBean">
+		<beans:property name="cacheManager" ref="cacheManager" />
+		<beans:property name="cacheName" value="myUserCache" />
+	</beans:bean>
+	
+	<beans:bean id="cacheManager"
+		class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
+		<beans:property name="configLocation" value="classpath:ehcache-security.xml" />
+	</beans:bean>
+</beans:beans>

@@ -1,0 +1,78 @@
+<ldapMapping-config>
+	<mapping entryClass="com.strongit.uums.bo.TUumsBaseUser"
+		dn="ou=userInfo" ldapKeyAttribute="userId">
+		<ldapAttributeValues>
+			<ldapAttributeValue name="objectClass">
+				<attributeValue value="top" />
+				<attributeValue value="userInfo" />
+			</ldapAttributeValue>
+			<!--<ldapAttributeValue name="userAccountControl">
+				<attributeValue value="66080" />
+			</ldapAttributeValue>-->
+		</ldapAttributeValues>
+		<!-- 编辑时需要唯一性判断的属性 -->
+		<ldapSynchronizedAttrs>
+			<ldapSynchronizedAttr name="userSyscode"/>
+			<ldapSynchronizedAttr name="userLoginname"/>
+		</ldapSynchronizedAttrs>
+		<ldapAttributeMappers>
+			<ldapAttributeMapper attribute="user-id" mapper="userId" />
+			<ldapAttributeMapper attribute="user-org-id"
+				mapper="orgId" />
+			<ldapAttributeMapper attribute="user-syscode" mapper="userSyscode" />
+			<ldapAttributeMapper attribute="user-name" mapper="userName" />
+			<ldapAttributeMapper attribute="user-loginname" mapper="userLoginname" />
+			<ldapAttributeMapper attribute="user-password" mapper="userPassword" />
+			<ldapAttributeMapper attribute="user-usbkey" mapper="userUsbkey" />
+			<ldapAttributeMapper attribute="user-isactive" mapper="userIsactive" />
+			<ldapAttributeMapper attribute="user-pubkey" mapper="userPubkey" />
+			<ldapAttributeMapper attribute="user-tel" mapper="userTel" />
+			<ldapAttributeMapper attribute="user-addr" mapper="userAddr" />
+			<ldapAttributeMapper attribute="user-email" mapper="userEmail" />
+			<ldapAttributeMapper attribute="user-description" mapper="userDescription" />
+			<ldapAttributeMapper attribute="user-isdel" mapper="userIsdel" />
+			<ldapAttributeMapper attribute="user-sequence" mapper="userSequence" />
+			<ldapAttributeMapper attribute="user-issupmanager" mapper="userIsSupManager" />
+			<ldapAttributeMapper attribute="user-rest1" mapper="rest1" />
+			<ldapAttributeMapper attribute="user-rest2" mapper="rest2" />
+			<ldapAttributeMapper attribute="user-rest3" mapper="rest3" />
+			<ldapAttributeMapper attribute="user-rest4" mapper="rest4" />
+		</ldapAttributeMappers>
+	</mapping>
+	<mapping entryClass="com.strongit.uums.bo.TUumsBaseOrg"
+		dn="ou=orgInfo" ldapKeyAttribute="orgId">
+		<ldapAttributeValues>
+			<ldapAttributeValue name="objectClass">
+				<attributeValue value="top" />
+				<attributeValue value="orgInfo" />
+			</ldapAttributeValue>
+		</ldapAttributeValues>
+		 编辑时需要唯一性判断的属性 
+		<ldapSynchronizedAttrs>
+			<ldapSynchronizedAttr name="orgSyscode"/>
+		</ldapSynchronizedAttrs>
+		<ldapAttributeMappers>
+			<ldapAttributeMapper attribute="org-id" mapper="orgId" />
+			<ldapAttributeMapper attribute="org-syscode"
+				mapper="orgSyscode" />
+			<ldapAttributeMapper attribute="org-code" mapper="orgCode" />
+			<ldapAttributeMapper attribute="org-areacode" mapper="orgAreaCode" />
+			<ldapAttributeMapper attribute="org-name" mapper="orgName" />
+			<ldapAttributeMapper attribute="org-nature" mapper="orgNature" />
+			<ldapAttributeMapper attribute="org-grade" mapper="orgGrade" />
+			<ldapAttributeMapper attribute="org-addr" mapper="orgAddr" />
+			<ldapAttributeMapper attribute="org-tel" mapper="orgTel" />
+			<ldapAttributeMapper attribute="org-fax" mapper="orgFax" />
+			<ldapAttributeMapper attribute="org-zip" mapper="orgZip" />
+			<ldapAttributeMapper attribute="org-sequence" mapper="orgSequence" />
+			<ldapAttributeMapper attribute="org-description" mapper="orgDescription" />
+			<ldapAttributeMapper attribute="org-manager" mapper="orgManager" />
+			<ldapAttributeMapper attribute="org-isdel" mapper="orgIsdel" />
+			<ldapAttributeMapper attribute="org-parent-id" mapper="orgParentId" />
+			<ldapAttributeMapper attribute="org-rest1" mapper="rest1" />
+			<ldapAttributeMapper attribute="org-rest2" mapper="rest2" />
+			<ldapAttributeMapper attribute="org-rest3" mapper="rest3" />
+			<ldapAttributeMapper attribute="org-rest4" mapper="rest4" />
+		</ldapAttributeMappers>
+	</mapping>
+</ldapMapping-config>

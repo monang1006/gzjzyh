@@ -1,0 +1,20 @@
+/* tab 标签外观*/
+.tab {
+	BORDER-RIGHT: gray 2px solid; BORDER-TOP: #ffffff 1px solid; BORDER-LEFT: #ffffff 1px solid; CURSOR: hand; COLOR: #000000; BORDER-BOTTOM: #ffffff 1px solid; BACKGROUND-COLOR: #DFDBD5
+}
+/* 被选中的 tab 标签外观*/
+.tab_sel {
+	BORDER-RIGHT: gray 2px solid; BORDER-TOP: red 1px solid; BORDER-LEFT: #ffffff 1px solid;CURSOR: hand; COLOR: #000000; BACKGROUND-COLOR: #B3AEA6
+}
+/* tab面板容器外观*/
+.container{
+	border:solid 1 #CBDCED;
+}
+/* 被显示的 tab 面板*/
+.pane {
+	display:block
+}
+/* 被隐藏的 tab 面板*/
+.pane_hide {
+	display:none
+}

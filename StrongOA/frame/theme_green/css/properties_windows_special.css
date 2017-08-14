@@ -1,0 +1,455 @@
+*{ margin:0; padding:0; }
+html,body{ height:100%; width:100%; OVERFLOW: hidden; }
+#iframecontentborder {
+	BORDER-RIGHT: 0px; PADDING-RIGHT: 0px; BORDER-TOP: 0px; PADDING-LEFT: 0px; BACKGROUND: white; PADDING-BOTTOM: 0px; OVERFLOW: auto; BORDER-LEFT: 0px; WIDTH: 100%; PADDING-TOP: 0px; BORDER-BOTTOM: 0px; POSITION: absolute; HEIGHT: 100%
+}
+#bugcontentborder {
+	BORDER-RIGHT: #848284 1px solid; PADDING-RIGHT: 3px; BORDER-TOP: #848284 0px solid; PADDING-LEFT: 3px; BACKGROUND: white; PADDING-BOTTOM: 10px; OVERFLOW: scroll; BORDER-LEFT: #848284 1px solid; WIDTH: 100%; PADDING-TOP: 0px; BORDER-BOTTOM: #848284 1px solid; POSITION: absolute; HEIGHT: 100%
+}
+#treecontentborder {
+	BORDER-RIGHT: #848284 1px solid; BORDER-TOP: #848284 0px solid; BACKGROUND: white; OVERFLOW: auto; BORDER-LEFT: #848284 1px solid; WIDTH: 100%; PADDING-TOP: 5px; BORDER-BOTTOM: #848284 1px solid; HEIGHT: 100%
+}
+.contentbodymargin_1 {
+	BACKGROUND: #d4d0c8; MARGIN: 2px
+}
+.labels {
+	FONT-WEIGHT: normal; font-size: 14px; COLOR: black; FONT-FAMILY: Tahoma, Verdana, Arial, Helvetica
+}
+.keylinefieldset {
+	BORDER-RIGHT: #8080ff 1px solid; BORDER-TOP: #8080ff 1px solid; BORDER-LEFT: #8080ff 1px solid; BORDER-BOTTOM: #8080ff 1px solid
+}
+.tableborder {
+	BORDER-RIGHT: #b8b4a3 1px solid; BORDER-TOP: #b8b4a3 1px solid; BORDER-LEFT: #b8b4a3 0px solid; BORDER-BOTTOM: #b8b4a3 0px solid
+}
+.querytableborder {
+	BORDER-RIGHT: #b8b4a3 1px solid; BORDER-TOP: #b8b4a3 1px solid; BORDER-LEFT: #b8b4a3 1px solid; BORDER-BOTTOM: #b8b4a3 1px solid
+}
+.tablecells {
+	BORDER-RIGHT: #b8b4a3 0px solid; BORDER-TOP: #b8b4a3 0px solid; FONT-SIZE: 11px; BORDER-LEFT: #b8b4a3 1px solid; BORDER-BOTTOM: #b8b4a3 1px solid; FONT-FAMILY: Tahoma, Verdana, Arial, Helvetica; TEXT-ALIGN: left
+}
+.checkboxcells {
+	BORDER-RIGHT: #b8b4a3 0px solid; BORDER-TOP: #b8b4a3 0px solid; FONT-SIZE: 11px; BORDER-LEFT: #b8b4a3 1px solid; BORDER-BOTTOM: #b8b4a3 1px solid; FONT-FAMILY: Tahoma, Verdana, Arial, Helvetica; BACKGROUND-COLOR: #d4d0c8
+}
+TH.headercolor {
+	BORDER-RIGHT: #b8b4a3 0px solid; BORDER-TOP: #b8b4a3 0px solid; FONT-SIZE: 11px; BORDER-LEFT: #b8b4a3 1px solid; COLOR: #ffffff; BORDER-BOTTOM: #b8b4a3 1px solid; FONT-STYLE: normal; FONT-FAMILY: Tahoma, Verdana, Arial, Helvetica; BACKGROUND-COLOR: #4977b4; TEXT-ALIGN: center
+}
+TD.headercolor {
+	BORDER-RIGHT: #b8b4a3 0px solid; BORDER-TOP: #b8b4a3 0px solid; FONT-SIZE: 11px; BORDER-LEFT: #b8b4a3 1px solid; COLOR: #ffffff; BORDER-BOTTOM: #b8b4a3 1px solid; FONT-STYLE: normal; FONT-FAMILY: Tahoma, Verdana, Arial, Helvetica; BACKGROUND-COLOR: #4977b4; TEXT-ALIGN: center
+}
+TD.bginputcolor {
+	BORDER-RIGHT: #b8b4a3 0px solid; BORDER-TOP: #b8b4a3 0px solid; FONT-SIZE: 11px; BORDER-LEFT: #b8b4a3 1px solid; COLOR: #ffffff; BORDER-BOTTOM: #b8b4a3 1px solid; FONT-STYLE: normal; FONT-FAMILY: Tahoma, Verdana, Arial, Helvetica; BACKGROUND-COLOR: #4977b4
+}
+TH.singleheadercolor {
+	BORDER-RIGHT: #b8b4a3 0px solid; BORDER-TOP: #b8b4a3 0px solid; FONT-SIZE: 11px; BORDER-LEFT: #b8b4a3 1px solid; COLOR: #ffffff; BORDER-BOTTOM: #b8b4a3 1px solid; FONT-STYLE: normal; FONT-FAMILY: Tahoma, Verdana, Arial, Helvetica; BACKGROUND-COLOR: #4977b4; TEXT-ALIGN: left
+}
+.firstcolumnerrantrowcolor {
+	BORDER-RIGHT: #b7b4a3 0px solid; BORDER-TOP: red 1px solid; FONT-SIZE: 11px; BORDER-LEFT: red 1px solid; BORDER-BOTTOM: red 1px solid; FONT-FAMILY: Tahoma, Verdana, Arial, Helvetica; BACKGROUND-COLOR: #e6ead8; TEXT-ALIGN: left
+}
+.middleerrantrowcolor {
+	BORDER-RIGHT: #b7b4a3 0px solid; BORDER-TOP: red 1px solid; FONT-SIZE: 11px; BORDER-LEFT: #b7b4a3 1px solid; BORDER-BOTTOM: red 1px solid; FONT-FAMILY: Tahoma, Verdana, Arial, Helvetica; BACKGROUND-COLOR: #e6ead8; TEXT-ALIGN: left
+}
+.lastcolumnerrantrowcolor {
+	BORDER-RIGHT: red 1px solid; BORDER-TOP: red 1px solid; FONT-SIZE: 11px; BORDER-LEFT: #b7b4a3 1px solid; BORDER-BOTTOM: red 1px solid; FONT-FAMILY: Tahoma, Verdana, Arial, Helvetica; BACKGROUND-COLOR: #e6ead8; TEXT-ALIGN: left
+}
+.rowcolor {
+	BORDER-RIGHT: #b8b4a3 0px solid; BORDER-TOP: #b8b4a3 0px solid; FONT-SIZE: 11px; BORDER-LEFT: #b8b4a3 1px solid; BORDER-BOTTOM: #b8b4a3 1px solid; FONT-FAMILY: Tahoma, Verdana, Arial, Helvetica; BACKGROUND-COLOR: #e6ead8; TEXT-ALIGN: left
+}
+TD {
+	font-size: 14px; FONT-FAMILY: Tahoma, Verdana, Arial, Helvetica
+}
+TH {
+	font-size: 14px; FONT-FAMILY: Tahoma, Verdana, Arial, Helvetica
+}
+INPUT {
+	font-size: 14px; FONT-FAMILY: Tahoma, Verdana, Arial, Helvetica
+}
+.selectlist {
+	BORDER-RIGHT: #c7c5b2 1px solid; BORDER-TOP: #c7c5b2 1px solid; font-size: 14px; BORDER-LEFT: #c7c5b2 1px solid; COLOR: black; BORDER-BOTTOM: #c7c5b2 1px solid; FONT-FAMILY: Tahoma, Verdana, Arial, Helvetica
+}
+SELECT {
+	font-size: 14px; FONT-FAMILY: Tahoma, Verdana, Arial, Helvetica
+}
+PRE {
+	font-size: 14px; FONT-FAMILY: Tahoma, Verdana, Arial, Helvetica
+}
+.smtextenter {
+	BORDER-RIGHT: #c7c5b2 1px solid; BORDER-TOP: #c7c5b2 1px solid; FONT-SIZE: 14px; BORDER-LEFT: #c7c5b2 1px solid; WIDTH: 10%; COLOR: black; BORDER-BOTTOM: #c7c5b2 1px solid; FONT-FAMILY: Tahoma, Verdana, Arial, Helvetica
+}
+.textenter {
+	BORDER-RIGHT: #c7c5b2 1px solid; BORDER-TOP: #c7c5b2 1px solid; FONT-SIZE: 14px; BORDER-LEFT: #c7c5b2 1px solid; WIDTH: 90%; COLOR: black; BORDER-BOTTOM: #c7c5b2 1px solid; FONT-FAMILY: Tahoma, Verdana, Arial, Helvetica
+}
+.tabletextenter {
+	BORDER-RIGHT: #c7c5b2 1px solid; BORDER-TOP: #c7c5b2 1px solid; FONT-SIZE: 14px; BORDER-LEFT: #c7c5b2 1px solid; WIDTH: 100%; COLOR: black; BORDER-BOTTOM: #c7c5b2 1px solid; FONT-FAMILY: Tahoma, Verdana, Arial, Helvetica
+}
+.tablefilebrowse {
+	BORDER-RIGHT: #c7c5b2 1px solid; BORDER-TOP: #c7c5b2 1px solid; FONT-SIZE: 14px; BORDER-LEFT: #c7c5b2 1px solid; WIDTH: 100%; BORDER-BOTTOM: #c7c5b2 1px solid; FONT-FAMILY: Tahoma, Verdana, Arial, Helvetica
+}
+INPUT.button {
+	BORDER-RIGHT: 1px outset; BORDER-TOP: 1px outset; FONT-SIZE: 11px; BORDER-LEFT: 1px outset; BORDER-BOTTOM: 1px outset; FONT-FAMILY: Tahoma, Verdana, Arial, Helvetica; HEIGHT: 22px
+}
+INPUT.radio {
+	FONT-SIZE: 11px; FONT-FAMILY: Tahoma, Verdana, Arial, Helvetica
+}
+IMG.twist {
+	BORDER-TOP-WIDTH: 0px; BORDER-LEFT-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; WIDTH: 11px; HEIGHT: 10px; BORDER-RIGHT-WIDTH: 0px
+}
+.fixfragtable {
+	BORDER-RIGHT: 0px; BORDER-TOP: 0px; BORDER-LEFT: 0px; WIDTH: 95%; BORDER-BOTTOM: 0px
+}
+.innerfixfragtable {
+	BORDER-RIGHT: 0px; BORDER-TOP: 0px; BORDER-LEFT: 0px; WIDTH: 100%; BORDER-BOTTOM: 0px
+}
+.rangefragtable {
+	BORDER-RIGHT: #b8b4a3 1px solid; BORDER-TOP: #b8b4a3 1px solid; BORDER-LEFT: #b8b4a3 0px solid; WIDTH: 95%; BORDER-BOTTOM: #b8b4a3 0px solid
+}
+.innerrangefragtable {
+	BORDER-RIGHT: #b8b4a3 1px solid; BORDER-TOP: #b8b4a3 1px solid; BORDER-LEFT: #b8b4a3 0px solid; WIDTH: 100%; BORDER-BOTTOM: #b8b4a3 0px solid
+}
+.textareaenter {
+	BORDER-RIGHT: #c7c5b2 1px solid; BORDER-TOP: #c7c5b2 1px solid; FONT-SIZE: 14px; BORDER-LEFT: #c7c5b2 1px solid; WIDTH: 100%; COLOR: black; BORDER-BOTTOM: #c7c5b2 1px solid; FONT-FAMILY: Tahoma, Verdana, Arial, Helvetica; HEIGHT: 150px
+}
+.bigtextareaenter {
+	BORDER-RIGHT: #c7c5b2 1px solid; BORDER-TOP: #c7c5b2 1px solid; FONT-SIZE: 14px; BORDER-LEFT: #c7c5b2 1px solid; WIDTH: 100%; COLOR: black; BORDER-BOTTOM: #c7c5b2 1px solid; FONT-FAMILY: Tahoma, Verdana, Arial, Helvetica; HEIGHT: 300px
+}
+.inputTextElem {
+	
+}
+.inputSelectElem {
+	WIDTH: 140px
+}
+.inputTextAreaElem {
+	WIDTH: 360px
+}
+.inputDisabledTextAreaElem {
+	WIDTH: 360px; BACKGROUND-COLOR: #e6e6e6
+}
+.inputIndexTd {
+	PADDING-LEFT: 4px
+}
+.wordContentShow {
+	PADDING-RIGHT: 4px; PADDING-LEFT: 4px; PADDING-BOTTOM: 4px; VERTICAL-ALIGN: top; PADDING-TOP: 4px
+}
+.reqReportContent {
+	PADDING-RIGHT: 4px; PADDING-LEFT: 4px; PADDING-BOTTOM: 4px; MARGIN-LEFT: 16px; PADDING-TOP: 4px
+}
+.requirementTitle {
+	FONT-WEIGHT: 700; FONT-SIZE: 11pt; MARGIN-LEFT: 16px
+}
+.reqCatTitle1 {
+	FONT-WEIGHT: 700; FONT-SIZE: 16pt; COLOR: #5353ff
+}
+.reqCatTitle2 {
+	FONT-WEIGHT: 700; FONT-SIZE: 14pt; MARGIN-LEFT: 8px; COLOR: #5353ff
+}
+.reqCatTitle3 {
+	FONT-WEIGHT: 700; FONT-SIZE: 12pt; MARGIN-LEFT: 16px; COLOR: #5353ff
+}
+.reqCatTitle4 {
+	FONT-WEIGHT: 700; COLOR: #5353ff
+}
+.input_bg {
+
+}
+TBODY {
+	FONT-WEIGHT: normal; font-size: 14px; FONT-FAMILY: "宋体","Verdana", "Arial", "Helvetica", "sans-serif"; HEIGHT: 20px
+}
+UNKNOWN {
+	font-size: 14px; COLOR: #ffffff; FONT-FAMILY: "宋体", "Verdana", "Arial", "Helvetica", "sans-serif"; HEIGHT: 28px; BACKGROUND-COLOR: #4977b4
+}
+.titlethead {
+	font-size: 14px; COLOR: #ffffff; FONT-FAMILY: "宋体", "Verdana", "Arial", "Helvetica", "sans-serif"; HEIGHT: 28px; BACKGROUND-COLOR: #4977b4
+}
+.queryhead {
+	font-size: 14px; COLOR: #ffffff; FONT-FAMILY: "宋体", "Verdana", "Arial", "Helvetica", "sans-serif"; HEIGHT: 10px; BACKGROUND-COLOR: #eeeeee
+}
+.conBtn {
+	WIDTH: 22px; HEIGHT: 18px
+}
+.tdid {
+	DISPLAY: none
+}
+.fieldkey {
+	DISPLAY: none
+}
+.queryElem {
+	BORDER-RIGHT: 1px solid; BORDER-TOP: 1px solid; BORDER-LEFT: 1px solid; WIDTH: 100%; BORDER-BOTTOM: 1px solid
+}
+.tablecells {
+	BORDER-RIGHT: #b8b4a3 0px solid; BORDER-TOP: #b8b4a3 0px solid; FONT-SIZE: 11px; BORDER-LEFT: #b8b4a3 1px solid; BORDER-BOTTOM: #b8b4a3 1px solid; FONT-FAMILY: Tahoma, Verdana, Arial, Helvetica; TEXT-ALIGN: left
+}
+.tablecellsend {
+	BORDER-RIGHT: #b8b4a3 1px solid; BORDER-TOP: #b8b4a3 0px solid; FONT-SIZE: 11px; BORDER-LEFT: #b8b4a3 1px solid; BORDER-BOTTOM: #b8b4a3 1px solid; FONT-FAMILY: Tahoma, Verdana, Arial, Helvetica; TEXT-ALIGN: left
+}
+.tabledatecells {
+	BORDER-RIGHT: #b8b4a3 0px solid; BORDER-TOP: #b8b4a3 0px solid; FONT-SIZE: 11px; BORDER-LEFT: #b8b4a3 1px solid; BORDER-BOTTOM: #b8b4a3 1px solid; FONT-FAMILY: Tahoma, Verdana, Arial, Helvetica; TEXT-ALIGN: center
+}
+.queryitem {
+	WIDTH: 140px
+}
+.querytablecells {
+	BORDER-RIGHT: #b8b4a3 0px solid; BORDER-TOP: #b8b4a3 0px solid; FONT-SIZE: 11px; BORDER-LEFT: #b8b4a3 1px solid; BORDER-BOTTOM: #b8b4a3 1px solid; FONT-FAMILY: Tahoma, Verdana, Arial, Helvetica; TEXT-ALIGN: center
+}
+.tablenumcells {
+	BORDER-RIGHT: #b8b4a3 0px solid; BORDER-TOP: #b8b4a3 0px solid; FONT-SIZE: 11px; BORDER-LEFT: #b8b4a3 1px solid; BORDER-BOTTOM: #b8b4a3 1px solid; FONT-FAMILY: Tahoma, Verdana, Arial, Helvetica; TEXT-ALIGN: right
+}
+.tablenumcellsend {
+	BORDER-RIGHT: #b8b4a3 1px solid; BORDER-TOP: #b8b4a3 0px solid; FONT-SIZE: 11px; BORDER-LEFT: #b8b4a3 1px solid; BORDER-BOTTOM: #b8b4a3 1px solid; FONT-FAMILY: Tahoma, Verdana, Arial, Helvetica; TEXT-ALIGN: right
+}
+.menu {
+	BORDER-RIGHT: buttonhighlight 2px outset; PADDING-RIGHT: 2px; BORDER-TOP: buttonhighlight 2px outset; PADDING-LEFT: 2px; Z-INDEX: 9999; VISIBILITY: hidden; PADDING-BOTTOM: 2px; BORDER-LEFT: buttonhighlight 2px outset; WIDTH: 180px; PADDING-TOP: 2px; BORDER-BOTTOM: buttonhighlight 2px outset; POSITION: absolute; BACKGROUND-COLOR: inactiveborder
+}
+.menu140 {
+	BORDER-RIGHT: buttonhighlight 2px outset; PADDING-RIGHT: 2px; BORDER-TOP: buttonhighlight 2px outset; PADDING-LEFT: 2px; Z-INDEX: 9999; VISIBILITY: hidden; PADDING-BOTTOM: 2px; BORDER-LEFT: buttonhighlight 2px outset; WIDTH: 140px; PADDING-TOP: 2px; BORDER-BOTTOM: buttonhighlight 2px outset; POSITION: absolute; BACKGROUND-COLOR: inactiveborder
+}
+.item {
+	BORDER-RIGHT: inactiveborder 1px solid; PADDING-RIGHT: 2px; BORDER-TOP: inactiveborder 1px solid; PADDING-LEFT: 2px; font-size: 14px; PADDING-BOTTOM: 2px; BORDER-LEFT: inactiveborder 1px solid; WIDTH: 100%; CURSOR: default; PADDING-TOP: 2px; BORDER-BOTTOM: inactiveborder 1px solid
+}
+.item IMG {
+	VERTICAL-ALIGN: middle; MARGIN-RIGHT: 10px
+}
+.item SPAN {
+	VISIBILITY: hidden; WIDTH: 21px; HEIGHT: 12px
+}
+.line {
+	BORDER-TOP: #848284 1px solid; MARGIN: 2px; BORDER-BOTTOM: white 1px solid
+}
+.table1 {
+	border-top:1px solid #cccdd0;
+	
+}
+.table1_td {
+	height: 10px;
+	font-size: 10px;
+}
+.td1 {
+	color : #454953;
+}
+.td2 {
+	padding-left:18px;
+	color : #454953;
+}
+.td1 input[type="text"] {
+	border : 1px solid #cecece;
+	height: 22px;
+	line-height: 22px;
+	padding-left: 8px;
+	
+}
+.td1 textarea {
+	border : 1px solid #cecece;
+	line-height: 22px;
+	padding-left: 8px;
+}
+.wz{
+	padding-left:4px;
+	font-family: "宋体";
+	font-size: 14px;
+	
+}
+.wztext{
+	font-family: "宋体";
+	font-size: 14px;
+}
+
+a:link,a:visited,a:hover,a:active{
+	font-family: "宋体";
+	font-size: 14px;
+	color: #000000;
+	text-decoration:none;
+}
+.biao_bg1 {
+	line-height: 34px;
+	height: 30px;
+	color: #454953;
+	width : 140px;
+}
+.biao_bg2 {
+	background-image: url(../images/perspective_leftside/biao_bg.jpg);
+}
+.biao_bg3 {
+	background-image: url(../images/perspective_leftside/biao_bg3.jpg);
+	height: 31;
+}
+/*修改*/
+.contentbodymargin {
+	BACKGROUND:url(../images/blueprint.png) repeat; MARGIN: 0 2px 2px 0;
+}
+#contentborder {
+	OVERFLOW: auto;
+	WIDTH: 100%;
+	POSITION: absolute;
+	HEIGHT: 100%;
+}
+/*增加*/
+.content_title_bg{FILTER:progid:DXImageTransform.Microsoft.Gradient(gradientType=0,startColorStr=#e7eef8,endColorStr=#ffffff);}
+.Operation{
+height:19px;
+line-height:19px;
+text-align:center;
+text-decoration:none;
+display:block;
+FILTER:progid:DXImageTransform.Microsoft.Gradient(gradientType=0,startColorStr=#fcfcfc,endColorStr=#dfdfdf);
+border:1px solid #dfdfdf;
+}
+.img_s{
+display:block;
+/*
+display:block;显示前面小图标
+display:none;隐藏前面小图标
+*/
+float:left;
+width:16px;
+margin:1px 2px;
+border:0;
+}
+.deskset_out{
+cursor:pointer;
+width:80px;
+}
+.set,.deskset_over,.deskset_out{
+text-align:center;
+height:24px;
+line-height:24px;
+background:#bbcfea;
+font-size:12px;
+font-weight:bold;
+}
+.deskset_out,.set{
+color:#2d5198;
+border-bottom:1px solid #506eaa;
+}
+.deskset{
+width:80px;
+background:#FFF;
+border:1px solid #506eaa;
+border-width:1px 1px 0 1px;
+}
+.deskline{
+width:100%;
+height:4px;
+font-size:4px;
+background:#bbcfea;
+}
+.tip {position:absolute;display:none;text-align:center;font-size:9pt;font-weight:bold;z-index:65535;background-color:#DE7293;color:white;padding:10px}
+
+.tabbgcolor{
+	BACKGROUND:#506eaa;
+}
+
+#linetd{
+	border-top:1 solid #506eaa;
+	position:relative;
+	left:0;
+	display:inline;
+	width:expression(this.offsetParent.offsetWidth);
+}
+
+.cardcsstop{
+	padding: 10;
+	width: 100%;	
+	border-top: 1 #506eaa solid;
+	border-left: 1 #506eaa solid;
+	border-right: 1 #506eaa solid;	
+	background: #FFFFFF;
+}
+
+.cardcssbottom {
+	padding: 10;
+	width: 100%;
+	border-left: 1 #506eaa solid;
+	border-right: 1 #506eaa solid;
+	border-bottom: 1 #506eaa solid;
+	background: #FFFFFF;
+}
+.tabletitle {
+    FILTER:progid:DXImageTransform.Microsoft.Gradient(
+                          gradientType = 0, 
+                          startColorStr = #ededed, 
+                          endColorStr = #ffffff);
+}
+.hand {
+  cursor:pointer;
+}
+
+.table_headtd{
+	height: 41px;
+	background:url(../images/ck_line.jpg) repeat-x top;
+}
+.table_headtd_img{
+	padding-left : 29px;
+	width: 24px;
+	padding-top:3px;
+}
+/*查看或者添加页面上的顶部按钮样式——强调*/
+.Operation_input{
+	background:url(../images/ch_h_m.gif) repeat-x;
+	font-weight: bold;
+	color:white;
+	cursor: pointer;
+}
+/*查看或者添加页面上的顶部按钮样式——非强调*/
+.Operation_input1{
+	background:url(../images/ch_z_m.gif) repeat-x;
+	font-weight: bold;
+	cursor: pointer;
+	color:#454953;
+}
+
+.s_select{
+	width: 60px;
+	font-size: 14px; FONT-FAMILY: Tahoma, Verdana, Arial, Helvetica;
+	padding:0px;
+}
+
+/*查看或者添加页面上的按钮样式——四个字及以下的 尽量使用该样式将文字缩减到四个字之内*/
+.button {
+	width:73px; height:24px; line-height:24px; border:none; background:url(../images/add_bt.jpg) no-repeat center;
+	FONT-SIZE: 14px; FONT-FAMILY: Tahoma, Verdana, Arial, Helvetica;
+	text-align: center;
+}
+
+
+/*查看或者添加页面上的按钮样式——五到六个字的*/
+.button6 {
+	width:94px; height:24px; line-height:24px; border:none; background:url(../images/add_bt_6.jpg) no-repeat center;
+	FONT-SIZE: 14px; FONT-FAMILY: Tahoma, Verdana, Arial, Helvetica;
+	text-align: center;
+}
+
+
+/*查看或者添加页面上的按钮样式——七到八个字的 */
+.button8 {
+	width:121px; height:24px; line-height:24px; border:none; background:url(../images/add_bt_8.jpg) no-repeat center;
+	FONT-SIZE: 14px; FONT-FAMILY: Tahoma, Verdana, Arial, Helvetica;
+	text-align: center;
+}
+.nuoxia{
+	margin-top:15px;}
+.toubu{
+		background:url(../images/ck_line.jpg) repeat-x top;
+		height:44px;
+		position:absolute;
+		top:0px;
+	}	
+.cc{
+	border-collapse: collapse;
+	border-spacing: 0;
+	border-top:1px #a0a0a0 solid;	
+	border-left:1px #a0a0a0 solid;	
+	
+	}
+.cc td{
+	border-bottom:1px #a0a0a0 solid;	
+	border-right:1px #a0a0a0 solid;
+	width:35%;
+	}
+.cc th{
+	border-bottom:1px #a0a0a0 solid;	
+	border-right:1px #a0a0a0 solid;
+	background-color:#e0e0e0;
+	width:15%;
+	text-align:right;
+	padding-left:10px;
+	font-weight:100;
+	}
+	

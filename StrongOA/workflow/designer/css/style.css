@@ -1,0 +1,81 @@
+BODY {
+    background-color: buttonface;
+	border: none;
+	BACKGROUND-REPEAT: no-repeat;
+	scroll: no;
+	margin: 7px, 0px, 0px, 7px;
+	overflow: hidden;	
+	/* ��������ʽ */
+	 SCROLLBAR-FACE-COLOR: #EBEEF7; 
+	 SCROLLBAR-HIGHLIGHT-COLOR: #7B92D5; 
+	 SCROLLBAR-SHADOW-COLOR: #EBEEF7; 
+	 SCROLLBAR-3DLIGHT-COLOR: #EBEEF7; 
+	 SCROLLBAR-ARROW-COLOR: #7B92D5; 
+	 SCROLLBAR-TRACK-COLOR: #DBE2F9; 
+	 SCROLLBAR-DARKSHADOW-COLOR: #7B92D5; 
+	 SCROLLBAR-BASE-COLOR: #EBEEF7 
+}
+A:active {
+	COLOR: black
+}
+A:visited {
+	COLOR: black
+}
+A:link {
+	COLOR: black
+}
+A:hover {
+	COLOR: black
+}
+A {
+	TEXT-DECORATION: none
+}
+TD {
+	FONT-SIZE: 9pt
+}
+
+.txtput {
+    COLOR: #919CD0; BACKGROUND-COLOR: white; FONT-SIZE: 9pt; BORDER-BOTTOM: 1px double; BORDER-LEFT: 1px double; BORDER-RIGHT: 1px double; BORDER-TOP: 1px double; FONT-FAMILY: "Verdana", "Arial", "Helvetica", "sans-serif";
+}
+
+.btn {
+	font-family: "����";
+	background-image: url(../images/workflow/input_bg.jpg);
+	border: 1px solid #b8b8b8;
+}
+
+.input_bg {
+	COLOR: #333333; BACKGROUND-COLOR: rgb( 240,240,240 ); FONT-SIZE: 9pt; HEIGHT: 18px; BORDER-RIGHT: 1px double; BORDER-TOP: 1px double; BORDER-LEFT: 1px double; BORDER-BOTTOM: 1px double; FONT-FAMILY: "Verdana", "Arial", "Helvetica", "sans-serif";	
+}
+
+.panel_style {
+	BORDER-RIGHT: #919cd0 1px solid; BORDER-TOP: #919cd0 1px solid; BORDER-LEFT: #919cd0 1px solid; COLOR: #1f2d9a; BORDER-BOTTOM: #919cd0 1px solid
+}
+.panel_line {
+	BACKGROUND: #919cd0
+}
+table td{
+	text-align: left;
+}
+
+.title a {
+	font-size: 12px;
+	font-weight: bold;
+}
+
+.tit1 {
+	height: 25px;
+	border-bottom: 1px solid #ccc;
+	margin-bottom: 8px;
+	line-height: 25px;
+}
+
+.tit1 span {
+	padding-left: 10px;
+	font-weight: bolder;;
+}
+
+.tab_content{
+	height:470px;
+	overflow-y:auto;
+}

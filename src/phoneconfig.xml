@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sms>
+	
+	<chinamobile_dbip>jdbc:db2://192.168.2.248:50110/MASDB</chinamobile_dbip>
+    <chinamobile_dbusername>db2inst1</chinamobile_dbusername>
+    <chinamobile_dbpword>Y4yhl9T</chinamobile_dbpword>
+    <chinamobile_masusername>oa</chinamobile_masusername>
+    <chinamobile_maspword>jstoA123#</chinamobile_maspword>
+    <chinamobile_type>chinamobile</chinamobile_type>
+    <chinamobile_isopen>false</chinamobile_isopen>
+    <chinamobile_desc>移动通道(建设厅)</chinamobile_desc>
+    
+    <chinamobile2_dbip>168.1.11.248</chinamobile2_dbip>
+    <chinamobile2_dbusername>CustomSMS</chinamobile2_dbusername>
+    <chinamobile2_dbpword>SqlMsde@InfoxEie2000</chinamobile2_dbpword>
+    <chinamobile2_masusername>0001</chinamobile2_masusername>
+    <chinamobile2_maspword>1</chinamobile2_maspword>
+    <chinamobile2_type>chinamobile2</chinamobile2_type>
+    <chinamobile2_isopen>false</chinamobile2_isopen>
+    <chinamobile2_desc>移动通道(运管局)</chinamobile2_desc>
+    
+  	<chinaunicom_dbip>168.1.11.248</chinaunicom_dbip>
+    <chinaunicom_dbusername>CustomSMS</chinaunicom_dbusername>
+    <chinaunicom_dbpword>SqlMsde@InfoxEie2000</chinaunicom_dbpword>
+    <chinaunicom_masusername>0001</chinaunicom_masusername>
+    <chinaunicom_maspword>1</chinaunicom_maspword>
+    <chinaunicom_type>chinaunicom</chinaunicom_type>
+    <chinaunicom_isopen>false</chinaunicom_isopen>
+    <chinaunicom_desc>联通通道</chinaunicom_desc>
+
+    <chinatelecommunications_dbip>168.1.11.248</chinatelecommunications_dbip>
+    <chinatelecommunications_dbusername>CustomSMS</chinatelecommunications_dbusername>
+    <chinatelecommunications_dbpword>SqlMsde@InfoxEie2000</chinatelecommunications_dbpword>
+    <chinatelecommunications_masusername>0001</chinatelecommunications_masusername>
+    <chinatelecommunications_maspword>1</chinatelecommunications_maspword>
+    <chinatelecommunications_type>chinatelecommunications</chinatelecommunications_type>
+    <chinatelecommunications_isopen>false</chinatelecommunications_isopen>
+    <chinatelecommunications_desc>电信通道</chinatelecommunications_desc>
+
+    <gsmmodem_smscomPort>COM4</gsmmodem_smscomPort>
+    <gsmmodem_smscomBps>9600</gsmmodem_smscomBps>
+	<gsmmodem_smsSystemRate>39</gsmmodem_smsSystemRate>
+    <gsmmodem_smscomSimnum>15270858776</gsmmodem_smscomSimnum>
+    <gsmmodem_smscomName>移动卡号</gsmmodem_smscomName>
+    <gsmmodem_type>gsmmodem</gsmmodem_type>
+    <gsmmodem_isopen>true</gsmmodem_isopen>
+    <gsmmodem_desc>短信猫通道</gsmmodem_desc>
+</sms>

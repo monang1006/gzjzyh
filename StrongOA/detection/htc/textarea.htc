@@ -1,0 +1,38 @@
+<PUBLIC:COMPONENT tagName=textarea lightweight="true">
+<PUBLIC:PROPERTY NAME="fill" put="setFill" get="getFill" />
+<PUBLIC:METHOD NAME="getValue" />
+<PUBLIC:METHOD NAME="setValue" />
+<PUBLIC:ATTACH   EVENT="onchange" HANDLER="onChange" />
+</PUBLIC:COMPONENT>
+<SCRIPT LANGUAGE="javascript">
+var bFill = false;
+function getValue()
+{
+	return value;
+}
+function setValue(val)
+{
+	value = val;
+}
+function setFill(flag)
+{
+	bFill = flag;
+	if(flag.toString().toLowerCase() == "yes" || flag.toString().toLowerCase() == "true")
+	{
+		style.background = "#B5E3DF";
+	}else {
+		style.background = "#FFFFFF";
+	}
+}
+function getFill()
+{
+	return bFill;
+}
+function onChange()
+{
+	if(fill.toString().toLowerCase() == "yes" || fill.toString().toLowerCase() == "true"){
+		if(value == "") 
+			alert("该项为必填项,不能为空!");
+	}
+}
+</SCRIPT>

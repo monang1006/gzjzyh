@@ -1,0 +1,176 @@
+<!-- 
+	History: The last revised time is at 2005-5-19
+-->
+<PUBLIC:COMPONENT tagName=fileoperate >
+  <PUBLIC:PROPERTY NAME=AutoProcess get=getAutoProcess put=setAutoProcess />
+  <PUBLIC:PROPERTY NAME=FileName get=getFileName put=setFileName />
+  <PUBLIC:PROPERTY NAME=Filter put=setFilter />
+  <PUBLIC:PROPERTY NAME=InitDir put=setInitDir />
+  <PUBLIC:PROPERTY NAME=FileObject get=getFileObject put=setFileObject />
+  <!-- 20050519:WangJian:增加目录选择对话框，可返回选中的全路径字符串 -->
+  <PUBLIC:PROPERTY NAME=Folder get=getFolder />
+  
+  <PUBLIC:METHOD NAME="ShowOpen" />
+  <PUBLIC:METHOD NAME="ShowSave" />
+  <!-- 20041121:WangJian:分离对话框和实际的文件操作 -->
+  <PUBLIC:METHOD NAME="OpenFile" />
+  <!-- 20050519:WangJian:增加不通过文件保存框保存文件的方法 -->
+  <PUBLIC:METHOD NAME="SaveFile" />
+  <!-- 20050519:WangJian:增加目录选择对话框，可返回选中的全路径字符串 -->
+  <PUBLIC:METHOD NAME="ShowFolder" />
+  <!-- 20050519:WangJian:增加判断给定的文件或目录是否存在的方法-->
+  <PUBLIC:METHOD NAME="FileExists" />  
+  <!-- 20050519:WangJian:增加递归创建给定字符串指定的目录的方法-->
+  <PUBLIC:METHOD NAME="CreateFolder" />  
+  
+  <PUBLIC:ATTACH   EVENT="oncontentready"  HANDLER="init" />
+</PUBLIC:COMPONENT>
+
+<SCRIPT LANGUAGE="javascript">
+
+function init()
+{
+	//20041122:WangJian:因ocx中改为不自动处理，所以此处需增加下面代码以兼容以前系统要求
+	htcFileOperate.AutoProcess = true;
+	return;
+}
+
+///////fileoperate proerty list//////
+function getAutoProcess()
+{
+	return htcFileOperate.AutoProcess;
+}
+function setAutoProcess(val)
+{
+	htcFileOperate.AutoProcess = val;
+}
+
+function getFileName()
+{
+	return htcFileOperate.FileName;
+}
+function setFileName(val)
+{
+	htcFileOperate.FileName = val;
+}
+
+function setFilter(val)
+{
+	htcFileOperate.Filter = val;
+}
+
+function setInitDir(val)
+{
+	htcFileOperate.InitDir = val;
+	
+}
+
+function getFileObject()
+{
+	return htcFileOperate.FileObject;
+}
+function setFileObject(val)
+{
+	htcFileOperate.FileObject = val;
+}
+/*
+ * 创建人: WangJian
+ * 创建日期: 2005-5-19
+ * 最后修改日期: 
+ * 属性功能：返回目录选择对话框内用户选中的全路径字符串
+ * 输入参数：
+ * 输出参数：
+*/
+function getFolder()
+{
+	return htcFileOperate.Folder;
+}
+
+
+///////fileoperate methods list////////////
+function ShowOpen()
+{
+	htcFileOperate.ShowOpen();
+}
+function ShowSave()
+{
+	htcFileOperate.ShowSave();
+}
+
+function OpenFile(sFileName,sFileType)
+{
+	if(OpenFile.arguments.length < 2)
+		sFileType = "text";
+	return htcFileOperate.OpenFile(sFileName,sFileType);
+}
+/*
+ * 创建人: WangJian
+ * 创建日期: 2005-5-19
+ * 最后修改日期: 
+ * 函数功能：保存给定文件名的文件
+ * 输入参数：sFileName=文件名，vFileDate=数据，sFileType=文件类型，现只支持文本文件的保存
+ * 输出参数：true=保存成功，false=不成功
+*/
+function SaveFile(sFileName,vFileDate,sFileType)
+{
+	if(OpenFile.arguments.length < 3)
+		sFileType = "text";
+	return htcFileOperate.SaveFile(sFileName,vFileDate,sFileType);
+}
+/*
+ * 创建人: WangJian
+ * 创建日期: 2005-5-19
+ * 最后修改日期: 
+ * 函数功能：显示目录选择对话框，并且将用户选中的全路径字符串返回到Folder属性中
+ * 输入参数：
+ * 输出参数：
+*/
+function ShowFolder(sDlgTitle)
+{
+	if(ShowFolder.arguments.length < 1)
+		htcFileOperate.ShowFolder();
+	else
+		htcFileOperate.ShowFolder(sDlgTitle);
+}
+/*
+ * 创建人: WangJian
+ * 创建日期: 2005-5-19
+ * 最后修改日期: 
+ * 函数功能：判断给定的文件或目录是否存在的方法
+ * 输入参数：sFileName=文件或目录的全路径名
+ * 输出参数：true=存在给定的文件或目录，false=不存在
+*/
+function FileExists(sFileName)
+{
+	var lErr = 0;//用于记录返回的错误号
+	return htcFileOperate.FileExists(sFileName,lErr);
+}
+/*
+ * 创建人: WangJian
+ * 创建日期: 2005-5-19
+ * 最后修改日期: 
+ * 函数功能：递归创建给定字符串指定的目录
+ * 输入参数：sFolder=要创建目录的字符串
+ * 输出参数：true=成功创建目录，false=目录存在或指定的格式不正确，创建失败
+*/
+function CreateFolder(sFolder)
+{
+	return htcFileOperate.CreateFolder(sFolder);
+}
+
+</SCRIPT>
+
+<HTML>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+<BODY>
+    <OBJECT ID="htcFileOperate" CLASSID="CLSID:00BEA42B-9266-49E5-9F0B-0D705B7B07A5" 
+	CODEBASE="CTAIS_HTC.ocx#version=1,0,0,879" style="width:0;height:0">
+       <param name="_ExtentX" value="10795">  
+	   <param name="_ExtentY" value="7250">
+		<SPAN STYLE="color:red">      
+  			ActiveX 载入失败! -- 请检查您浏览器的安全设置选项.
+		</SPAN>                       
+    </OBJECT>                                 
+</BODY>                                       
+</HTML>  

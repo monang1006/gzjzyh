@@ -1,0 +1,88 @@
+﻿*{ margin:0; padding:0;}
+body,td{ font-size:14px; color:#000000;}
+a:link,a:visited,a:hover{ font-size:16px; color:#000000; font-family:"瀹嬩綋"; text-decoration:none;}
+li{ list-style-type:none;}
+img{ border:0;}
+ul{ margin:0; padding:0;}
+.top_nav_left li{ list-style-type:none;}
+.top_nav_left{width:27px; background-color:#f5f9fa; padding-left:3px; border-right:1px solid #a09eb4;}
+.top_nav_left .tabHeadContainer{ position:relative; _right:-1px;}
+.top_nav_left span{ float:left;}
+.top_nav_left .tabHead{width:28px; height:100px; position:relative; !important;margin-top:0px;*margin-top:-3px;_margin-top:-3px; /*姣忎釜TAB鐨勯珮瀹�*/
+}
+
+.top_nav_left .tabHead .container{width:100%; height:100px; overflow: hidden;}
+
+.top_nav_left .tabHead .highLight{background:url(../image/left_nav/bg_nav_left_15.jpg) repeat-y;}/*楂樹寒鑳屾櫙*/
+.top_nav_left .tabHead .nhighLight{background:url(../image/left_nav/bg_nav_left_09.jpg) repeat-y;}/*鏅�氳儗鏅�*/
+
+.top_nav_left .tabHead .tabHeadClose{ width:28px; height:8px; font-size:8px; position:absolute; bottom:10px; right:0px; cursor:pointer; background:url(../image/left_nav/pic_close.gif) no-repeat center;}/*鍏抽棴鎸夐挳*/
+.top_nav_left .tabHead .tabHeadLeft_left{ display:none;}/*灏忓浘鏍�*/
+.top_nav_left .tabHead .tabHeadText{ margin-left:9px; cursor:pointer; overflow:hidden; padding-top:5px; }/*tab椤垫枃瀛楀尯*/
+
+.top_nav_left .tabHead .highLight .tabHeadLeft{ height:6px; width:28px; font-size:6px; background:url(../image/left_nav/bg_nav_left_45.jpg) no-repeat top;}/*瀹氫箟澶撮儴楂樹寒鏃朵笂闈㈠渾瑙�*/
+.top_nav_left .tabHead .highLight .tabHeadright{ height:9px; width:28px; position:absolute; bottom:0px; right:0px; font-size:9px; background:url(../image/left_nav/bg_nav_left_17_01.jpg) no-repeat bottom;}/*瀹氫箟澶撮儴楂樹寒鏃朵笅闈㈠渾瑙�*/
+.top_nav_left .tabHead .highLight .tabHeadText{ font-weight:bold; color:#333333;}/*瀹氫箟楂樹寒鏃剁殑瀛椾綋棰滆壊*/
+
+.top_nav_left .tabTailCss .nhighLight .tabHeadLeft{height:11px; width:28px; font-size:11px; background:url(../image/left_nav/bg_nav_left_11_02.jpg) no-repeat top;}/*瀹氫箟搴曢儴鏅�氱姸鎬佺殑涓婂崐閮ㄥ垎鍦嗚鑳屾櫙澶у皬*/
+
+.top_nav_left .tabHeadCss .nhighLight .tabHeadLeft{height:6px; width:28px; font-size:6px; background:url(../image/left_nav/bg_nav_left_07.jpg) no-repeat top;}/*瀹氫箟澶撮儴鏅�氭椂涓婇潰鍦嗚*/
+.top_nav_left .tabHeadCss .nhighLight .tabHeadright{ height:10px; width:28px; position:absolute; bottom:0px; right:0px; font-size:10px; background:url(../image/left_nav/bg_nav_left_11_01.jpg) no-repeat bottom;}/*瀹氫箟澶撮儴楂樹寒鏃朵笅闈㈠渾瑙�*/
+
+.top_nav_left .tabMidCss .nhighLight .tabHeadLeft{ height:11px; width:28px; font-size:11px; background:url(../image/left_nav/bg_nav_left_11_02.jpg) no-repeat top;}/*瀹氫箟涓棿鏅�氱姸鎬佷笂闈㈠渾瑙�"涓嶅甫楂樹寒閮ㄥ垎"*/
+.top_nav_left .tabMidCss .nhighLight .tabHeadright{ height:10px; font-size:10px; position:absolute; bottom:0px; right:0; width:28px; background:url(../image/left_nav/bg_nav_left_11_01.jpg) no-repeat bottom;}/*瀹氫箟涓棿鏅�氱姸鎬佺殑涓嬪崐閮ㄥ垎鍦嗚鑳屾櫙澶у皬*/
+.top_nav_left .tabMidCss .upHighLight .tabHeadLeft{ height:11px; width:28px; font-size:11px; background:url(../image/left_nav/bg_nav_left_17_02.jpg) no-repeat top;}/*瀹氫箟涓棿鏅�氱姸鎬佷笂闈㈠渾瑙�"甯﹂珮浜儴鍒�"*/
+.top_nav_left .tabMidCss .downHighLight .tabHeadright{ height:10px; width:28px; position:absolute; bottom:0px; right:0px; font-size:10px; background:url(../image/left_nav/bg_nav_left_11_01.jpg) no-repeat bottom;}/*瀹氫箟涓棿鏅�氱姸鎬佷笅鍗婇儴鍒嗗渾瑙掕儗鏅�*/
+
+.top_nav_left .tabTailCss { height:116px;}/*搴曢儴TAB楂樺害*/
+.top_nav_left .tabTailCss .tabHeadClose{width:28px; height:8px; font-size:8px; position:absolute; bottom:20px; right:0px; cursor:pointer; background:url(../image/left_nav/pic_close.gif) no-repeat center;}/*搴曢儴TAB鍏抽棴鎸夐挳*/
+.top_nav_left .tabTailCss .tabHeadright{height:21px; width:28px; background:url(../image/left_nav/bg_nav_left_36.jpg) no-repeat bottom; position:absolute; bottom:0px; right:0px;}/*瀹氫箟搴曢儴鏅�氱姸鎬佺殑涓嬪崐閮ㄥ垎鍦嗚鑳屾櫙澶у皬*/
+.top_nav_left .tabTailCss .nhighLight .tabHeadright{height:21px; width:28px; background:url(../image/left_nav/bg_nav_left_36.jpg) no-repeat bottom; position:absolute; bottom:0px; right:0px;}/*瀹氫箟搴曢儴鏅�氱姸鎬佺殑涓嬪崐閮ㄥ垎鍦嗚鑳屾櫙澶у皬*/
+.top_nav_left .tabTailCss .highLight .tabHeadright{height:21px; width:28px; background:url(../image/left_nav/bg_nav_left_48.jpg) no-repeat bottom; position:absolute; bottom:0px; right:0px;}/*瀹氫箟搴曢儴楂樹寒鐘舵�佺殑涓嬪崐閮ㄥ垎鍦嗚鑳屾櫙澶у皬*/
+.top_nav_left .tabTailCss .upHighLight .tabHeadLeft{ height:11px; width:28px; font-size:11px; background:url(../image/left_nav/bg_nav_left_17_02.jpg) no-repeat top;}/*瀹氫箟搴曢儴鏅�氱姸鎬佷笂闈㈠渾瑙�"涓嶅甫楂樹寒閮ㄥ垎"*/
+
+/*.top_nav_left .menubg2{background:url(../image/bg_nav_left_09.jpg) repeat-y;}/*鏅�氳儗鏅�*/
+/*.top_nav_left .menubg{background:url(../image/bg_nav_left_15.jpg) repeat-y;}/*楂樹寒鑳屾櫙*/
+/*.top_nav_left .tabHeadClose{ width:28px; height:8px; font-size:8px; position:absolute; bottom:10px; right:0px; cursor:pointer; background:url(../image/pic_close.gif) no-repeat center;}/*鍏抽棴鎸夐挳*/
+.top_nav_left .tabHeadLeftScroll{display:none; height:28px; cursor:pointer; width:28px; background:url(../image/left_nav/pic_up.jpg) no-repeat center;}/*瀹氫箟澶撮儴绠ご*/
+.top_nav_left .tabHeadRightScroll{display:none; height:28px; cursor:pointer; width:28px; background:url(../image/left_nav/pic_down.jpg) no-repeat center; }/*瀹氫箟灏鹃儴绠ご*/
+/*.top_nav_left .tabHeadContainer{ width:28px;}*/
+/*.top_nav_left .tabHead .tabHeadLeft_left{ display:none;}*/
+/*.top_nav_left .tabHeadText{ margin-left:9px; cursor:pointer; overflow:hidden; padding-top:5px; }*/
+/*.top_nav_left .menubg .tabHeadText{ font-weight:bold; color:#333333;}/*瀹氫箟楂樹寒鏃剁殑瀛椾綋棰滆壊*/
+/*.top_nav_left .menubg .tabHeadright{ height:9px; width:28px; position:absolute; bottom:0px; right:0px; font-size:9px; background:url(../image/bg_nav_left_17_01.jpg) no-repeat bottom;}/*瀹氫箟澶撮儴楂樹寒鏃朵笅闈㈠渾瑙�*/
+/*.top_nav_left .tabHeadontopphoto .tabHeadright{ height:10px; width:28px; position:absolute; bottom:0px; right:0px; font-size:10px; background:url(../image/bg_nav_left_11_01.jpg) no-repeat bottom;}/*瀹氫箟澶撮儴楂樹寒鏃朵笅闈㈠渾瑙�*/
+/*.top_nav_left .menubg .tabHeadLeft{ height:6px; width:28px; font-size:6px; background:url(../image/bg_nav_left_45.jpg) no-repeat top;}/*瀹氫箟澶撮儴楂樹寒鏃朵笂闈㈠渾瑙�*/
+/*.top_nav_left .tabHeadontopphoto .tabHeadLeft{height:6px; width:28px; font-size:6px; background:url(../image/bg_nav_left_07.jpg) no-repeat top;}/*瀹氫箟澶撮儴鏅�氭椂涓婇潰鍦嗚*/
+/*.top_nav_left .tabHeadonDownphoto_md .tabHeadLeft,.top_nav_left .tabHeadonDownphoto_half .tabHeadLeft{ height:11px; width:28px; font-size:11px; background:url(../image/bg_nav_left_17_02.jpg) no-repeat top;}/*瀹氫箟涓棿鏅�氱姸鎬佷笂闈㈠渾瑙�"甯﹂珮浜儴鍒�"*/
+/*.top_nav_left .tabHeadonDownphoto_md_none .tabHeadLeft{ height:11px; width:28px; font-size:11px; background:url(../image/bg_nav_left_11_02.jpg) no-repeat top;}/*瀹氫箟涓棿鏅�氱姸鎬佷笂闈㈠渾瑙�"涓嶅甫楂樹寒閮ㄥ垎"*/
+/*.top_nav_left .tabHeadonDownphoto_md .tabHeadright,.top_nav_left .tabHeadonDownphoto_md_none .tabHeadright{ height:10px; font-size:10px; position:absolute; bottom:0px; right:0; width:28px; background:url(../image/bg_nav_left_11_01.jpg) no-repeat bottom;}/*瀹氫箟涓棿鏅�氱姸鎬佺殑涓嬪崐閮ㄥ垎鍦嗚鑳屾櫙澶у皬*/
+/*.top_nav_left .tabHeadonDownphoto_dw .tabHeadright{ height:20px; width:28px;}/*瀹氫箟涓棿楂樹寒鐘舵�佺殑涓嬪崐閮ㄥ垎鍦嗚鑳屾櫙澶у皬*/
+/*.top_nav_left .tabHeadonDownphoto .tabHeadLeft{height:11px; width:28px; font-size:11px; background:url(../image/bg_nav_left_11_02.jpg) no-repeat top;}/*瀹氫箟搴曢儴鏅�氱姸鎬佺殑涓婂崐閮ㄥ垎鍦嗚鑳屾櫙澶у皬*/
+/*.top_nav_left .tabHeadonDownphoto .tabHeadright,.top_nav_left .tabHeadonDownphoto_half .tabHeadright{height:21px; width:28px; background:url(../image/bg_nav_left_36.jpg) no-repeat bottom; position:absolute; bottom:0px; right:0px;}/*瀹氫箟搴曢儴鏅�氱姸鎬佺殑涓嬪崐閮ㄥ垎鍦嗚鑳屾櫙澶у皬*/
+/*.top_nav_left .tabHeadonDownphoto_md_half .tabHeadLeft{height:11px; width:28px; font-size:11px; background:url(../image/bg_nav_left_17_02.jpg) no-repeat top;}/*瀹氫箟涓棿鏅�氱姸鎬佺殑涓婂崐閮ㄥ垎楂樹寒鍦嗚鑳屾櫙澶у皬*/
+/*.top_nav_left .tabHeadonDownphoto_md_half .tabHeadright{ height:10px; width:28px; position:absolute; bottom:0px; right:0px; font-size:10px; background:url(../image/bg_nav_left_11_01.jpg) no-repeat bottom;}/*瀹氫箟涓棿鏅�氱姸鎬佷笅鍗婇儴鍒嗗渾瑙掕儗鏅�*/
+/*.top_nav_left .tabHeadonDownphoto_Highlight .tabHeadright{height:21px; width:28px; background:url(../image/bg_nav_left_48.jpg) no-repeat bottom; position:absolute; bottom:0px; right:0px;}/*瀹氫箟搴曢儴楂樹寒鐘舵�佺殑涓嬪崐閮ㄥ垎鍦嗚鑳屾櫙澶у皬*/
+/*.top_nav_left .tabHeadonDownphoto .tabHeadClose,.top_nav_left .tabHeadonDownphoto_Highlight .tabHeadClose,.top_nav_left .tabHeadonDownphoto_half .tabHeadClose{width:28px; height:8px; font-size:8px; position:absolute; bottom:20px; right:0px; cursor:pointer; background:url(../image/pic_close.gif) no-repeat center;}/*搴曢儴TAB鍏抽棴鎸夐挳*/
+/*.top_nav_left .tabHeadonDownphoto,.top_nav_left .tabHeadonDownphoto_Highlight,.top_nav_left .tabHeadonDownphoto_half{ height:116px;}/*搴曢儴TAB楂樺害*/
+.top_nav_left .tabHeadSlider{ height:200px;}
+.top_nav_left .tabHeaddown{ width:28px; height:32px; cursor:pointer; background:url(../image/left_nav/pic_close_out_07.jpg) no-repeat center;}/*瀹氫箟灏鹃儴鍚戝乏绠ご*/
+/*.top_nav_left .tabHeadSlider{height:400px; overflow:hidden;}
+.top_nav_left .tabHeadWraper{height:5000px; margin-top:-100px;}*/
+/*
+
+浣跨敤璇存槑--------------------------------------------------------------------------------
+椤堕儴TAB涓夌鐘舵�侊細
+1銆侀珮浜細鏍峰紡鍚嶇О涓猴紙tabHead menubg锛夈�愭敞鎰忥細杩欐槸涓や釜鏍峰紡鍚嶏紝涓棿鏈夌┖鏍笺�備笅鍚岋紝涓嶅啀璇存槑銆�
+2銆佹櫘閫氾細鏍峰紡鍚嶇О涓猴紙tabHead menubg2 tabHeadontopphoto锛�
+
+涓棿TAB鍥涚鐘舵��:
+1銆佹櫘閫氱姸鎬侊紝涓婂崐鍦嗚楂樹寒鏃讹細鏍峰紡鍚嶇О涓猴紙tabHead menubg2 tabHeadonDownphoto_md锛�
+2銆佹櫘閫氱姸鎬侊紝涓婁笅鍦嗚閮芥棤楂樹寒鏃讹細鏍峰紡鍚嶇О涓猴紙tabHead menubg2 tabHeadonDownphoto_md_none锛�
+3銆侀珮浜姸鎬侊細鏍峰紡鍚嶇О涓猴細锛坱abHead menubg锛�
+4銆佹櫘閫氱姸鎬侊紝涓嬪崐鍦嗚楂樹寒鏃讹細鏍峰紡鍚嶇О涓猴紙tabHead menubg2 tabHeadonDownphoto_md_half锛�
+搴曢儴TAB涓夌鐘舵��:
+1銆侀珮浜姸鎬侊細鏍峰紡鍚嶇О涓猴紙tabHead menubg tabHeadonDownphoto_Highlight锛�
+2銆佹櫘閫氱姸鎬侊細鏍峰紡鍚嶇О涓猴紙tabHead menubg2 tabHeadonDownphoto锛�
+3銆佹櫘閫氱姸鎬乢涓婂崐閮ㄥ垎楂樹寒锛氭牱寮忓悕绉颁负锛坱abHead menubg2 tabHeadonDownphoto_half锛�
+*/

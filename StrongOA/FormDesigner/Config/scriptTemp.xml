@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<eform version="1.0.0">
+  <properties>
+    <property name="Width">800</property>
+    <property name="Height">600</property>
+  </properties>
+  <controls>
+    <control name="Button">
+      <styles>
+        <html> <![CDATA[当控件作为html控件时的样式]]> </html>
+        <default> <![CDATA[控件创建时的样式]]> </default>
+      </styles>
+      <events>
+        <OnClick>
+          <default><![CDATA[var attId = form.%(controlName).SelectedAccID;
+var attName = form.%(controlName).SelectedAccName;
+if(attId ==""|| attName ==""){
+return false;
+}
+var attNames = attName.split('.');
+if(attNames[attNames.length-1]=='doc'||attNames[attNames.length-1]=='docx'){
+	editAttach(attId,attName);
+}else{
+	download(attId);
+}
+]]> </default>
+          <user><![CDATA[用户定义事件脚本]]> </user>
+        </OnClick>
+      </events>
+    </control>
+    <control name="AccessoryControl">
+<styles>
+        <html> <![CDATA[当控件作为html控件时的样式]]> </html>
+        <default> <![CDATA[控件创建时的样式]]> </default>
+      </styles>
+      <events>
+        <OnMouseDoubleDown>
+          <default><![CDATA[var attId = form.%(controlName).SelectedAccID;
+var attName = form.%(controlName).SelectedAccName;
+if(attId ==""|| attName ==""){
+return false;
+}
+var attNames = attName.split('.');
+if(attNames[attNames.length-1]=='doc'||attNames[attNames.length-1]=='docx'){
+	editAttach(attId,attName);
+}else{
+	download(attId);
+}
+]]> </default>
+          <user><![CDATA[用户定义事件脚本]]> </user>
+        </OnMouseDoubleDown>
+      </events>
+    </control>
+    <control name="AuditOpinion">
+      <styles>
+        <html> <![CDATA[当控件作为html控件时的样式]]> </html>
+        <default> <![CDATA[控件创建时的样式]]> </default>
+      </styles>
+      <events>
+        <OnAddOpinion>
+          <default>
+            <![CDATA[form.%(controlName).AddOpinionItem("5", "中华人民共和国江西省南昌市高新开发区火炬大街,中华人民共和国江西省南昌市",  "张三ID", "张三", "2001-01-01", "");]]>
+          </default>
+          <user><![CDATA[用户定义事件脚本]]> </user>
+        </OnAddOpinion>
+        <OnFastAddOpinion>
+          <default>
+            <![CDATA[form.%(controlName).AddOpinionItem("5", "中华人民共和国江西省南昌市高新开发区火炬大街,中华人民共和国江西省南昌市",  "张三ID", "张三", "2001-01-01", "");]]>
+          </default>
+          <user><![CDATA[用户定义事件脚本]]> </user>
+        </OnFastAddOpinion>
+      </events>
+    </control>
+  </controls>
+</eform>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- convertofficeformat="false"  -->
+<config convertofficeformat="true" >
+  <help>http://127.0.0.1:8080/FormService/FormDesigner/Help/HelpHome.html</help>
+  <assembly>  
+  	<part name="表单样式文件" path="StrongFormStyleLibrary.dll" update='2014-09-10'/>
+    <part name="表单基础控件库" path="StrongFormControlLibrary.dll" update='2014-09-10'/>
+    <part name="工作流" path="FormWorkControlLibrary.dll" update='2014-09-10'/>
+  </assembly> 
+</config>

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+    http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
+    http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-2.5.xsd
+    http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd
+    http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd"
+	default-lazy-init="true">
+
+	<!-- 定义受环境影响易变的变量 
+	<context:property-placeholder location="classpath:jdbc.properties" />
+	-->
+
+	<aop:aspectj-autoproxy />
+
+	<aop:spring-configured />
+
+	<!-- 提供对@Required,@Autowired以及JSR 250'的@Resource注解的支持 -->
+	<context:annotation-config />
+
+	<!-- 使用annotation自动注册bean,并检查@Required,@Autowired的属性已被注入 -->
+	<context:component-scan base-package="com.strongit.oa" />
+
+	<!-- 数据源配置,主要用于开发测试环境 -->
+
+	<bean id="dataSource"
+		class="org.apache.commons.dbcp.BasicDataSource" 
+		destroy-method="close"
+		p:driverClassName="oracle.jdbc.driver.OracleDriver" 
+		p:url="jdbc:oracle:thin:@192.168.2.199:1521:oracle"
+		p:username="STRONGOA2_DEV" 
+		p:password="password" />
+
+	<!-- Hibernate配置 -->
+	<bean id="sessionFactory"
+		class="com.strongmvc.ClasspathScanningAnnotationSessionFactoryBean"
+		p:dataSource-ref="dataSource">
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">
+					org.hibernate.dialect.Oracle9Dialect
+				</prop>
+				<prop key="hibernate.show_sql">
+					true
+				</prop>
+				<prop key="hibernate.generate_statistics">
+					true
+				</prop>
+			</props>
+		</property>
+		<property name="basePackages">
+			<list>
+				<value>com.strongit.oa.bo</value>
+			</list>
+		</property>
+	</bean>
+
+	<!-- 事务配置 --> 
+	<bean id="transactionManager"
+		class="org.springframework.orm.hibernate3.HibernateTransactionManager"
+		p:sessionFactory-ref="sessionFactory" />
+
+
+	<!-- 使用annotation定义事务 -->
+	<tx:annotation-driven transaction-manager="transactionManager" />
+</beans>

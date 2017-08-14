@@ -1,0 +1,1678 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+
+    <!-- ########################### -->
+    <!-- 组织机构管理 -->
+
+    <query name="OrgManager.getNextOrgCode">
+        <![CDATA[
+     select org.orgSyscode from TUumsBaseOrg as org where org.orgSyscode like :orgSyscode order by org.orgSyscode
+    ]]>
+    </query>
+
+    <query name="OrgManager.getNextSequenceCode">
+        <![CDATA[
+     select org.orgSequence from TUumsBaseOrg as org order by org.orgSequence
+    ]]>
+    </query>
+
+    <query name="OrgManager.getOrgs">
+        <![CDATA[
+     from TUumsBaseOrg as baseOrg order by baseOrg.orgSequence, baseOrg.orgSyscode
+    ]]>
+    </query>
+
+    <query name="OrgManager.getOrgs_1">
+        <![CDATA[
+     from TUumsBaseOrg as baseOrg where baseOrg.supOrgCode = :supOrgCode order by baseOrg.orgSequence, baseOrg.orgSyscode
+    ]]>
+    </query>
+
+    <query name="OrgManager.getOrgs_1_1">
+        <![CDATA[
+     from TUumsBaseOrg as baseOrg where baseOrg.supOrgCode like :supOrgCode order by baseOrg.orgSequence, baseOrg.orgSyscode
+    ]]>
+    </query>
+
+    <query name="OrgManager.getOrgs.byOrgIsdel">
+        <![CDATA[
+     from TUumsBaseOrg as baseOrg where baseOrg.orgIsdel = :orgIsdel order by baseOrg.orgSequence,baseOrg.orgSyscode
+    ]]>
+    </query>
+
+    <query name="OrgManager.getOrgs.byOrgIsdel_1">
+        <![CDATA[
+     from TUumsBaseOrg as baseOrg where baseOrg.orgIsdel = :orgIsdel and baseOrg.supOrgCode = :supOrgCode order by baseOrg.orgSequence,baseOrg.orgSyscode
+    ]]>
+    </query>
+
+    <query name="OrgManager.getOrgs.byOrgIsdel_1_1">
+        <![CDATA[
+     from TUumsBaseOrg as baseOrg where baseOrg.orgIsdel = :orgIsdel and baseOrg.supOrgCode like :supOrgCode order by baseOrg.orgSequence,baseOrg.orgSyscode
+    ]]>
+    </query>
+
+    <query name="OrgManager.getOrgIds.byOrgIsdel">
+        <![CDATA[
+     select baseOrg.orgId from TUumsBaseOrg as baseOrg where baseOrg.orgIsdel = :orgIsdel
+    ]]>
+    </query>
+
+    <query name="OrgManager.getOrgIds.byOrgIsdel_1">
+        <![CDATA[
+     select baseOrg.orgId from TUumsBaseOrg as baseOrg where baseOrg.orgIsdel = :orgIsdel and baseOrg.supOrgCode = :supOrgCode
+    ]]>
+    </query>
+
+    <query name="OrgManager.getOrgIds.byOrgIsdel_1_1">
+        <![CDATA[
+     select baseOrg.orgId from TUumsBaseOrg as baseOrg where baseOrg.orgIsdel = :orgIsdel and baseOrg.supOrgCode like :supOrgCode
+    ]]>
+    </query>
+
+    <query name="OrgManager.getOrg.byOrgId">
+        <![CDATA[
+     from TUumsBaseOrg as baseOrg where baseOrg.orgId = :orgId order by baseOrg.orgSequence,baseOrg.orgSyscode
+    ]]>
+    </query>
+
+    <query name="OrgManager.deleteUserPostInfo.getUserByOrgId">
+        <![CDATA[
+     select baseUser.userId from TUumsBaseUser as baseUser where baseUser.orgIds like :orgIds order by baseUser.userId
+    ]]>
+    </query>
+
+    <query name="OrgManager.deleteUserPostInfo.byUserIdandPostId">
+        <![CDATA[
+     from TUumsBasePostUser as postUser where postUser.userId = :userId and postUser.basePost.postId = :postId
+    ]]>
+    </query>
+
+    <query name="OrgManager.saveOrgPost.getPostByOrgId">
+        <![CDATA[
+     from TUumsBasePostOrg as postOrg where postOrg.orgId = :orgId
+    ]]>
+    </query>
+
+    <query name="OrgManager.deleteOrg.getUserByOrg">
+        <![CDATA[
+     from TUumsBaseUser as baseUser where baseUser.orgIds like :orgIds order by baseUser.userSequence, baseUser.userSyscode
+    ]]>
+    </query>
+    
+    <query name="OrgManager.deleteOrg.getNotDelUserByOrg">
+        <![CDATA[
+     from TUumsBaseUser as baseUser where baseUser.orgIds like :orgIds and baseUser.userIsdel = :userIsdel order by baseUser.userSequence, baseUser.userSyscode
+    ]]>
+    </query>
+
+    <query name="OrgManager.moveOrgPositionInTree.up">
+        <![CDATA[
+     select baseOrg.orgSyscode from TUumsBaseOrg as baseOrg where baseOrg.orgIsdel like :orgIsdel and baseOrg.orgSequence <= :orgSequence and baseOrg.orgSyscode like :orgSyscode order by baseOrg.orgSequence, baseOrg.orgSyscode
+    ]]>
+    </query>
+
+    <query name="OrgManager.moveOrgPositionInTree.up_1">
+        <![CDATA[
+     select baseOrg.orgSyscode from TUumsBaseOrg as baseOrg where baseOrg.orgIsdel like :orgIsdel and baseOrg.orgSequence <= :orgSequence and baseOrg.orgSyscode like :orgSyscode and baseOrg.supOrgCode = :supOrgCode order by baseOrg.orgSequence, baseOrg.orgSyscode
+    ]]>
+    </query>
+
+    <query name="OrgManager.moveOrgPositionInTree.up_1_1">
+        <![CDATA[
+     select baseOrg.orgSyscode from TUumsBaseOrg as baseOrg where baseOrg.orgIsdel like :orgIsdel and baseOrg.orgSequence <= :orgSequence and baseOrg.orgSyscode like :orgSyscode and baseOrg.supOrgCode like :supOrgCode order by baseOrg.orgSequence, baseOrg.orgSyscode
+    ]]>
+    </query>
+
+    <query name="OrgManager.moveOrgPositionInTree.down">
+        <![CDATA[
+      select baseOrg.orgSyscode from TUumsBaseOrg as baseOrg where baseOrg.orgIsdel like :orgIsdel and baseOrg.orgSequence >= :orgSequence and baseOrg.orgSyscode like :orgSyscode order by baseOrg.orgSequence, baseOrg.orgSyscode
+    ]]>
+    </query>
+
+    <query name="OrgManager.moveOrgPositionInTree.down_1">
+        <![CDATA[
+      select baseOrg.orgSyscode from TUumsBaseOrg as baseOrg where baseOrg.orgIsdel like :orgIsdel and baseOrg.orgSequence >= :orgSequence and baseOrg.orgSyscode like :orgSyscode and baseOrg.supOrgCode = :supOrgCode order by baseOrg.orgSequence, baseOrg.orgSyscode
+    ]]>
+    </query>
+
+    <query name="OrgManager.moveOrgPositionInTree.down_1_1">
+        <![CDATA[
+      select baseOrg.orgSyscode from TUumsBaseOrg as baseOrg where baseOrg.orgIsdel like :orgIsdel and baseOrg.orgSequence >= :orgSequence and baseOrg.orgSyscode like :orgSyscode and baseOrg.supOrgCode like :supOrgCode order by baseOrg.orgSequence, baseOrg.orgSyscode
+    ]]>
+    </query>
+
+    <query name="OrgManager.getChildOrgsByOrgSyscode">
+        <![CDATA[
+     from TUumsBaseOrg t where t.orgSyscode like :orgSyscode and t.orgIsdel like :orgIsdel order by t.orgSequence, t.orgSyscode
+    ]]>
+    </query>
+
+    <query name="OrgManager.getChildOrgsByOrgSyscode_1">
+        <![CDATA[
+     from TUumsBaseOrg t where t.orgSyscode like :orgSyscode and t.orgIsdel like :orgIsdel and t.supOrgCode = :supOrgCode order by t.orgSequence, t.orgSyscode
+    ]]>
+    </query>
+
+    <query name="OrgManager.getChildOrgsByOrgSyscode_1_1">
+        <![CDATA[
+     from TUumsBaseOrg t where t.orgSyscode like :orgSyscode and t.orgIsdel like :orgIsdel and t.supOrgCode like :supOrgCode order by t.orgSequence, t.orgSyscode
+    ]]>
+    </query>
+
+    <query name="OrgManager.getSelfAndChildOrgsByOrgSyscodeAndType">
+        <![CDATA[
+     from TUumsBaseOrg t where t.orgSyscode like :orgSyscode and t.isOrg like :isOrg and t.orgIsdel like :orgIsdel order by t.orgSequence, t.orgSyscode
+    ]]>
+    </query>
+
+    <query name="OrgManager.getSelfAndChildOrgsByOrgSyscodeAndType_1">
+        <![CDATA[
+     from TUumsBaseOrg t where t.orgSyscode like :orgSyscode and t.isOrg like :isOrg and t.orgIsdel like :orgIsdel and t.supOrgCode = :supOrgCode order by t.orgSequence, t.orgSyscode
+    ]]>
+    </query>
+
+    <query name="OrgManager.getSelfAndChildOrgsByOrgSyscodeAndType_1_1">
+        <![CDATA[
+     from TUumsBaseOrg t where t.orgSyscode like :orgSyscode and t.isOrg like :isOrg and t.orgIsdel like :orgIsdel and t.supOrgCode like :supOrgCode order by t.orgSequence, t.orgSyscode
+    ]]>
+    </query>
+
+    <query name="OrgManager.getOrgByOrgSyscode">
+        <![CDATA[
+     from TUumsBaseOrg as baseOrg where baseOrg.orgSyscode like :orgSyscode and baseOrg.orgIsdel like :orgIsdel order by baseOrg.orgSequence, baseOrg.orgSyscode
+    ]]>
+    </query>
+
+    <query name="OrgManager.getOrgByOrgSyscode_1">
+        <![CDATA[
+     from TUumsBaseOrg as baseOrg where baseOrg.orgSyscode like :orgSyscode and baseOrg.orgIsdel like :orgIsdel and baseOrg.supOrgCode = :supOrgCode order by baseOrg.orgSequence, baseOrg.orgSyscode
+    ]]>
+    </query>
+
+    <query name="OrgManager.getOrgByOrgSyscode_1_1">
+        <![CDATA[
+     from TUumsBaseOrg as baseOrg where baseOrg.orgSyscode like :orgSyscode and baseOrg.orgIsdel like :orgIsdel and baseOrg.supOrgCode like :supOrgCode order by baseOrg.orgSequence, baseOrg.orgSyscode
+    ]]>
+    </query>
+
+    <query name="OrgManager.checkParentIsExist">
+        <![CDATA[
+     from TUumsBaseOrg t where t.orgSyscode like :orgSyscode and t.orgId != :orgId
+    ]]>
+    </query>
+
+    <query name="OrgManager.getOrgByName">
+        <![CDATA[
+     from TUumsBaseOrg t where t.orgName like :orgName and t.orgIsdel like :orgIsdel order by t.orgSequence, t.orgSyscode
+    ]]>
+    </query>
+
+    <query name="OrgManager.userSearch.getOrgByName">
+        <![CDATA[
+     from TUumsBaseOrg t where t.orgName like :orgName and t.orgIsdel = '0' order by t.orgSequence, t.orgSyscode
+    ]]>
+    </query>
+
+    <query name="OrgManager.userSearch.getOrgByName_1">
+        <![CDATA[
+     from TUumsBaseOrg t where t.orgName like :orgName and t.supOrgCode = :supOrgCode and t.orgIsdel = '0' order by t.orgSequence, t.orgSyscode
+    ]]>
+    </query>
+
+    <query name="OrgManager.userSearch.getOrgByName_1_1">
+        <![CDATA[
+     from TUumsBaseOrg t where t.orgName like :orgName and t.supOrgCode like :supOrgCode and t.orgIsdel = '0' order by t.orgSequence, t.orgSyscode
+    ]]>
+    </query>
+
+    <query name="OrgManager.getOrgByRest1">
+        <![CDATA[
+     from TUumsBaseOrg as baseOrg where baseOrg.rest1 like :rest1 and baseOrg.orgIsdel like :orgIsdel order by baseOrg.orgSequence, baseOrg.orgSyscode
+    ]]>
+    </query>
+
+    <!-- huzw -->
+    <!--2013-08-09 wencp:兼容LDAP 不考虑用户是否删除或激活  在查询的结果中控制查询逻辑（考虑用户是否删除或启用状态）-->
+    <query name="OrgManager.userSearch.getOrgUsersByOrgId">
+        <![CDATA[
+     from TUumsBaseOrgUser as baseOrgUser where baseOrgUser.orgId = :orgId
+    ]]>
+    </query>
+    <!-- huzw -->
+    <query name="OrgManager.baseOrgSearch.getbaseOrgByOrgId">
+        <![CDATA[
+     from TUumsBaseSupOrg as baseOrg where baseOrg.orgId = :orgId
+    ]]>
+    </query>
+
+    <!--2013-08-21 wencp:根据组织机构ID集合 批量查询组织机构信息-->
+    <query name="OrgManager.baseOrgSearch.getOrgsByOrgIds">
+        <![CDATA[
+         from TUumsBaseOrg as baseOrg where baseOrg.orgId in (:orgIdLst)
+        ]]>
+    </query>
+
+    <!-- huzw -->
+    <!--2013-08-27 wencp：废弃该查询-->
+    <!--<query name="OrgManager.baseOrgSearch.getbaseRoleByOrgId">
+        <![CDATA[
+     from TUumsBaseRole as baseRole where baseRole.TUumsBaseSupOrg.orgSyscode = :orgSyscode 
+    ]]>
+    </query>-->
+
+    <!-- huzw -->
+    <query name="OrgManager.userSearch.getOrgUsersByUserId">
+        <![CDATA[
+     from TUumsBaseOrgUser as baseOrgUser where baseOrgUser.userId = :userId 
+    ]]>
+    </query>
+
+    <!-- ########################### -->
+    <!-- 人员管理 -->
+    <query name="UserManager.getUserByLoginName">
+        <![CDATA[
+     from TUumsBaseUser as baseUser where baseUser.userLoginname = :userLoginname order by baseUser.userSequence, baseUser.userSyscode
+    ]]>
+    </query>
+
+    <query name="UserManager.getUserByUserId">
+        <![CDATA[
+     from TUumsBaseUser as baseUser where baseUser.userId = :userId order by baseUser.userSequence, baseUser.userSyscode
+    ]]>
+    </query>
+
+    <query name="UserManager.getNextUserCode">
+        <![CDATA[
+     select baseUser.userSyscode from TUumsBaseUser as baseUser where baseUser.userSyscode like :userSyscode order by baseUser.userSyscode
+    ]]>
+    </query>
+
+    <query name="UserManager.getUserBySyscode">
+        <![CDATA[
+     from TUumsBaseUser as baseUser where baseUser.userSyscode like :userSyscode order by baseUser.userSequence, baseUser.userSyscode
+    ]]>
+    </query>
+
+    <query name="UserManager.getUsers">
+        <![CDATA[
+     from TUumsBaseUser as baseUser where baseUser.isOrgDel like :isOrgDel
+    ]]>
+    </query>
+
+    <query name="UserManager.getUsers_1">
+        <![CDATA[
+     from TUumsBaseUser as baseUser where baseUser.isOrgDel = :isOrgDel and baseUser.supOrgCode like :supOrgCode
+    ]]>
+    </query>
+
+    <query name="UserManager.getUsers_1_1">
+        <![CDATA[
+     from TUumsBaseUser as baseUser where baseUser.isOrgDel = :isOrgDel and baseUser.supOrgCode like :supOrgCode
+    ]]>
+    </query>
+
+    <query name="UserManager.getUsers.isActive">
+        <![CDATA[
+     from TUumsBaseUser as baseUser where baseUser.isOrgDel = :isOrgDel and baseUser.userIsactive = :isactive
+    ]]>
+    </query>
+
+    <query name="UserManager.getUsers.isActive_1">
+        <![CDATA[
+     from TUumsBaseUser as baseUser where baseUser.isOrgDel = :isOrgDel and baseUser.userIsactive = :isactive and baseUser.supOrgCode like :supOrgCode
+    ]]>
+    </query>
+
+    <query name="UserManager.getUsers.isActive_1_1">
+        <![CDATA[
+     from TUumsBaseUser as baseUser where baseUser.isOrgDel = :isOrgDel and baseUser.userIsactive = :isactive and baseUser.supOrgCode like :supOrgCode
+    ]]>
+    </query>
+
+    <query name="UserManager.getUsers.isDel">
+        <![CDATA[
+     from TUumsBaseUser as baseUser where baseUser.isOrgDel = :isOrgDel and baseUser.userIsdel = :isdel
+    ]]>
+    </query>
+
+    <query name="UserManager.getUsers.isDel_1">
+        <![CDATA[
+     from TUumsBaseUser as baseUser where baseUser.isOrgDel = :isOrgDel and baseUser.userIsdel = :isdel and baseUser.supOrgCode like :supOrgCode
+    ]]>
+    </query>
+
+    <query name="UserManager.getUsers.isDel_1_1">
+        <![CDATA[
+     from TUumsBaseUser as baseUser where baseUser.isOrgDel = :isOrgDel and baseUser.userIsdel = :isdel and baseUser.supOrgCode like :supOrgCode
+    ]]>
+    </query>
+
+    <!-- 修改人：喻斌；修改时间：2013-07-15 -->
+    <!-- 增加用户所属应用系统的过滤条件 -->
+    <!-- 修改增加按照排序号排序	caidw -->
+    <query name="UserManager.getUsers.isActiveAndisDel">
+        <![CDATA[
+     from TUumsBaseUser as baseUser where baseUser.isOrgDel = :isOrgDel and baseUser.userIsactive like :isactive and baseUser.userIsdel like :isdel and baseUser.userSystemCodes like :systemCodes order by baseUser.userSequence
+    ]]>
+        <!-- <![CDATA[
+         from TUumsBaseUser as baseUser where baseUser.isOrgDel = :isOrgDel and baseUser.userIsactive = :isactive and baseUser.userIsdel = :isdel
+        ]]> -->
+    </query>
+
+    <!-- 修改人：喻斌；修改时间：2013-07-15 -->
+    <!-- 增加用户所属应用系统的过滤条件 -->
+    <query name="UserManager.getUsers.isActiveAndisDel_1">
+        <![CDATA[
+     from TUumsBaseUser as baseUser where baseUser.isOrgDel = :isOrgDel and baseUser.userIsactive like :isactive and baseUser.userIsdel like :isdel and baseUser.userSystemCodes like :systemCodes and baseUser.supOrgCode like :supOrgCode order by baseUser.userSequence
+    ]]>
+        <!-- <![CDATA[
+         from TUumsBaseUser as baseUser where baseUser.isOrgDel = :isOrgDel and baseUser.userIsactive = :isactive and baseUser.userIsdel = :isdel and baseUser.supOrgCode like :supOrgCode
+        ]]> -->
+    </query>
+
+    <!-- 修改人：喻斌；修改时间：2013-07-15 -->
+    <!-- 增加用户所属应用系统的过滤条件 -->
+    <query name="UserManager.getUsers.isActiveAndisDel_1_1">
+        <![CDATA[
+     from TUumsBaseUser as baseUser where baseUser.isOrgDel = :isOrgDel and baseUser.userIsactive like :isactive and baseUser.userIsdel like :isdel and baseUser.userSystemCodes like :systemCodes and baseUser.supOrgCode like :supOrgCode order by baseUser.userSequence
+    ]]>
+        <!-- <![CDATA[
+         from TUumsBaseUser as baseUser where baseUser.isOrgDel = :isOrgDel and baseUser.userIsactive = :isactive and baseUser.userIsdel = :isdel and baseUser.supOrgCode like :supOrgCode
+        ]]> -->
+    </query>
+
+    <query name="UserManager.getUserIds.isActiveAndisDel">
+        <![CDATA[
+     select baseUser.userId from TUumsBaseUser as baseUser where baseUser.orgId in (:orgids) and baseUser.userIsactive = :isactive and baseUser.userIsdel = :isdel
+    ]]>
+    </query>
+
+    <!-- 修改人：喻斌；修改时间：2013-07-15 -->
+    <!-- 增加用户所属应用系统的过滤条件 -->
+    <query name="UserManager.getqueryOrgUsers">
+        <![CDATA[
+     from TUumsBaseUser as baseUser where baseUser.orgIds like :orgIds and baseUser.userName like :userName and baseUser.userLoginname like :userLoginname and baseUser.userIsdel like :userIsdel and baseUser.userIsactive like :userIsactive and baseUser.userSystemCodes like :userSystemCodes order by baseUser.userSequence, baseUser.userSyscode
+    ]]>
+        <!-- <![CDATA[
+         from TUumsBaseUser as baseUser where baseUser.orgIds like :orgIds and baseUser.userName like :userName and baseUser.userLoginname like :userLoginname and baseUser.userIsdel like :userIsdel and baseUser.userIsactive like :userIsactive order by baseUser.userSequence, baseUser.userSyscode
+        ]]> -->
+    </query>
+
+    <!-- 修改人：喻斌；修改时间：2013-07-15 -->
+    <!-- 增加用户所属应用系统的过滤条件 -->
+    <query name="UserManager.getAllusers">
+        <![CDATA[
+     from TUumsBaseUser as baseUser where baseUser.isOrgDel like :isOrgDel and baseUser.userName like :name and baseUser.userLoginname like :loginname and baseUser.userIsdel like :isdel and baseUser.userIsactive like :isactive and baseUser.userSystemCodes like :systemCodes order by baseUser.userSequence, baseUser.userSyscode
+    ]]>
+        <!-- <![CDATA[
+         from TUumsBaseUser as baseUser where baseUser.isOrgDel = :isOrgDel and baseUser.userName like :name and baseUser.userLoginname like :loginname and baseUser.userIsdel like :isdel and baseUser.userIsactive like :isactive order by baseUser.userSequence, baseUser.userSyscode
+        ]]> -->
+    </query>
+
+    <!-- 修改人：喻斌；修改时间：2013-07-15 -->
+    <!-- 增加用户所属应用系统的过滤条件 -->
+    <query name="UserManager.getAllusers_1">
+        <![CDATA[
+     from TUumsBaseUser as baseUser where baseUser.isOrgDel like :isOrgDel and baseUser.userName like :name and baseUser.userLoginname like :loginname and baseUser.userIsdel like :isdel and baseUser.userIsactive like :isactive and baseUser.userSystemCodes like :systemCodes and baseUser.supOrgCode like :supOrgCode order by baseUser.userSequence, baseUser.userSyscode
+    ]]>
+        <!-- <![CDATA[
+         from TUumsBaseUser as baseUser where baseUser.isOrgDel = :isOrgDel and baseUser.userName like :name and baseUser.userLoginname like :loginname and baseUser.userIsdel like :isdel and baseUser.userIsactive like :isactive and baseUser.supOrgCode like :supOrgCode order by baseUser.userSequence, baseUser.userSyscode
+        ]]> -->
+    </query>
+
+    <!-- 修改人：喻斌；修改时间：2013-07-15 -->
+    <!-- 增加用户所属应用系统的过滤条件 -->
+    <query name="UserManager.getAllusers_1_1">
+        <![CDATA[
+     from TUumsBaseUser as baseUser where baseUser.isOrgDel like :isOrgDel and baseUser.userName like :name and baseUser.userLoginname like :loginname and baseUser.userIsdel like :isdel and baseUser.userIsactive like :isactive and baseUser.userSystemCodes like :systemCodes and baseUser.supOrgCode like :supOrgCode order by baseUser.userSequence, baseUser.userSyscode
+    ]]>
+        <!-- <![CDATA[
+         from TUumsBaseUser as baseUser where baseUser.isOrgDel = :isOrgDel and baseUser.userName like :name and baseUser.userLoginname like :loginname and baseUser.userIsdel like :isdel and baseUser.userIsactive like :isactive and baseUser.supOrgCode like :supOrgCode order by baseUser.userSequence, baseUser.userSyscode
+        ]]> -->
+    </query>
+
+    <!-- 修改人：喻斌；修改时间：2013-07-15 -->
+    <!-- 增加用户所属应用系统的过滤条件 -->
+    <query name="UserManager.getAllqueryusers">
+        <![CDATA[
+     from TUumsBaseUser as baseUser where exists(select orguser.orgUserId from TUumsBaseOrgUser as orguser where orguser.orgLadpId in (:orgids) and orguser.userId = baseUser.userId ) and baseUser.userName like :name and baseUser.userLoginname like :loginname and baseUser.userIsdel like :isdel and baseUser.userIsactive like :isactive and baseUser.userSystemCodes like :systemCodes order by baseUser.userSequence, baseUser.userSyscode
+    ]]>
+        <!-- <![CDATA[
+         from TUumsBaseUser as baseUser where exists(select orguser.orgUserId from TUumsBaseOrgUser as orguser where orguser.orgLadpId in (:orgids) and orguser.userId = baseUser.userId ) and baseUser.userName like :name and baseUser.userLoginname like :loginname and baseUser.userIsdel like :isdel and baseUser.userIsactive like :isactive order by baseUser.userSequence, baseUser.userSyscode
+        ]]> -->
+    </query>
+
+    <query name="UserManager.saveSystemAdminInfo">
+        <![CDATA[
+     from TUumsBaseSysmanager as sysmanager where sysmanager.userId = :userId and sysmanager.baseSystem.sysIsactive like :sysIsactive order by sysmanager.baseSystem.sysSequence
+    ]]>
+    </query>
+
+    <query name="UserManager.changeUsersOrg">
+        <![CDATA[
+     select postOrg.basePost from TUumsBasePostOrg as postOrg where postOrg.orgId = :orgId
+    ]]>
+    </query>
+
+    <query name="UserManager.getUserPost">
+        <![CDATA[
+     from TUumsBasePostUser as postUser where postUser.userId = :userId
+    ]]>
+    </query>
+
+    <query name="UserManager.getUserPrivil">
+        <![CDATA[
+     from TUumsBaseUserPrivil userPrivil where userPrivil.userId = :userId
+    ]]>
+    </query>
+
+    <query name="UserManager.getUserPrivilRelationByUserIds">
+        <![CDATA[
+     from TUumsBaseUserPrivil userPrivil where userPrivil.userId in (:userIds) and userPrivil.basePrivil.privilIsactive like :privilIsactive order by userPrivil.basePrivil.privilSequence
+    ]]>
+    </query>
+
+    <query name="UserManager.getUserIdByPostId">
+        <![CDATA[
+     select distinct basePostUser.userId from TUumsBasePostUser as basePostUser where basePostUser.basePost.postId = :postId
+    ]]>
+    </query>
+
+    <!-- 修改人：喻斌；修改时间：2013-07-15 -->
+    <!-- 增加用户所属应用系统的过滤条件 -->
+    <query name="UserManager.getUserByInUserId">
+        <![CDATA[
+     from TUumsBaseUser as baseUser where baseUser.isOrgDel = :isOrgDel and baseUser.userId in (:userids) and baseUser.userIsactive like :isactive and baseUser.userIsdel like :isdel and baseUser.userSystemCodes like :systemCodes order by baseUser.userSequence
+    ]]>
+    </query>
+
+    <!-- 修改人：喻斌；修改时间：2013-07-15 -->
+    <!-- 增加用户所属应用系统的过滤条件 -->
+    <query name="UserManager.getUserByInUserId_1">
+        <![CDATA[
+     from TUumsBaseUser as baseUser where baseUser.isOrgDel = :isOrgDel and baseUser.userId in (:userids) and baseUser.userIsactive like :isactive and baseUser.userIsdel like :isdel and baseUser.userSystemCodes like :systemCodes and baseUser.supOrgCode like :supOrgCode order by baseUser.userSequence
+    ]]>
+    </query>
+
+    <!-- 修改人：喻斌；修改时间：2013-07-15 -->
+    <!-- 增加用户所属应用系统的过滤条件 -->
+    <query name="UserManager.getUserByInUserId_1_1">
+        <![CDATA[
+     from TUumsBaseUser as baseUser where baseUser.isOrgDel = :isOrgDel and baseUser.userId in (:userids) and baseUser.userIsactive like :isactive and baseUser.userIsdel like :isdel and baseUser.userSystemCodes like :systemCodes and baseUser.supOrgCode like :supOrgCode order by baseUser.userSequence
+    ]]>
+    </query>
+
+    <!-- 修改人：喻斌；修改时间：2013-07-15 -->
+    <!-- 增加用户所属应用系统的过滤条件 -->
+    <query name="UserManager.getUserByInUserIdAndOrgId">
+        <![CDATA[
+     from TUumsBaseUser as baseUser where baseUser.userId in (:userids) and baseUser.userIsactive like :isactive and baseUser.userIsdel like :isdel and baseUser.orgIds like :orgId and baseUser.userSystemCodes like :systemCodes order by baseUser.userSequence
+    ]]>
+        <!-- <![CDATA[
+         from TUumsBaseUser as baseUser where baseUser.userId in (:userids) and baseUser.userIsactive like :isactive and baseUser.userIsdel like :isdel and baseUser.orgIds like :orgId order by baseUser.userSequence
+        ]]> -->
+    </query>
+
+    <query name="UserManager.getUserByPostIdAndOrgId">
+        <![CDATA[
+     select distinct basePostUser.userId from TUumsBasePostUser as basePostUser where basePostUser.orgId = :orgId and basePostUser.basePost.postId = :postId    ]]>
+    </query>
+
+    <query name="UserManager.getNextSequenceCode">
+        <![CDATA[
+     select baseUser.userSequence from TUumsBaseUser as baseUser order by baseUser.userSequence
+    ]]>
+    </query>
+
+    <!-- 修改人：喻斌；修改时间：2013-07-15 -->
+    <!-- 因为增加对单点登录功能的支持，人员在应用系统下的权限等级信息通过TUumsBaseUser.userSystemCodes来获取，查询语句作废 -->
+    <!-- <query name="UserManager.checkUserIsManager">
+      <![CDATA[
+       from TUumsBaseSysmanager as sysManager where sysManager.userId = :userId
+      ]]>
+    </query> -->
+
+    <query name="UserManager.checkUserName">
+        <![CDATA[
+     from TUumsBaseUser as baseUser where baseUser.userLoginname like :userLoginname order by baseUser.userSequence, baseUser.userSyscode
+    ]]>
+    </query>
+
+    <query name="UserManager.getUserInfoByUsbkey">
+        <![CDATA[
+     from TUumsBaseUser as baseUser where baseUser.userUsbkey like :userUsbkey order by baseUser.userSequence, baseUser.userSyscode
+    ]]>
+    </query>
+
+    <!-- 修改人：喻斌；修改时间：2013-07-15 -->
+    <!-- 增加用户所属应用系统的过滤条件 -->
+    <query name="UserManager.getUserInfoByOrgId">
+        <![CDATA[
+     from TUumsBaseUser as baseUser where baseUser.orgIds like :orgIds and baseUser.userIsactive like :userIsactive and baseUser.userIsdel like :userIsdel and baseUser.userSystemCodes like :userSystemCodes order by baseUser.userSequence, baseUser.userSyscode
+    ]]>
+        <!-- <![CDATA[
+         from TUumsBaseUser as baseUser where baseUser.orgIds like :orgIds and baseUser.userIsactive like :userIsactive and baseUser.userIsdel like :userIsdel order by baseUser.userSequence, baseUser.userSyscode
+        ]]> -->
+    </query>
+
+    <!-- huzw -->
+    <query name="UserManager.getUserInfosByOrgId">
+        <![CDATA[
+     from TUumsBaseUser as baseUser where baseUser.orgIds like :orgIds and baseUser.userIsactive like :userIsactive and baseUser.userIsdel like :userIsdel order by baseUser.userSequence, baseUser.userSyscode
+    ]]>
+    </query>
+
+    <!-- huzw -->
+    <query name="UserManager.getUserPrivilByOrgId">
+        <![CDATA[
+     from TUumsBaseUserPrivil userPrivil where userPrivil.userId = :userId and userPrivil.orgId = :orgId
+    ]]>
+    </query>
+
+    <!-- wencp 2012-08-09 -->
+    <query name="UserManager.getUserInfosByDelOrgIds">
+        <![CDATA[
+     from TUumsBaseUser as baseUser where baseUser.delOrgIds like :delOrgIds order by baseUser.userSequence, baseUser.userSyscode
+    ]]>
+    </query>
+
+    <query name="UserManager.getUserSystemRelationByUserIds">
+        <![CDATA[
+     from TUumsBaseSysmanager as sysmanager where sysmanager.userId in (:userIds) and sysmanager.baseSystem.sysIsactive like :sysIsactive order by sysmanager.baseSystem.sysSequence
+    ]]>
+    </query>
+
+    <!-- 修改人：喻斌；修改时间：2013-07-15 -->
+    <!-- 因为增加对单点登录功能的支持，人员在应用系统下的权限等级信息通过TUumsBaseUser.userSystemCodes来获取 -->
+    <query name="UserManager.getUserIdsBySysId">
+        <![CDATA[
+     select baseUser.userId from TUumsBaseUser as baseUser where baseUser.userSystemCodes like :userSystemCodes
+    ]]>
+    </query>
+
+    <!--2013-08-16 wencp：根据用户ID集合查找组织机构用户关联信息 -->
+    <query name="UserManager.getOrgUsersByUserIds">
+        <![CDATA[
+        from TUumsBaseOrgUser as orgUser where orgUser.userId in (:userIds)
+        ]]>
+    </query>
+
+    <!--2013-08-19 wencp：根据用户ID集合批量查询用户信息 -->
+    <query name="UserManager.getUsersByUserIds">
+        <![CDATA[
+        from TUumsBaseUser as user where user.userId in (:userIdLst)
+        ]]>
+    </query>
+
+
+    <!-- ########################### -->
+    <!-- 岗位管理 -->
+    <query name="PostManager.getPostById">
+        <![CDATA[
+     from TUumsBasePost as basePost where basePost.postId = :postId order by basePost.postSequence, basePost.postId
+    ]]>
+    </query>
+
+    <query name="PostManager.getPosts">
+        <![CDATA[
+     from TUumsBasePost as basePost order by basePost.postSequence, basePost.postId
+    ]]>
+    </query>
+
+    <query name="PostManager.getPostByIds">
+        <![CDATA[
+     from TUumsBasePost as basePost where basePost.postId in (:ids) order by basePost.postSequence, basePost.postId
+    ]]>
+    </query>
+
+    <query name="PostManager.getOrgPostInfoByOrgIds">
+        <![CDATA[
+     select postOrg.basePost.postId, postOrg.basePost.postName, postOrg.orgId, postOrg.basePost.postSequence from TUumsBasePostOrg as postOrg where postOrg.orgId in (:ids) order by postOrg.basePost.postSequence
+    ]]>
+    </query>
+
+    <query name="PostManager.getquerywholepost">
+        <![CDATA[
+     from TUumsBasePost as basePost where basePost.postName like :postName and basePost.postDescription like :postDescription order by basePost.postSequence, basePost.postId
+    ]]>
+    </query>
+
+    <query name="PostManager.getquerywholepostWithoutDescript">
+        <![CDATA[
+     from TUumsBasePost as basePost where basePost.postName like :postName order by basePost.postSequence, basePost.postId
+    ]]>
+    </query>
+
+    <query name="PostManager.getPostByUserId">
+        <![CDATA[
+     select postUser.basePost from TUumsBasePostUser as postUser where postUser.userId = :userId order by postUser.basePost.postSequence, postUser.basePost.postId
+    ]]>
+    </query>
+
+    <!--2013-08-20 wencp:根据用户ID批量查询岗位-->
+    <query name="PostManager.getPostsByUserIds">
+        <![CDATA[
+     select postUser.basePost from TUumsBasePostUser as postUser where postUser.userId in (:userIdLst) order by postUser.basePost.postSequence, postUser.basePost.postId
+    ]]>
+    </query>
+
+    <query name="PostManager.getPostByUserIdAndOrgId">
+        <![CDATA[
+     select postUser from TUumsBasePostUser as postUser where postUser.userId = :userId and postUser.orgId in (:orgIds) order by postUser.basePost.postSequence
+    ]]>
+    </query>
+
+    <query name="PostManager.getAllOrgPostInfo">
+        <![CDATA[
+     select postOrg.basePost from TUumsBasePostOrg as postOrg where postOrg.orgId in (:ids) order by postOrg.basePost.postSequence, postOrg.basePost.postId
+    ]]>
+    </query>
+
+    <query name="PostManager.getNextSequenceCode">
+        <![CDATA[
+     select basePost.postSequence from TUumsBasePost as basePost order by basePost.postSequence
+    ]]>
+    </query>
+
+    <query name="PostManager.getPostInfoByOrgId">
+        <![CDATA[
+     select postOrg.basePost from TUumsBasePostOrg as postOrg where postOrg.orgId = :orgId order by postOrg.basePost.postSequence
+    ]]>
+    </query>
+
+    <query name="PostManager.getPostInfoByOrgIds">
+        <![CDATA[
+     select postOrg from TUumsBasePostOrg as postOrg where postOrg.orgId in (:orgIds) order by postOrg.basePost.postSequence
+    ]]>
+    </query>
+
+    <!-- 2013-08-09 wencp：根据岗位ID查找组织机构岗位信息-->
+    <query name="PostManager.getPostOrgsBypostId">
+        <![CDATA[
+     select postOrg from TUumsBasePostOrg as postOrg where postOrg.basePost.postId  = :postId
+    ]]>
+    </query>
+
+    <query name="PostManager.getUserPostInfosByOrgId">
+        <![CDATA[
+     select postUser from TUumsBasePostUser as postUser where postUser.orgId = :orgId
+    ]]>
+    </query>
+
+    <!--2013-08-13 wencp:根据组织机构ID集合查询岗位用户关联信息-->
+    <query name="PostManager.getPostUsersByOrgIds">
+        <![CDATA[
+       select postUser from TUumsBasePostUser as postUser where postUser.orgId in (:orgIdList)
+      ]]>
+    </query>
+
+    <!--2013-08-19 wencp:根据组织机构ID集合查询岗位岗位联信息-->
+    <query name="PostManager.getPostOrgsByOrgIds">
+        <![CDATA[
+       select postOrg from TUumsBasePostOrg as postOrg where postOrg.orgId in (:orgIdList)
+      ]]>
+    </query>
+
+
+
+    <!--2013-08-12 wencp: 根据是否是全局岗位属性查找所有全局岗位信息-->
+    <query name="PostManager.getPostInfosByOverall">
+        <![CDATA[
+         select post from TUumsBasePost as post where post.postIsoverall = :postIsoverall
+        ]]>
+    </query>
+
+
+    <!-- ########################### -->
+    <!-- 角色管理 -->
+    <query name="RoleManager.getNextSequence">
+        <![CDATA[
+     select baseRole.roleSequence from TUumsBaseRole as baseRole order by baseRole.roleSequence
+    ]]>
+    </query>
+
+    <query name="RoleManager.getRoleById">
+        <![CDATA[
+     from TUumsBaseRole as baseRole where baseRole.roleId = :roleId
+    ]]>
+    </query>
+
+    <query name="RoleManager.getRoleByCode">
+        <![CDATA[
+     from TUumsBaseRole as baseRole where baseRole.roleSyscode = :roleSyscode
+    ]]>
+    </query>
+
+    <query name="RoleManager.getRolePrivils">
+        <![CDATA[
+     select basePrivil from TUumsBaseRolePrivil as rolePrivil join rolePrivil.baseRole as baseRole join rolePrivil.basePrivil as basePrivil where baseRole.roleId = :roleId and basePrivil.privilIsactive like :privilIsactive order by basePrivil.privilSequence,basePrivil.privilSyscode
+    ]]>
+    </query>
+
+    <query name="RoleManager.getRoleUserIds">
+        <![CDATA[
+     select roleUser.userId from TUumsBaseRoleUser as roleUser where roleUser.baseRole.roleId = :roleId
+    ]]>
+    </query>
+
+
+    <!--2013-08-27 wencp：注释该记录-->
+    <!--<query name="RoleManager.getRoleUserIds_1">
+        <![CDATA[
+     select roleUser.userId from TUumsBaseRoleUser as roleUser where roleUser.baseRole.roleId = :roleId and roleUser.baseRole.TUumsBaseSupOrg.orgSyscode = :orgSyscode and roleUser.baseRole.TUumsBaseSupOrg.orgIsdel = '0'
+    ]]>
+    </query>-->
+
+    <query name="RoleManager.getRoles">
+        <![CDATA[
+     from TUumsBaseRole t where t.roleSyscode like :roleSyscode and t.roleName like :roleName and t.roleIsactive like :roleIsactive and t.roleDescription like :roleDescription order by t.roleSequence, t.roleSyscode
+    ]]>
+    </query>
+
+    <!--2013-08-27 wencp:角色直接管理组织机构ID 不再关联所属组织机构-->
+    <query name="RoleManager.getRoles_1">
+        <![CDATA[
+     from TUumsBaseRole t where t.roleSyscode like :roleSyscode and t.roleName like :roleName and t.roleIsactive like :roleIsactive and t.roleDescription like :roleDescription and t.orgId in (:orgId) order by t.roleSequence, t.roleSyscode
+    ]]>
+    </query>
+    <!--2013-08-27 wencp:角色直接管理组织机构ID 不再关联所属组织机构-->
+    <query name="RoleManager.getRoles_1_1">
+        <![CDATA[
+     from TUumsBaseRole t where t.roleSyscode like :roleSyscode and t.roleName like :roleName and t.roleIsactive like :roleIsactive and t.roleDescription like :roleDescription and t.orgId in (:orgId) order by t.roleSequence, t.roleSyscode
+    ]]>
+    </query>
+
+    <query name="RoleManager.getRolesWithoutDesc">
+        <![CDATA[
+     from TUumsBaseRole t where t.roleSyscode like :roleSyscode and t.roleName like :roleName and t.roleIsactive like :roleIsactive order by t.roleSequence, t.roleSyscode
+    ]]>
+    </query>
+    <!--2013-08-27 wencp:角色直接管理组织机构ID 不再关联所属组织机构-->
+    <query name="RoleManager.getRolesWithoutDesc_1">
+        <![CDATA[
+     from TUumsBaseRole t where t.roleSyscode like :roleSyscode and t.roleName like :roleName and t.roleIsactive like :roleIsactive and t.orgId in (:orgId) order by t.roleSequence, t.roleSyscode
+    ]]>
+    </query>
+    <!--2013-08-27 wencp:角色直接管理组织机构ID 不再关联所属组织机构-->
+    <query name="RoleManager.getRolesWithoutDesc_1_1">
+        <![CDATA[
+     from TUumsBaseRole t where t.roleSyscode like :roleSyscode and t.roleName like :roleName and t.roleIsactive like :roleIsactive and t.orgId in (:orgId) order by t.roleSequence, t.roleSyscode
+    ]]>
+    </query>
+
+    <query name="RoleManager.getRolePrivilRelation">
+        <![CDATA[
+     from TUumsBaseRolePrivil rolePrivil where rolePrivil.baseRole.roleId = :roleId
+    ]]>
+    </query>
+
+    <query name="RoleManager.getRoleUsersRelation">
+        <![CDATA[
+     from TUumsBaseRoleUser roleUser where roleUser.baseRole.roleId = :roleId
+    ]]>
+    </query>
+    <!--2013-08-27 wencp:角色直接管理组织机构ID 不再关联所属组织机构-->
+    <query name="RoleManager.getRoleUsersRelation_1">
+        <![CDATA[
+     from TUumsBaseRoleUser roleUser where roleUser.baseRole.roleId = :roleId and roleUser.baseRole.orgId in (:orgId)
+    ]]>
+    </query>
+    <!--2013-08-27 wencp:角色直接管理组织机构ID 不再关联所属组织机构-->
+    <query name="RoleManager.getRoleUsersRelation_1_1">
+        <![CDATA[
+     from TUumsBaseRoleUser roleUser where roleUser.baseRole.roleId = :roleId and roleUser.baseRole.orgId in (:orgId)
+    ]]>
+    </query>
+
+    <query name="RoleManager.getRolesByUserId">
+        <![CDATA[
+     select roleUser.baseRole from TUumsBaseRoleUser roleUser where roleUser.userId = :userId and roleUser.baseRole.roleIsactive like :roleIsactive order by roleUser.baseRole.roleSequence, roleUser.baseRole.roleSyscode
+    ]]>
+    </query>
+    <!--2013-08-27 wencp:角色直接管理组织机构ID 不再关联所属组织机构-->
+    <query name="RoleManager.getRolesByUserId_1">
+        <![CDATA[
+     select roleUser.baseRole from TUumsBaseRoleUser roleUser where roleUser.userId = :userId and roleUser.baseRole.roleIsactive like :roleIsactive and roleUser.baseRole.orgId in (:orgId) order by roleUser.baseRole.roleSequence, roleUser.baseRole.roleSyscode
+    ]]>
+    </query>
+    <!--2013-08-27 wencp:角色直接管理组织机构ID 不再关联所属组织机构-->
+    <query name="RoleManager.getRolesByUserId_1_1">
+        <![CDATA[
+     select roleUser.baseRole from TUumsBaseRoleUser roleUser where roleUser.userId = :userId and roleUser.baseRole.roleIsactive like :roleIsactive and roleUser.baseRole.orgId in (:orgId) order by roleUser.baseRole.roleSequence, roleUser.baseRole.roleSyscode
+    ]]>
+    </query>
+
+    <query name="RoleManager.getRoleUsersRelationByUserId">
+        <![CDATA[
+     select roleUser from TUumsBaseRoleUser roleUser where roleUser.userId = :userId and roleUser.baseRole.roleIsactive like :roleIsactive order by roleUser.baseRole.roleSequence, roleUser.baseRole.roleSyscode
+    ]]>
+    </query>
+
+    <query name="RoleManager.getRoleUsersRelationByUserIds">
+        <![CDATA[
+     select roleUser from TUumsBaseRoleUser roleUser where roleUser.userId in (:userIds) and roleUser.baseRole.roleIsactive like :roleIsactive order by roleUser.baseRole.roleSequence, roleUser.baseRole.roleSyscode
+    ]]>
+    </query>
+    <!--2013-08-27 wencp:角色直接管理组织机构ID 不再关联所属组织机构-->
+    <query name="RoleManager.getRoleUsersRelationByUserId_1">
+        <![CDATA[
+     select roleUser from TUumsBaseRoleUser roleUser where roleUser.userId = :userId and roleUser.baseRole.roleIsactive like :roleIsactive and roleUser.baseRole.orgId in (:orgId) order by roleUser.baseRole.roleSequence, roleUser.baseRole.roleSyscode
+    ]]>
+    </query>
+    <!--2013-08-27 wencp:角色直接管理组织机构ID 不再关联所属组织机构-->
+    <query name="RoleManager.getRoleUsersRelationByUserId_1_1">
+        <![CDATA[
+     select roleUser from TUumsBaseRoleUser roleUser where roleUser.userId=:userId and roleUser.baseRole.roleIsactive like :roleIsactive and roleUser.baseRole.orgId in (:orgId) order by roleUser.baseRole.roleSequence, roleUser.baseRole.roleSyscode
+    ]]>
+    </query>
+
+    <query name="RoleManager.getRoleUsersRelationByOrgId">
+        <![CDATA[
+     select roleUser from TUumsBaseRoleUser roleUser where roleUser.orgId = :orgId
+    ]]>
+    </query>
+
+    <!-- huzw-->
+    <!--2013-08-27 wencp：废弃该查询-->
+    <!--<query name="RoleManager.getRolesByBaseOrgId">
+        <![CDATA[
+     from TUumsBaseRole role where role.TUumsBaseSupOrg.id=?
+    ]]>
+    </query> -->
+
+   <!--2013-08-27 wencp:根据组织机构ID获取角色信息-->
+   <query name="RoleManager.getRolesByOrgId">
+        <![CDATA[
+         from TUumsBaseRole role where role.orgId = :orgId
+        ]]>
+   </query>
+
+    <query name="RoleManager.getRolesByOrgIds">
+        <![CDATA[
+         from TUumsBaseRole role where role.orgId in (:orgIdLst)
+        ]]>
+    </query>
+
+    <query name="RoleManager.getUserRole">
+        <![CDATA[
+     from TUumsBaseRoleUser roleUser where roleUser.userId = :userId
+    ]]>
+    </query>
+    <!--2013-08-27 wencp:角色直接管理组织机构ID 不再关联所属组织机构-->
+    <query name="RoleManager.getUserRole_1">
+        <![CDATA[
+     from TUumsBaseRoleUser roleUser where roleUser.userId = :userId and roleUser.baseRole.orgId in (orgId)
+    ]]>
+    </query>
+    <!--2013-08-27 wencp:角色直接管理组织机构ID 不再关联所属组织机构-->
+    <query name="RoleManager.getUserRole_1_1">
+        <![CDATA[
+     from TUumsBaseRoleUser roleUser where roleUser.userId = :userId and roleUser.baseRole.orgId in (orgId)
+    ]]>
+    </query>
+
+    <!-- huzw -->
+    <query name="RoleManager.getUserRoleByOrgId">
+        <![CDATA[
+     from TUumsBaseRoleUser roleUser where roleUser.userId = :userId and roleUser.orgId = :orgId
+    ]]>
+    </query>
+
+
+    <!-- ########################### -->
+    <!-- 资源权限管理 -->
+    <query name="PrivilManager.getPrivilById">
+        <![CDATA[
+     from TUumsBasePrivil basePrivil where basePrivil.privilId = :privilId
+    ]]>
+    </query>
+
+    <query name="PrivilManager.getPrivilByCode">
+        <![CDATA[
+     from TUumsBasePrivil t where t.privilSyscode like :privilSyscode order by t.privilSequence,t.privilSyscode
+    ]]>
+    </query>
+
+    <query name="PrivilManager.getNextCode">
+        <![CDATA[
+     select privil.privilSyscode from TUumsBasePrivil as privil where privil.privilSyscode like :privilSyscode order by privil.privilSyscode
+    ]]>
+    </query>
+
+    <query name="PrivilManager.getPrivils">
+        <![CDATA[
+     from TUumsBasePrivil as privil where privil.privilIsactive like :privilIsactive order by privil.privilSequence,privil.privilSyscode
+    ]]>
+    </query>
+
+    <query name="PrivilManager.getPrivilsBySystemAndPrivilcode">
+        <![CDATA[
+     from TUumsBasePrivil as privil where privil.basePrivilType.baseSystem.sysId like :sysId and privil.privilSyscode like :privilSyscode and privil.privilIsactive like :privilIsactive order by privil.privilSequence,privil.privilSyscode
+    ]]>
+    </query>
+
+    <!-- 修改人：喻斌；修改时间：2013-07-15 -->
+    <!-- 因为增加对单点登录功能的支持，人员在应用系统下的权限等级信息通过TUumsBaseUser.userSystemCodes来获取，故修改权限查询方式 -->
+    <query name="PrivilManager.getSystemManagerPrivils">
+        <!-- <![CDATA[
+         select basePrivils from TUumsBaseSystem as baseSystem join baseSystem.basePrivilTypes as basePrivilTypes join basePrivilTypes.basePrivils as basePrivils join baseSystem.baseSysmanagers as baseSysmanagers where baseSysmanagers.smUserType=? and baseSysmanagers.userId = :userId and basePrivils.privilIsactive like :privilIsactive order by basePrivils.privilSequence,basePrivils.privilSyscode
+        ]]> -->
+        <![CDATA[
+     select privil from TUumsBasePrivil as privil where privil.basePrivilType.baseSystem.sysSyscode in (:systemCodes) and privil.privilIsactive like :isPrivilActive and privil.privilSyscode like :privilCodeMode order by privil.privilSequence, privil.privilSyscode
+    ]]>
+    </query>
+
+    <!-- 修改人：喻斌；修改时间：2013-07-15 -->
+    <!-- 因为增加对单点登录功能的支持，人员在应用系统下的权限等级信息通过TUumsBaseUser.userSystemCodes来获取，查询语句作废 -->
+    <!-- <query name="PrivilManager.getSystemManagerPrivilsBySystemAndPrivilcode">
+      <![CDATA[
+       select basePrivils from TUumsBaseSystem as baseSystem join baseSystem.basePrivilTypes as basePrivilTypes join basePrivilTypes.basePrivils as basePrivils join baseSystem.baseSysmanagers as baseSysmanagers where baseSystem.sysSyscode like :sysSyscode and baseSysmanagers.smUserType=? and baseSysmanagers.userId = :userId and basePrivils.privilIsactive like :privilIsactive and basePrivils.privilSyscode like :privilSyscode order by basePrivils.privilSequence,basePrivils.privilSyscode
+      ]]>
+    </query> -->
+
+    <!-- 修改人：喻斌；修改时间：2013-07-15 -->
+    <!-- 因为增加对单点登录功能的支持，人员在应用系统下的权限等级信息通过TUumsBaseUser.userSystemCodes来获取，查询语句作废 -->
+    <!-- <query name="PrivilManager.getSystemManagerPrivilsByPrivilcode">
+        <![CDATA[
+         select basePrivils from TUumsBaseSystem as baseSystem join baseSystem.basePrivilTypes as basePrivilTypes join basePrivilTypes.basePrivils as basePrivils join baseSystem.baseSysmanagers as baseSysmanagers where baseSysmanagers.smUserType=? and baseSysmanagers.userId = :userId and basePrivils.privilIsactive like :privilIsactive and basePrivils.privilSyscode like :privilSyscode order by basePrivils.privilSequence,basePrivils.privilSyscode
+        ]]>
+    </query> -->
+
+    <query name="PrivilManager.getUserPrivils">
+        <![CDATA[
+     select baseUserPrivil.basePrivil from TUumsBaseUserPrivil as baseUserPrivil where baseUserPrivil.userId = :userId and baseUserPrivil.basePrivil.privilIsactive like :privilIsactive order by baseUserPrivil.basePrivil.privilSequence,baseUserPrivil.basePrivil.privilSyscode
+    ]]>
+    </query>
+
+    <!-- 修改人：喻斌；修改时间：2013-07-15 -->
+    <!-- 因为增加对单点登录功能的支持，人员在应用系统下的权限等级信息通过TUumsBaseUser.userSystemCodes来获取，故修改权限查询方式 -->
+    <query name="PrivilManager.getManagerUserPrivilsBySystemAndPrivilcode">
+        <!-- <![CDATA[
+         select baseUserPrivil.basePrivil from TUumsBaseUserPrivil as baseUserPrivil, TUumsBaseSysmanager as sysManager where baseUserPrivil.userId = :userId and sysManager.userId=baseUserPrivil.userId and sysManager.baseSystem.sysSyscode=? and sysManager.smUserType=? and baseUserPrivil.basePrivil.basePrivilType.baseSystem.sysSyscode=sysManager.baseSystem.sysSyscode and baseUserPrivil.basePrivil.privilSyscode like :privilSyscode and baseUserPrivil.basePrivil.privilIsactive like :privilIsactive order by baseUserPrivil.basePrivil.privilSequence,baseUserPrivil.basePrivil.privilSyscode
+        ]]> -->
+        <![CDATA[
+     select baseUserPrivil.basePrivil from TUumsBaseUserPrivil as baseUserPrivil where baseUserPrivil.basePrivil.basePrivilType.baseSystem.sysSyscode in (:systemCodes) and baseUserPrivil.basePrivil.privilSyscode like :privilSysCode and baseUserPrivil.basePrivil.privilIsactive like :isPrivilActive order by baseUserPrivil.basePrivil.privilSequence,baseUserPrivil.basePrivil.privilSyscode
+    ]]>
+    </query>
+
+    <!-- 修改人：喻斌；修改时间：2013-07-15 -->
+    <!-- 通过调用getAdminPrivilInfosByUserAndPrivilAndSystem()接口实现，查询语句作废 -->
+    <!-- <query name="PrivilManager.getManagerUserPrivilsByPrivilcode">
+      <![CDATA[
+       select baseUserPrivil.basePrivil from TUumsBaseUserPrivil as baseUserPrivil, TUumsBaseSysmanager as sysManager where baseUserPrivil.userId = :userId and sysManager.userId=baseUserPrivil.userId and sysManager.smUserType=? and baseUserPrivil.basePrivil.basePrivilType.baseSystem.sysSyscode=sysManager.baseSystem.sysSyscode and baseUserPrivil.basePrivil.privilSyscode like :privilSyscode and baseUserPrivil.basePrivil.privilIsactive like :privilIsactive order by baseUserPrivil.basePrivil.privilSequence,baseUserPrivil.basePrivil.privilSyscode
+      ]]>
+    </query> -->
+
+    <!-- 修改人：喻斌；修改时间：2013-07-15 -->
+    <!-- 因为增加对单点登录功能的支持，人员在应用系统下的权限等级信息通过TUumsBaseUser.userSystemCodes来获取，查询语句作废 -->
+    <!-- <query name="PrivilManager.getManagerUserPrivils">
+      <![CDATA[
+       select baseUserPrivil.basePrivil from TUumsBaseSysmanager as baseSysmanager,TUumsBaseUserPrivil as baseUserPrivil where baseSysmanager.userId=baseUserPrivil.userId and baseSysmanager.smUserType=? and baseSysmanager.userId = :userId and baseUserPrivil.basePrivil.privilIsactive like :privilIsactive order by baseUserPrivil.basePrivil.privilSequence,baseUserPrivil.basePrivil.privilSyscode
+      ]]>
+    </query> -->
+
+    <query name="PrivilManager.getRolePrivils">
+        <![CDATA[
+     select baseRolePrivil.basePrivil from TUumsBaseRoleUser as baseRoleUser,TUumsBaseRolePrivil as baseRolePrivil where baseRoleUser.baseRole.roleIsactive like :roleIsactive and baseRoleUser.baseRole.roleId=baseRolePrivil.baseRole.roleId and baseRoleUser.userId = :userId and baseRolePrivil.basePrivil.privilIsactive like :privilIsactive order by baseRolePrivil.basePrivil.privilSequence,baseRolePrivil.basePrivil.privilSyscode
+    ]]>
+    </query>
+
+    <!-- 修改人：喻斌；修改时间：2013-07-15 -->
+    <!-- 因为增加对单点登录功能的支持，人员在应用系统下的权限等级信息通过TUumsBaseUser.userSystemCodes来获取，故修改权限查询方式 -->
+    <query name="PrivilManager.getManagerRolePrivilsBySystemAndPrivilcode">
+        <!-- <![CDATA[
+         select baseRolePrivil.basePrivil from TUumsBaseRoleUser as baseRoleUser,TUumsBaseRolePrivil as baseRolePrivil,TUumsBaseSysmanager as sysManager where baseRoleUser.userId = :userId and baseRoleUser.baseRole.roleIsactive like :roleIsactive and baseRolePrivil.baseRole.roleId=baseRoleUser.baseRole.roleId and sysManager.userId=baseRoleUser.userId and sysManager.baseSystem.sysSyscode=? and sysManager.smUserType=? and baseRolePrivil.basePrivil.basePrivilType.baseSystem.sysSyscode=sysManager.baseSystem.sysSyscode and baseRolePrivil.basePrivil.privilSyscode like :privilSyscode and baseRolePrivil.basePrivil.privilIsactive like :privilIsactive order by baseRolePrivil.basePrivil.privilSequence,baseRolePrivil.basePrivil.privilSyscode
+        ]]> -->
+        <![CDATA[
+     select baseRolePrivil.basePrivil from TUumsBaseRoleUser as baseRoleUser,TUumsBaseRolePrivil as baseRolePrivil where baseRoleUser.userId=:userId and baseRoleUser.baseRole.roleIsactive like :isRoleActive and baseRolePrivil.baseRole.roleId=baseRoleUser.baseRole.roleId and baseRolePrivil.basePrivil.basePrivilType.baseSystem.sysSyscode in (:systemCodes) and baseRolePrivil.basePrivil.privilSyscode like :privilCodeMode and baseRolePrivil.basePrivil.privilIsactive like :isPrivilActive order by baseRolePrivil.basePrivil.privilSequence,baseRolePrivil.basePrivil.privilSyscode
+    ]]>
+    </query>
+
+    <!-- 修改人：喻斌；修改时间：2013-07-15 -->
+    <!-- 因为增加对单点登录功能的支持，人员在应用系统下的权限等级信息通过TUumsBaseUser.userSystemCodes来获取，查询语句作废 -->
+    <!-- <query name="PrivilManager.getManagerRolePrivilsByPrivilcode">
+      <![CDATA[
+       select baseRolePrivil.basePrivil from TUumsBaseRoleUser as baseRoleUser,TUumsBaseRolePrivil as baseRolePrivil,TUumsBaseSysmanager as sysManager where baseRoleUser.userId = :userId and baseRoleUser.baseRole.roleIsactive like :roleIsactive and baseRolePrivil.baseRole.roleId=baseRoleUser.baseRole.roleId and sysManager.userId=baseRoleUser.userId and sysManager.smUserType=? and baseRolePrivil.basePrivil.basePrivilType.baseSystem.sysSyscode=sysManager.baseSystem.sysSyscode and baseRolePrivil.basePrivil.privilSyscode like :privilSyscode and baseRolePrivil.basePrivil.privilIsactive like :privilIsactive order by baseRolePrivil.basePrivil.privilSequence,baseRolePrivil.basePrivil.privilSyscode
+      ]]>
+    </query> -->
+
+    <!-- 修改人：喻斌；修改时间：2013-07-15 -->
+    <!-- 因为增加对单点登录功能的支持，人员在应用系统下的权限等级信息通过TUumsBaseUser.userSystemCodes来获取，查询语句作废 -->
+    <!-- <query name="PrivilManager.getManagerRolePrivils">
+      <![CDATA[
+       select baseRolePrivil.basePrivil from TUumsBaseRoleUser as baseRoleUser,TUumsBaseSysmanager as baseSysmanager,TUumsBaseRolePrivil as baseRolePrivil where baseSysmanager.userId=baseRoleUser.userId and baseRoleUser.baseRole.roleId=baseRolePrivil.baseRole.roleId and baseSysmanager.smUserType=? and baseRoleUser.baseRole.roleIsactive like :roleIsactive and baseSysmanager.userId = :userId and baseRolePrivil.basePrivil.privilIsactive like :privilIsactive order by baseRolePrivil.basePrivil.privilSequence,baseRolePrivil.basePrivil.privilSyscode
+      ]]>
+    </query> -->
+
+    <query name="PrivilManager.getGroupPrivils">
+        <![CDATA[
+     select baseGroupPrivil.basePrivil from TUumsBaseGroupUser as baseGroupUser,TUumsBaseGroupPrivil as baseGroupPrivil where baseGroupUser.baseGroup.groupIsactive like :groupIsactive and  baseGroupUser.baseGroup.groupId=baseGroupPrivil.baseGroup.groupId and baseGroupUser.userId = :userId and baseGroupPrivil.basePrivil.privilIsactive like :privilIsactive order by baseGroupPrivil.basePrivil.privilSequence, baseGroupPrivil.basePrivil.privilSyscode
+    ]]>
+    </query>
+
+    <!-- 修改人：喻斌；修改时间：2013-07-15 -->
+    <!-- 因为增加对单点登录功能的支持，人员在应用系统下的权限等级信息通过TUumsBaseUser.userSystemCodes来获取，故修改权限查询方式 -->
+    <query name="PrivilManager.getManagerGroupPrivilsBySystemAndPrivilcode">
+        <!-- <![CDATA[
+         select baseGroupPrivil.basePrivil from TUumsBaseGroupUser as baseGroupUser,TUumsBaseGroupPrivil as baseGroupPrivil,TUumsBaseSysmanager as sysManager where baseGroupUser.userId = :userId and baseGroupUser.baseGroup.groupIsactive like :groupIsactive and baseGroupPrivil.baseGroup.groupId=baseGroupUser.baseGroup.groupId and sysManager.userId=baseGroupUser.userId and sysManager.baseSystem.sysSyscode=? and sysManager.smUserType=? and baseGroupPrivil.basePrivil.basePrivilType.baseSystem.sysSyscode=sysManager.baseSystem.sysSyscode and baseGroupPrivil.basePrivil.privilSyscode like :privilSyscode and baseGroupPrivil.basePrivil.privilIsactive like :privilIsactive order by baseGroupPrivil.basePrivil.privilSequence, baseGroupPrivil.basePrivil.privilSyscode
+        ]]> -->
+        <![CDATA[
+     select baseGroupPrivil.basePrivil from TUumsBaseGroupUser as baseGroupUser,TUumsBaseGroupPrivil as baseGroupPrivil where baseGroupUser.userId=:userId and baseGroupUser.baseGroup.groupIsactive like :isGroupActive and baseGroupPrivil.baseGroup.groupId=baseGroupUser.baseGroup.groupId and baseGroupPrivil.basePrivil.basePrivilType.baseSystem.sysSyscode in (:systemCodes) and baseGroupPrivil.basePrivil.privilSyscode like :privilCodeMode and baseGroupPrivil.basePrivil.privilIsactive like :isPrivilActive order by baseGroupPrivil.basePrivil.privilSequence, baseGroupPrivil.basePrivil.privilSyscode
+    ]]>
+    </query>
+
+    <!-- 修改人：喻斌；修改时间：2013-07-15 -->
+    <!-- 因为增加对单点登录功能的支持，人员在应用系统下的权限等级信息通过TUumsBaseUser.userSystemCodes来获取，查询语句作废 -->
+    <!-- <query name="PrivilManager.getManagerGroupPrivilsByPrivilcode">
+      <![CDATA[
+       select baseGroupPrivil.basePrivil from TUumsBaseGroupUser as baseGroupUser,TUumsBaseGroupPrivil as baseGroupPrivil,TUumsBaseSysmanager as sysManager where baseGroupUser.userId = :userId and baseGroupUser.baseGroup.groupIsactive like :groupIsactive and baseGroupPrivil.baseGroup.groupId=baseGroupUser.baseGroup.groupId and sysManager.userId=baseGroupUser.userId and sysManager.smUserType=? and baseGroupPrivil.basePrivil.basePrivilType.baseSystem.sysSyscode=sysManager.baseSystem.sysSyscode and baseGroupPrivil.basePrivil.privilSyscode like :privilSyscode and baseGroupPrivil.basePrivil.privilIsactive like :privilIsactive order by baseGroupPrivil.basePrivil.privilSequence, baseGroupPrivil.basePrivil.privilSyscode
+      ]]>
+    </query> -->
+
+    <!-- 修改人：喻斌；修改时间：2013-07-15 -->
+    <!-- 因为增加对单点登录功能的支持，人员在应用系统下的权限等级信息通过TUumsBaseUser.userSystemCodes来获取，查询语句作废 -->
+    <!-- <query name="PrivilManager.getManagerGroupPrivils">
+      <![CDATA[
+       select baseGroupPrivil.basePrivil from TUumsBaseGroupUser as baseGroupUser,TUumsBaseSysmanager as baseSysmanager,TUumsBaseGroupPrivil as baseGroupPrivil where baseSysmanager.userId=baseGroupUser.userId and baseGroupUser.baseGroup.groupId=baseGroupPrivil.baseGroup.groupId and baseSysmanager.smUserType=? and baseGroupUser.baseGroup.groupIsactive like :groupIsactive and baseSysmanager.userId = :userId and baseGroupPrivil.basePrivil.privilIsactive like :privilIsactive order by baseGroupPrivil.basePrivil.privilSequence, baseGroupPrivil.basePrivil.privilSyscode
+      ]]>
+    </query> -->
+
+    <query name="PrivilManager.movePrivilInTree.up">
+        <![CDATA[
+     select basePrivil.privilSyscode from TUumsBasePrivil as basePrivil where basePrivil.basePrivilType.baseSystem.sysId = :sysId and basePrivil.privilSequence <= :privilSequence and basePrivil.privilSyscode like :privilSyscode order by basePrivil.privilSequence, basePrivil.privilSyscode
+    ]]>
+    </query>
+
+    <query name="PrivilManager.movePrivilInTree.down">
+        <![CDATA[
+     select basePrivil.privilSyscode from TUumsBasePrivil as basePrivil where basePrivil.basePrivilType.baseSystem.sysId = :sysId and basePrivil.privilSequence >= :privilSequence and basePrivil.privilSyscode like :privilSyscode order by basePrivil.privilSequence, basePrivil.privilSyscode
+    ]]>
+    </query>
+
+    <query name="PrivilManager.movePrivilInTypeTree.up">
+        <![CDATA[
+     select basePrivil.privilSyscode from TUumsBasePrivil as basePrivil where basePrivil.basePrivilType.typeId = :typeId and basePrivil.privilSequence <= :privilSequence and basePrivil.privilSyscode like :privilSyscode order by basePrivil.privilSequence, basePrivil.privilSyscode
+    ]]>
+    </query>
+
+    <query name="PrivilManager.movePrivilInTypeTree.down">
+        <![CDATA[
+     select basePrivil.privilSyscode from TUumsBasePrivil as basePrivil where basePrivil.basePrivilType.typeId = :typeId and basePrivil.privilSequence >= :privilSequence and basePrivil.privilSyscode like :privilSyscode order by basePrivil.privilSequence, basePrivil.privilSyscode
+    ]]>
+    </query>
+
+    <query name="PrivilManager.getNextSequence">
+        <![CDATA[
+     select basePrivil.privilSequence from TUumsBasePrivil as basePrivil order by basePrivil.privilSequence
+    ]]>
+    </query>
+
+    <query name="PrivilManager.checkParentIsExist">
+        <![CDATA[
+     from TUumsBasePrivil t where t.privilSyscode like :privilSyscode and t.privilId != :privilId order by t.privilSequence,t.privilSyscode
+    ]]>
+    </query>
+
+    <query name="PrivilManager.getPrivilByCodeAndSystem">
+        <![CDATA[
+     from TUumsBasePrivil t where t.privilSyscode like :privilSyscode and t.basePrivilType.baseSystem.sysSyscode = :sysSyscode and t.privilIsactive like :privilIsactive order by t.privilSequence,t.privilSyscode
+    ]]>
+    </query>
+
+    <query name="PrivilManager.getPrivilsByPrivilCode">
+        <![CDATA[
+     from TUumsBasePrivil t where t.privilSyscode like :privilSyscode and t.privilIsactive like :privilIsactive order by t.privilSequence,t.privilSyscode
+    ]]>
+    </query>
+
+    <query name="PrivilManager.getPrivilsWithDelegation">
+        <![CDATA[
+     from TUumsBasePrivil as privil where privil.basePrivilType.baseSystem.sysId like :sysId and privil.privilSyscode like :privilSyscode and privil.privilIsactive like :privilIsactive and privil.privilId not in (select a.basePrivil.privilId from TUumsBaseAbrolePrivil a where a.TUumsBaseAbrole.abroleSrcUserid = :abroleSrcUserid and a.TUumsBaseAbrole.abroleEndTime > :abroleEndTime and a.TUumsBaseAbrole.abroleEnabled !='0' and a.TUumsBaseAbrole.abroleId != :abroleId) order by privil.privilSequence,privil.privilSyscode
+    ]]>
+    </query>
+
+    <!-- 修改人：喻斌；修改时间：2013-07-15 -->
+    <!-- 因为增加对单点登录功能的支持，人员在应用系统下的权限等级信息通过TUumsBaseUser.userSystemCodes来获取，故修改权限查询方式 -->
+    <query name="PrivilManager.getSystemManagerPrivilsWithDelegation">
+        <!-- <![CDATA[
+         select basePrivils from TUumsBaseSystem as baseSystem join baseSystem.basePrivilTypes as basePrivilTypes join basePrivilTypes.basePrivils as basePrivils join baseSystem.baseSysmanagers as baseSysmanagers where baseSystem.sysId like :sysId and baseSysmanagers.smUserType=? and baseSysmanagers.userId = :userId and basePrivils.privilSyscode like :privilSyscode and basePrivils.privilIsactive like :privilIsactive and basePrivils.privilId not in (select a.basePrivil.privilId from TUumsBaseAbrolePrivil a where a.TUumsBaseAbrole.abroleSrcUserid = :abroleSrcUserid and a.TUumsBaseAbrole.abroleEndTime > :abroleEndTime and a.TUumsBaseAbrole.abroleEnabled !='0' and a.TUumsBaseAbrole.abroleId != :abroleId) order by basePrivils.privilSequence,basePrivils.privilSyscode
+        ]]> -->
+        <![CDATA[
+     select privil from TUumsBasePrivil as privil where privil.basePrivilType.baseSystem.sysSyscode in (:systemCodes) and privil.privilIsactive like :isPrivilActive and privil.privilSyscode like :privilCodeMode and privil.privilId not in (select a.basePrivil.privilId from TUumsBaseAbrolePrivil a where a.TUumsBaseAbrole.abroleSrcUserid = :abroleSrcUserid and a.TUumsBaseAbrole.abroleEndTime > :abroleEndTime and a.TUumsBaseAbrole.abroleEnabled !='0' and a.TUumsBaseAbrole.abroleId != :aborleId) order by privil.privilSequence, privil.privilSyscode
+    ]]>
+    </query>
+
+    <query name="PrivilManager.getUserPrivilsWithDelegation">
+        <![CDATA[
+     select baseUserPrivil.basePrivil from TUumsBaseUserPrivil as baseUserPrivil where baseUserPrivil.userId = :userId and baseUserPrivil.basePrivil.basePrivilType.baseSystem.sysId like :sysId and baseUserPrivil.basePrivil.privilSyscode like :privilSyscode and baseUserPrivil.basePrivil.privilIsactive like :privilIsactive and baseUserPrivil.basePrivil.privilId not in (select a.basePrivil.privilId from TUumsBaseAbrolePrivil a where a.TUumsBaseAbrole.abroleSrcUserid = :abroleSrcUserid and a.TUumsBaseAbrole.abroleEndTime > :abroleEndTime and a.TUumsBaseAbrole.abroleEnabled !='0' and a.TUumsBaseAbrole.abroleId != :abroleId) order by baseUserPrivil.basePrivil.privilSequence,baseUserPrivil.basePrivil.privilSyscode
+    ]]>
+    </query>
+
+    <query name="PrivilManager.getRolePrivilsWithDelegation">
+        <![CDATA[
+     select baseRolePrivil.basePrivil from TUumsBaseRoleUser as baseRoleUser,TUumsBaseRolePrivil as baseRolePrivil where baseRoleUser.baseRole.roleIsactive like :roleIsactive and baseRoleUser.baseRole.roleId=baseRolePrivil.baseRole.roleId and baseRoleUser.userId = :userId and baseRolePrivil.basePrivil.basePrivilType.baseSystem.sysId like :sysId and baseRolePrivil.basePrivil.privilSyscode like :privilSyscode and baseRolePrivil.basePrivil.privilIsactive like :privilIsactive and baseRolePrivil.basePrivil.privilId not in (select a.basePrivil.privilId from TUumsBaseAbrolePrivil a where a.TUumsBaseAbrole.abroleSrcUserid = :abroleSrcUserid and a.TUumsBaseAbrole.abroleEndTime > :abroleEndTime and a.TUumsBaseAbrole.abroleEnabled !='0' and a.TUumsBaseAbrole.abroleId != :abroleId) order by baseRolePrivil.basePrivil.privilSequence,baseRolePrivil.basePrivil.privilSyscode
+    ]]>
+    </query>
+
+    <query name="PrivilManager.getGroupPrivilsWithDelegation">
+        <![CDATA[
+     select baseGroupPrivil.basePrivil from TUumsBaseGroupUser as baseGroupUser,TUumsBaseGroupPrivil as baseGroupPrivil where baseGroupUser.baseGroup.groupIsactive like :groupIsactive and  baseGroupUser.baseGroup.groupId=baseGroupPrivil.baseGroup.groupId and baseGroupUser.userId = :userId and baseGroupPrivil.basePrivil.basePrivilType.baseSystem.sysId like :sysId and baseGroupPrivil.basePrivil.privilSyscode like :privilSyscode and baseGroupPrivil.basePrivil.privilIsactive like :privilIsactive and baseGroupPrivil.basePrivil.privilId not in (select a.basePrivil.privilId from TUumsBaseAbrolePrivil a where a.TUumsBaseAbrole.abroleSrcUserid = :abroleSrcUserid and a.TUumsBaseAbrole.abroleEndTime > :abroleEndTime and a.TUumsBaseAbrole.abroleEnabled !='0' and a.TUumsBaseAbrole.abroleId != :abroleId) order by baseGroupPrivil.basePrivil.privilSequence, baseGroupPrivil.basePrivil.privilSyscode
+    ]]>
+    </query>
+
+    <!-- huzw -->
+    <query name="PrivilManager.getRolePrivilsByHa">
+        <![CDATA[
+     select baseRolePrivil.basePrivil from TUumsBaseRoleUser as baseRoleUser,TUumsBaseRolePrivil as baseRolePrivil where baseRoleUser.baseRole.roleIsactive like :roleIsactive and baseRoleUser.baseRole.roleId=baseRolePrivil.baseRole.roleId and baseRoleUser.userId = :userId and baseRolePrivil.basePrivil.privilIsactive like :privilIsactive and baseRoleUser.orgId = :orgId order by baseRolePrivil.basePrivil.privilSequence,baseRolePrivil.basePrivil.privilSyscode
+    ]]>
+    </query>
+
+    <!-- huzw -->
+    <query name="PrivilManager.getGroupPrivilsByHa">
+        <![CDATA[
+     select baseGroupPrivil.basePrivil from TUumsBaseGroupUser as baseGroupUser,TUumsBaseGroupPrivil as baseGroupPrivil where baseGroupUser.baseGroup.groupIsactive like :groupIsactive and  baseGroupUser.baseGroup.groupId=baseGroupPrivil.baseGroup.groupId and baseGroupUser.userId = :userId and baseGroupPrivil.basePrivil.privilIsactive like :privilIsactive and baseGroupUser.orgId = :orgId order by baseGroupPrivil.basePrivil.privilSequence, baseGroupPrivil.basePrivil.privilSyscode
+    ]]>
+    </query>
+
+    <!-- huzw -->
+    <query name="PrivilManager.getUserPrivilsByOrgId">
+        <![CDATA[
+     select baseUserPrivil.basePrivil from TUumsBaseUserPrivil as baseUserPrivil where baseUserPrivil.userId = :userId and baseUserPrivil.basePrivil.privilIsactive like :privilIsactive and baseUserPrivil.orgId = :orgId order by baseUserPrivil.basePrivil.privilSequence,baseUserPrivil.basePrivil.privilSyscode
+    ]]>
+    </query>
+
+    <!-- huzw -->
+    <query name="PrivilManager.getAllUserPrivils">
+        <![CDATA[
+     from TUumsBaseUserPrivil as baseUserPrivil where baseUserPrivil.userId = :userId and baseUserPrivil.basePrivil.privilIsactive like :privilIsactive order by baseUserPrivil.basePrivil.privilSequence,baseUserPrivil.basePrivil.privilSyscode
+    ]]>
+    </query>
+
+    <!-- huzw -->
+    <query name="PrivilManager.getUserPrivilsByUserIdAndOrgId">
+        <![CDATA[
+     from TUumsBaseUserPrivil as baseUserPrivil where baseUserPrivil.userId = :userId and baseUserPrivil.orgId = :orgId
+    ]]>
+    </query>
+
+    <!-- ########################### -->
+    <!-- 用户组管理 -->
+    <query name="GroupManager.getNextCode">
+        <![CDATA[
+     select group.groupSyscode from TUumsBaseGroup as group where group.groupSyscode like :groupSyscode order by group.groupSyscode
+    ]]>
+    </query>
+
+    <query name="GroupManager.getGroupByCode">
+        <![CDATA[
+     from TUumsBaseGroup as group where group.groupSyscode like :groupSyscode order by group.groupSequence, group.groupSyscode
+    ]]>
+    </query>
+    <!--2013-08-28 wencp:用户组管理直接关联组织机构-->
+    <query name="GroupManager.getGroupByCode_1">
+        <![CDATA[
+     from TUumsBaseGroup as group where group.groupSyscode like :groupSyscode and group.orgId in (:orgId) order by group.groupSequence, group.groupSyscode
+    ]]>
+    </query>
+    <!--2013-08-28 wencp:用户组管理直接关联组织机构-->
+    <query name="GroupManager.getGroupByCode_1_1">
+        <![CDATA[
+     from TUumsBaseGroup as group where group.groupSyscode like :groupSyscode and group.orgId in (:orgId) order by group.groupSequence, group.groupSyscode
+    ]]>
+    </query>
+
+    <query name="GroupManager.getGroupByName">
+        <![CDATA[
+     from TUumsBaseGroup as group where group.groupName = :groupName order by group.groupSequence, group.groupSyscode
+    ]]>
+    </query>
+
+    <query name="GroupManager.getGroupsByCode">
+        <![CDATA[
+     from TUumsBaseGroup as baseGroup where baseGroup.groupSyscode like :groupSyscode and baseGroup.groupIsactive like :groupIsactive order by baseGroup.groupSequence,baseGroup.groupSyscode
+    ]]>
+    </query>
+
+    <!--2013-08-28 wencp:用户组管理直接关联组织机构-->
+    <query name="GroupManager.getGroupsByCode_1">
+        <![CDATA[
+     from TUumsBaseGroup as baseGroup where baseGroup.groupSyscode like :groupSyscode and baseGroup.groupIsactive like :groupIsactive and baseGroup.orgId in (:orgId) order by baseGroup.groupSequence,baseGroup.groupSyscode
+    ]]>
+    </query>
+    <!--2013-08-28 wencp:用户组管理直接关联组织机构-->
+    <query name="GroupManager.getGroupsByCode_1_1">
+        <![CDATA[
+     from TUumsBaseGroup as baseGroup where baseGroup.groupSyscode like :groupSyscode and baseGroup.groupIsactive like :groupIsactive and baseGroup.orgId in (:orgId) order by baseGroup.groupSequence,baseGroup.groupSyscode
+    ]]>
+    </query>
+
+    <query name="GroupManager.getGroupById">
+        <![CDATA[
+     from TUumsBaseGroup as group where group.groupId = :groupId order by group.groupSequence, group.groupSyscode
+    ]]>
+    </query>
+
+    <query name="GroupManager.getGroupUserIds">
+        <![CDATA[
+     select distinct groupUser.userId from TUumsBaseGroupUser as groupUser where groupUser.baseGroup.groupId = :groupId
+    ]]>
+    </query>
+
+    <query name="GroupManager.getAllGroupUserIds">
+        <![CDATA[
+     select distinct groupUser.userId from TUumsBaseGroupUser as groupUser
+    ]]>
+    </query>
+    <!--2013-08-28 wencp:用户组管理直接关联组织机构-->
+    <query name="GroupManager.getAllGroupUserIds_1">
+        <![CDATA[
+     select distinct groupUser.userId from TUumsBaseGroupUser as groupUser where groupUser.baseGroup.orgId in (:orgId)
+    ]]>
+    </query>
+    <!--2013-08-28 wencp:用户组管理直接关联组织机构-->
+    <query name="GroupManager.getAllGroupUserIds_1_1">
+        <![CDATA[
+     select distinct groupUser.userId from TUumsBaseGroupUser as groupUser where groupUser.baseGroup.orgId in (:orgId)
+    ]]>
+    </query>
+
+    <query name="GroupManager.getGroupPrivils">
+        <![CDATA[
+     select basePrivil from TUumsBaseGroupPrivil as groupPrivil join groupPrivil.basePrivil as basePrivil join groupPrivil.baseGroup as baseGroup where baseGroup.groupId = :groupId and basePrivil.privilIsactive like :privilIsactive order by basePrivil.privilSequence,basePrivil.privilSyscode
+    ]]>
+    </query>
+
+    <query name="GroupManager.getGroups">
+        <![CDATA[
+     from TUumsBaseGroup as baseGroup where baseGroup.groupIsactive like :groupIsactive order by baseGroup.groupSequence,baseGroup.groupSyscode
+    ]]>
+    </query>
+    <!--2013-08-28 wencp:用户组管理直接关联组织机构-->
+    <query name="GroupManager.getGroups_1">
+        <![CDATA[
+     from TUumsBaseGroup as baseGroup where baseGroup.groupIsactive like :groupIsactive and baseGroup.orgId in (:orgId) order by baseGroup.groupSequence,baseGroup.groupSyscode
+    ]]>
+    </query>
+    <!--2013-08-28 wencp:用户组管理直接关联组织机构-->
+    <query name="GroupManager.getGroups_1_1">
+        <![CDATA[
+     from TUumsBaseGroup as baseGroup where baseGroup.groupIsactive like :groupIsactive and baseGroup.orgId in (:orgId) order by baseGroup.groupSequence,baseGroup.groupSyscode
+    ]]>
+    </query>
+
+    <query name="GroupManager.getGroupPrivilRelation">
+        <![CDATA[
+     from TUumsBaseGroupPrivil groupPrivil where groupPrivil.baseGroup.groupId = :groupId
+    ]]>
+    </query>
+
+    <query name="GroupManager.getGroupUsersRelation">
+        <![CDATA[
+     from TUumsBaseGroupUser groupUser where groupUser.baseGroup.groupId = :groupId
+    ]]>
+    </query>
+    <!--2013-08-28 wencp:用户组管理直接关联组织机构-->
+    <query name="GroupManager.getGroupUsersRelation_1">
+        <![CDATA[
+     from TUumsBaseGroupUser groupUser where groupUser.baseGroup.groupId = :groupId and groupUser.baseGroup.orgId in (:orgId)
+    ]]>
+    </query>
+    <!--2013-08-28 wencp:用户组管理直接关联组织机构-->
+    <query name="GroupManager.getGroupUsersRelation_1_1">
+        <![CDATA[
+     from TUumsBaseGroupUser groupUser where groupUser.baseGroup.groupId = :groupId and groupUser.baseGroup.orgId in (:orgId)
+    ]]>
+    </query>
+
+    <query name="GroupManager.getGroupsByUserId">
+        <![CDATA[
+     select groupUser.baseGroup from TUumsBaseGroupUser groupUser where groupUser.userId = :userId and groupUser.baseGroup.groupIsactive like :groupIsactive order by groupUser.baseGroup.groupSequence, groupUser.baseGroup.groupSyscode
+    ]]>
+    </query>
+    <!--2013-08-28 wencp:用户组管理直接关联组织机构-->
+    <query name="GroupManager.getGroupsByUserId_1">
+        <![CDATA[
+     select groupUser.baseGroup from TUumsBaseGroupUser groupUser where groupUser.userId = :userId and groupUser.baseGroup.groupIsactive like :groupIsactive and groupUser.baseGroup.orgId in (:orgId) order by groupUser.baseGroup.groupSequence, groupUser.baseGroup.groupSyscode
+    ]]>
+    </query>
+    <!--2013-08-28 wencp:用户组管理直接关联组织机构-->
+    <query name="GroupManager.getGroupsByUserId_1_1">
+        <![CDATA[
+     select groupUser.baseGroup from TUumsBaseGroupUser groupUser where groupUser.userId = :userId and groupUser.baseGroup.groupIsactive like :groupIsactive and groupUser.baseGroup.orgId in (:orgId) order by groupUser.baseGroup.groupSequence, groupUser.baseGroup.groupSyscode
+    ]]>
+    </query>
+
+    <query name="GroupManager.getUserGroupRelationByUserIds">
+        <![CDATA[
+     select groupUser from TUumsBaseGroupUser groupUser where groupUser.userId in (:userIds) and groupUser.baseGroup.groupIsactive like :groupIsactive order by groupUser.baseGroup.groupSequence, groupUser.baseGroup.groupSyscode
+    ]]>
+    </query>
+
+    <query name="GroupManager.getUserGroupRelationByUserId">
+        <![CDATA[
+     select groupUser from TUumsBaseGroupUser groupUser where groupUser.userId = :userId and groupUser.baseGroup.groupIsactive like :groupIsactive order by groupUser.baseGroup.groupSequence, groupUser.baseGroup.groupSyscode
+    ]]>
+    </query>
+    <!--2013-08-28 wencp:用户组管理直接关联组织机构-->
+    <query name="GroupManager.getUserGroupRelationByUserId_1">
+        <![CDATA[
+     select groupUser from TUumsBaseGroupUser groupUser where groupUser.userId = :userId and groupUser.baseGroup.groupIsactive like :groupIsactive and groupUser.baseGroup.orgId in (:orgId) order by groupUser.baseGroup.groupSequence, groupUser.baseGroup.groupSyscode
+    ]]>
+    </query>
+    <!--2013-08-28 wencp:用户组管理直接关联组织机构-->
+    <query name="GroupManager.getUserGroupRelationByUserId_1_1">
+        <![CDATA[
+     select groupUser from TUumsBaseGroupUser groupUser where groupUser.userId = :userId and groupUser.baseGroup.groupIsactive like :groupIsactive and groupUser.baseGroup.orgId in (:orgId) order by groupUser.baseGroup.groupSequence, groupUser.baseGroup.groupSyscode
+    ]]>
+    </query>
+
+    <query name="GroupManager.getNextSequence">
+        <![CDATA[
+     select baseGroup.groupSequence from TUumsBaseGroup baseGroup order by baseGroup.groupSequence
+    ]]>
+    </query>
+
+    <query name="GroupManager.checkParentIsExist">
+        <![CDATA[
+     from TUumsBaseGroup t where t.groupSyscode like :groupSyscode and t.groupId != :groupId order by t.groupSequence, t.groupSyscode
+    ]]>
+    </query>
+    <!--2013-08-28 wencp:用户组管理直接关联组织机构-->
+    <query name="GroupManager.checkParentIsExist_1">
+        <![CDATA[
+     from TUumsBaseGroup t where t.groupSyscode like :groupSyscode and t.groupId != :groupId and t.orgId in (:orgId) order by t.groupSequence, t.groupSyscode
+    ]]>
+    </query>
+    <!--2013-08-28 wencp:用户组管理直接关联组织机构-->
+    <query name="GroupManager.checkParentIsExist_1_1">
+        <![CDATA[
+     from TUumsBaseGroup t where t.groupSyscode like :groupSyscode and t.groupId != :groupId and t.orgId in (:orgId) order by t.groupSequence, t.groupSyscode
+    ]]>
+    </query>
+
+    <query name="GroupManager.moveGroupInTree.up">
+        <![CDATA[
+     select baseGroup.groupSyscode from TUumsBaseGroup as baseGroup where baseGroup.groupSequence <= :groupSequence and baseGroup.groupSyscode like :groupSyscode order by baseGroup.groupSequence, baseGroup.groupSyscode
+    ]]>
+    </query>
+    <!--2013-08-28 wencp:用户组管理直接关联组织机构-->
+    <query name="GroupManager.moveGroupInTree.up_1">
+        <![CDATA[
+     select baseGroup.groupSyscode from TUumsBaseGroup as baseGroup where baseGroup.groupSequence <= :groupSequence and baseGroup.groupSyscode like :groupSyscode and baseGroup.orgId in (:orgId) order by baseGroup.groupSequence, baseGroup.groupSyscode
+    ]]>
+    </query>
+    <!--2013-08-28 wencp:用户组管理直接关联组织机构-->
+    <query name="GroupManager.moveGroupInTree.up_1_1">
+        <![CDATA[
+     select baseGroup.groupSyscode from TUumsBaseGroup as baseGroup where baseGroup.groupSequence <= :groupSequence and baseGroup.groupSyscode like :groupSyscode and baseGroup.orgId in (:orgId) order by baseGroup.groupSequence, baseGroup.groupSyscode
+    ]]>
+    </query>
+    <!--2013-08-28 wencp:用户组管理直接关联组织机构-->
+    <query name="GroupManager.moveGroupInTree.down">
+        <![CDATA[
+     select baseGroup.groupSyscode from TUumsBaseGroup as baseGroup where baseGroup.groupSequence >= :groupSequence and baseGroup.groupSyscode like :groupSyscode order by baseGroup.groupSequence, baseGroup.groupSyscode
+    ]]>
+    </query>
+    <!--2013-08-28 wencp:用户组管理直接关联组织机构-->
+    <query name="GroupManager.moveGroupInTree.down_1">
+        <![CDATA[
+     select baseGroup.groupSyscode from TUumsBaseGroup as baseGroup where baseGroup.groupSequence >= :groupSequence and baseGroup.groupSyscode like :groupSyscode and baseGroup.orgId in (:orgId) order by baseGroup.groupSequence, baseGroup.groupSyscode
+    ]]>
+    </query>
+    <!--2013-08-28 wencp:用户组管理直接关联组织机构-->
+    <query name="GroupManager.moveGroupInTree.down_1_1">
+        <![CDATA[
+     select baseGroup.groupSyscode from TUumsBaseGroup as baseGroup where baseGroup.groupSequence >= :groupSequence and baseGroup.groupSyscode like :groupSyscode and baseGroup.orgId in (:orgId) order by baseGroup.groupSequence, baseGroup.groupSyscode
+    ]]>
+    </query>
+
+    <query name="GroupManager.getUserGroupRelationByOrgId">
+        <![CDATA[
+     select groupUser from TUumsBaseGroupUser groupUser where groupUser.orgId = :orgId
+    ]]>
+    </query>
+
+    <!-- huzw -->
+    <!--2013-08-28 wencp:用户组关联组织机构-->
+    <query name="GroupManager.getGroupsByBaseOrgId">
+        <![CDATA[
+     from TUumsBaseGroup as baseGroup where baseGroup.orgId = :orgId
+    ]]>
+    </query>
+
+    <query name="GroupManager.getUserGroup">
+        <![CDATA[
+     from TUumsBaseGroupUser groupUser where groupUser.userId = :userId
+    ]]>
+    </query>
+    <!--2013-08-28 wencp:用户组管理直接关联组织机构-->
+    <query name="GroupManager.getUserGroup_1">
+        <![CDATA[
+     from TUumsBaseGroupUser groupUser where groupUser.userId = :userId and groupUser.baseGroup.orgId in (:orgId)
+    ]]>
+    </query>
+    <!--2013-08-28 wencp:用户组管理直接关联组织机构-->
+    <query name="GroupManager.getUserGroup_1_1">
+        <![CDATA[
+     from TUumsBaseGroupUser groupUser where groupUser.userId = :userId and groupUser.baseGroup.orgId in (:orgId)
+    ]]>
+    </query>
+
+    <!-- huzw -->
+    <query name="GroupManager.getUserGroupByOrgId">
+        <![CDATA[
+     from TUumsBaseGroupUser groupUser where groupUser.userId = :userId and groupUser.orgId = :orgId
+    ]]>
+    </query>
+
+
+    <!-- ########################### -->
+    <!-- 应用系统管理 -->
+    <query name="SystemManager.getSystemById">
+        <![CDATA[
+     from TUumsBaseSystem t where t.sysId = :sysId order by t.sysSequence,t.sysSyscode
+    ]]>
+    </query>
+
+    <query name="SystemManager.getSystemByCodes">
+        <![CDATA[
+     from TUumsBaseSystem t where t.sysSyscode in (:sysCodes) order by t.sysSequence
+    ]]>
+    </query>
+
+    <query name="SystemManager.getSystems">
+        <![CDATA[
+     from TUumsBaseSystem t where t.sysIsactive like :sysIsactive order by t.sysSequence,t.sysSyscode
+    ]]>
+    </query>
+
+    <query name="SystemManager.getSystemByUserId">
+        <![CDATA[
+     select baseSysmanager.baseSystem from TUumsBaseSysmanager as baseSysmanager where baseSysmanager.userId = :userId and baseSysmanager.baseSystem.sysIsactive like :sysIsactive order by baseSysmanager.baseSystem.sysSequence, baseSysmanager.baseSystem.sysSyscode
+    ]]>
+    </query>
+
+    <query name="SystemManager.getQuerysystems">
+        <![CDATA[
+     from TUumsBaseSystem t where t.sysSyscode like :sysSyscode and t.sysName like :sysName and t.sysIsactive like :sysIsactive and t.sysStartdate > :startdate and t.sysStartdate < :enddate order by t.sysSequence, t.sysSyscode
+    ]]>
+    </query>
+
+    <query name="SystemManager.getQuerysystemsWithoutDate">
+        <![CDATA[
+     from TUumsBaseSystem t where t.sysSyscode like :sysSyscode and t.sysName like :sysName and t.sysIsactive like :sysIsactive order by t.sysSequence, t.sysSyscode
+    ]]>
+    </query>
+
+    <query name="SystemManager.getQuerysystemsWithoutSDate">
+        <![CDATA[
+     from TUumsBaseSystem t where t.sysSyscode like :sysSyscode and t.sysName like :sysName and t.sysIsactive like :sysIsactive and t.sysStartdate < :enddate order by t.sysSequence, t.sysSyscode
+    ]]>
+    </query>
+
+    <query name="SystemManager.getQuerysystemsWithoutEDate">
+        <![CDATA[
+     from TUumsBaseSystem t where t.sysSyscode like :sysSyscode and t.sysName like :sysName and t.sysIsactive like :sysIsactive and t.sysStartdate > :startdate order by t.sysSequence, t.sysSyscode
+    ]]>
+    </query>
+
+    <query name="SystemManager.getPrivilsBySystemId">
+        <![CDATA[
+     from TUumsBasePrivil t where t.basePrivilType.baseSystem.sysId = :sysId and t.privilIsactive like :privilIsactive order by t.privilSequence, t.privilSyscode
+    ]]>
+    </query>
+
+    <query name="SystemManager.getSystemByCode">
+        <![CDATA[
+     from TUumsBaseSystem t where t.sysSyscode like :sysSyscode order by t.sysSequence,t.sysSyscode
+    ]]>
+    </query>
+
+    <query name="SystemManager.getNextSequence">
+        <![CDATA[
+     select baseSystem.sysSequence from TUumsBaseSystem baseSystem order by baseSystem.sysSequence
+    ]]>
+    </query>
+
+    <query name="SystemManager.getSystemUserBySysId">
+        <![CDATA[
+     select systemManager from TUumsBaseSysmanager systemManager where systemManager.baseSystem.sysId = :sysId
+    ]]>
+    </query>
+
+    <query name="SystemManager.getSystemUserByUserIdsAndSysIds">
+        <![CDATA[
+     select systemManager from TUumsBaseSysmanager systemManager where systemManager.userId in (:userIds) and  systemManager.baseSystem.sysId in (:sysIds)
+    ]]>
+    </query>
+
+    <!-- ########################### -->
+    <!-- 区划代码管理 -->
+    <query name="AreacodeManager.getAreacodeByCode">
+        <![CDATA[
+     from TUumsBaseAreacode t where t.acCode like :acCode order by t.acCode,t.acId
+    ]]>
+    </query>
+
+    <!-- ########################### -->
+    <!-- 资源类型管理 -->
+    <query name="PrivilManager.getPrivilTypeById">
+        <![CDATA[
+     from TUumsBasePrivilType basePrivilType where basePrivilType.typeId = :typeId
+    ]]>
+    </query>
+
+    <query name="PrivilManager.getNextPrivilTypeSequence">
+        <![CDATA[
+     select basePrivilType.typeSequence from TUumsBasePrivilType basePrivilType order by basePrivilType.typeSequence
+    ]]>
+    </query>
+
+    <!-- ########################### -->
+    <!-- A/B岗授权管理 -->
+    <query name="AbroleManager.getAbroleById">
+        <![CDATA[
+     from TUumsBaseAbrole abrole where abrole.abroleId = :abroleId
+    ]]>
+    </query>
+
+    <query name="AbroleManager.queryAbroleWithAllDate">
+        <![CDATA[
+     from TUumsBaseAbrole as abrole where abrole.abroleSrcUserid like :abroleSrcUserid and abrole.abroleSrcUsername like :abroleSrcUsername and abrole.abroleTargetUsername like :abroleTargetUsername and abrole.abroleEnabled like :abroleEnabled and abrole.abroleStartTime > :abroleStartTime and abrole.abroleEndTime < :abroleEndTime order by abrole.abroleStartTime desc
+    ]]>
+    </query>
+
+    <query name="AbroleManager.queryAbroleWithoutStartdate">
+        <![CDATA[
+     from TUumsBaseAbrole as abrole where abrole.abroleSrcUserid like :abroleSrcUserid and abrole.abroleSrcUsername like :abroleSrcUsername and abrole.abroleTargetUsername like :abroleTargetUsername and abrole.abroleEnabled like :abroleEnabled and abrole.abroleEndTime < :abroleEndTime order by abrole.abroleStartTime desc
+    ]]>
+    </query>
+
+    <query name="AbroleManager.queryAbroleWithoutEnddate">
+        <![CDATA[
+     from TUumsBaseAbrole as abrole where abrole.abroleSrcUserid like :abroleSrcUserid and abrole.abroleSrcUsername like :abroleSrcUsername and abrole.abroleTargetUsername like :abroleTargetUsername and abrole.abroleEnabled like :abroleEnabled and abrole.abroleStartTime > :abroleStartTime order by abrole.abroleStartTime desc
+    ]]>
+    </query>
+
+    <query name="AbroleManager.queryAbroleWithoutAllDate">
+        <![CDATA[
+     from TUumsBaseAbrole as abrole where abrole.abroleSrcUserid like :abroleSrcUserid and abrole.abroleSrcUsername like :abroleSrcUsername and abrole.abroleTargetUsername like :abroleTargetUsername and abrole.abroleEnabled like :abroleEnabled order by abrole.abroleStartTime desc
+    ]]>
+    </query>
+
+    <query name="AbroleManager.getUserPrivilSystem">
+        <![CDATA[
+     select distinct baseUserPrivil.basePrivil.basePrivilType.baseSystem from TUumsBaseUserPrivil as baseUserPrivil where baseUserPrivil.userId = :userId and baseUserPrivil.basePrivil.privilIsactive like :privilIsactive
+    ]]>
+    </query>
+
+    <query name="AbroleManager.getRolePrivilSystem">
+        <![CDATA[
+     select distinct baseRolePrivil.basePrivil.basePrivilType.baseSystem from TUumsBaseRoleUser as baseRoleUser,TUumsBaseRolePrivil as baseRolePrivil where baseRoleUser.baseRole.roleIsactive like :roleIsactive and baseRoleUser.baseRole.roleId=baseRolePrivil.baseRole.roleId and baseRoleUser.userId = :userId and baseRolePrivil.basePrivil.privilIsactive like :privilIsactive
+    ]]>
+    </query>
+
+    <query name="AbroleManager.getGroupPrivilSystem">
+        <![CDATA[
+     select distinct baseGroupPrivil.basePrivil.basePrivilType.baseSystem from TUumsBaseGroupUser as baseGroupUser,TUumsBaseGroupPrivil as baseGroupPrivil where baseGroupUser.baseGroup.groupIsactive like :groupIsactive and  baseGroupUser.baseGroup.groupId=baseGroupPrivil.baseGroup.groupId and baseGroupUser.userId = :userId and baseGroupPrivil.basePrivil.privilIsactive like :privilIsactive
+    ]]>
+    </query>
+
+    <query name="AbroleManager.getDelegationPrivilsByUserid">
+        <![CDATA[
+     select distinct abrole.basePrivil from TUumsBaseAbrolePrivil as abrole where abrole.TUumsBaseAbrole.abroleTargetUserid = :abroleTargetUserid and abrole.TUumsBaseAbrole.abroleStartTime < :abroleStartTime and abrole.TUumsBaseAbrole.abroleEndTime > :abroleEndTime and abrole.TUumsBaseAbrole.abroleEnabled = '1' and abrole.basePrivil.privilIsactive like :privilIsactive order by abrole.basePrivil.privilSequence, abrole.basePrivil.privilSequence.privilSyscode
+    ]]>
+    </query>
+
+    <query name="AbroleManager.getToPauseAbrole">
+        <![CDATA[
+     from TUumsBaseAbrole as abrole where abrole.abroleSrcUserid = :abroleSrcUserid and abrole.abroleStartTime > :abroleStartTime and abrole.abroleEnabled = '1'
+    ]]>
+    </query>
+
+    <query name="AbroleManager.getToCancelAbrole">
+        <![CDATA[
+     from TUumsBaseAbrole as abrole where abrole.abroleSrcUserid = :abroleSrcUserid and abrole.abroleStartTime <= :abroleStartTime and abrole.abroleEnabled = '1'
+    ]]>
+    </query>
+
+    <query name="AbroleManager.getToResumeAbrole">
+        <![CDATA[
+     from TUumsBaseAbrole as abrole where abrole.abroleSrcUserid = :abroleSrcUserid and abrole.abroleEnabled = '2'
+    ]]>
+    </query>
+
+    <!-- huzw -->
+    <query name="AbroleManager.getDelegationPrivilsByUseridByHa">
+        <![CDATA[
+     select distinct abrole.basePrivil from TUumsBaseAbrolePrivil as abrole where abrole.TUumsBaseAbrole.abroleTargetUserid = :abroleTargetUserid and abrole.TUumsBaseAbrole.abroleStartTime < :abroleStartTime and abrole.TUumsBaseAbrole.abroleEndTime > :abroleEndTime and abrole.TUumsBaseAbrole.abroleEnabled = '1' and abrole.basePrivil.privilIsactive like :privilIsactive and abrole.TUumsBaseAbrole.abroleOrgId=:abroleOrgId order by abrole.basePrivil.privilSequence, abrole.basePrivil.privilSequence.privilSyscode
+    ]]>
+    </query>
+
+
+    <!-- ########################### -->
+    <!-- 机构中间表 -->
+    <query name="BaseManager.getSupOrgByOrgsyscode">
+        <![CDATA[
+     from TUumsBaseSupOrg as supOrg where supOrg.orgSyscode = :orgSyscode
+    ]]>
+    </query>
+
+    <query name="BaseManager.getSupOrgsByOrgsyscode">
+        <![CDATA[
+     from TUumsBaseSupOrg as supOrg where supOrg.orgSyscode like :orgSyscode
+    ]]>
+    </query>
+    
+    <query name="OrgManager.getOrgInfosByOrgIds">
+        <![CDATA[
+     from TUumsBaseOrg as baseOrg where baseOrg.orgId in (:orgIds) 
+    ]]>
+    </query>
+</hibernate-mapping>

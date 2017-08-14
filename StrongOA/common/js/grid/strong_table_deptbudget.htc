@@ -1,0 +1,497 @@
+
+
+<public:event name="onrowselect" ID=rowSelect/>
+/**锁定列*/
+<public:property name="COL_NUM"  value="0"/>
+/**表格高度*/
+<public:property name="TABLE_HEIGHT_MINUS"  value="50"/>
+/**记录ID是那几列*/
+<public:property name="idColNums"/>
+
+
+/**记录名称是那一列*/
+<public:property name="nameColNum" value="1"/>
+<public:attach event="oncontentready" onevent="DoScrollInit();"/>
+<public:attach event="ondocumentready" onevent="DoDocumentInit();"/>
+<public:attach event="onclick" onevent="TableOnClick();" />
+<public:attach event="oncontextmenu" onevent="TableOnContextMenu();" />
+<public:method name="registerMenu" />
+<public:method name="selectElementColour" />
+<public:method name="TableOnClick" />
+<public:method name="setSelectRowLengthToZero" />
+<public:method name="setSelectRows" />
+<public:method name="getSelectRow" />
+<public:method name="getSelectTD" />
+<public:method name="ChangeColour" />
+<public:method name="RemoveSelectRow" />
+<public:method name="AddSelectRow" />
+<public:method name="GetIds" />
+<public:method name="GetNames" />
+<public:method name="GetCurrentRowIndex" />
+
+<script language=jscript>
+var out_div = null;
+var scroll_div_arr = new Array();
+var scroll_dr_arr = new Array();
+var td_div_arr = new Array();
+var SCROLL_DIV_NAME = "scrollDiv";
+var TD_DIV_NAME = "td_div";
+var INDEX_NAME = "scrollIndex";
+var DIV_WIDTH = 5;
+var strong_table_CurRow=0;
+
+var func_menu = null;
+function DoScrollInit() {	
+    FixTable();
+    InitObject();  
+}
+function DoDocumentInit() {
+    InitTable();
+    DivLocalizer();
+	//element.style.tableLayout="fixed";
+}
+function FixTable() {
+    //out_div = element.document.createElement("DIV");
+    out_div = element.parentElement;
+    out_div.attachEvent("onscroll", DivLocalizer);    
+    //out_div.onselectstart=function(){return false;};  
+    /*
+    with (out_div.style) {
+        overflow = "auto";
+        width = "100%";
+        //height = "250";
+        setExpression("height", "document.body.clientHeight - " + TABLE_HEIGHT_MINUS);	
+    }    
+    element.applyElement(out_div);
+    */
+    if (0 != COL_NUM) {
+    var tbRows = element.rows;
+    var rowCell = null;
+    for (var i = 0; i < element.rows.length; i++) {
+        tbRows[i].style.position = "relative";
+        for (var j = 0; j < COL_NUM; j++) {
+            rowCell = tbRows[i].cells[j];
+            with (rowCell.style) {
+                if (i != 0) {
+                    //background = "99ffff";
+                    zIndex = 1;
+                }
+                position = "relative";
+                setExpression("left", "this.parentElement.offsetParent.scrollLeft");
+            }
+        }
+    }
+    var tbFirstRow = element.rows[0];
+    with (tbFirstRow.style) {
+        //background = "9999ff";
+        position = "relative";
+        setExpression("top", "this.offsetParent.scrollTop");
+        zIndex = 10;
+    }
+    }
+}
+function InitObject() {
+strong_table_CurRow=0;
+	//设置table宽度
+    //element.style.wordBreak = "keep-all";    
+    scroll_dr_arr = element.rows[0].cells;
+    for (var i = 0; i < scroll_dr_arr.length; i++) {
+        //产生拖拉层
+        scroll_div_arr[i] = CreateScrollDiv(i, i);
+        //添加点击事件
+        scroll_div_arr[i].attachEvent("onmousedown", DownDiv);
+    }   
+}
+function InitTable() {
+	var drsWidth = new Array();
+	var i = 0;
+	var drsLength = scroll_dr_arr.length;
+        for (i = 0; i < drsLength; i++) {
+            //取td宽度
+            drsWidth[i] = scroll_dr_arr[i].offsetWidth;
+        }  
+        element.style.display="none";
+        for (i = 0; i < drsLength; i++) {
+            //设置td宽度
+            scroll_dr_arr[i].style.pixelWidth = drsWidth[i];
+        }
+        element.style.tableLayout = "fixed"; 
+        element.style.display="block";
+}
+var is_prompt_drag = false; //是否即时拖拉
+var is_down = false, cur_x, cur_y, orig_x, orig_y;
+var cur_index = null; //拖拉的元素序号
+var current_div = null; //拖拉的div
+var current_td = null; //拖拉的td
+var orig_td_div_width = null; //td内div宽度
+var orig_table_width = null; //table原始宽度
+var orig_td_width = null; //td原始宽度
+var orig_div_left = null; //div左边距离
+var orig_div_top = null; //div上边距离
+var is_first = true;
+//点击鼠标准备拖拉
+function DownDiv() {
+    //拖拉初始化
+    if (false) {
+        var drsWidth = new Array();
+	var i = 0;
+	var drsLength = scroll_dr_arr.length;
+        for (i = 0; i < drsLength; i++) {
+            //取td宽度
+            drsWidth[i] = scroll_dr_arr[i].offsetWidth;
+        }  
+        element.style.display="none";
+        for (i = 0; i < drsLength; i++) {
+            //设置td宽度
+            scroll_dr_arr[i].style.pixelWidth = drsWidth[i];
+        }
+        element.style.tableLayout = "fixed"; 
+        element.style.display="block";
+	is_first = false;
+    }
+    //对象初始化    
+    current_div = event.srcElement;
+    cur_index = current_div.getAttribute(INDEX_NAME);
+    current_td = scroll_dr_arr[cur_index];
+    //位置初始化
+    //orig_td_div_width = td_div_arr[0][cur_index].style.pixelWidth;
+    orig_table_width = element.style.pixelWidth;
+    orig_td_width = current_td.style.pixelWidth;
+    orig_div_top = parseInt(current_div.style.posTop);
+    orig_div_left = parseInt(current_div.style.posLeft);
+    cur_x = event.screenX;
+    cur_y = event.screenY;
+    orig_x = cur_x;
+    orig_y = cur_y;    
+    //事件初始化
+    event.cancelBubble = true;
+    element.document.body.setCapture();
+    //element.document.body.attachEvent("onmousemove", MoveDiv);
+    element.document.body.attachEvent("onmouseup", UpDiv);
+    is_down = true;
+}
+//拖拉表格
+function MoveDiv() {
+    if (is_down && is_prompt_drag) {
+    	//鼠标偏移量
+        var offsetX = event.screenX - cur_x;
+        var offsetY = event.screenY - cur_y;
+        //拖拉table
+        element.style.pixelWidth += offsetX;
+        //拖拉td
+        current_td.style.pixelWidth += offsetX;
+    	//移动层
+        current_div.style.posLeft = current_div.style.posLeft + offsetX;
+        //current_div.style.posTop = current_div.style.posTop + offsetY;
+        //设置鼠标当前位置
+        cur_x = element.document.body.scrollLeft + event.x;
+        cur_y = element.document.body.scrollTop + event.y;
+    }
+}
+//拖拉结束
+function UpDiv() {
+    if (is_down) {
+        is_down = false;
+	//释放事件
+        element.document.body.releaseCapture();
+        //element.document.body.detachEvent("onmousemove", MoveDiv);
+        element.document.body.detachEvent("onmouseup", UpDiv);
+   	//--重新定位
+    	//鼠标偏移量
+        var offsetX = event.screenX - orig_x;
+        var offsetY = event.screenY - orig_y;
+        if (orig_td_width + offsetX < 1) {
+        	offsetX = -orig_td_width + 2;
+        }
+	if (offsetX < 0) {
+    		//拖拉table
+		element.style.pixelWidth = orig_table_width + offsetX;
+    		//拖拉td
+	        current_td.style.pixelWidth = orig_td_width + offsetX;
+	} else { 
+    		//拖拉td
+	        current_td.style.pixelWidth = orig_td_width + offsetX;
+    		//拖拉table
+		element.style.pixelWidth = orig_table_width + offsetX;
+	}
+        DivLocalizer();
+    }
+}
+//产生拖拉层
+function CreateScrollDiv(index, vzindex, vwidth, vheight, vleft, vtop) {
+    var scrollDiv = element.document.createElement("DIV");
+    //scrollDiv.id = SCROLL_DIV_NAME + index;
+    with (scrollDiv.style) {
+        //width = (null == vwidth ? 1 : vwidth);
+        //height = (null == vheight ? 1 : vheight);
+        //left = (null == vleft ? 1 : vleft);
+        //top = (null == vtop ? 1 : vtop);
+        position = "absolute";
+        zIndex = vzindex;
+        background = "#FF0000";
+        //visibility = "visible";
+        cursor = "col-resize";
+        //border = "1px solid #000000";
+        filter = "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+    }
+    scrollDiv.setAttribute(INDEX_NAME, index);
+    element.document.body.insertAdjacentElement("afterBegin", scrollDiv);
+    return scrollDiv;
+}
+var cell_space = null;
+var div_left_offset = null; //层左边的偏移距离
+//div定位
+function DivLocalizer() {
+	//--全局
+    //层左边与td的偏移距离
+    div_left_offset = DIV_WIDTH - parseInt((DIV_WIDTH) / 2);
+    //--局部
+    //层高
+    var divHeight = scroll_dr_arr[0].clientHeight;
+    //层上边距
+    var divTop = 0;
+    var objPosition = scroll_dr_arr[0];
+    while (objPosition.offsetParent != null) {
+        divTop += objPosition.offsetTop;
+        objPosition = objPosition.offsetParent;
+    }
+    divTop -= eval(out_div.scrollTop);
+    for (var i = 0; i < scroll_dr_arr.length; i++) {
+        var leftAll = 0;
+        objPosition = scroll_dr_arr[i];
+        while (objPosition.offsetParent != null) {
+            leftAll += objPosition.offsetLeft;
+            objPosition = objPosition.offsetParent;
+        }
+        var divLeft = leftAll + scroll_dr_arr[i].offsetWidth - eval(out_div.scrollLeft) - div_left_offset;
+        with (scroll_div_arr[i].style) {
+            width = DIV_WIDTH;
+            height = divHeight;
+            left = divLeft;
+            top = divTop;
+        }
+        var isVisible = true;
+        for (var j = 0; j < i; j++) {
+            if (parseInt(scroll_div_arr[i].style.pixelLeft) < parseInt(scroll_div_arr[j].style.pixelLeft)) {
+                isVisible = false;
+                break;
+            }
+        }
+        if (isVisible) {
+            scroll_div_arr[i].style.visibility = "visible";
+        } else {
+            scroll_div_arr[i].style.visibility = "hidden";
+        }
+    }
+}
+//点击事件
+var first_row = null;
+var select_rows = new Array();
+var crrentTd=null,crrentTdindex=0;
+function TableOnClick() {
+    var crrentTr = event.srcElement;
+    crrentTd=event.srcElement;
+    while (crrentTr.tagName != "TR") {
+        if (crrentTr == null || crrentTr == "undefined" || crrentTr.tagName == "BODY") {
+            return;
+        }
+        crrentTr = crrentTr.parentElement;
+    }
+     while (crrentTd.tagName != "TD") {
+        if (crrentTd == null || crrentTd == "undefined" || crrentTd.tagName == "BODY") {
+            return;
+        }
+        crrentTd = crrentTd.parentElement;
+    }
+    for(var i=0;i<crrentTr.cells.length;i++){
+    	if(crrentTr.cells[i]==crrentTd){
+    		crrentTdindex=i;
+    		break;
+    	}
+    }
+    var crrentTrIndex = crrentTr.rowIndex;
+	strong_table_CurRow = crrentTrIndex;
+	//过滤表头	
+    if (0 == crrentTrIndex) {
+        return;
+    }
+	//左键
+    //if (event.shiftKey) {//按“shift”键并单击
+    //    first_row = null == first_row ? crrentTrIndex : first_row;
+    //    AddSelectRow(crrentTrIndex);
+    //    while (first_row != crrentTrIndex) {
+    //        AddSelectRow(first_row);
+    //        first_row > crrentTrIndex ? first_row-- : first_row++;
+   //     }
+   // } else {
+   //     if (event.ctrlKey) {//按“ctrl”键并单击
+   //         AddSelectRow(crrentTrIndex);
+   //         ChangeColour(false);
+   //     } else {
+			
+	   
+		if(parent!=undefined&&parent.extendframe!=undefined&&parent.extendframe.companytab!=undefined){
+			var currentcard=parent.extendframe.companytab.getCurrentCard();
+				var if_frame=parent.extendframe.frames[currentcard.cardnum];
+				if(if_frame!=undefined){
+        			if(if_frame.changed==true){
+						if(confirm("要保存所做的修改吗？")){
+							parent.extendframe.companytab.showCard(currentcard.cardnum-1);
+							if_frame.save();				
+						}else{
+							parent.extendframe.companytab.showCard(currentcard.cardnum-1);
+							var newRowKeyValues=if_frame.document.getElementById("newRowKeyValue").value;
+							if_frame.gotoRemove2(newRowKeyValues);
+							if_frame.location.reload();
+						}	
+						AddSelectRow(select_rows[0]);
+					}else{
+						//清颜色
+            			ChangeColour(true);
+						//改变选中值
+						 select_rows.length = 0;
+						AddSelectRow(crrentTrIndex);
+					}
+					
+				}else{
+					//清颜色
+            		ChangeColour(true);
+					//改变选中值
+					 select_rows.length = 0;
+					AddSelectRow(crrentTrIndex);
+				}
+			}
+		else{
+			//清颜色
+            ChangeColour(true);
+			//改变选中值
+			 select_rows.length = 0;
+            AddSelectRow(crrentTrIndex);
+        }
+        
+       // }
+    //}
+    first_row = crrentTrIndex;
+}
+function TableOnContextMenu() {
+    var crrentTr = event.srcElement.parentElement;
+    while (crrentTr.tagName != "TR") {
+        if (crrentTr == null || crrentTr == "undefined" || crrentTr.tagName == "BODY") {
+            return;
+        }
+        crrentTr = crrentTr.parentElement;
+    }
+    var crrentTrIndex = crrentTr.rowIndex;
+	strong_table_CurRow = crrentTrIndex;
+	//过滤表头	
+    if (0 == crrentTrIndex) {
+        return;
+    }
+    if (!AddSelectRow(crrentTrIndex)) {
+		//弹出
+        if (func_menu) {
+			func_menu.setIDS(GetIds());
+			func_menu.setNames(GetNames());
+            func_menu.showMenu("FutureTable");
+        }
+    } else {
+		//清颜色
+        ChangeColour(true);
+		//改变选中值
+	select_rows.length = 0;
+        AddSelectRow(crrentTrIndex);
+		//弹出
+        if (func_menu) {
+			func_menu.setIDS(GetIds());
+			func_menu.setNames(GetNames());
+            func_menu.showMenu("FutureTable");
+        }
+    }
+    first_row = crrentTrIndex;
+}
+function AddSelectRow(rowIndex) {
+	for (var i = 0; i < select_rows.length; i++) {
+		if (select_rows[i] == rowIndex) {
+			return false;
+		}
+	}
+	select_rows[select_rows.length] = rowIndex;
+	element.rows[select_rows[i]].bgColor = "#B0CBEF";
+	ChangeLine(element.rows[select_rows[i]].keyValue);
+	return true;
+}
+function RemoveSelectRow(rowIndex) {
+	var selectrowTemps = new Array();
+	for (var i = 0; i < select_rows.length; i++) {
+		if (select_rows[i] !=rowIndex) {
+			selectrowTemps[selectrowTemps.length]=select_rows[i];
+		}
+	}
+	select_rows=selectrowTemps;
+	return true;
+}
+
+function GetIds() {
+	return GetNames();
+}
+function GetNames() {
+	var names = new Array();
+	for (var i = 0; i < select_rows.length; i++) {
+		names[names.length] = element.rows[select_rows[i]].cells[nameColNum].innerHTML;
+	}
+	return names;
+}
+function ChangeColour(isClear) {
+	var tableRows = element.rows;
+	
+	for (var i = 0; i < select_rows.length; i++) {
+		if (isClear) {			
+			tableRows[select_rows[i]].bgColor = "#FFFFFF";
+		} else {
+			tableRows[select_rows[i]].bgColor = "#B0CBEF";
+		}
+	}
+}
+
+function selectElementColour(tableElement,trElement,isClear) {
+	
+	var tableRows = tableElement.rows;
+	
+	for (var i = 0; i < select_rows.length; i++) {
+		if (isClear) {			
+			tableRows[select_rows[i]].bgColor = "#FFFFFF";
+		} else {
+			tableRows[select_rows[i]].bgColor = "#B0CBEF";
+		}
+	}
+	var crrentTrIndex = trElement.rowIndex;
+	//alert(crrentTrIndex);
+	select_rows.length = 0;
+	AddSelectRow(crrentTrIndex);
+}
+
+function registerMenu(menu1){
+    func_menu = menu1;
+}
+
+function getSelectRow(){
+	return select_rows;
+}
+
+function getSelectTD(){
+	return crrentTdindex;
+}
+
+function setSelectRowLengthToZero(){
+	select_rows.length = 0;
+}
+
+function GetCurrentRowIndex(){
+	return strong_table_CurRow;
+}
+
+function setSelectRows(rows){
+	select_rows=rows;
+}
+
+</script>

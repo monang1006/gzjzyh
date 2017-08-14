@@ -1,0 +1,1872 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<taglib xmlns="http://java.sun.com/xml/ns/j2ee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.0"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-jsptaglibrary_2_2_3.xsd">
+
+	<tlib-version>2.2.3</tlib-version>
+	<short-name>/tags-web/component</short-name>
+	<description>
+		<![CDATA["web组件标签"]]>
+	</description>
+
+	<!-- 自动完成组件标签 -->
+	<tag>
+		<name>autocomplete</name>
+		<tag-class>
+			com.strongit.platform.webcomponent.autocomplete.AutoComplete
+		</tag-class>
+		<body-content>jsp</body-content>
+		<description>
+			<![CDATA[自动完成]]>
+		</description>
+
+		<attribute>
+			<name>id</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[选择框的 class]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>url</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[data]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>data</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[data]]>
+			</description>
+		</attribute>
+	</tag>
+
+	<!-- 级联选择组件标签 -->
+	<tag>
+		<name>Cascade</name>
+		<tag-class>
+			com.strongit.platform.webcomponent.cascade.Cascade
+		</tag-class>
+		<body-content>jsp</body-content>
+		<description>
+			<![CDATA[级联菜单]]>
+		</description>
+
+		<attribute>
+			<name>selclass</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[选择框的 class]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>data</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[data]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>type</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[local or remote]]>
+			</description>
+		</attribute>
+	</tag>
+
+	<!-- 菜单组件标签 -->
+	<tag>
+		<name>menu</name>
+		<tag-class>
+			com.strongit.platform.webcomponent.contextmenu.ContextMenuTag
+		</tag-class>
+		<body-content>JSP</body-content>
+		<description>
+			<![CDATA[右键菜单组件主标签]]>
+		</description>
+		<attribute>
+			<name>name</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[右键菜单名称]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>width</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[菜单宽度，默认为150px]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>theme</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[菜单主体样式名称]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>onShow</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[右键菜单展现前调用的脚本函数名称，但对右键菜单是否展现不产生影响]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>onContextMenu</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[右键菜单展现前调用的脚本函数名称，若返回false则右键菜单不展现]]>
+			</description>
+		</attribute>
+	</tag>
+
+	<tag>
+		<name>menuGroup</name>
+		<tag-class>
+			com.strongit.platform.webcomponent.contextmenu.ContextMenuGroupTag
+		</tag-class>
+		<body-content>JSP</body-content>
+		<description>
+			<![CDATA[右键菜单组件组菜单项标签]]>
+		</description>
+		<attribute>
+			<name>name</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[组菜单项名称]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>width</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[组菜单下的子菜单宽度，默认为150px]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>icon</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[组菜单项图片地址]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>text</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[组菜单项名称]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>action</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[组菜单项点击时触发的脚本函数名称]]>
+			</description>
+		</attribute>
+	</tag>
+
+	<tag>
+		<name>menuItem</name>
+		<tag-class>
+			com.strongit.platform.webcomponent.contextmenu.ContextMenuItemTag
+		</tag-class>
+		<body-content>JSP</body-content>
+		<description>
+			<![CDATA[右键菜单组件菜单项标签]]>
+		</description>
+		<attribute>
+			<name>name</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[菜单项名称]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>icon</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[菜单项图片地址]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>text</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[菜单项名称]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>action</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[菜单项点击时触发的脚本函数名称]]>
+			</description>
+		</attribute>
+	</tag>
+
+	<tag>
+		<name>menuLine</name>
+		<tag-class>
+			com.strongit.platform.webcomponent.contextmenu.ContextMenuSplitLineTag
+		</tag-class>
+		<body-content>JSP</body-content>
+		<description>
+			<![CDATA[右键菜单组件菜单分割线标签]]>
+		</description>
+	</tag>
+
+	<!-- 日期时间组件标签 -->
+	<tag>
+		<name>datetime</name>
+		<tag-class>
+			com.strongit.platform.webcomponent.datetime.DateTime
+		</tag-class>
+		<body-content>jsp</body-content>
+		<description>
+			<![CDATA[日期时间组件]]>
+		</description>
+
+
+		<attribute>
+			<name>id</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[对应input的name属性，如果没有指定，则和name属性相同]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>format</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[日期展示的格式，默认为'yyyy-MM-dd',其他值，要显示时间 yyyy-MM-dd HH:mm:ss]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>readOnly</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[readOnly为true表示不可以直接修改]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>validator</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[验证器]]>
+			</description>
+		</attribute>
+	</tag>
+
+	<tag>
+		<name>inlinedatetime</name>
+		<tag-class>
+			com.strongit.platform.webcomponent.datetime.InlineDateTime
+		</tag-class>
+		<body-content>jsp</body-content>
+		<description>
+			<![CDATA[内联日期时间组件]]>
+		</description>
+
+		<attribute>
+			<name>id</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[对应input的name属性，如果没有指定，则和name属性相同]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>format</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[日期展示的格式，默认为'yyyy-MM-dd',其他值，要显示时间 yyyy-MM-dd HH:mm:ss]]>
+			</description>
+		</attribute>
+
+		<!-- 
+			<attribute>
+			<name>lang</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description><![CDATA[指定弹出组件的语言，可以选择的值有auto,cn,en.不设置默认为auto表示更具浏览器来判断语言,cn表示中文,en表示英文]]></description>
+			</attribute>
+		-->
+	</tag>
+
+	<!-- 表单验证组件标签 -->
+	<tag>
+		<name>validator</name>
+		<tag-class>
+			com.strongit.platform.webcomponent.validator.ValidatorTag
+		</tag-class>
+		<body-content>JSP</body-content>
+		<description>
+			<![CDATA[表单验证组件标签]]>
+		</description>
+		<attribute>
+			<name>name</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[表单验证器名称]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>errorDisplayContainer</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[当使用tips形式展现错误信息时错误信息的容器Id]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>errorClass</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[错误样式名]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>tipClass</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[采用tip信息展现方式时，验证错误提示信息主体样式名称]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>errorElement</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[错误提示信息容器名称]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>errorContainer</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[当使用普通形式展现错误信息时，整体错误提示信息容器Id]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>errorLabelContainer</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[当使用普通形式展现错误信息时，单个错误提示信息容器Id]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>wrapper</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[单个提示信息的包装容器名称]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>formId</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[要验证的表单Id]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>submitTip</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[表单验证通过提交时是否展示提示信息,依赖于common.js]]>
+			</description>
+		</attribute>
+	</tag>
+
+	<!-- tab页组件标签 -->
+	<tag>
+		<name>vtabpanel</name>
+		<tag-class>
+			com.strongit.platform.webcomponent.tab.VTabPanel
+		</tag-class>
+		<body-content>jsp</body-content>
+		<description>
+			<![CDATA[vtabpanel组件]]>
+		</description>
+
+		<attribute>
+			<name>tabHeadRenderer</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>tabBodyRenderer</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>autoAdaptFunc</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[]]>
+			</description>
+		</attribute>
+
+
+		<attribute>
+			<name>tabHeadHeight</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[]]>
+			</description>
+		</attribute>
+
+
+		<attribute>
+			<name>showMenu</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>var</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[]]>
+			</description>
+		</attribute>
+	</tag>
+
+	<tag>
+		<name>htabpanel</name>
+		<tag-class>
+			com.strongit.platform.webcomponent.tab.HTabPanel
+		</tag-class>
+		<body-content>jsp</body-content>
+		<description>
+			<![CDATA[htabpanel组件]]>
+		</description>
+
+		<attribute>
+			<name>tabHeadRenderer</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>tabBodyRenderer</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>autoAdaptFunc</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>tabHeadWidth</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>showMenu</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>var</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[]]>
+			</description>
+		</attribute>
+
+	</tag>
+
+	<tag>
+		<name>tab</name>
+		<tag-class>
+			com.strongit.platform.webcomponent.tab.Tab
+		</tag-class>
+		<body-content>jsp</body-content>
+		<description>
+			<![CDATA[tab]]>
+		</description>
+
+		<attribute>
+			<name>id</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[对应内容id]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>text</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[对应内容id]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>closeAble</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[对应内容id]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>url</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[对应内容id]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>content</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[对应内容id]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>callback</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>args</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>lazy</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>highlight</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[]]>
+			</description>
+		</attribute>
+	</tag>
+
+	<!-- 导航栏组件标签 -->
+	<tag>
+		<name>navigationBar</name>
+		<tag-class>
+			com.strongit.platform.webcomponent.menu.MenuInit
+		</tag-class>
+		<body-content>jsp</body-content>
+		<description>
+			<![CDATA[菜单初始化]]>
+		</description>
+
+		<attribute>
+			<name>varname</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[菜单变量名字]]>
+			</description>
+		</attribute>
+
+	</tag>
+
+	<tag>
+		<name>navigationBarMenu</name>
+		<tag-class>
+			com.strongit.platform.webcomponent.menu.Menu
+		</tag-class>
+		<body-content>jsp</body-content>
+		<description>
+			<![CDATA[菜单]]>
+		</description>
+
+		<attribute>
+			<name>varname</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[菜单变量名字]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>eleid</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[元素id]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>menuItemName</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[菜单项的名字]]>
+			</description>
+		</attribute>
+
+	</tag>
+
+	<!-- 导航菜单组件标签 -->
+	<tag>
+		<name>navigationMenu</name>
+		<tag-class>
+			com.strongit.platform.webcomponent.verticalnavigation.VerticalNavigation
+		</tag-class>
+		<body-content>jsp</body-content>
+		<description>
+			<![CDATA[垂直导航菜单]]>
+		</description>
+
+		<attribute>
+			<name>id</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[id]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>nodes</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[服务器端数据]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>jsondata</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[json数据]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>wholeCss</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[json数据]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>hideIcons</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[当header下没有子级菜单时是否隐藏header前面的图标，当icons不为false时有效，默认为false]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>hideDiv</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[当header下没有子级菜单时点击header时是否展现空白的子级div，当fillSpace为true时有效，默认为false]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>headerNavigation</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[点击header是否能触发链接事件，默认为false]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>fillSpace</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[json数据]]>
+			</description>
+		</attribute>
+
+	</tag>
+
+	<!-- 数值、货币输入Html组件标签 -->
+	<tag>
+		<name>NumberInput</name>
+		<tag-class>
+			com.strongit.platform.webcomponent.numberinput.NumberInput
+		</tag-class>
+		<body-content>jsp</body-content>
+		<description>
+			<![CDATA[数字输入]]>
+		</description>
+
+		<attribute>
+			<name>inputId</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[输入框id]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>mark</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[符号]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>accuracy</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[精确度]]>
+			</description>
+		</attribute>
+	</tag>
+
+	<!-- 树型组件标签 -->
+	<tag>
+		<name>tree</name>
+		<tag-class>
+			com.strongit.platform.webcomponent.tree.TreeTag
+		</tag-class>
+		<body-content>JSP</body-content>
+		<description>
+			<![CDATA[树型组件标签]]>
+		</description>
+		<attribute>
+			<name>name</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[树型组件所在容器Id]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>displayDeep</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[树型组件允许展现的层级]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>lazyUrl</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[树型组件延迟加载时获取数据的url]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>data</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[树型组件静态数据]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>iconDir</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[树型组件图片存储路径]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>radio</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[树型组件是否展示单选框，默认为false]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>checkBox</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[树型组件是否展示复选框，默认为false]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>nodeCheck</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[节点复选框选中时触发的脚本函数名称]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>nodeClick</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[点击节点时触发的脚本函数名称]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>nodeDbclick</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[双击节点时触发的脚本函数名称]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>nodeSelect</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[节点选择框选中时触发的脚本函数名称，响应级联触发，可通过checkItem方式触发]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>cascadeCheck</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[节点复选框选中时的级联选择，即是否同时选中父级节点和子级节点，默认为true]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>parentCascadeCheck</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[节点复选框选中时的级联选择，即是否同时选中父级节点，默认为true]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>hasSelected</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[树型组件初始化选中节点的Id集，格式如：“,Id1,Id2,...,Idn,”]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>theme</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[树型组件的主体样式名称]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>treeStyle</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[树型组件的连接线模式]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>lazyLoad</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[树型组件是否需要延迟加载，默认为false]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>contextMenu</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[树型组件中右键菜单的名称]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>title</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[树型组件标题]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>errorHandler</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[ajax获取数据错误时的处理函数名称]]>
+			</description>
+		</attribute>
+	</tag>
+
+	<!-- grid组件标签 -->
+	<tag>
+		<name>grid</name>
+		<tag-class>
+			com.strongit.platform.webcomponent.datagrid.DataGridTag
+		</tag-class>
+		<body-content>JSP</body-content>
+		<description>
+			<![CDATA[dataGrid主标签]]>
+		</description>
+		<attribute>
+			<name>gridId</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[dataGrid的id，必填]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>url</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[得到数据的链接,必填]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>width</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[表格的宽度,默认为'auto']]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>height</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[表格的高度,默认为'auto']]>
+			</description>
+		</attribute>
+
+
+		<attribute>
+			<name>rowNum</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[每页显示多少行，默认值20行]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>pageSize</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[设置每页显示的条数是否显示，默认为true]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>pager</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[page页显示的父容器的id]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>selectType</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[设置选择框的类型：checkbox,radio,none;默认为none]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>loadComplete</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[加载完成之后触发的事件,可以是你要触发的函数]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>editurl</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[行编辑时的链接]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>altRows</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[是否显示斑马线，默认值为true]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>altclass</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[斑马线的样式]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>caption</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[表格的标题]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>autowidth</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[行自适应，设置是否自适应父窗体]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>orderType</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[排序的方式，server全局排序,page页内排序，默认为：page]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>ondblClickRow</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[双击行事件]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>onCellSelect</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[单击单元格事件]]>
+			</description>
+		</attribute>
+
+
+		<attribute>
+			<name>onRightClickRow</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[右击行事件]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>onSelectRow</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[选择行事件]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>subGrid</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[子表的id]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>contextmenu</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[显示右键菜单的名称]]>
+			</description>
+		</attribute>
+		<attribute>
+			<name>validator</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[错误提示信息的名称]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>rownumbers</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[是否显示行号，默认为false]]>
+			</description>
+		</attribute>
+		<attribute>
+			<name>isFixHead</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[列头是否固定，默认为false]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>selectInfo</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[设置已选择显示的信息，默认为行号,null]]>
+			</description>
+		</attribute>
+
+
+		<attribute>
+			<name>isTips</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[是否显示提示信息，默认为true]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>tipsClass</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[提示信息框的样式]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>afterInsertRow</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[一行插入之后调用的事件]]>
+			</description>
+		</attribute>
+		<attribute>
+			<name>beforeRequest</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[发送请求之前调用的事件]]>
+			</description>
+		</attribute>
+		<attribute>
+			<name>onSelectAll</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[单击全选的复选框是触发的事件]]>
+			</description>
+		</attribute>
+		<attribute>
+			<name>resizeStart</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[拖动列宽前调用的事件]]>
+			</description>
+		</attribute>
+
+
+		<attribute>
+			<name>treeGrid</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[是否为树形列表]]>
+			</description>
+		</attribute>
+
+
+		<attribute>
+			<name>expandColClick</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[点击子节点时是否只有点击图片有效，默认为 true]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>expandColumn</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[设置哪一列为树形]]>
+			</description>
+		</attribute>
+
+
+		<attribute>
+			<name>treeIcons</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[树形节点样式设置]]>
+			</description>
+		</attribute>
+		<attribute>
+			<name>resizeStop</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[拖动列宽后调用的事件]]>
+			</description>
+		</attribute>
+
+	</tag>
+
+	<tag>
+		<name>colModel</name>
+		<tag-class>
+			com.strongit.platform.webcomponent.datagrid.cModelTag
+		</tag-class>
+		<body-content>JSP</body-content>
+		<description>
+			<![CDATA[dataGrid组件列项标签]]>
+		</description>
+		<attribute>
+			<name>name</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[列名称]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>index</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[组菜单下的子菜单宽度，默认为150px]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>colTitle</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[表头显示的信息]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>width</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[列项宽度，默认为150px]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>align</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[内容的位置，默认为center]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>hidden</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[设置该列是否隐藏，默认为false]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>sorter</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[设置页内排序的方式，默认为text]]>
+			</description>
+		</attribute>
+
+
+
+		<attribute>
+			<name>editrules</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[设置编辑时验证的规则]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>edittype</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[编辑时的类型，默认为文本框]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>editoptions</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[当编辑类型为select时或者其他形式时的选项]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>formatter</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[定义显示格式]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>formatoptions</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[显示格式的选项]]>
+			</description>
+		</attribute>
+
+
+		<attribute>
+			<name>fixed</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[设置列宽是否是用户设定的参数，默认值为false]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>fixecol</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[设置该列是否随着滚动条移动，默认值为false]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>formula</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[设置该列为计算列，默认值为null]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>isTotal</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[设置是否为合计列]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>totalDesc</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[设置合计列的描述信息]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>classes</name>
+			<required>fasle</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[设置该列的样式]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>resizable</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[设置该列是否能被拖动]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>sortable</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[设置该列是否可以排序]]>
+			</description>
+		</attribute>
+	</tag>
+
+
+	<!-- 图片浏览组件标签 -->
+	<tag>
+		<name>eGrid</name>
+		<tag-class>
+			com.strongit.platform.webcomponent.erectgrid.ErectGridTableTag
+		</tag-class>
+		<body-content>JSP</body-content>
+		<description>
+			<![CDATA[erectGrid主标签]]>
+		</description>
+		<attribute>
+			<name>erectId</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[erectGrid的id，必填]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>url</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[得到数据的链接,必填]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>name</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[表格的名称]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>wholeCss</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[表格的整体样式]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>detailCss</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[表格内容的样式]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>clickCss</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[单击选中后的样式]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>width</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[整体的宽度，默认为100%]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>rowNum</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[每行显示的数据量，默认为4]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>dataNum</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[每页显示的数据量，默认为16]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>curpage</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[显示第几页的数据]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>height</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[整体div的宽度，默认为100%]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>isCanCheckAll</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[是否显示全选按钮]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>isCanSplit</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[是否显示分页栏]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>isShowMenu</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[右击时是否显示右键菜单]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>onContextMenu</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[右键菜单的名字]]>
+			</description>
+		</attribute>
+
+
+		<attribute>
+			<name>selectType</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[定义选择的类型，单选，或者多选]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>pager</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[分页栏的id]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>imgHeight</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[图片的高度]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>imgWidth</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[图片的宽度]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>altRows</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[是否显示斑马线，默认为false]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>altclass</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[斑马线的样式，默认样式：altclass]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>caption</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[显示标题的信息，默认为空，即不显示]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>selectInfo</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[已选择的提示信息]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>templet</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[td中显示的模板，具有一定的规则，默认为空]]>
+			</description>
+		</attribute>
+
+	</tag>
+
+	<tag>
+		<name>ecolModel</name>
+		<tag-class>
+			com.strongit.platform.webcomponent.erectgrid.ErectColModel
+		</tag-class>
+		<body-content>JSP</body-content>
+		<description>
+			<![CDATA[erectGrid组件列项标签]]>
+		</description>
+		<attribute>
+			<name>name</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[列名称]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>align</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[内容的位置，默认为center]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>desc</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[该列的描述]]>
+			</description>
+		</attribute>
+
+
+		<attribute>
+			<name>editoptions</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[当编辑类型为select时或者其他形式时的选项]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>formatter</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[定义显示格式]]>
+			</description>
+		</attribute>
+
+		<attribute>
+			<name>formatoptions</name>
+			<required>false</required>
+			<rtexprvalue>true</rtexprvalue>
+			<description>
+				<![CDATA[显示格式的选项]]>
+			</description>
+		</attribute>
+
+	</tag>
+</taglib>

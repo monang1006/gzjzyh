@@ -1,0 +1,215 @@
+BODY {
+	BORDER-TOP-WIDTH: 0px; PADDING-RIGHT: 0px; PADDING-LEFT: 0px; BORDER-LEFT-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; PADDING-BOTTOM: 0px; MARGIN: 0px; PADDING-TOP: 0px; BORDER-RIGHT-WIDTH: 0px
+}
+BODY {
+	PADDING-RIGHT: 0px; PADDING-LEFT: 0px; FONT-SIZE: medium; PADDING-BOTTOM: 0px; MARGIN: 0px; LINE-HEIGHT: 1.25em; PADDING-TOP: 0px
+}
+UL {
+	FONT-SIZE: medium;BORDER-TOP-WIDTH: 0px; PADDING-RIGHT: 0px; PADDING-LEFT: 0px; BORDER-LEFT-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; PADDING-BOTTOM: 0px; MARGIN: 0px; PADDING-TOP: 0px; BORDER-RIGHT-WIDTH: 0px
+}
+LI {
+	FONT-SIZE: medium;BORDER-TOP-WIDTH: 0px; PADDING-RIGHT: 0px; PADDING-LEFT: 0px; BORDER-LEFT-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; PADDING-BOTTOM: 0px; MARGIN: 0px; PADDING-TOP: 0px; BORDER-RIGHT-WIDTH: 0px
+}
+FORM {
+	FONT-SIZE: medium;BORDER-TOP-WIDTH: 0px; PADDING-RIGHT: 0px; PADDING-LEFT: 0px; BORDER-LEFT-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; PADDING-BOTTOM: 0px; MARGIN: 0px; PADDING-TOP: 0px; BORDER-RIGHT-WIDTH: 0px
+}
+IMG {
+	FONT-SIZE: medium;BORDER-TOP-WIDTH: 0px; PADDING-RIGHT: 0px; PADDING-LEFT: 0px; BORDER-LEFT-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; PADDING-BOTTOM: 0px; MARGIN: 0px; PADDING-TOP: 0px; BORDER-RIGHT-WIDTH: 0px
+}
+TABLE {
+	BORDER-COLLAPSE: collapse
+}
+BODY {
+	FONT-FAMILY: arial
+}
+TD {
+	FONT-FAMILY: arial
+}
+TD {
+	VERTICAL-ALIGN: top
+}
+INPUT {
+	FONT-SIZE: medium;FONT-FAMILY: arial
+}
+TEXTAREA {
+	FONT-SIZE: medium;FONT-FAMILY: arial
+}
+SELECT {
+	FONT-SIZE: medium;FONT-FAMILY: arial
+}
+OPTION {
+	FONT-SIZE: medium;FONT-FAMILY: arial
+}
+
+TEXTAREA {
+	FONT-SIZE: medium
+}
+SELECT {
+	FONT-SIZE: medium
+}
+OPTION {
+	FONT-SIZE: medium
+}
+UL {
+	FONT-SIZE: medium;LIST-STYLE-TYPE: none
+}
+LI {
+	FONT-SIZE: medium;LIST-STYLE-TYPE: none
+}
+DIV {
+	PADDING-RIGHT: 3px; PADDING-LEFT: 3px; PADDING-BOTTOM: 0px; MARGIN: 0px; LINE-HEIGHT: 1.4em; PADDING-TOP: 0px
+}
+P {
+	FONT-SIZE: medium;PADDING-RIGHT: 3px; PADDING-LEFT: 3px; PADDING-BOTTOM: 0px; MARGIN: 0px; LINE-HEIGHT: 1.4em; PADDING-TOP: 0px
+}
+P {
+	PADDING-RIGHT: 0px; PADDING-LEFT: 0px; PADDING-BOTTOM: 2px; PADDING-TOP: 2px
+}
+A {
+	COLOR: #0188F5; TEXT-DECORATION: none
+}
+A:hover {
+	BACKGROUND: #830E0D; COLOR: #fff; TEXT-DECORATION: none
+}
+#logo_index {
+	FONT-SIZE: medium;PADDING-RIGHT: 0px; PADDING-LEFT: 0px; PADDING-BOTTOM: 0px; OVERFLOW: hidden; LINE-HEIGHT: 0; PADDING-TOP: 0px; HEIGHT: 41px
+}
+#logo_index {
+	BACKGROUND: #bbd2e2; 
+}
+#logo_index TD IMG {
+	HEIGHT: 41px
+}
+#logo_index TABLE {
+	WIDTH: 100%
+}
+#logo_index TD {
+	FONT-SIZE: 0.8em; PADDING-RIGHT: 0px; PADDING-LEFT: 0px; PADDING-BOTTOM: 0px; VERTICAL-ALIGN: middle; LINE-HEIGHT: 41px; PADDING-TOP: 0px; color:#fff;FONT-WEIGHT:bold;
+}
+.button {
+	cursor:hand;FONT-SIZE: medium;BORDER-RIGHT: #200700 1px solid; BORDER-TOP: #200700 1px solid; BACKGROUND: #830E0D; BORDER-LEFT: #200700 1px solid; COLOR: #fff; BORDER-BOTTOM: #200700 1px solid
+}
+.button1 {
+	cursor:hand;FONT-SIZE: medium;BORDER-RIGHT: #200700 10px solid; BORDER-TOP: #200700 3px solid; BACKGROUND: #830E0D; BORDER-LEFT: #200700 10px solid; COLOR: #fff; BORDER-BOTTOM: #200700 3px solid
+}
+.sec {
+	FONT-SIZE: medium;CLEAR: both; PADDING-RIGHT: 3px; PADDING-LEFT: 3px; PADDING-BOTTOM: 3px; PADDING-TOP: 3px; BORDER-BOTTOM: #DBDBDB 1px solid
+}
+.list {
+	FONT-SIZE: medium;CLEAR: both; PADDING-RIGHT: 3px; PADDING-LEFT: 3px; PADDING-BOTTOM: 3px; PADDING-TOP: 3px; BORDER-BOTTOM: #DBDBDB 1px solid
+}
+.pager {
+	FONT-SIZE: medium;PADDING-RIGHT: 3px; PADDING-LEFT: 3px; PADDING-BOTTOM: 3px; PADDING-TOP: 3px; BORDER-BOTTOM: #e3eef8 1px solid
+}
+.ttitle {
+	FONT-SIZE: medium;PADDING-RIGHT: 3px; PADDING-LEFT: 3px; PADDING-BOTTOM: 3px; PADDING-TOP: 3px; BORDER-BOTTOM: #e3eef8 1px solid
+}
+.sec P {
+	FONT-SIZE: medium;PADDING-RIGHT: 0px; PADDING-LEFT: 0px; PADDING-BOTTOM: 1px; PADDING-TOP: 1px
+}
+#footer P {
+	FONT-SIZE: medium;PADDING-RIGHT: 0px; PADDING-LEFT: 0px; PADDING-BOTTOM: 1px; PADDING-TOP: 1px
+}
+#footer {
+	PADDING-RIGHT: 3px; PADDING-LEFT: 3px; PADDING-BOTTOM: 3px; COLOR: #830E0D; PADDING-TOP: 3px; BORDER-BOTTOM: #830E0D 1px solid
+}
+EM {
+	COLOR: #830E0D; FONT-STYLE: normal
+}
+.error {
+	FONT-SIZE: medium;BORDER-RIGHT: #dd3c10 1px solid; PADDING-RIGHT: 3px; BORDER-TOP: #dd3c10 1px solid; PADDING-LEFT: 3px; BACKGROUND: #F3F3F3; PADDING-BOTTOM: 3px; MARGIN: 3px; BORDER-LEFT: #dd3c10 1px solid; PADDING-TOP: 3px; BORDER-BOTTOM: #dd3c10 1px solid
+}
+.list {
+	PADDING-RIGHT: 0px; PADDING-LEFT: 0px; PADDING-BOTTOM: 0px; PADDING-TOP: 0px
+}
+.list DIV {
+	CLEAR: both; PADDING-RIGHT: 3px; BORDER-TOP: #e3eef8 1px solid; PADDING-LEFT: 3px; PADDING-BOTTOM: 3px; PADDING-TOP: 3px
+}
+#nav {
+	BACKGROUND: #F3F3F3;FONT-SIZE: medium;PADDING-RIGHT: 3px; PADDING-LEFT: 3px; PADDING-BOTTOM: 3px; PADDING-TOP: 3px; BORDER-BOTTOM: #e3eef8 1px solid
+}
+#hello {
+	BACKGROUND: #F3F3F3;HEIGHT:26PX;FONT-SIZE: medium;PADDING-RIGHT: 3px; PADDING-LEFT: 3px; PADDING-BOTTOM: 0px; PADDING-TOP: 3px
+}
+#footer {
+	BORDER-TOP-WIDTH: 0px; BORDER-LEFT-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; COLOR: #d1d4f0; BORDER-RIGHT-WIDTH: 0px
+}
+.list TD {
+	FONT-SIZE: medium;PADDING-RIGHT: 3px; PADDING-LEFT: 3px; PADDING-BOTTOM: 0px; PADDING-TOP: 3px
+}
+.sec P {
+	FONT-SIZE: medium;COLOR: #000
+}
+.sec DIV {
+	FONT-SIZE: medium;COLOR: #000
+}
+.sec B {
+	FONT-SIZE: medium;COLOR: #000
+}
+.sec SPAN {
+	FONT-SIZE: medium;COLOR: #000
+}
+#footer P {
+	FONT-SIZE: medium;COLOR: #000
+}
+.list DIV.t B {
+	FONT-SIZE: medium;COLOR: #000
+}
+.gray {
+	FONT-SIZE: medium; COLOR: #888! important
+}
+SMALL {
+	FONT-SIZE: medium; COLOR: #888! important
+}
+.nb {
+	FONT-SIZE: medium;BORDER-TOP-WIDTH: 0px! important; BORDER-LEFT-WIDTH: 0px! important; BORDER-BOTTOM-WIDTH: 0px! important; BORDER-RIGHT-WIDTH: 0px! important
+}
+.tm A:hover SMALL {
+	COLOR: #fff! important
+}
+.tm SMALL {
+	COLOR: #f33! important
+}
+.tm IMG {
+	VERTICAL-ALIGN: middle; MARGIN-RIGHT: 3px
+}
+#menu A:hover SMALL {
+	COLOR: #fff! important
+}
+.menu A:hover SMALL {
+	COLOR: #fff! important
+}
+.menu_list {
+	BACKGROUND: url("../../image/work/sec_menu.png")  #bbd2e2;
+	COLOR: #b8d4e8;
+	PADDING-TOP:3px;
+	BORDER-TOP: 0px; 
+	HEIGHT: 28px;
+	width:100%
+}
+.menu {
+	BACKGROUND: url("../../image/work/sec_menu.png")  #bbd2e2;
+	COLOR: #b8d4e8;
+	HEIGHT: 33px
+}
+#menu SMALL {
+	COLOR: #f33! important
+}
+.menu SMALL {
+	COLOR: #f33! important
+}
+#menu {
+	 PADDING-RIGHT: 3px; PADDING-LEFT: 3px; PADDING-BOTTOM: 3px; COLOR: #b8d4e8; PADDING-TOP: 0px; BORDER-BOTTOM: #b8d4e8 1px solid
+}
+#menu P {
+	PADDING-RIGHT: 0px; PADDING-LEFT: 0px; PADDING-BOTTOM: 1px; PADDING-TOP: 1px
+}
+
+.operate {
+	COLOR: #0188F5; border:0; font-size:medium; BACKGROUND: #ffffff;cursor:hand;padding:0px 2px 0px 0;
+}
+
+.gridlist {
+	PADDING-RIGHT: 2px; PADDING-LEFT: 2px; PADDING-BOTTOM: 2px; PADDING-TOP: 2px
+}
+

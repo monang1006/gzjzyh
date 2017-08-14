@@ -1,0 +1,124 @@
+<!-- 
+	History: The last revised time is at 2003-3-19
+-->
+<PUBLIC:COMPONENT tagName=tab>
+<PUBLIC:DEFAULTS viewLinkContent tabStop="true" viewMasterTab=false  />
+
+<PROPERTY NAME="pageCount" />
+<PROPERTY NAME="selPageIndex" />
+<PROPERTY NAME="strPageTitles" />
+<PROPERTY NAME="strPageTips" />
+<PROPERTY NAME="strPageEnables" />
+<PROPERTY NAME="strPageURLs" />
+
+<PUBLIC:METHOD NAME="setPageCount" />
+<PUBLIC:METHOD NAME="setPageCaption" />
+<PUBLIC:METHOD NAME="setPageTip" />
+<PUBLIC:METHOD NAME="setPageEnable" />
+<PUBLIC:METHOD NAME="setPageURL" />
+<PUBLIC:METHOD NAME="setCurSelPageIndex" />
+<PUBLIC:METHOD NAME="getCurSelPageIndex" />
+<PUBLIC:METHOD NAME="clearAllPages" />
+<PUBLIC:METHOD NAME="pageFrame" />
+<PUBLIC:METHOD NAME="printPage" />
+<PUBLIC:METHOD NAME="bindParentWindow" />
+
+<EVENT    NAME="onselpagechange"   ID="eChange" />
+<EVENT    NAME="onfocus"   ID="eFocus" />
+<EVENT    NAME="onblur"   ID="eBlur" />
+
+<ATTACH   EVENT="ondocumentready" HANDLER="init" />
+</PUBLIC:COMPONENT>
+
+<SCRIPT LANGUAGE="javascript">
+function init()
+{
+	if(pageCount != null)
+		htcTab.m_iPageCount = parseInt(pageCount);
+	if(selPageIndex != null)
+		htcTab.m_iSelPageIndex = parseInt(selPageIndex);
+	if(strPageTitles != null)
+		htcTab.m_strTabTitleArray = strPageTitles;
+	if(strPageTips != null)
+		htcTab.m_strTabTipsArray = strPageTips;
+	if(strPageEnables != null)
+		htcTab.m_strPageEnableArray = strPageEnables;
+	if(strPageURLs != null)
+		htcTab.m_strURLFrameArray = strPageURLs;
+}
+function setPageCount(count)
+{
+	htcTab.setPageCount(count);	
+}
+function setPageCaption(index,strTitle)
+{
+	htcTab.setPageCaption(index+1,strTitle);
+}
+function setPageTip(index,strTip)
+{
+	htcTab.setPageTip(index+1,strTip);
+}
+function setPageEnable(index,bState)
+{
+	if(bState = null)
+		bState = true;
+	htcTab.setPageEnable(index+1,bState);
+}
+function setPageURL(index,strURL)
+{
+	htcTab.setPageURL(index+1,strURL);
+}
+function setCurSelPageIndex(index)
+{
+	htcTab.setCurSelPageIndex(index+1);
+}
+function getCurSelPageIndex()
+{
+	return htcTab.getCurSelPageIndex()-1;
+}
+function clearAllPages()
+{
+	htcTab.clearAllPages();
+}
+function pageFrame(pageIndex)
+{
+	return htcTab.pageFrame(pageIndex);
+}
+function printPage(pageIndex)
+{
+	htcTab.printPage(pageIndex);
+}
+function bindParentWindow(outterDoc)
+{
+	htcTab.bindParentWindow(outterDoc);
+}
+</SCRIPT>
+<HTML>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+
+<SCRIPT LANGUAGE="javascript" FOR="htcTab" EVENT="onselpagechange">
+<!--
+	eChange.fire(createEventObject());
+-->
+</SCRIPT>
+<SCRIPT LANGUAGE="javascript" FOR="htcTab" EVENT="onfocus">
+<!--
+	eFocus.fire(createEventObject());
+-->
+</SCRIPT>
+<SCRIPT LANGUAGE="javascript" FOR="htcTab" EVENT="onlostfocus">
+<!--
+	eBlur.fire(createEventObject());
+-->
+</SCRIPT>
+
+<BODY>
+<object style='width=100%;height:100%' id="htcTab" CLASSID="CLSID:72C8E079-18E4-4395-8885-3CEEBDF1C1A9"
+CODEBASE="../lib/ctais_htc.cab#version=1,0,0,125">
+  <param name="_ExtentX" value="9313">
+  <param name="_ExtentY" value="6773">
+<div style="color:red">CTAIS组件xtab载入失败，请先<a href="/ctais/work/public/htm/install.htm#download" target="_blank">安装</a>并检查浏览器的安全设置选项</div>
+</object>
+</BODY>
+</HTML>

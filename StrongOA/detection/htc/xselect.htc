@@ -1,0 +1,555 @@
+<!-- 
+	History: The last revised time is at 2004-11-04
+-->
+<!--
+<?IMPORT namespace=ctais implementation="test.htc">
+-->
+<PUBLIC:COMPONENT tagName=select >
+<PUBLIC:DEFAULTS viewLinkContent tabStop="true" viewMasterTab=false />
+<PROPERTY NAME="fill" get=getFill put=setFill />
+<!-- 要映射的数据岛的句柄（ID） -->
+<PROPERTY NAME="node" />
+<!-- SELECT中的VALUE对应的节点值 -->
+<PROPERTY NAME="key" />
+<!-- SELECT中将被显示的节点值 -->
+<PROPERTY NAME="view" />
+<!-- 初始化时刷新数据，即重新从数据岛映射数据 -->
+<PROPERTY NAME="refresh" />
+<!-- initValue为缺省值 -->
+<PROPERTY NAME="initValue" />
+<PROPERTY NAME="initKey" />
+<PROPERTY NAME="skin" get=getSkin put=setSkin >
+<!-- <PUBLIC:PROPERTY NAME=debugMode get=getDebugMode put=setDebugMode /> -->
+<!-- <PROPERTY NAME="dataSrc"  />
+<PROPERTY NAME="dataFld"  /> -->
+
+<PROPERTY NAME="disable" get=getDisable put=setDisable />
+<PROPERTY NAME="readonly" get=getReadonly put=setReadonly />
+<PROPERTY NAME="selectedIndex" get=getSelItemRow />
+<!-- 保留bCompulsory为了兼容以前的版本 -->
+<PROPERTY NAME="bCompulsory" get=getMatch put=setMatch />
+<PROPERTY NAME="match" get=getMatch put=setMatch />
+<PROPERTY NAME="value" get=getValue put=setValue />
+<PROPERTY NAME="viewText" get=getViewText />
+<PROPERTY NAME="text" get=getText put=setText />
+<PROPERTY NAME="xml" get=getXml />
+<PROPERTY NAME="all" get=getAll />
+<!-- 20040812:王健  -->
+<PROPERTY NAME="noderequest" />
+<PROPERTY NAME="dictrequest" />
+<!-- 20040908:maxl  -->
+<PROPERTY NAME="name"/>
+
+<method name="options" />
+<methos name="focus" />
+<!-- 20040908:maxl end -->
+
+<METHOD NAME="hasFocus" />
+<METHOD NAME="option" />
+<METHOD NAME="clear" />
+<METHOD NAME="getValue" />
+<METHOD NAME="getPureText" />
+<METHOD NAME="setValue" />
+<METHOD NAME="setOptions" />
+<METHOD NAME="setSelectedItem" />
+<METHOD NAME="setSelectedItemByIndex" />
+<METHOD NAME="getOptionsCount" />
+<METHOD NAME="disable" />
+<METHOD NAME="getSelItemRow" />
+<METHOD NAME="getSelItemIndex" />
+
+<METHOD NAME="simulateAddRow" />
+<METHOD NAME="updateFromDso" />
+<!--200401104:WangJian:增加select的颜色，字体的设置 -->
+<PUBLIC:METHOD NAME="setColor" />
+<PUBLIC:METHOD NAME="setFont" />
+
+
+
+<PUBLIC:ATTACH   EVENT="oncontentready"  HANDLER="init" />
+<public:ATTACH   EVENT="onfocus"  HANDLER="fnFocus" />
+<PUBLIC:ATTACH   EVENT="onblur"  HANDLER="fnLostFocus" />
+<public:ATTACH   EVENT="onresize" HANDLER="fnResize" />
+<PUBLIC:EVENT NAME="ondropdown" ID="eDropDown" />
+<PUBLIC:EVENT NAME="onchange" ID="eChange" />
+<PUBLIC:EVENT NAME="oneditchange" ID="eEditChange" />
+
+
+</PUBLIC:COMPONENT>
+
+
+<SCRIPT LANGUAGE="javascript">
+var sKeyNodeName = "";
+var sViewArray = "";
+var sInitValueKey = "";
+var oDataSrc = null;
+var oDataFld = null;
+var oRecordset = null;
+var bFocus = false;
+///////用户自定义功能区//////////////////////////////////////////////////
+//可通过修改UserCustom中的代码，实现对select的缺省初始自定义设置
+function UserCustom()
+{
+	//setColor("FILL_COLOR","&HF5D8D1");
+	//setColor("DEFAULT_COLOR","&HF5D8D1");
+	//setColor("TEXT_CONTENT_COLOR",12409088);
+	//setFont("TEXT","宋体","false","8");
+	return;
+}
+var START = new Date().getTime();
+function fnResize(){
+	len = new Date().getTime() - START;
+	if (len > 600){
+		htcSelect.style.width = htcSelect.style.width == "100%"?"99.3%":"100%";
+		START = new Date().getTime();
+	}
+}
+
+function init()
+{
+
+	//20041104:WangJian:用户通过修改下边函数，实现自定义的缺省初始设置
+	UserCustom();
+
+	//wj1.method1();
+	if(key != null){
+		sKeyNodeName = key;
+		htcSelect.m_strKeyNodeName = key;
+		}
+	if(view != null){
+		sViewArray = view.split("|");
+		htcSelect.m_strViewNodeName = view;
+		}
+	if(initValue != null)
+		sInitValueKey = initValue;
+	else{
+		if(initKey != null)
+		sInitValueKey = initKey;
+	}
+
+	if(node != null)
+	{
+		if(node.indexOf("/") != -1){
+			//var arrNode = new Array();
+			var arrNode = node.split("/");
+			var nodeXML = eval(arrNode[0]);
+			for(var j=1;j<arrNode.length;j++)
+				nodeXML = nodeXML.getElementsByTagName(arrNode[j])(0);
+			setOptions(eval(nodeXML),sInitValueKey);
+		}else
+			setOptions(eval(node).documentElement,sInitValueKey);
+	}else{
+		//20040811:王健:增加noderequest属性，当node为空时主动查询service，得到select的xml内容，
+		//通过select.setOptions方法写数据到select中
+		if (noderequest != null){
+			var arrNodeRequest = noderequest.split(":");
+			var arrNodeLevel = arrNodeRequest[2].split("/");
+			var strUseNodeName = arrNodeLevel[arrNodeLevel.length-1];
+			var sid=createWorkId();
+			var service = new Service(arrNodeRequest[0],sid);
+			var oArg
+			if(arrNodeRequest[1] != "" ){
+				oArg=service.doService(arrNodeRequest[1]);
+				}
+			else{
+				oArg=service.doService();
+				}
+			if (getCode(service)== "2000")
+			{
+	   			if (strUseNodeName == ""){
+	   				//没有根节点，需补上一个
+	   				oArg = "<ROOT>" + oArg + "</ROOT>";
+	   				strUseNodeName = "ROOT";
+	   			}
+	   			var oDoc=loadXml(oArg);
+	   			var refNode = oDoc.getElementsByTagName(strUseNodeName)(0);
+				setOptions(refNode,sInitValueKey);
+   			}
+   			else{
+   				//alert("wrong service");
+	   			showMessage(getMessage(service), 0);
+   			}
+		}
+		//20040812:王健:增加初始化时根据条件动态请求数据，写入列表中
+		//dictrequest格式:[数据源]:表名称:[列名称,]
+		if (noderequest == null && dictrequest != null){
+			//alert("dictrequest  " + dictrequest);
+			//alert("开始位置：" + dictrequest.indexOf(":"));
+			//alert("last位置：" + dictrequest.lastIndexOf(":"));
+			var strTableName = dictrequest.substring(dictrequest.indexOf(":")+1,dictrequest.lastIndexOf(":"));
+			//alert("TableName:" + strTableName);
+			var strXml = getDictRequestStr(dictrequest);
+			var sid="SID:00000000";//createWorkId();
+			var service = new Service("XmlDataIsland.get",sid);
+			var oArg
+			oArg=service.doService(strXml);
+			if (getCode(service)== "2000")
+			{
+	   			var oDoc=loadXml(oArg);
+	   			var refNode = oDoc.getElementsByTagName(strTableName)(0);
+				setOptions(refNode,sInitValueKey);
+   			}
+   			else{
+   				//alert("wrong service");
+	   			showMessage(getMessage(service), 0);
+   			}			
+		}		
+	}
+	//this.getProperty("dataSrc",src);
+	/*var tmpHtml = outerHTML.toUpperCase();
+
+	if(tmpHtml.indexOf("DATASRC") != -1){
+		var strSrc = "";
+		var strFld = "";
+		var arrUpperHtml = tmpHtml.split(" ");
+		var arrSrcHtml = outerHTML.split(" ");
+		for(var i=0;i<arrUpperHtml.length;i++){
+			if(arrUpperHtml[i].indexOf("DATASRC") != -1)
+				strSrc = arrSrcHtml[i].replace(" ","").substr(8);
+			if(arrUpperHtml[i].indexOf("DATAFLD") != -1)
+				strFld = arrSrcHtml[i].replace(" ","").substr(8);
+		}
+		if(strSrc != "" && strFld != ""){
+			alert("Src:" + strSrc + " Fld:" + strFld);
+			setDataSrc(strSrc);
+			setDataFld(strFld);
+		}
+	}*/
+}
+var BEGIN = new Date().getTime();
+function fnFocus()
+{
+	var len = new Date().getTime()-BEGIN;
+	if (len < 600){
+		return;
+	}
+	htcSelect.focus();
+	bFocus = true;
+	BEGIN = new Date().getTime();
+}
+function fnLostFocus()
+{
+	bFocus = false;
+//取消这项功能
+//	htcSelect.hideSearchList();
+}
+function hasFocus()
+{
+	return bFocus;
+}
+function getFill()
+{
+	return htcSelect.bFill;
+}
+function setFill(val)
+{
+	if(val == "yes" || val.toString() == "true")
+		htcSelect.bFill = true;
+	else
+		htcSelect.bFill = false;
+}
+function getDisable()
+{
+	return htcSelect.bDisable;
+}
+function setDisable(val)
+{
+	htcSelect.bDisable = val;
+	//外部很多代码在组件被disable时仍然调用focus()，导致报错，只有解决了该问题之后才能放开以下代码
+	//this.disabled = val;
+}
+function getSkin()
+{
+	return htcSelect.skin;
+}
+function setSkin(val)
+{
+	htcSelect.skin = val;
+}
+function getDataSrc()
+{
+	return oDataSrc;
+}
+function setDataSrc(val)
+{
+	var dsoName = val.replace("#","");
+	if(val != null)
+	{
+		var refNode = null;
+		val = val.replace("#","");//消除'#'符号
+		if(val.indexOf("/") != -1){
+			//var arrNode = new Array();
+			var arrNode = val.split("/");
+			refNode = eval(arrNode[0]);
+			dsoName = arrNode[0];
+			for(var j=1;j<arrNode.length;j++)
+				refNode = refNode.getElementsByTagName(arrNode[j])(0);
+		}else
+			refNode = eval(val).documentElement;
+		
+		//htcSelect.dataSrc = dsoName;
+		window.document.all.item(dsoName).attachEvent('oncellchange',updateFromDso);//simulateAddRow);
+//		window.document.all.item(dsoName).attachEvent('onrowenter',updateFromDso);
+		oDataSrc = refNode;
+
+		oRecordset = window.document.all.item(dsoName).recordset;
+	}
+}
+function simulateAddRow()
+{
+	var strNewRow = "<_CTAIS_HTC_XML_RESERVED_></_CTAIS_HTC_XML_RESERVED_>"
+	//不要用MSXML2.DOMDocument,对象无法赋值
+	var doc = new ActiveXObject("MSXML.DOMDocument");
+	doc.async = false;
+	doc.loadXML(strNewRow);
+	if (doc.parseError.errorCode != 0) {
+		alert("解析XML数据错误：\n"+doc.parseError.reason);
+		return;
+	}
+	oDataSrc.appendChild(doc.documentElement);
+	oRecordset.moveLast();
+	alert(oDataSrc.xml);
+}
+//1.如何获得改变之后的值?
+//2.如何保证在removeChild之后保证orefNode指向正确的地址?
+function updateFromDso()
+{
+	alert(event.behaviorPart);
+	alert(event.cancelBubble);
+	alert(event.contentOverflow);
+	alert(event.dataFld );
+	alert(event.srcElement );
+	alert(event.nextPage );
+	alert(event.qualifier   );
+	alert(event.recordset  );
+	alert(event.type );
+	alert("dso_change");
+	//alert(oDataFld.text);
+	//alert(event.recordset(event.dataFld));
+	//alert("dso_change");
+	/*alert('begin');
+	alert(event.recordset(event.dataFld));
+	alert(oDataFld.text);
+	event.recordset(event.dataFld) = "90309";
+	alert('end');*/
+
+/*	if(oRecordset)
+		alert(oRecordset(oDataFld.tagName));
+	if(oDataFld){
+		alert(event.dataFld);
+		if(event.dataFld == oDataFld.tagName){
+			alert(oDataFld.text);
+			setValue(oDataFld.text);
+		}
+	}*/
+}
+function getDataFld()
+{
+	return oDataFld;
+}
+function setDataFld(val)
+{
+	if(val != null){
+		if(oDataSrc == null)
+			alert("编码错误:必须先制定[dataSrc]属性.");
+		else{
+			oDataFld = oDataSrc.getElementsByTagName(val.toString())(0);
+			htcSelect.bindNode = oDataFld;
+			setValue(oDataFld.text);
+			//htcSelect.dataFld = val;
+			//htcSelect.attachEvent('onbeforeupdate',updateFromDso);
+		}
+	}
+}
+
+
+
+function getValue()
+{
+	//if(htcSelect.getKeyValue() != null)
+		return htcSelect.getKeyValue();
+	//else
+	//	return "";
+}
+function setValue(val)
+{
+	htcSelect.setKeyValue(val);
+}
+function getViewText()
+{
+	return htcSelect.getViewText();
+}
+function getReadonly()
+{
+	return htcSelect.bReadOnly;
+}
+function setReadonly(bVal)
+{
+	htcSelect.bReadOnly = bVal;
+}
+function getMatch()
+{
+	return htcSelect.bMatch;
+}
+function setMatch(val)
+{
+	htcSelect.bMatch = val;
+}
+function setOptions(nodeDoc,val)
+{
+	htcSelect.clear();
+	if(val == null)
+		val = "";
+	var oNode;
+	if(nodeDoc.nodeType == 9)
+		oNode = nodeDoc.documentElement;
+	else
+		oNode = nodeDoc;
+	htcSelect.setOptions(oNode,val);
+}
+function setSelectedItem(val)
+{
+	htcSelect.setSelectedItem(val);
+}
+function setSelectedItemByIndex(val)//0-based
+{
+	htcSelect.setSelectedItemByIndex(val);
+}
+function getOptionsCount()
+{
+	return htcSelect.getOptionsCount();
+}
+
+function getPureText()//20030916新增，可风使用
+{
+	return htcSelect.PureText;
+}
+
+
+function getText()
+{
+	return htcSelect.text;
+}
+function setText(val)
+{
+	htcSelect.text = val;
+}
+function getXml()
+{
+	return htcSelect.getXMLString();
+}
+function getAll()
+{
+	return htcSelect.allItems;
+}
+function option(index)
+{
+	return htcSelect.allItems.item(index);
+}
+//add by maxlb at 2004-08-18 ,reason :use same collection name with html:select tag 
+function options(index){
+ return htcSelect.allItems.item(index);
+}
+function  focus(){
+ htcSelect.focus();
+ bFocus = true;
+}
+
+//add by maxlb end
+
+function clear()
+{
+	htcSelect.clear();
+}
+//0-based
+function getSelItemRow()
+{
+	return htcSelect.getSelItemRow() -1;
+}
+function getSelItemIndex()
+{
+	return htcSelect.getSelItemRow() -1;
+}
+function disable(val)
+{
+	htcSelect.bDisable = val;
+}
+/*
+ * 创建人: WangJian
+ * 创建日期: 2004-11-04
+ * 最后修改日期: 
+ * 函数功能：设置背景和前景颜色
+ * 输入参数：string:strType设置什么部位的颜色;int32:lColor颜色的16进制数值
+ * 输出参数：
+*/
+function setColor(strType,lColor){
+	htcSelect.SetColor(strType,lColor);
+}
+/*
+ * 创建人: WangJian
+ * 创建日期: 2004-11-04
+ * 最后修改日期: 
+ * 函数功能：设置文本的字体的类型和粗细
+ * 输入参数：string:strType设置什么部位的字体;string:strFontName字体名称;bool:bIsBold是否加粗显示;int:iFontSize字体尺寸
+ * 输出参数：
+*/
+function setFont(strType,strFontName,bIsBold,iFontSize){
+	if(setFont.arguments.length == 2)
+		htcSelect.SetFont(strType,strFontName);
+	if(setFont.arguments.length == 3)
+		htcSelect.SetFont(strType,strFontName,bIsBold);
+	if(setFont.arguments.length == 4)
+		htcSelect.SetFont(strType,strFontName,bIsBold,iFontSize);
+}
+
+function fnDropDown()
+{
+	eDropDown.fire(createEventObject());
+}
+function fnChange()
+{
+	//调用service.js中的notifyChange(true/false)方法
+	try{
+		notifyChange(true);
+	}catch(e){
+		alert("编码错误:检测到没有引用Service.js文件,导致notifyChange()函数不可用!");
+	}
+	//
+	eChange.fire(createEventObject());
+}
+function fnEditChange()
+{
+	eEditChange.fire(createEventObject());
+}
+</SCRIPT>
+<HTML>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+<SCRIPT LANGUAGE="javascript" FOR="htcSelect" EVENT="ondropdown">
+<!--
+	fnDropDown();
+-->
+</SCRIPT>
+<SCRIPT LANGUAGE="javascript" FOR="htcSelect" EVENT="onchange">
+<!--
+	fnChange();
+-->
+</SCRIPT>
+<SCRIPT LANGUAGE="javascript" FOR="htcSelect" EVENT="oneditchange">
+<!--
+	fnEditChange();
+-->
+</SCRIPT>
+<BODY>
+<p>
+<object style='width:100%' id="htcSelect" CLASSID="CLSID:E76DC08A-C7E3-4669-ABCA-30E9702EA4A9"
+CODEBASE="../lib/ctais_htc.cab#version=1,0,0,125">
+  <param name="_ExtentX" value="3413">
+  <param name="_ExtentY" value="556">
+  <SPAN STYLE="color:red">
+  			ActiveX 载入失败! -- 请检查您浏览器的安全设置选项.
+		</SPAN>
+</object>
+</p>
+</BODY>
+</HTML>

@@ -1,0 +1,37 @@
+v\:*{behavior:url(#default#VML);
+BODY {
+	 FONT-FAMILY: "ËÎÌו"; FONT-SIZE: 9pt; FONT-STYLE: normal; LINE-HEIGHT: 150%; TEXT-DECORATION: none
+}
+TD,span {
+	 FONT-FAMILY: "ËÎÌו"; FONT-SIZE: 9pt; LINE-HEIGHT: 150%; TEXT-DECORATION: none
+}
+
+A{
+	COLOR: blue;
+	FONT-STYLE: normal;
+	TEXT-DECORATION: none
+}
+
+.whole{
+	background-color:#d4d0c8;
+	margin-top:0;
+	margin-left:0;
+	margin-right:0;
+	margin-bottom:0
+}
+
+.toolTD{
+	BORDER-RIGHT: #848284 1px solid;
+	BORDER-TOP: white 1px solid;
+	BACKGROUND: #d4d0c8;
+	MARGIN: 0px;
+	BORDER-LEFT: white 1px solid;
+	BORDER-BOTTOM: #848284 1px solid;
+}
+
+fieldset   {   
+  font-family:   Tahoma,   Verdana,   "ËÎÌו";
+  color:red;
+}
+
+

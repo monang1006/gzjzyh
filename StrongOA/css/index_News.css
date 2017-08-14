@@ -1,0 +1,44 @@
+@charset "utf-8";
+/* CSS Document */
+/*
+思创数码科技股份有限公司OA5.0
+index_News's Style Sheet
+*/
+body, h1, h2, h3, h4, h5, h6, hr, p, blockquote, dl, dt, dd, ul, ol, li, pre, form, fieldset, legend, button, input, textarea, th, td { margin:0; padding:0; }
+body, button, input, select, textarea { font:12px/1.5 tahoma, arial, simsun, sans-serif; }
+h1, h2, h3, h4, h5, h6 { font-size:100%; }
+address, cite, dfn, em, var { font-style:normal; }
+code, kbd, pre, samp { font-family:courier new, courier, monospace; }
+small { font-size:12px; }
+ul, ol, li { list-style:none; }
+a { text-decoration:none; }
+a:hover { text-decoration:underline; }
+sup { vertical-align:text-top; }
+sub { vertical-align:text-bottom; }
+legend { color:#000; }
+fieldset, img { border:0; }
+button, input, select, textarea { font-size:100%; }
+table { border-collapse:collapse; border-spacing:0; }
+html { color: #000; background:url(../resource/images/index_News/lsrepbg.jpg) #12b3f2 repeat-x center top; }
+body { font:12px/1.5 tahoma, arial, simsun, sans-serif; font-family:"\5b8b\4f53", sans-serif; background:url(../resource/images/index_News/lsconbg.jpg) no-repeat center top; }
+a { color: #31393f; text-decoration:none; cursor:pointer; }
+a:hover { color:#00558b; text-decoration:underline; }
+.fri { float: right; }
+.fle { float: left; }
+#header, #container, #footer { width:891px; margin:0 auto; }
+#header { height:197px; background:url(../resource/images/index_News/lstopbg.jpg) no-repeat center top; }
+#container { overflow:hidden; height:402px; width:883px; padding:0 4px; background:url(../resource/images/index_News/lsmainbg.jpg) no-repeat center top; }
+.hotnews { float:left; width:400px; padding:20px; overflow:hidden; }
+.login { float:right; width:440px; }
+.hotnews dt { background:url(../resource/images/index_News/lstitbg.gif) no-repeat left center; padding-left:18px; font-size:14px; font-weight:bold; color:#006baf; border-bottom:1px solid #a4c8df; line-height:24px; }
+.hotnews dd { padding:10px; }
+.hotnews dd li { line-height:24px; color:#31393f; }
+.login input { border:none; background:none; }
+.logp01 { padding:178px 0 0 161px; }
+.logp01 input, .logp02 input, .logp01 span, .logp02 span { width:190px; height:28px; line-height:28px; padding:0 5px; }
+.logp02 { padding:19px 0 0 162px; }
+.logp03 { padding:50px 0 0 163px; }
+.logp03 input { width:95px; height:32px; }
+#footer { text-align:center; color:#cff2ff; }
+#footer p { padding:40px 0 10px; line-height:23px; }
+dd li span.zfwjbhsp { display: inline-block; width: 120px; }

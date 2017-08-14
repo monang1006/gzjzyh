@@ -1,0 +1,299 @@
+body {
+	margin-left: 0px;
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+	font-family: "瀹嬩綋";
+	font-size: 14px;
+}
+table {
+	color: #000000;
+    font-size: 14px;
+	font-family: "瀹嬩綋";
+	text-decoration: none;
+}
+iframe{
+padding:0;
+margin:0;
+}
+a:link {
+	font-size: 14px;
+	color: #000000;
+	text-decoration: none;
+}
+
+a:visited {
+	font-size: 14px;
+	color: #000000;
+	text-decoration: none;
+}
+a:hover {
+	font-size: 14px;
+	color: #FF0000;
+	text-decoration: none;
+}
+.leftbt a:link{
+	font-family: "瀹嬩綋";
+	font-size: 14px;
+	color: #003564;
+	text-decoration: none;	
+
+}
+.leftbt a:hover{
+	font-family: "瀹嬩綋";
+	font-size: 14px;
+	color: #ffffff;
+}
+.leftbt a:visited{
+	font-family: "瀹嬩綋";
+	font-size: 14px;
+	color: #003564;
+	text-decoration: none;	
+
+}
+.leftbt a:active{
+	font-family: "瀹嬩綋";
+	font-size: 14px;
+	color: #003564;
+	text-decoration: none;	
+
+}
+.bt {
+    padding-right: 0px;
+    padding-left: 0px;
+	font-family: "榛戜綋";
+	font-size: 20px;
+	color: #FFFFFF;
+	filter: DropShadow(Color=#444444, OffX=1, OffY=1, Positive=1);
+	
+}
+.dh1 {
+	font-family: "瀹嬩綋";
+	font-size: 14px;
+	color: #ffffff;
+	text-decoration: none;	
+	filter: DropShadow(Color=#444444, OffX=1, OffY=1, Positive=1);
+}
+
+.dh1 a:link{
+	font-family: "瀹嬩綋";
+	font-size: 14px;
+	color: #ffffff;
+	text-decoration: none;	
+	filter: DropShadow(Color=#444444, OffX=1, OffY=1, Positive=1);
+}
+.dh1 a:hover{
+	font-family: "瀹嬩綋";
+	font-size: 14px;
+	color: #ffffff;	
+	filter: DropShadow(Color=#444444, OffX=1, OffY=1, Positive=1);
+}
+.dh1 a:visited{
+	font-family: "瀹嬩綋";
+	font-size: 14px;
+	color: #ffffff;
+	text-decoration: none;		
+	filter: DropShadow(Color=#444444, OffX=1, OffY=1, Positive=1);
+}
+.dh1 a:active{
+	font-family: "瀹嬩綋";
+	font-size: 14px;
+	color: #ffffff;
+	text-decoration: none;		
+	filter: DropShadow(Color=#444444, OffX=1, OffY=1, Positive=1);
+}
+.biaoge_bg{
+	font-family: "瀹嬩綋";
+	font-size: 14px;
+	color: #373737;
+	text-decoration: none;
+	background-color: #F6F6F6;
+	height: 23px;
+	white-space: normal;
+	padding-left:12px;
+}
+.biaoge_nr{
+	font-family: "瀹嬩綋";
+	font-size: 14px;
+	color: #373737;
+	text-decoration: none;
+	height: 23px;
+	white-space: normal;
+	padding-left: 12px;
+}
+.biaoge_nr a:link{
+	font-family: "瀹嬩綋";
+	font-size: 14px;
+	color: #373737;
+	text-decoration: none;
+	font-weight: bold;
+}
+.biaoge_nr a:hover{
+	font-family: "瀹嬩綋";
+	font-size: 14px;
+	color: #373737;	
+}
+.biaoge_nr a:visited{
+	font-family: "瀹嬩綋";
+	font-size: 14px;
+	color: #373737;
+	text-decoration: none;		
+}
+.biaoge_nr a:active{
+	font-family: "瀹嬩綋";
+	font-size: 14px;
+	color: #373737;
+	text-decoration: none;		
+}
+.biaoge_bt a:link{
+	font-family: "瀹嬩綋";
+	font-size: 14px;
+	color: #054B90;
+	text-decoration: none;
+	font-weight: bold;
+}
+.biaoge_bt a:hover{
+	font-family: "瀹嬩綋";
+	font-size: 14px;
+	color: #054B90;	
+	font-weight: bold;
+	
+}
+.biaoge_bt a:visited{
+	font-family: "瀹嬩綋";
+	font-size: 14px;
+	color: #054B90;
+	text-decoration: none;		
+	font-weight: bold;
+}
+.biaoge_bt a:active{
+	font-family: "瀹嬩綋";
+	font-size: 14px;
+	color: #054B90;
+	text-decoration: none;		
+	font-weight: bold;
+}
+
+.qh1 a:link{
+	font-family: "瀹嬩綋";
+	font-size: 14px;
+	color: #6F6A66;
+	text-decoration: none;
+}
+.qh1 a:hover{
+	font-family: "瀹嬩綋";
+	font-size: 14px;
+	color: #6F6A66;	
+	text-decoration: none;		
+}
+.qh1 a:visited{
+	font-family: "瀹嬩綋";
+	font-size: 14px;
+	color: #6F6A66;
+	text-decoration: none;		
+}
+.qh1 a:active{
+	font-family: "瀹嬩綋";
+	font-size: 14px;
+	color: #6F6A66;
+	text-decoration: none;		
+}
+.qh2 a:link{
+	font-family: "瀹嬩綋";
+	font-size: 14px;
+	color: #113082;
+	text-decoration: none;
+}
+.qh2 a:hover{
+	font-family: "瀹嬩綋";
+	font-size: 14px;
+	color: #113082;	
+	text-decoration: none;		
+}
+.qh2 a:visited{
+	font-family: "瀹嬩綋";
+	font-size: 14px;
+	color: #113082;
+	text-decoration: none;		
+}
+.qh2 a:active{
+	font-family: "瀹嬩綋";
+	font-size: 14px;
+	color: #113082;
+	text-decoration: none;		
+}
+.qh2 {
+	font-family: "瀹嬩綋";
+	font-size: 14px;
+	color: #113082;
+	text-decoration: none;		
+}
+.line1 {
+	font-size: 14px;
+	text-decoration: none;
+	background-color: #EEEEEC;
+	height: 7px;
+}
+/* 涓汉妗岄潰 */
+.gr{ font-size:14px; color:#003A70;}
+.gr a:link, .gr a:visited, .gr a:hover{ font-size:14px; color:#003A70;}
+/* 鏀跺彇閭欢 */
+.yj{ font-size:14px; color:#07338C;}
+.yj a:link, .yj a:visited, .yj a:hover{ font-size:14px; color:#07338C;}
+.yjbg{FILTER:progid:DXImageTransform.Microsoft.Gradient(gradientType=0,startColorStr=#ffffff,endColorStr=#DEEEFB);}
+.yjbg{ font-size:14px; color:#07338C;}
+.yj2{ font-size:14px; color:#07338C; background-color:#F6F6F6}
+.yj2 a:link, .yj2 a:visited, .yj2 a:hover{ font-size:14px; color:#07338C; background-color:#F6F6F6;}
+/* 涓嬫媺闅愯棌 */
+.test{ overflow:hidden; }
+
+/* 宸︿晶涓嬫媺鑿滃崟 */
+#menu {width:100%; margin:0px 3px 0px 3px;padding:0px;text-align:left;list-style:none;}
+#menu .item {padding:0px;list-style:none;}
+#menu .item ul {margin:0;width:140px;padding:3px 0px 3px 30px;list-style:none;display:none; line-height:150%;}
+#menu .item ul li {
+	display:block;
+}
+#menu .item ul li a:link{ font-size:14px; text-decoration:none; center left no-repeat ; height:25px;;
+	vertical-align: middle; }
+#menu .item ul li a:visited{ font-size:14px; text-decoration:none; center left no-repeat ; height:25px;vertical-align: middle;}
+#menu .item ul li a:hover{ font-size:14px; font-weight:bold; text-decoration:none; center left no-repeat; height:25px;vertical-align: middle;}
+.title{
+	filter:progid:DXImageTransform.Microsoft.Gradient(gradientType=1,startColorStr=#DAEAF7,endColorStr=#ABCCEB);)
+	display:block;
+	color:#000000;
+	font-weight:bold;
+	padding:2px 0 0 22px;
+	width:100%;
+	line-height:27px;	
+	text-decoration:none; 
+	font-size:14px; 
+	font-family:"瀹嬩綋";
+	padding-top: 4px;
+	cursor:pointer;
+}
+.optiton a{ padding-left:15px;}
+    
+/* 宸︿晶閫夐」鍗� */
+*{margin:0;padding:0;}
+a.thr:link ,a.thr:visited { font-family:"瀹嬩綋"; font-size:14px; text-decoration:none; color:#000000;}
+a.thr:hover {font-family:"瀹嬩綋"; font-size:14px; text-decoration:none; color:#ffffff;}
+
+#navPlane{width:31px; height:100%; background:#dae6f2;}
+#navPlane li{
+	list-style-type: none;
+	display:block;
+}
+
+#scrollup,#scrolldown{width:31px; height:20px; text-align:center; font-size:20px; line-height:20px;}
+#ipt{width:31px;}
+#ipt li{
+	list-style-type: none;
+	display:block;
+	width:31px;
+}
+#ipt li a{writing-mode:tb-rl; display:block; margin:0; padding:0; widows:20px; height:65px; text-align:center; margin-top:8px; margin-right:5px;
+}
+#ipt li img{vertical-align:middle}
+
+.tt{width:31px; height:72px; no-repeat center; }

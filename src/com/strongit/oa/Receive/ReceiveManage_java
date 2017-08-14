@@ -1,0 +1,482 @@
+package com.strongit.oa.Receive;
+
+import java.io.BufferedInputStream;
+import java.io.StringReader;
+import java.sql.Blob;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
+
+import com.strongit.oa.bo.Tdocattach;
+import com.strongit.oa.bo.ToaRecvdoc;
+import com.strongmvc.exception.DAOException;
+import com.strongmvc.exception.ServiceException;
+import com.strongmvc.exception.SystemException;
+import com.strongmvc.orm.hibernate.GenericDAOHibernate;
+import com.strongmvc.orm.hibernate.Page;
+
+@Service
+@Transactional
+public class ReceiveManage {
+	private GenericDAOHibernate<ToaRecvdoc, java.lang.String> recvDocDao;
+
+	private GenericDAOHibernate<Tdocattach, java.lang.String> docattach;
+
+	@Autowired
+	public void setSessionFactory(SessionFactory sessionFactory) {
+		recvDocDao = new GenericDAOHibernate<ToaRecvdoc, String>(
+				sessionFactory, ToaRecvdoc.class);
+		docattach = new GenericDAOHibernate<Tdocattach, String>(sessionFactory,
+				Tdocattach.class);
+	}
+
+	/**
+	 * Description: 获取数据
+	 */
+	public Page query(Page<ToaRecvdoc> page, String dbType, String dbPath,
+			String dbName, String dbUser, String dbPass, String dbChar)
+			throws DAOException, ServiceException, SystemException {
+		// 查询数据
+		Connection Conn = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+
+		Connection Conn1 = null;
+		PreparedStatement ps1 = null;
+		ResultSet rs1 = null;
+
+		String content = null;
+
+		List<ToaRecvdoc> lis = new ArrayList<ToaRecvdoc>();
+		int startRownum = (page.getPageNo() - 1) * page.getPageSize();
+		int endRownum = startRownum + page.getPageSize();
+		try {
+			// 获取数据源//数据库类型,数据库地址,数据库名,用户名,密码,字符集
+			Conn = DataSource.getConn(dbType, dbPath, dbName, dbUser, dbPass,
+					dbChar);
+			// 算总记录数据
+			String sql = "select t.id from Tab_Content_Recive t";
+			ps = Conn.prepareStatement(sql, ResultSet.TYPE_SCROLL_INSENSITIVE,
+					ResultSet.CONCUR_READ_ONLY);
+			rs = ps.executeQuery();
+			rs.last();
+			int total = rs.getRow();
+			int totalPage = 1;
+			totalPage = total % page.getPageSize() == 0 ? total
+					/ page.getPageSize() : total / page.getPageSize() + 1; // 计算总页数
+			page.setTotalCount(totalPage);
+			rs.close();
+			ps.close();
+			Conn.close();
+
+			// 查询数据
+			// 获取数据源//数据库类型,数据库地址,数据库名,用户名,密码,字符集
+			Conn1 = DataSource.getConn(dbType, dbPath, dbName, dbUser, dbPass,
+					dbChar);
+//			String sql1 = "select *  from (select t.*, rownum rownum_ from (select id,content"
+//					+ " from Tab_Content_Recive where flag = 0 order by id desc) t) where rownum_ <= "
+//					+ endRownum + " and rownum_ > " + startRownum;
+			
+			String sql1 = "select id, content from Tab_Content_Recive where flag = 0 ";
+			System.out.println(sql1);
+			ps1 = Conn1.prepareStatement(sql1,
+					ResultSet.TYPE_SCROLL_INSENSITIVE,
+					ResultSet.CONCUR_READ_ONLY);
+			rs1 = ps1.executeQuery();
+			// Pageable page = new PageableResultSet(rs);
+			if (rs1 != null) {
+				ToaRecvdoc toaRecvdoc = null;
+				while (rs1.next()) {
+					toaRecvdoc = new ToaRecvdoc();
+					String recvDocId = String.valueOf(rs1.getInt("id"));
+					content = rs1.getString("content");
+					toaRecvdoc.setRecvDocId(recvDocId);
+
+					if (!"".equals(content) || content != null) {
+						StringReader sr = new StringReader(content);
+						InputSource is = new InputSource(sr);
+						DocumentBuilderFactory factory = DocumentBuilderFactory
+								.newInstance();
+						DocumentBuilder builder = factory.newDocumentBuilder();
+						Document doc = builder.parse(is);
+						// 标题
+						NodeList doctitle = doc
+								.getElementsByTagName("doctitle");
+						Element e = (Element) doctitle.item(0);
+						Node t = e.getFirstChild();
+						if (t != null) {
+							toaRecvdoc.setRecvdocTitle(t.getNodeValue());
+						}
+
+						// 文号
+						NodeList docNoPre = doc
+								.getElementsByTagName("docNoPre");
+						Element e1 = (Element) docNoPre.item(0);
+						Node t1 = e1.getFirstChild();
+						if (t1 != null) {
+							toaRecvdoc.setRecvdocCode(t1.getNodeValue());
+						}
+						// 缓急
+						NodeList emergency = doc
+								.getElementsByTagName("emergency");
+						Element e2 = (Element) emergency.item(0);
+						Node t2 = e2.getFirstChild();
+						if (t2 != null) {
+							toaRecvdoc.setRecvdocEmergency(t2.getNodeValue());
+						}
+
+						// 发送时间
+						SimpleDateFormat sdf = new SimpleDateFormat(
+								"yyyy-MM-dd hh:mm:ss");
+						NodeList sendTime = doc
+								.getElementsByTagName("sendTime");
+						Element e3 = (Element) sendTime.item(0);
+						Node t3 = e3.getFirstChild();
+						if (t3 != null) {
+							Date date = sdf.parse(t3.getNodeValue());
+							toaRecvdoc.setRecvdocOfficialTime(date);
+						}
+
+						// 发文单位
+						NodeList sendto = doc.getElementsByTagName("sendto");
+						Element e4 = (Element) sendto.item(0);
+						Node t4 = e4.getFirstChild();
+						if (t4 != null) {
+							toaRecvdoc.setRecvdocSubmittoDepart(t4
+									.getNodeValue());
+						}
+
+					}
+					lis.add(toaRecvdoc);
+				}
+				page.setResult(lis);
+			}
+		} catch (DAOException ex) {
+			ex.printStackTrace();
+			throw ex;
+		} catch (ServiceException ex) {
+			ex.printStackTrace();
+			throw ex;
+		} catch (SystemException ex) {
+			ex.printStackTrace();
+			throw ex;
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			throw new SystemException(ex);
+		}
+		return page;
+	}
+
+	/**
+	 * Description: 保存数据
+	 */
+	public void saveDoc(String id, String dbType, String dbPath, String dbName,
+			String dbUser, String dbPass, String dbChar) throws DAOException,
+			ServiceException, SystemException {
+		// 查询数据
+		Connection Conn = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+
+		Connection Conn1 = null;
+		PreparedStatement ps1 = null;
+		ResultSet rs1 = null;
+
+		Connection Conn2 = null;
+		PreparedStatement ps2 = null;
+
+		String content = null;
+		List<ToaRecvdoc> lis = new ArrayList<ToaRecvdoc>();
+		// StringBuffer returnHtml = new StringBuffer();
+		try {
+			// 保存到收文表
+			// 获取数据源//数据库类型,数据库地址,数据库名,用户名,密码,字符集
+			Conn = DataSource.getConn(dbType, dbPath, dbName, dbUser, dbPass,
+					dbChar);
+			// 算总记录数据
+			String sql = "select Tab_Content_Recive.content from Tab_Content_Recive where Tab_Content_Recive.id in ("
+					+ id + ")";
+			ps = Conn.prepareStatement(sql, ResultSet.TYPE_SCROLL_INSENSITIVE,
+					ResultSet.CONCUR_READ_ONLY);
+			System.out.println(sql);
+			rs = ps.executeQuery();
+			if (rs != null) {
+				ToaRecvdoc toaRecvdoc = null;
+				while (rs.next()) {
+					toaRecvdoc = new ToaRecvdoc();
+					// String recvDocId = String.valueOf(rs.getInt("id"));
+					content = rs.getString("content");
+					if (!"".equals(content) || content != null) {
+						StringReader sr = new StringReader(content);
+						InputSource is = new InputSource(sr);
+						DocumentBuilderFactory factory = DocumentBuilderFactory
+								.newInstance();
+						DocumentBuilder builder = factory.newDocumentBuilder();
+						Document doc = builder.parse(is);
+						// 编号
+						NodeList docid = doc.getElementsByTagName("docid");
+						Element e0 = (Element) docid.item(0);
+						Node t0 = e0.getFirstChild();
+						if (t0 != null) {
+							toaRecvdoc.setRecvdocBussinessCode(t0
+									.getNodeValue());
+						}
+
+						// 标题
+						NodeList doctitle = doc
+								.getElementsByTagName("doctitle");
+						Element e = (Element) doctitle.item(0);
+						Node t = e.getFirstChild();
+						if (t != null) {
+							toaRecvdoc.setRecvdocTitle(t.getNodeValue());
+						}
+
+						// 文号
+						NodeList docNoPre = doc
+								.getElementsByTagName("docNoPre");
+						Element e1 = (Element) docNoPre.item(0);
+						Node t1 = e1.getFirstChild();
+						if (t1 != null) {
+							toaRecvdoc.setRecvdocCode(t1.getNodeValue());
+						}
+
+						// 年号
+						NodeList yearNo = doc.getElementsByTagName("yearNo");
+						Element e2 = (Element) yearNo.item(0);
+						Node t2 = e2.getFirstChild();
+						if (t2 != null) {
+							// toaRecvdoc.setSenddocCode(t2.getNodeValue());
+						}
+
+						// 流水号
+						NodeList waterNo = doc.getElementsByTagName("waterNo");
+						Element e3 = (Element) waterNo.item(0);
+						Node t3 = e3.getFirstChild();
+						if (t3 != null) {
+							// toaRecvdoc.setSenddocCode(t2.getNodeValue());
+						}
+
+						// 主题词
+						NodeList subject = doc.getElementsByTagName("subject");
+						Element e4 = (Element) subject.item(0);
+						Node t4 = e4.getFirstChild();
+						if (t4 != null) {
+							toaRecvdoc.setRecvdocKeywords(t4.getNodeValue());
+						}
+
+						// 创建人
+						NodeList creator = doc.getElementsByTagName("creator");
+						Element e5 = (Element) creator.item(0);
+						Node t5 = e5.getFirstChild();
+						if (t5 != null) {
+							toaRecvdoc.setRecvdocEntryPeople(t5.getNodeValue());
+						}
+
+						// 创建时间
+						SimpleDateFormat sdf2 = new SimpleDateFormat(
+								"yyyy-MM-dd");
+						NodeList createdate = doc
+								.getElementsByTagName("createdate");
+						Element e6 = (Element) createdate.item(0);
+						Node t6 = e6.getFirstChild();
+						if (t6 != null) {
+							Date date2 = sdf2.parse(t6.getNodeValue());
+							toaRecvdoc.setRecvdocRecvTime(date2);
+						}
+
+						// 创建单位
+						NodeList createUnitId = doc
+								.getElementsByTagName("createUnitId");
+						Element e7 = (Element) createdate.item(0);
+						Node t7 = e7.getFirstChild();
+						if (t7 != null) {
+							// toaRecvdoc.setSenddocCode(t7.getNodeValue());
+						}
+
+						// 密级
+						NodeList secret = doc.getElementsByTagName("secret");
+						Element e8 = (Element) secret.item(0);
+						Node t8 = e8.getFirstChild();
+						if (t8 != null) {
+							toaRecvdoc.setRecvdocPeriodSecrecy(t8
+									.getNodeValue());
+						}
+
+						// 缓急
+						NodeList emergency = doc
+								.getElementsByTagName("emergency");
+						Element e9 = (Element) emergency.item(0);
+						Node t9 = e9.getFirstChild();
+						if (t9 != null) {
+							toaRecvdoc.setRecvdocEmergency(t9.getNodeValue());
+						}
+
+						// 发文单位
+						NodeList sendto = doc.getElementsByTagName("sendto");
+						Element e10 = (Element) sendto.item(0);
+						Node t10 = e10.getFirstChild();
+						if (t10 != null) {
+							toaRecvdoc.setRecvdocSubmittoDepart(t10
+									.getNodeValue());
+						}
+
+						// 抄送单位
+						NodeList cc = doc.getElementsByTagName("cc");
+						Element e11 = (Element) cc.item(0);
+						Node t11 = e11.getFirstChild();
+						if (t11 != null) {
+							toaRecvdoc.setRecvdocCcDepart(t11.getNodeValue());
+						}
+
+						// 签发人
+						NodeList publishperson = doc
+								.getElementsByTagName("publishperson");
+						Element e12 = (Element) publishperson.item(0);
+						Node t12 = e12.getFirstChild();
+						if (t12 != null) {
+							toaRecvdoc.setRecvdocIssuer(t12.getNodeValue());
+						}
+
+						// 发送人
+						NodeList sendPerson = doc
+								.getElementsByTagName("sendPerson");
+						Element e13 = (Element) publishperson.item(0);
+						Node t13 = e13.getFirstChild();
+						if (t13 != null) {
+
+						}
+						// toaRecvdoc.setSenddocSubmittoDepart(t13.getNodeValue());
+
+						// 发送时间
+						SimpleDateFormat sdf = new SimpleDateFormat(
+								"yyyy-MM-dd");
+						NodeList sendTime = doc
+								.getElementsByTagName("sendTime");
+						Element e14 = (Element) sendTime.item(0);
+						Node t14 = e14.getFirstChild();
+						if (t14 != null) {
+							Date date = sdf.parse(t14.getNodeValue());
+						}
+						// toaRecvdoc.setSenddocOfficialTime(date);
+
+						// 导出人
+						NodeList OADaochuUser = doc
+								.getElementsByTagName("OADaochuUser");
+						Element e15 = (Element) OADaochuUser.item(0);
+						if(e15 != null){
+							Node t15 = e15.getFirstChild();
+							if (t15 != null) {
+								
+							}
+						}
+						// toaRecvdoc.setSenddocSubmittoDepart(t15.getNodeValue());
+
+						// 导出时间
+						SimpleDateFormat sdf1 = new SimpleDateFormat(
+								"yyyy-MM-dd");
+						NodeList OADaochuTime = doc
+								.getElementsByTagName("OADaochuTime");
+						Element e16 = (Element) OADaochuTime.item(0);
+						if(e16 != null){
+							Node t16 = e16.getFirstChild();
+							if (t16 != null) {
+								Date date1 = sdf1.parse(t16.getNodeValue());
+							}
+						}
+
+						// toaRecvdoc.setSenddocOfficialTime(date1);
+
+					}
+					lis.add(toaRecvdoc);
+				}
+				this.recvDocDao.save(lis);
+			}
+			rs.close();
+			ps.close();
+			Conn.close();
+
+			// 保存到附件
+			// 获取数据源//数据库类型,数据库地址,数据库名,用户名,密码,字符集
+			Conn1 = DataSource.getConn(dbType, dbPath, dbName, dbUser, dbPass,
+					dbChar);
+			String sql1 = "select id, fileName,fileContent from tab_content_file_recive where id in ("
+					+ id + ")";
+			ps1 = Conn1.prepareStatement(sql1,
+					ResultSet.TYPE_SCROLL_INSENSITIVE,
+					ResultSet.CONCUR_READ_ONLY);
+			rs1 = ps1.executeQuery();
+			byte[] bytes = null;
+			BufferedInputStream is = null;
+			List<Tdocattach> lis1 = new ArrayList<Tdocattach>();
+			if (rs1 != null) {
+				Tdocattach tdocattach = null;
+				while (rs1.next()) {
+					tdocattach = new Tdocattach();
+					String docId = String.valueOf(rs1.getInt("id"));
+					tdocattach.setDocId(docId);
+
+					String fileName = rs1.getString("fileName");
+					tdocattach.setAttachName(fileName);
+
+					Blob fileContent = rs1.getBlob("fileContent");
+					if (fileContent != null) {
+						bytes = new byte[(int) fileContent.length()];
+						is = new BufferedInputStream(fileContent.getBinaryStream()); 
+						is.read(bytes);
+//						bytes = fileContent.getBytes(in, (int) (fileContent
+//								.length()));
+					}
+					tdocattach.setAttachContent(bytes);
+					lis1.add(tdocattach);
+				}
+			}
+			docattach.save(lis1);
+			rs1.close();
+			ps1.close();
+			Conn1.close();
+
+			// 更新标示
+			// 获取数据源//数据库类型,数据库地址,数据库名,用户名,密码,字符集
+			Conn2 = DataSource.getConn(dbType, dbPath, dbName, dbUser, dbPass,
+					dbChar);
+			
+			String sql2 = "update ["+dbName+"].[dbo].[tab_content_recive] set flag = 1 where id in ("
+					+ id + ")";
+			ps2 = Conn2.prepareStatement(sql2,
+					ResultSet.TYPE_SCROLL_INSENSITIVE,
+					ResultSet.CONCUR_READ_ONLY);
+			ps2.executeUpdate();
+			ps2.close();
+			Conn2.close();
+		} catch (DAOException ex) {
+			ex.printStackTrace();
+			throw ex;
+		} catch (ServiceException ex) {
+			ex.printStackTrace();
+			throw ex;
+		} catch (SystemException ex) {
+			ex.printStackTrace();
+			throw ex;
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			throw new SystemException(ex);
+		}
+	}
+}

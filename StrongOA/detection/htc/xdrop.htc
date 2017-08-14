@@ -1,0 +1,314 @@
+<!-- 
+	History: The last revised time is at 2004-11-04
+-->
+<PUBLIC:COMPONENT tagName=drop >
+<PUBLIC:DEFAULTS viewLinkContent tabStop="true" viewMasterTab=false />
+
+<PROPERTY NAME="node" />
+<PROPERTY NAME="key" />
+<PROPERTY NAME="view" />
+<PROPERTY NAME="dropstyle" />
+<!-- <PUBLIC:PROPERTY NAME=debugMode get=getDebugMode put=setDebugMode /> -->
+<PROPERTY NAME="disable" get=getDisable put=setDisable />
+<PROPERTY NAME="readonly" get=getReadonly put=setReadonly />
+<PROPERTY NAME="seperator" get=getSeperator put=setSeperator />
+<PROPERTY NAME="fill" get=getFill put=setFill />
+<PROPERTY NAME="value" get=getValue put=setValue />
+<PROPERTY NAME="text" get=getText />
+<PROPERTY NAME="dropControl" get=getDropControl />
+<!-- 20040812:王健  -->
+<PROPERTY NAME="noderequest" />
+<PROPERTY NAME="dictrequest" />
+<!--200401103:WangJian:增加drop的颜色，字体的设置 -->
+<PUBLIC:METHOD NAME="setColor" />
+<PUBLIC:METHOD NAME="setFont" />
+
+
+
+<METHOD NAME="hasFocus" />
+<METHOD NAME="setOptions" />
+<METHOD NAME="setValue" />
+<METHOD NAME="getValue" />
+<METHOD NAME="selectAll" />
+<PUBLIC:ATTACH   EVENT="oncontentready"  HANDLER="init" />
+<public:ATTACH   EVENT="onresize" for="window"  HANDLER="fnResize" />
+<PUBLIC:EVENT NAME="onselchange" ID="eSelChange" />
+<PUBLIC:EVENT NAME="onchange" ID="eChange" />
+<public:ATTACH   EVENT="onfocus"  HANDLER="fnFocus" />
+<public:ATTACH   EVENT="onblur"  HANDLER="fnLostFocus" />
+</PUBLIC:COMPONENT>
+<SCRIPT LANGUAGE="javascript">
+var bFocus = false;
+///////用户自定义功能区//////////////////////////////////////////////////
+//可通过修改UserCustom中的代码，实现对drop的缺省初始自定义设置
+function UserCustom()
+{
+	//setColor("DEFAULT_COLOR","&H80000018");
+	//setColor("FILL_COLOR","&H80000018");
+	//setColor("TEXT_CONTENT_COLOR",12409088);
+	//setFont("TEXT","宋体","false","12");
+	return;
+}
+var START = new Date().getTime();
+function fnResize(){
+	len = new Date().getTime() - START;
+	if (len > 600){
+		htcDrop.style.width = htcDrop.style.width == "100%"?"99.4%":"100%";
+		START = new Date().getTime();
+	}
+}
+
+function init()
+{
+	//20041104:WangJian:用户通过修改下边函数，实现自定义的缺省初始设置
+	UserCustom();
+	
+	if(key != null){
+		htcDrop.strKey = key;
+		}
+	if(view != null){
+		htcDrop.strView = view;
+		}
+	if(node != null)
+	{
+		if(node.indexOf("/") != -1){
+			//var arrNode = new Array();
+			var arrNode = node.split("/");
+			var nodeXML = eval(arrNode[0]);
+			for(var j=1;j<arrNode.length;j++)
+				nodeXML = nodeXML.getElementsByTagName(arrNode[j])(0);
+			setOptions(eval(nodeXML));
+		}else
+			setOptions(eval(node).documentElement);
+	}else{
+		//20040811:王健:增加noderequest属性，当node为空时主动查询service，得到select的xml内容，
+		//通过drop.setOptions方法写数据到drop中
+		if (noderequest != null){
+			var arrNodeRequest = noderequest.split(":");
+			var arrNodeLevel = arrNodeRequest[2].split("/");
+			var strUseNodeName = arrNodeLevel[arrNodeLevel.length-1];
+			var sid=createWorkId();
+			var service = new Service(arrNodeRequest[0],sid);
+			var oArg
+			if(arrNodeRequest[1] != "" ){
+				oArg=service.doService(arrNodeRequest[1]);
+				}
+			else{
+				oArg=service.doService();
+				}
+			if (getCode(service)== "2000")
+			{
+	   			if (strUseNodeName == ""){
+	   				//没有根节点，需补上一个
+	   				oArg = "<ROOT>" + oArg + "</ROOT>";
+	   				strUseNodeName = "ROOT";
+	   			}
+	   			var oDoc=loadXml(oArg);
+	   			var refNode = oDoc.getElementsByTagName(strUseNodeName)(0);
+				setOptions(refNode);
+   			}
+   			else{
+   				//alert("wrong service");
+	   			showMessage(getMessage(service), 0);
+   			}
+		}	
+		//20040812:王健:增加初始化时根据条件动态请求数据，写入列表中
+		//dictrequest格式:[数据源]:表名称:[列名称,]
+		if (noderequest == null && dictrequest != null){
+			//alert("dictrequest  " + dictrequest);
+			//alert("开始位置：" + dictrequest.indexOf(":"));
+			//alert("last位置：" + dictrequest.lastIndexOf(":"));
+			var strTableName = dictrequest.substring(dictrequest.indexOf(":")+1,dictrequest.lastIndexOf(":"));
+			//alert("TableName:" + strTableName);
+			var strXml = getDictRequestStr(dictrequest);
+			var sid="SID:00000000";//createWorkId();
+			var service = new Service("XmlDataIsland.get",sid);
+			var oArg
+			oArg=service.doService(strXml);
+			if (getCode(service)== "2000")
+			{
+	   			var oDoc=loadXml(oArg);
+	   			var refNode = oDoc.getElementsByTagName(strTableName)(0);
+				setOptions(refNode);
+   			}
+   			else{
+   				//alert("wrong service");
+	   			showMessage(getMessage(service), 0);
+   			}			
+		}
+	}
+}
+function getFill()
+{
+	return htcDrop.bFill;
+}
+function setFill(val)
+{
+	if(val == "yes" || val.toString() == "true")
+		htcDrop.bFill = true;
+	else
+		htcDrop.bFill = false;
+}
+function getDisable()
+{
+	return htcDrop.bReadOnly;
+}
+function setDisable(val)
+{
+	htcDrop.bReadOnly = val;
+	//外部很多代码在组件被disable时仍然调用focus()，导致报错，只有解决了该问题之后才能放开以下代码
+	//this.disabled = val;
+}
+function getReadonly()
+{
+	return htcDrop.bReadOnly;
+}
+function setReadonly(bVal)
+{
+	htcDrop.bReadOnly = bVal;
+}
+function fnFocus()
+{
+	bFocus = true;
+}
+function fnLostFocus()
+{
+	bFocus = false;
+}
+function hasFocus()
+{
+	return bFocus;
+}
+function getSeperator()
+{
+	return htcDrop.strSeperator;
+}
+function setSeperator(val)
+{
+	htcDrop.strSeperator = val;
+}
+function getValue()
+{
+	return htcDrop.getValue();
+}
+function setValue(val)
+{
+	htcDrop.setValue(val);
+}
+function selectAll(bCheck,bRaiseEvent)
+{
+	switch(selectAll.arguments.length == 0){
+	case 0:
+		bCheck = true;
+		bRaiseEvent = false;
+		break;
+	case 1:
+		bRaiseEvent = false;
+	}
+	htcDrop.selectAll(bCheck,bRaiseEvent);
+}
+function getText()
+{
+	//return htcDrop.text;   目前在activeX控件中无此属性！！！  20031225
+	return htcDrop.DisplayText;
+}
+function setOptions(nodeDoc,val)
+{
+	htcDrop.clear();
+	if(val == null)
+		val = "";
+	var oNode;
+	if(nodeDoc.nodeType == 9)
+		oNode = nodeDoc.documentElement;
+	else
+		oNode = nodeDoc;
+	htcDrop.setOptions(oNode,val);
+}
+function getXml()
+{
+	return htcDrop.xml;
+}
+function getDropControl()
+{
+	return htcDrop.getInsideListObject();
+}
+/*
+ * 创建人: WangJian
+ * 创建日期: 2004-11-03
+ * 最后修改日期: 
+ * 函数功能：设置背景和前景颜色
+ * 输入参数：string:strType设置什么部位的颜色;int32:lColor颜色的16进制数值
+ * 输出参数：
+*/
+function setColor(strType,lColor){
+	htcDrop.SetColor(strType,lColor);
+}
+/*
+ * 创建人: WangJian
+ * 创建日期: 2004-11-03
+ * 最后修改日期: 
+ * 函数功能：设置文本的字体的类型和粗细
+ * 输入参数：string:strType设置什么部位的字体;string:strFontName字体名称;bool:bIsBold是否加粗显示;int:iFontSize字体尺寸
+ * 输出参数：
+*/
+function setFont(strType,strFontName,bIsBold,iFontSize){
+	if(setFont.arguments.length == 2)
+		htcDrop.SetFont(strType,strFontName);
+	if(setFont.arguments.length == 3)
+		htcDrop.SetFont(strType,strFontName,bIsBold);
+	if(setFont.arguments.length == 4)
+		htcDrop.SetFont(strType,strFontName,bIsBold,iFontSize);
+}
+
+
+
+function fnSelChange(rowIndex, strKeyValue, bCheck)
+{
+	var oEvent = createEventObject();
+	oEvent.rowIndex = rowIndex;
+	oEvent.value = strKeyValue;
+	if(strKeyValue == "DROP_LIST_ALL_ITEMS")
+		oEvent.value = "ALL_ITEMS"
+	oEvent.checked = bCheck;
+	eSelChange.fire(oEvent);
+}
+
+function fnChange(oldValue,newValue)
+{
+	//调用service.js中的notifyChange(true/false)方法
+	try{
+		notifyChange(true);
+	}catch(e){
+		alert("编码错误:检测到没有引用Service.js文件,导致notifyChange()函数不可用!");
+	}
+	//
+	var oEvent = createEventObject();
+	oEvent.oldValue = oldValue;
+	oEvent.newValue = newValue;
+	eChange.fire(oEvent);
+}
+</SCRIPT>
+<HTML>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+
+<SCRIPT LANGUAGE="javascript" FOR="htcDrop" EVENT="onselchange(rowIndex, strKeyValue, bCheck)">
+<!--
+	fnSelChange(rowIndex, strKeyValue, bCheck);
+-->
+</SCRIPT>
+<SCRIPT LANGUAGE="javascript" FOR="htcDrop" EVENT="onchange(oldValue, newValue)">
+<!--
+	fnChange(oldValue,newValue);
+-->
+</SCRIPT>
+
+<BODY>
+<object style='width:100%' id="htcDrop" CLASSID="CLSID:DD8322CC-5630-47FF-A6F8-56FFC2BA5E17"
+CODEBASE="../lib/ctais_htc.cab#version=1,0,0,125">
+  <param name="_ExtentX" value="100">
+  <param name="_ExtentY" value="556">
+<div style="color:red">CTAIS组件xdrop载入失败，请先<a href="/ctais/work/public/htm/install.htm#download" target="_blank">安装</a>并检查浏览器的安全设置选项</div>
+</object>
+</BODY>
+</HTML>

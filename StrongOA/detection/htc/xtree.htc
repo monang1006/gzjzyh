@@ -1,0 +1,1394 @@
+<!-- 
+	History: The last revised time is at 2005-03-08
+-->
+<PUBLIC:COMPONENT tagName=tree> 
+<PUBLIC:DEFAULTS viewLinkContent tabStop="true" viewMasterTab=false  />
+<PUBLIC:PROPERTY NAME=m_XMLData PUT=setXMLData GET=getXMLData />
+<PUBLIC:PROPERTY NAME=node />
+<PUBLIC:PROPERTY NAME=disable PUT=setDisable GET=getDisable />
+<PUBLIC:PROPERTY NAME=rootNode GET=getRootNode />
+<PUBLIC:PROPERTY NAME=all GET=getAllNodes />
+<PUBLIC:PROPERTY NAME=menu GET=getMenu />
+<PUBLIC:PROPERTY NAME=menuText GET=getMenuText PUT=setMenuText />
+<PUBLIC:PROPERTY NAME=showMenu GET=getShowMenu PUT=setShowMenu />
+<!-- <PUBLIC:PROPERTY NAME=debugMode get=getDebugMode put=setDebugMode /> -->
+<!-- 以下出现两次是为了保持和以前的版本兼容 -->
+<PUBLIC:PROPERTY NAME=bHasCheckbox PUT=setCheckStyle GET=getCheckStyle />
+<PUBLIC:PROPERTY NAME=hasCheckbox PUT=setCheckStyle GET=getCheckStyle />
+
+<PUBLIC:PROPERTY NAME=bCanMultiSelect PUT=setMultiSel GET=getMultiSel />
+<PUBLIC:PROPERTY NAME=canMultiSelect PUT=setMultiSel GET=getMultiSel />
+
+<PUBLIC:PROPERTY NAME=strSeperator PUT=setSeperator GET=getSeperator />
+<PUBLIC:PROPERTY NAME=seperator PUT=setSeperator GET=getSeperator />
+
+<PUBLIC:PROPERTY NAME=bAbsoluteKey PUT=setAbsoluteKey GET=getAbsoluteKey />
+<PUBLIC:PROPERTY NAME=absoluteKey PUT=setAbsoluteKey GET=getAbsoluteKey />
+
+<PUBLIC:METHOD NAME="hasFocus" />
+<PUBLIC:METHOD NAME="getNodeListByRule" />
+<PUBLIC:METHOD NAME="mapNode" />
+<PUBLIC:METHOD NAME="loadXML" />
+<PUBLIC:METHOD NAME="load" />
+<PUBLIC:METHOD NAME="refresh" />
+<PUBLIC:METHOD NAME="addNode" />
+<PUBLIC:METHOD NAME="getRootKey" />
+<PUBLIC:METHOD NAME="getCurrentCheckedNodeKey" />
+<PUBLIC:METHOD NAME="getCurrentCheckedNodePath" />
+<PUBLIC:METHOD NAME="getCheckedNodeKeyArray" />
+<PUBLIC:METHOD NAME="getCheckedNodePathArray" />
+<PUBLIC:METHOD NAME="getSelectedNodeKey" />
+<PUBLIC:METHOD NAME="getSelectedNodePath" />
+<PUBLIC:METHOD NAME="getParentNodeKey" />
+<PUBLIC:METHOD NAME="getParentNodePath" />
+<PUBLIC:METHOD NAME="getChildrenItemKeyByIndex" />
+<PUBLIC:METHOD NAME="getChildrenItemPathByIndex" />
+<PUBLIC:METHOD NAME="getChildrenItemKeyByName" />
+<PUBLIC:METHOD NAME="getChildrenItemPathByName" />
+<PUBLIC:METHOD NAME="getNextNodeKey" />
+<PUBLIC:METHOD NAME="getNextNodePath" />
+<PUBLIC:METHOD NAME="getPreviousNodeKey" />
+<PUBLIC:METHOD NAME="getPreviousNodePath" />
+<PUBLIC:METHOD NAME="getNodeText" />
+<PUBLIC:METHOD NAME="getNodeLayer" />
+<PUBLIC:METHOD NAME="setNodeExtraData" />
+<PUBLIC:METHOD NAME="getNodeExtraData" />
+<PUBLIC:METHOD NAME="getChildrenCount" />
+<PUBLIC:METHOD NAME="setCurrentPath" />
+<PUBLIC:METHOD NAME="getCurrentPath" />
+<PUBLIC:METHOD NAME="insertNodeBefore" />
+<PUBLIC:METHOD NAME="insertNodeBehide" />
+<PUBLIC:METHOD NAME="addChildNode" />
+<PUBLIC:METHOD NAME="appendNode" />
+<PUBLIC:METHOD NAME="setSelectedNode" />
+<PUBLIC:METHOD NAME="setCheckedNode" />
+<PUBLIC:METHOD NAME="setNodeKey" />
+<PUBLIC:METHOD NAME="setNodeName" />
+<PUBLIC:METHOD NAME="setNodeText" />
+<PUBLIC:METHOD NAME="removeNode" />
+<PUBLIC:METHOD NAME="removeAll" />
+<PUBLIC:METHOD NAME="expandAll" />
+<PUBLIC:METHOD NAME="expandNode" />
+<PUBLIC:METHOD NAME="collapseAll" />
+<PUBLIC:METHOD NAME="collapseNode" />
+<PUBLIC:METHOD NAME="getAllNodeKeyList" />
+<PUBLIC:METHOD NAME="convertPathToKey" />
+<PUBLIC:METHOD NAME="convertKeyToPath" />
+<PUBLIC:METHOD NAME="nodeIsExisted" />
+<PUBLIC:METHOD NAME="commit" />
+
+<!-- 以下是扩展方法,主要是引入了对象的交互功能 -->
+<PUBLIC:METHOD NAME="getNode" />
+<PUBLIC:METHOD NAME="getSelectedNode" />
+<PUBLIC:METHOD NAME="selectNode" />
+<PUBLIC:METHOD NAME="getParentNode" />
+<PUBLIC:METHOD NAME="getPreviousNode" />
+<PUBLIC:METHOD NAME="getNextNode" />
+<PUBLIC:METHOD NAME="getChildNode" />
+<PUBLIC:METHOD NAME="getCurCheckedNode" />
+<PUBLIC:METHOD NAME="getCheckedNodeList" />
+<PUBLIC:METHOD NAME="checkNode" />
+<PUBLIC:METHOD NAME="createNode" />
+<!-- 下面的函数名称后面都加了2,表示是扩充函数 -->
+<PUBLIC:METHOD NAME="findNode" />
+<PUBLIC:METHOD NAME="removeNode2" />
+<PUBLIC:METHOD NAME="addNode2" />
+<PUBLIC:METHOD NAME="appendNode2" />
+<PUBLIC:METHOD NAME="addChildNode2" />
+<PUBLIC:METHOD NAME="insertNodeBefore2" />
+<PUBLIC:METHOD NAME="insertNodeBehide2" />
+<PUBLIC:METHOD NAME="getNodeLayer2" />
+<PUBLIC:METHOD NAME="expandNode2" />
+<PUBLIC:METHOD NAME="collapseNode2" />
+<!--20041103:WangJian:增加tree字体的设置 -->
+<PUBLIC:METHOD NAME="setFont" />
+<!--20050228:WangJian:增加getCheckedNodeListString方法，获得所有check的节点对象的列集的特定字符串(tax) -->
+<PUBLIC:METHOD NAME="getCheckedNodeListString" />
+<!--20050308:WangJian:增加FindNodesByKey方法，根据key值，在给出的节点中递归搜索匹配的节点对象，将所有找到的返回(tax) -->
+<PUBLIC:METHOD NAME="findNodesByKey" />
+<!--20050509:WangJian:增加getCheckedNodeListStringEx和getCheckedNodeListStringEx_tax方法，获得所有check的节点对象的列集的特定字符串(tax) -->
+<PUBLIC:METHOD NAME="getCheckedNodeListStringEx" />
+<PUBLIC:METHOD NAME="getCheckedNodeListStringEx_tax" />
+
+<public:ATTACH   EVENT="oncontentready"  HANDLER="init" />
+<public:ATTACH   EVENT="onunload" for="window"  HANDLER="fnBeforeUnload" />
+<public:ATTACH   EVENT="onresize" for="window"  HANDLER="fnResize" />
+<!-- <public:ATTACH   EVENT="onfocus"  HANDLER="fnFocus" />
+<public:ATTACH   EVENT="onblur"  HANDLER="fnLostFocus" /> -->
+<PUBLIC:EVENT NAME="onnodeclick" ID="eNodeClick" />
+<PUBLIC:EVENT NAME="onnodecheck" ID="eNodeCheck" />
+<PUBLIC:EVENT NAME="onselchanged" ID="eSelChanged" />
+<PUBLIC:EVENT NAME="onafterlabeledit" ID="eAfterLabelEdit" />
+<PUBLIC:EVENT NAME="onbeforelabeledit" ID="eBeforeLabelEdit" />
+<PUBLIC:EVENT NAME="oncollapse" ID="eCollapse" />
+<PUBLIC:EVENT NAME="onexpand" ID="eExpand" />
+<PUBLIC:EVENT NAME="onclick" ID="eClick" />
+<PUBLIC:EVENT NAME="ondoubleclick" ID="eDoubleClick" />
+<PUBLIC:EVENT NAME="onfocus" ID="eFocus" />
+<PUBLIC:EVENT NAME="onlostfocus" ID="eLostFocus" />
+<PUBLIC:EVENT NAME="onkeydown" ID="eKeyDown" />
+<PUBLIC:EVENT NAME="onkeyup" ID="eKeyUp" />
+<PUBLIC:EVENT NAME="onkeypress" ID="eKeyPress" />
+<PUBLIC:EVENT NAME="onmousedown" ID="eMouseDown" />
+<PUBLIC:EVENT NAME="onmousemove" ID="eMouseMove" />
+<PUBLIC:EVENT NAME="onmouseup" ID="eMouseUp" /> 
+
+<PUBLIC:EVENT NAME="onmenuclick" ID="eMenuClick" />
+<PUBLIC:EVENT NAME="onnodeclick2" ID="eNodeClick2" />
+<PUBLIC:EVENT NAME="onnodecheck2" ID="eNodeCheck2" />
+<PUBLIC:EVENT NAME="onselchanged2" ID="eSelChanged2" />
+<PUBLIC:EVENT NAME="oncollapse2" ID="eCollapse2" />
+<PUBLIC:EVENT NAME="onexpand2" ID="eExpand2" />
+
+</PUBLIC:COMPONENT>
+<SCRIPT LANGUAGE="javascript">
+var bFocus = false;
+///////用户自定义功能区//////////////////////////////////////////////////
+//可通过修改UserCustom中的代码，实现对tree的缺省初始自定义设置
+function UserCustom()
+{
+	//setFont("TEXT","隶书","false","12");
+	return;
+}
+
+var START = new Date().getTime();
+function fnResize(){
+	len = new Date().getTime() - START;
+	if (len > 600){
+		htcTree.style.width = htcTree.style.width == "100%"?"99.6%":"100%";
+		START = new Date().getTime();
+	}
+}
+
+/////////////////////////////////////////////////////////////////////////
+
+/********************************Properties*******************************/
+function getRootNode()
+{
+	return htcTree.rootNode;
+}
+function getAllNodes()
+{
+	return htcTree.allItems;
+}
+function getMenu()
+{
+	return htcTree.oMenu;
+}
+function getMenuText()
+{
+	var arrText = new Array();
+	arrText[0] = htcTree.strMenuText1;
+	arrText[1] = htcTree.strMenuText2;
+	arrText[2] = htcTree.strMenuText3;
+	arrText[3] = htcTree.strMenuText4;
+	arrText[4] = htcTree.strMenuText5;
+	return arrText;
+}
+function setMenuText(val)
+{
+	htcTree.strMenuText1 = val[0];
+	htcTree.strMenuText2 = val[1];
+	htcTree.strMenuText3 = val[2];
+	htcTree.strMenuText4 = val[3];
+	htcTree.strMenuText5 = val[4];
+}
+
+function getShowMenu()
+{
+	return htcTree.bShowMenu;
+}
+function setShowMenu(val)
+{
+	htcTree.bShowMenu = val;
+}
+function setXMLData(oXMLData)
+{
+	htcTree.m_XMLData = oXMLData;
+}
+function getXMLData()
+{
+	return htcTree.m_XMLData;
+}
+function setCheckStyle(bState)
+{
+	htcTree.bHasCheckbox = bState;
+}
+function getCheckStyle()
+{
+	return htcTree.bHasCheckbox;
+}
+function setDisable(bState)
+{
+	//htcTree.bEnabled = !bState;
+	if(bState.toString().toUpperCase() == "FALSE"){
+		htcTree.bEnabled = true;
+		//外部很多代码在组件被disable时仍然调用focus()，导致报错，只有解决了该问题之后才能放开以下代码
+		//this.disabled = false;
+	}
+	else{
+		htcTree.bEnabled = false;
+		//外部很多代码在组件被disable时仍然调用focus()，导致报错，只有解决了该问题之后才能放开以下代码
+		//this.disabled = true;
+	}
+}
+function getDisable()
+{
+	return !htcTree.bEnabled;
+}
+function setMultiSel(bState)
+{
+	htcTree.bCanMultiSelect = bState;
+}
+function getMultiSel()
+{
+	return htcTree.bCanMultiSelect;
+}
+function setSeperator(val)
+{
+	htcTree.strSeperator = val;
+}
+function getSeperator()
+{
+	return htcTree.strSeperator;
+}
+function setAbsoluteKey(val)
+{
+	htcTree.bAbsoluteKey = val;
+}
+function getAbsoluteKey()
+{
+	return htcTree.bAbsoluteKey;
+}
+/********************************Mehtods*******************************/
+function init()
+{
+	//20041104:WangJian:用户通过修改下边函数，实现自定义的缺省初始设置
+	UserCustom();
+	if(node != null)
+		m_XMLData = eval(node);
+}
+function fnBeforeUnload()
+{
+	htcTree.cleanMemory();
+}
+
+function getNodeListByRule(ruleIndex)
+{
+	return htcTree.getNodeListByRule(ruleIndex);
+}
+function mapNode(oDoc)
+{
+	if(oDoc != null)
+		m_XMLData = oDoc;
+}
+function loadXML(oDoc)
+{
+	//20040929:WangJian:满足用户传入参数即可是xml的document对象也可是node对象
+	htcTree.removeAll();
+	if(oDoc.nodeType == 9) //oDoc是document对象
+		htcTree.loadXML(oDoc);
+	else //oDoc是node对象
+		htcTree.loadXML2(oDoc);
+}
+function load(strSourceFile)
+{
+	htcTree.load(strSourceFile);
+}
+function refresh()
+{
+	htcTree.refresh();
+}
+function hasFocus()
+{
+	return bFocus;
+}
+/*
+oNewNode 新增节点对象
+oNode 操作节点对象
+insertWay 插入方式  ----- 1(tvwLast):本层最后追加
+				   ----- 2(tvwNext):之后
+				   ----- 3(tvwPrevious):之前
+				   ----- 4(tvwChild):子节点
+*/
+function addNode(sLableText,sNewKey,insertWay, sPath, bRelativePath, sExtraData)
+{
+	//alert("警告:函数[addNode]已经被[addNode2]代替,建议使用[addNode2]并参考使用文档!");
+	switch(addNode.arguments.length){
+	case 1:
+		if(typeof(sLableText) == "object")
+			return addNode2(sLabelText,sNewKey,insertWay);
+		sNewKey = "";
+		insertWay = 0;//tvwLast;
+		sPath = "";
+		bRelativePath = false;
+		sExtraData = "";
+	break;
+	case 2:
+		insertWay = 0;//tvwLast;
+		sPath = "";
+		bRelativePath = false;
+		sExtraData = "";
+	break;
+	case 3:
+		sPath = "";
+		bRelativePath = false;
+		sExtraData = "";
+	break;
+	case 4:
+		bRelativePath = false;
+		sExtraData = "";
+		break;
+	case 5:
+		sExtraData = ""
+		break;
+	}
+	return htcTree.addNode(sLableText,sNewKey,insertWay, sPath, bRelativePath, sExtraData);
+}
+function getRootKey()
+{
+	return htcTree.getRootKey();
+}
+function getSelectedNodeKey(bRelativePath)
+{
+	alert("警告:函数[getSelectedNodeKey]已经被[getSelectedNode]代替,建议使用[getSelectedNode]并参考使用文档!");
+	if(getSelectedNodeKey.arguments.length == 0)
+		bRelativePath = false;
+	return htcTree.getSelectedNodeKey(bRelativePath);
+}
+function getSelectedNodePath(bRelativePath)
+{
+	alert("警告:函数[getSelectedNodePath]已经被[getSelectedNode]代替,建议使用[getSelectedNode]并参考使用文档!");
+	if(getSelectedNodePath.arguments.length == 0)
+		bRelativePath = false;
+	return htcTree.getSelectedNodePath(bRelativePath);
+}
+function getNodeText(sPath,bRelativePath)
+{
+	switch(getNodeText.arguments.length){
+	case 0:
+		sPath = "";
+		bRelativePath = false;
+	break;
+	case 1:
+		bRelativePath = false;
+	break;
+	}
+	return htcTree.getNodeText(sPath,bRelativePath);
+}
+function getNodeLayer(sPath,bRelativePath)
+{
+	//alert("警告:函数[getNodeLayer]已经被[getNodeLayer2]代替,建议使用[getNodeLayer2]并参考使用文档!");
+	switch(getNodeLayer.arguments.length){
+	case 0:
+		sPath = "";
+		bRelativePath = false;
+	break;
+	case 1:
+		if(typeof(sPath) == "object")
+			return getNodeLayer2(sPath);
+		bRelativePath = false;
+	break;
+	}
+	return htcTree.getNodeLayer(sPath,bRelativePath);
+}
+function getNodeFullPath(sPath)
+{
+	if(getNodeFullPath.arguments.length == 0)
+		sPath = "";
+	return htcTree.getNodeFullPath(sPath);
+}
+function setNodeExtraData(sData,sPath, bRelativePath)
+{
+	alert("警告:建议使用getNode(sPath).extraData = ... 的格式!");
+	switch(setNodeExtraData.arguments.length){
+	case 1:
+		sPath = "";
+		bRelativePath = false;
+	break;
+	case 2:
+		bRelativePath = false;
+	break;
+	}
+	htcTree.setNodeExtraData(sData,sPath, bRelativePath);
+}
+function getNodeExtraData(sPath, bRelativePath)
+{
+	alert("警告:建议使用getNode(sPath).extraData!");
+	switch(getNodeExtraData.arguments.length){
+	case 0:
+		sPath = "";
+		bRelativePath = false;
+	break;
+	case 1:
+		bRelativePath = false;
+	break;
+	}
+	return htcTree.getNodeExtraData(sPath, bRelativePath);
+} 
+function getParentNodeKey(sPath,bRelativePath)
+{
+	alert("警告:建议使用getNode(sPath).key!");
+	switch(getParentNodeKey.arguments.length){
+	case 0:
+		sPath = "";
+		bRelativePath = false;
+	break;
+	case 1:
+		bRelativePath = false;
+	break;
+	}
+	return htcTree.getParentNodeKey(sPath,bRelativePath);
+}
+function getParentNodePath(sPath,bRelativePath)
+{
+	alert("警告:建议使用getParentNode(oNode).path!");
+	switch(getParentNodePath.arguments.length){
+	case 0:
+		sPath = "";
+		bRelativePath = false;
+	break;
+	case 1:
+		bRelativePath = false;
+	break;
+	}
+	return htcTree.getParentNodePath(sPath,bRelativePath);
+}
+function getChildrenCount(sPath,bRelativePath)
+{
+	alert("警告:建议使用getNode(sPath).length!");
+	switch(getChildrenCount.arguments.length){
+	case 0:
+		sPath = "";
+		bRelativePath = false;
+	break;
+	case 1:
+		bRelativePath = false;
+	break;
+	}
+	return htcTree.getChildrenCount(sPath,bRelativePath);
+}
+function getChildrenItemKeyByIndex(index, sPath,bRelativePath)
+{
+	alert("警告:建议使用getChildNode(index, oNode).key!");
+	switch(getChildrenItemKeyByIndex.arguments.length){
+	case 1:
+		sPath = "";
+		bRelativePath = false;
+	break;
+	case 2:
+		bRelativePath = false;
+	break;
+	}
+	return htcTree.getChildrenItemKeyByIndex(index, sPath,bRelativePath);
+}
+function getChildrenItemPathByIndex(index, sPath,bRelativePath)
+{
+	alert("警告:建议使用getChildNode(index, oNode).path!");
+	switch(getChildrenItemPathByIndex.arguments.length){
+	case 1:
+		sPath = "";
+		bRelativePath = false;
+	break;
+	case 2:
+		bRelativePath = false;
+	break;
+	}
+	return htcTree.getChildrenItemPathByIndex(index, sPath,bRelativePath);
+}
+function getChildrenItemKeyByName(sName, sPath, bRelativePath)
+{
+	alert("警告:建议使用getChildNode(sName, oNode).key!");
+	switch(getChildrenItemKeyByName.arguments.length){
+	case 1:
+		sPath = "";
+		bRelativePath = false;
+	break;
+	case 2:
+		bRelativePath = false;
+	break;
+	}
+	return htcTree.getChildrenItemKeyByName(sName, sPath, bRelativePath);
+}
+function getChildrenItemPathByName(sName, sPath, bRelativePath)
+{
+	alert("警告:建议使用getChildNode(sName, oNode).path!");
+	switch(getChildrenItemPathByName.arguments.length){
+	case 1:
+		sPath = "";
+		bRelativePath = false;
+	break;
+	case 2:
+		bRelativePath = false;
+	break;
+	}
+	return htcTree.getChildrenItemPathByName(sName, sPath, bRelativePath);
+}
+function getNextNodeKey(sPath, bRelativePath)
+{
+	alert("警告:建议使用getNextNode(oNode).key!");
+	switch(getNextNodeKey.arguments.length){
+	case 0:
+		sPath = "";
+		bRelativePath = false;
+	break;
+	case 1:
+		bRelativePath = false;
+	break;
+	}
+	return htcTree.getNextNodeKey(sPath, bRelativePath);
+}
+function getNextNodePath(sPath, bRelativePath)
+{
+	alert("警告:建议使用getNextNode(oNode).path!");
+	switch(getNextNodePath.arguments.length){
+	case 0:
+		sPath = "";
+		bRelativePath = false;
+	break;
+	case 1:
+		bRelativePath = false;
+	break;
+	}
+	return htcTree.getNextNodePath(sPath, bRelativePath);
+}
+function getPreviousNodeKey(sPath, bRelativePath)
+{
+	alert("警告:建议使用getPreviousNode(oNode).key!");
+	switch(getPreviousNodeKey.arguments.length){
+	case 0:
+		sPath = "";
+		bRelativePath = false;
+	break;
+	case 1:
+		bRelativePath = false;
+	break;
+	}
+	return htcTree.getPreviousNodeKey(sPath, bRelativePath);
+}
+function getPreviousNodePath(sPath, bRelativePath)
+{
+	alert("警告:建议使用getPreviousNode(oNode).path!");
+	switch(getPreviousNodePath.arguments.length){
+	case 0:
+		sPath = "";
+		bRelativePath = false;
+	break;
+	case 1:
+		bRelativePath = false;
+	break;
+	}
+	return htcTree.getPreviousNodePath(sPath, bRelativePath);
+}
+function setCurrentPath(sCurPath,bRelativePath)
+{
+	if(setCurrentPath.arguments.length == 1)
+		bRelativePath = false;
+	htcTree.setCurrentPath(sCurPath,bRelativePath);
+}
+function getCurrentPath(bRelativePath)
+{
+	if(getCurrentPath.arguments.length == 0)
+		bRelativePath = false;
+	return htcTree.getCurrentPath(bRelativePath);
+}
+function insertNodeBefore(sLableText,sNewKey, sPath, bRelativePath, sExtraData)
+{
+	//alert("警告: 函数[insertNodeBefore]已经被[insertNodeBefore2]代替,请仔细参考说明文档!");
+	switch(insertNodeBefore.arguments.length){
+	case 1:
+		if(typeof(sLableText) == "object")
+			return insertNodeBefore2(sLableText,sNewKey);
+		sPath = "";
+		bRelativePath = false;
+		sExtraData = "";
+	break;
+	case 2:
+		bRelativePath = false;
+		sExtraData = "";
+	break;
+	case 3:
+		sExtraData = "";
+	break;
+	}
+	return htcTree.insertNodeBefore(sLableText,sNewKey, sPath, bRelativePath, sExtraData);
+} 
+function insertNodeBehide(sLableText,sNewKey, sPath, bRelativePath, sExtraData)
+{
+	//alert("警告: 函数[insertNodeBehide]已经被[insertNodeBehide2]代替,请仔细参考说明文档!");
+	switch(insertNodeBehide.arguments.length){
+	case 1:
+		if(typeof(sLableText) == "object")
+			return insertNodeBehide2(sLableText,sNewKey);
+		sPath = "";
+		bRelativePath = false;
+		sExtraData = "";
+	break;
+	case 2:
+		bRelativePath = false;
+		sExtraData = "";
+	break;
+	case 3:
+		sExtraData = "";
+	break;
+	}
+	return htcTree.insertNodeBehide(sLableText,sNewKey, sPath, bRelativePath, sExtraData);
+}  
+function addChildNode(sLableText,sNewKey, sPath, bRelativePath, sExtraData)
+{
+	//alert("警告: 函数[addChildNode]已经被[addChildNode2]代替,请仔细参考说明文档!");
+	switch(addChildNode.arguments.length){
+	case 1:
+		if(typeof(sLableText) == "object")
+			return addChildNode2(sLableText,sNewKey);
+		sPath = "";
+		bRelativePath = false;
+		sExtraData = "";
+	break;
+	case 2:
+		bRelativePath = false;
+		sExtraData = "";
+	break;
+	case 3:
+		sExtraData = "";
+	break;
+	}
+	return htcTree.addChildNode(sLableText,sNewKey, sPath, bRelativePath, sExtraData);
+}
+function appendNode(sLableText,sNewKey, sPath, bRelativePath, sExtraData)
+{
+	//alert("警告: 函数[appendNode]已经被[appendNode2]代替,请仔细参考说明文档!");
+	switch(appendNode.arguments.length){
+	case 1:
+		if(typeof(sLableText) == "object")
+			return appendNode2(sLableText,sNewKey);
+		sPath = "";
+		bRelativePath = false;
+		sExtraData = "";
+	break;
+	case 2:
+		bRelativePath = false;
+		sExtraData = "";
+	break;
+	case 3:
+		sExtraData = "";
+	break;
+	}
+	return htcTree.appendNode(sLableText,sNewKey, sPath, bRelativePath, sExtraData);
+}
+function setSelectedNode(sPath, bRelativePath)
+{
+	alert("警告: 函数[setSelectedNode]已经被[selectedNode]代替,请仔细参考说明文档!");
+	if(setSelectedNode.arguments.length == 1)
+		bRelativePath = false;
+	htcTree.setSelectedNode(sPath, bRelativePath);
+}
+function setCheckedNode(sPath, bCheckAllChildren, bIsCheck, bRelativePath)
+{
+	alert("警告: 函数[setCheckedNode]已经被[checkedNode]代替,请仔细参考说明文档!");
+	switch(setCheckedNode.arguments.length){
+	case 0:
+		sPath = "";
+		bCheckAllChildren = false;
+		bIsCheck = true;
+		bRelativePath = false;
+	break;
+	case 1:
+		bCheckAllChildren = false;
+		bIsCheck = true;
+		bRelativePath = false;
+	break;
+	case 2:
+		bIsCheck = true;
+		bRelativePath = false;
+	break;
+	case 3:
+		bRelativePath = false;
+	break;
+	}
+	htcTree.setCheckedNode(sPath, bCheckAllChildren, bIsCheck, bRelativePath);
+}
+function setNodeKey(sNewKey, sPath, bRelativePath)
+{
+	alert("警告: 建议使用getNode(sPath).key = ... 的格式!");
+	switch(setNodeKey.arguments.length){
+		case 1:
+			sPath = "";
+			bRelativePath = false;
+			break;
+		case 2:
+			bRelativePath = false;
+			break;
+	}
+	htcTree.setNodeKey(sNewKey, sPath, bRelativePath);
+}
+function setNodeName(sName, sPath, bRelativePath)
+{
+	alert("警告:[setNodeName]已经被[setNodeText]代替!");
+	switch(setNodeName.arguments.length){
+		case 1:
+			sPath = "";
+			bRelativePath = false;
+			break;
+		case 2:
+			bRelativePath = false;
+			break;
+	}
+	htcTree.setNodeText(sName, sPath, bRelativePath);
+}
+function setNodeText(sText, sPath, bRelativePath)
+{
+	alert("警告: 建议使用getNode(sPath).text = ... 的格式!");
+	switch(setNodeText.arguments.length){
+		case 1:
+			sPath = "";
+			bRelativePath = false;
+			break;
+		case 2:
+			bRelativePath = false;
+			break;
+	}
+	htcTree.setNodeText(sText, sPath, bRelativePath);
+}
+function removeNode(sPath,bRelativePath)
+{
+	//alert("警告: 函数[removeNode]已经被[removeNode2]代替,请仔细参考说明文档!");
+	switch(removeNode.arguments.length){
+	case 0:
+		sPath = "";
+		bRelativePath = false;
+	break;
+	case 1:
+		if(typeof(sPath) == "object")
+			return removeNode2(sPath);
+		bRelativePath = false;
+	break;
+	}
+	htcTree.removeNodeItem(sPath,bRelativePath);
+}
+function removeAll()
+{
+	htcTree.removeAll();
+}
+function expandAll(bExpand)
+{
+	if(expandAll.arguments.length == 0)
+		bExpand = true;
+	htcTree.expandAll(bExpand);
+}
+function expandNode(sPath, bRelativePath)
+{
+	//alert("警告: 函数[expandNode]已经被[expandNode2]代替,请仔细参考说明文档!");
+	switch(expandNode.arguments.length){
+	case 0:
+		sPath = "";
+		bRelativePath = false;
+	break;
+	case 1:
+		if(typeof(sPath) == "object"){
+			expandNode2(sPath);
+			return;
+		}
+		bRelativePath = false;
+	break;
+	}
+	htcTree.expandNode(sPath, bRelativePath);
+}
+function collapseAll(bCollapse)
+{
+	if(collapseAll.arguments.length == 0)
+		bCollapse = false;
+	htcTree.collapseAll(bCollapse);
+}
+function collapseNode(sPath, bRelativePath)
+{
+	//alert("警告: 函数[collapseNode]已经被[collapseNode2]代替,请仔细参考说明文档!");
+	switch(collapseNode.arguments.length){
+	case 0:
+		sPath = "";
+		bRelativePath = false;
+	break;
+	case 1:
+		if(typeof(sPath) == "object"){
+			collapseNode2(sPath);
+			return;
+		}	
+		bRelativePath = false;
+	break;
+	}
+	htcTree.collapseNode(sPath, bRelativePath);
+}
+function getCurrentCheckedNodeKey(bRelativePath)
+{
+	alert("警告: 建议使用getCurCheckedNode().key");
+	if(getCheckedNodeKey.arguments.length == 0)
+		bRelativePath = false;
+	return htcTree.getCurrentCheckedNodeKey(bRelativePath);
+}
+function getCurrentCheckedNodePath(bRelativePath)
+{
+	alert("警告: 建议使用getCurCheckedNode().path");
+	if(getCheckedNodePath.arguments.length == 0)
+		bRelativePath = false;
+	return htcTree.getCurrentCheckedNodePath(bRelativePath);
+}
+
+function getCheckedNodeKeyArray()
+{
+	if(htcTree.getCheckedNodeKeyList() != null)
+		return htcTree.getCheckedNodeKeyList().split("|");
+	else
+		return null;
+}
+function getCheckedNodePathArray()
+{
+	if(htcTree.getCheckedNodePathList() != null)
+		return htcTree.getCheckedNodePathList().split("|");
+	else
+		return null;
+}
+function hasChildren(sPath, bRelativePath)
+{
+	alert("警告: 建议使用 if(getdNode(sPath).length==0)");
+	switch(hasChildren.arguments.length){
+	case 0:
+		sPath = "";
+		bRelativePath = false;
+	break;
+	case 1:
+		bRelativePath = false;
+	break;
+	}
+	return htcTree.hasChildren(sPath,bRelativePath);
+}
+function getAllNodeKeyList()
+{
+	return htcTree.getAllNodeKeyList();
+}
+function convertPathToKey(sPath)
+{
+	return htcTree.convertPathToKey(sPath);
+}
+function convertKeyToPath(sKey)
+{
+	return htcTree.convertKeyToPath(sKey);
+}
+function nodeIsExisted(sPath, bRelativePath)
+{
+	//alert("警告: 函数[nodeIsExisted]已经被[findNode]代替,请仔细参考说明文档!");
+	switch(nodeIsExisted.arguments.length){
+	case 0:
+		sPath = "";
+		bRelativePath = false;
+	break;
+	case 1:
+		if(typeof(sPath) == "object"){
+			return findNode(sPath);
+		}
+		bRelativePath = false;
+	break;
+	}
+	return htcTree.nodeIsExisted(sPath,bRelativePath);
+}
+function commit()
+{
+	htcTree.commit();
+}
+
+//以下是扩展方法,主要是引入了对象的交互功能
+function getNode(sPath, bRelativePath)
+{
+	switch(getNode.arguments.length){
+	case 0:
+		sPath = "";
+		bRelativePath = false;
+		break;
+	case 1:
+		bRelativePath = false;
+		break;
+	}
+	return htcTree.getNode(sPath, bRelativePath);
+}
+function getSelectedNode()
+{
+	return htcTree.getSelectedNode();
+}
+function selectNode(oNode)
+{
+	htcTree.selectNode(oNode);
+}
+function getParentNode(oNode)
+{
+	return htcTree.getParentNode(oNode);
+}
+function getPreviousNode(oNode)
+{
+	return htcTree.getPreviousNode(oNode);
+}
+function getNextNode(oNode)
+{
+	return htcTree.getNextNode(oNode);
+}
+function getChildNode(index, oNode)
+{
+	return htcTree.getChildNode(index, oNode);	
+}
+function findNode(oNode)
+{
+	return htcTree.findNode(oNode);
+}
+function getCurCheckedNode()
+{
+	return htcTree.getCurCheckedNode();
+}
+function getCheckedNodeList()
+{
+	return htcTree.getCheckedNodeList();
+}
+function checkNode(oNode, bCheckChildren, bCheck)
+{
+	htcTree.checkNode(oNode, bCheckChildren, bCheck);
+}
+function removeNode2(oNode)
+{
+//切忌不能使用htcTree.removeNode()，因为在IE下会导致htcTree本身被删除，此函数IE已经内置!!!!!!
+	htcTree.removeNodeObj(oNode);
+}
+function createNode()
+{
+	return htcTree.createNode();
+}
+/*
+oNewNode 新增节点对象
+oNode 操作节点对象
+insertWay 插入方式  ----- 1(tvwLast):本层最后追加
+				   ----- 2(tvwNext):之后
+				   ----- 3(tvwPrevious):之前
+				   ----- 4(tvwChild):子节点
+*/
+function addNode2(oNewNode, oNode, insertWay)
+{
+	return htcTree.addNode2(oNewNode, oNode, insertWay);
+}
+function appendNode2(oNewNode, oNode)
+{
+	return htcTree.appendNode2(oNewNode, oNode);
+}
+function addChildNode2(oNewNode, oNode)
+{
+	return htcTree.addChildNode2(oNewNode, oNode);
+}
+function insertNodeBefore2(oNewNode, oNode)
+{
+	return htcTree.insertNodeBefore2(oNewNode, oNode);
+}
+function insertNodeBehide2(oNewNode, oNode)
+{
+	return htcTree.insertNodeBehide2(oNewNode, oNode);
+}
+function getNodeLayer2(oNode)
+{
+	return htcTree.getNodeLayer2(oNode);
+}
+function expandNode2(oNode)
+{
+	//alert("oNode.sPath:" + oNode.sPath);
+	htcTree.expandNode(oNode.sPath);
+}
+function collapseNode2(oNode)
+{
+	htcTree.collapseNode(oNode.sPath);
+}
+
+/*
+ * 创建人: WangJian
+ * 创建日期: 2004-11-03
+ * 最后修改日期: 
+ * 函数功能：设置正文文本的字体的类型和粗细大小
+ * 输入参数：string:strType设置什么部位的字体;string:strFontName字体名称;bool:bIsBold是否加粗显示;int:iFontSize字体尺寸
+ * 输出参数：
+*/
+function setFont(strType,strFontName,bIsBold,iFontSize){
+	if(setFont.arguments.length == 2)
+		htcTree.SetFont(strType,strFontName);
+	if(setFont.arguments.length == 3)
+		htcTree.SetFont(strType,strFontName,bIsBold);
+	if(setFont.arguments.length == 4)
+		htcTree.SetFont(strType,strFontName,bIsBold,iFontSize);
+}
+/*
+ * 创建人: WangJian
+ * 创建日期: 2005-2-28
+ * 最后修改日期: 
+ * 函数功能：获得所有check的节点对象的列集的特定字符串(tax)
+ * 输入参数：
+ * 输出参数：
+*/
+function getCheckedNodeListString()
+{
+	return htcTree.getCheckedNodeListString();
+}
+/*
+ * 创建人: WangJian
+ * 创建日期: 2005-5-9
+ * 最后修改日期: 
+ * 函数功能：获得所有check的节点对象的列集的特定字符串(tax)
+ * 输入参数：
+ * 输出参数：
+*/
+function getCheckedNodeListStringEx(oNode)
+{
+	return htcTree.getCheckedNodeListStringEx(oNode);
+}
+/*
+ * 创建人: WangJian
+ * 创建日期: 2005-5-9
+ * 最后修改日期: 
+ * 函数功能：获得所有check的节点对象的列集的特定字符串(tax)
+ * 输入参数：
+ * 输出参数：
+*/
+function getCheckedNodeListStringEx_tax(oNode)
+{
+	return htcTree.getCheckedNodeListStringEx_tax(oNode);
+}
+/*
+ * 创建人: WangJian
+ * 创建日期: 2005-3-8
+ * 最后修改日期: 
+ * 函数功能：根据key值，在给出的节点中递归搜索匹配的节点对象，将所有找到的返回。(tax)
+ * 输入参数：oNode=要搜索的节点对象；sKey=要匹配的字符串；IsAll=当为false时找到第一个返回，否则找到全部匹配才返回
+ * 输出参数：匹配的节点list
+*/
+function findNodesByKey(oNode,sKey,IsAll)
+{
+	if(findNodesByKey.arguments.length !=3)
+		IsAll = false;
+	return htcTree.FindNodesByKey(oNode,sKey,IsAll,true);
+}
+
+////////////////////processing event//////////////////////////////////////////////
+function fnExpand(sPath, sKey)
+{
+	var oEvent = createEventObject();
+	oEvent.path = sPath;
+	oEvent.key = sKey;
+	//保持兼容
+	oEvent.nodePath = sPath;
+	oEvent.nodeKey = sKey;
+	//
+	eExpand.fire(oEvent);
+
+}
+function fnCollapse(sPath, sKey)
+{
+	var oEvent = createEventObject();
+	oEvent.path = sPath;
+	oEvent.key = sKey;
+	//保持兼容
+	oEvent.nodePath = sPath;
+	oEvent.nodeKey = sKey;
+	//
+	eCollapse.fire(oEvent);
+}
+function fnBeforeLabelEdit(Cancel)
+{
+	var oEvent = createEventObject();
+	oEvent.cancel = Cancel;
+	eBeforeLabelEdit.fire(oEvent);
+}
+function fnAfterLabelEdit(Cancel,NewString)
+{
+	var oEvent = createEventObject();
+	oEvent.cancel = Cancel;
+	oEvent.newString = NewString;
+	eAfterLabelEdit.fire(oEvent);
+}
+function fnNodeClick(sLastPath,sLastKey,sCurPath,sCurKey)
+{
+	var oEvent = createEventObject();
+	oEvent.lastPath = sLastPath;
+	oEvent.lastKey = sLastKey;
+	oEvent.curPath = sCurPath;
+	oEvent.curKey = sCurKey;
+	//保持兼容
+	oEvent.lastNodePath = sLastPath;
+	oEvent.lastNodeKey = sLastKey;
+	oEvent.curNodePath = sCurPath;
+	oEvent.curNodeKey = sCurKey;
+	//
+	eNodeClick.fire(oEvent);
+}
+function fnNodeCheck(sPath, sKey)
+{
+	var oEvent = createEventObject();
+	oEvent.path = sPath;
+	oEvent.key = sKey;
+	//保持兼容
+	oEvent.nodePath = sPath;
+	oEvent.nodeKey = sKey;
+	//
+	eNodeCheck.fire(oEvent);
+}
+function fnSelChanged(sLastPath,sLastKey,sCurPath,sCurKey)
+{
+	var oEvent = createEventObject();
+	oEvent.lastPath = sLastPath;
+	oEvent.lastKey = sLastKey;
+	oEvent.curPath = sCurPath;
+	oEvent.curKey = sCurKey;
+	//保持兼容
+	oEvent.lastNodePath = sLastPath;
+	oEvent.lastNodeKey = sLastKey;
+	oEvent.curNodePath = sCurPath;
+	oEvent.curNodeKey = sCurKey;
+	//
+	eSelChanged.fire(oEvent);
+}
+function fnMouseUp(Button,Shift,x,y)
+{
+	var oEvent = createEventObject();
+	oEvent.button = Button;
+	oEvent.shift = Shift;
+	oEvent.x = x;
+	oEvent.y = y;
+	eMouseUp.fire(oEvent);
+}
+function fnMouseMove(Button,Shift,x,y)
+{
+	var oEvent = createEventObject();
+	oEvent.button = Button;
+	oEvent.shift = Shift;
+	oEvent.x = x;
+	oEvent.y = y;
+	eMouseMove.fire(oEvent);
+}
+function fnMouseDown(Button,Shift,x,y)
+{
+	var oEvent = createEventObject();
+	oEvent.button = Button;
+	oEvent.shift = Shift;
+	oEvent.x = x;
+	oEvent.y = y;
+	eMouseDown.fire(oEvent);
+}
+function fnKeyUp(KeyCode,Shift)
+{
+	var oEvent = createEventObject();
+	oEvent.keyCode = KeyCode;
+	oEvent.shift = Shift;
+	eKeyUp.fire(oEvent);
+}
+function fnKeyPress(KeyAscii)
+{
+	var oEvent = createEventObject();
+	oEvent.keyAscii = KeyAscii;
+	eKeyPress.fire(oEvent);
+}
+function fnKeyDown(KeyCode,Shift)
+{
+	var oEvent = createEventObject();
+	oEvent.keyCode = KeyCode;
+	oEvent.shift = Shift;
+	eKeyDown.fire(oEvent);
+}
+function fnLostFocus()
+{
+	var oEvent = createEventObject();
+	eLostFocus.fire(oEvent);
+	bFocus = false;
+}
+function fnFocus()
+{
+	var oEvent = createEventObject();
+	eFocus.fire(oEvent);
+	bFocus = true;
+}
+function fnDoubleClick()
+{
+	var oEvent = createEventObject();
+	eDoubleClick.fire(oEvent);
+}
+function fnClick()
+{
+	var oEvent = createEventObject();
+	eClick.fire(oEvent);
+}
+
+//升级事件处理函数
+function fnMenuClick(index,strFunction)
+{
+	var oEvent = createEventObject();
+	oEvent.subItemIndex = index;
+	oEvent.strFunction = strFunction;
+	eMenuClick.fire(oEvent);
+	//执行脚本层制定的函数
+	if(strFunction != "")
+		eval(strFunction);
+}
+function fnNodeClick2(lastNode, curNode)
+{
+	var oEvent = createEventObject();
+	oEvent.lastNode = lastNode;
+	oEvent.curNode = curNode;
+	eNodeClick2.fire(oEvent);
+}
+function fnNodeCheck2(oNode)
+{
+	var oEvent = createEventObject();
+	oEvent.node = oNode;
+	eNodeCheck2.fire(oEvent);
+}
+function fnSelChanged2(lastNode, curNode)
+{
+	var oEvent = createEventObject();
+	oEvent.lastNode = lastNode;
+	oEvent.curNode = curNode;
+	eSelChanged2.fire(oEvent);
+}
+function fnCollapse2(oNode)
+{
+	var oEvent = createEventObject();
+	oEvent.node = oNode;
+	eCollapse2.fire(oEvent);
+}
+function fnExpand2(oNode)
+{
+	var oEvent = createEventObject();
+	oEvent.node = oNode;
+	eExpand2.fire(oEvent);
+}
+
+</SCRIPT>
+<HTML xmlns:ctais >
+<META http-equiv="Content-Type" content="text/html; charset=gb2312">
+<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+
+<SCRIPT LANGUAGE="javascript" FOR="htcTree" EVENT="onnodeclick(sLastPath,sLastKey,sCurPath,sCurKey)">
+<!--
+	fnNodeClick(sLastPath,sLastKey,sCurPath,sCurKey);
+-->
+</SCRIPT>
+<SCRIPT LANGUAGE="javascript" FOR="htcTree" EVENT="onnodecheck(sPath, sKey)">
+<!--
+	fnNodeCheck(sPath, sKey);
+-->
+</SCRIPT>
+<SCRIPT LANGUAGE="javascript" FOR="htcTree" EVENT="onselchanged(sLastPath,sLastKey,sCurPath,sCurKey)">
+<!--
+	fnSelChanged(sLastPath,sLastKey,sCurPath,sCurKey);
+-->
+</SCRIPT>
+<SCRIPT LANGUAGE="javascript" FOR="htcTree" EVENT="onbeforelabeledit(Cancel)">
+<!--
+	fnBeforeLabelEdit(Cancel);
+-->
+</SCRIPT>
+<SCRIPT LANGUAGE="javascript" FOR="htcTree" EVENT="onafterlabeledit(Cancel, NewString)">
+<!--
+	fnAfterLabelEdit(Cancel,NewString);
+
+-->
+</SCRIPT>
+<SCRIPT LANGUAGE="javascript" FOR="htcTree" EVENT="onexpand(sPath)">
+<!--
+	fnExpand(sPath);
+-->
+</SCRIPT>
+<SCRIPT LANGUAGE="javascript" FOR="htcTree" EVENT="oncollapse(sPath)">
+<!--
+	fnCollapse(sPath);
+-->
+</SCRIPT>
+<SCRIPT LANGUAGE="javascript" FOR="htcTree" EVENT="ondoubleclick()">
+<!--
+	fnDoubleClick();
+-->
+    </SCRIPT>
+    <SCRIPT LANGUAGE="javascript" FOR="htcTree" EVENT="onclick()">
+<!--
+	fnClick();
+-->
+    </SCRIPT>
+<SCRIPT LANGUAGE="javascript" FOR="htcTree" EVENT="onmouseup(Button, Shift, x, y)">
+<!--
+	fnMouseUp(Button,Shift,x,y);
+-->
+</SCRIPT>
+<SCRIPT LANGUAGE="javascript" FOR="htcTree" EVENT="onmousemove(Button, Shift, x, y)">
+<!--
+	fnMouseMove(Button,Shift,x,y);
+-->
+</SCRIPT>
+<SCRIPT LANGUAGE="javascript" FOR="htcTree" EVENT="onmousedown(Button, Shift, x, y)">
+<!--
+	fnMouseDown(Button,Shift,x,y);
+-->
+</SCRIPT>
+<SCRIPT LANGUAGE="javascript" FOR="htcTree" EVENT="onlostfocus()">
+<!--
+	fnLostFocus();
+-->
+</SCRIPT>
+<SCRIPT LANGUAGE="javascript" FOR="htcTree" EVENT="onkeyup(KeyCode, Shift)">
+<!--
+	fnKeyUp(KeyCode,Shift);
+-->
+</SCRIPT>
+<SCRIPT LANGUAGE="javascript" FOR="htcTree" EVENT="onkeypress(KeyAscii)">
+<!--
+	fnKeyPress(KeyAscii);
+-->
+</SCRIPT>
+<SCRIPT LANGUAGE="javascript" FOR="htcTree" EVENT="onkeydown(KeyCode, Shift)">
+<!--
+	fnKeyDown(KeyCode,Shift);
+-->
+</SCRIPT>
+<SCRIPT LANGUAGE="javascript" FOR="htcTree" EVENT="onfocus()">
+<!--
+	fnFocus();
+-->
+</SCRIPT>
+
+<!-- //升级事件模型 -->
+<SCRIPT LANGUAGE="javascript" FOR="htcTree" EVENT="onmenuclick(index,strFunction)">
+<!--
+	fnMenuClick(index,strFunction);
+-->
+</SCRIPT>
+<SCRIPT LANGUAGE="javascript" FOR="htcTree" EVENT="onnodeclick2(lastNode, curNode)">
+<!--
+	fnNodeClick2(lastNode, curNode);
+-->
+</SCRIPT>
+<SCRIPT LANGUAGE="javascript" FOR="htcTree" EVENT="onnodecheck2(oNode)">
+<!--
+	fnNodeCheck2(oNode);
+-->
+</SCRIPT>
+<SCRIPT LANGUAGE="javascript" FOR="htcTree" EVENT="onselchanged2(lastNode, curNode)">
+<!--
+	fnSelChanged2(lastNode, curNode);
+-->
+</SCRIPT>
+<SCRIPT LANGUAGE="javascript" FOR="htcTree" EVENT="onexpand2(oNode)">
+<!--
+	fnExpand2(oNode);
+-->
+</SCRIPT>
+<SCRIPT LANGUAGE="javascript" FOR="htcTree" EVENT="oncollapse2(oNode)">
+<!--
+	fnCollapse2(oNode);
+-->
+</SCRIPT>
+
+<BODY>
+    <OBJECT style='width=100%;height:100%' ID="htcTree" CLASSID="CLSID:03353F36-C17F-4A94-A609-3DA452B80D40"
+CODEBASE="../lib/ctais_htc.cab#version=1,0,0,125">
+       <param name="_ExtentX" value="5530">
+	   <param name="_ExtentY" value="5265">
+<div style="color:red">CTAIS组件xtree载入失败，请先<a href="/ctais/work/public/htm/install.htm#download" target="_blank">安装</a>并检查浏览器的安全设置选项</div>
+    </OBJECT>
+</BODY>
+</HTML>
