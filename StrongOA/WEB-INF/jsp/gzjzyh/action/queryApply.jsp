@@ -54,21 +54,19 @@
 												<table border="0" align="right" cellpadding="00"
 													cellspacing="0">
 													<tr>
-														<td width="4"><img
-															src="<%=frameroot%>/images/bt_l.jpg" /></td>
-														<td class="Operation_list" onclick="show();"><img
-															src="<%=root%>/images/operationbtn/view.png" />&nbsp;查&nbsp;看&nbsp;</td>
-														<td width="4"><img
-															src="<%=frameroot%>/images/bt_r.jpg" /></td>
-														<td width="5"></td>
-														<td width="4"><img
-															src="<%=frameroot%>/images/bt_l.jpg" /></td>
-														<td class="Operation_list" onclick="del();"><img
-															src="<%=root%>/images/operationbtn/del.png" />&nbsp;删&nbsp;除&nbsp;</td>
-														<td width="4"><img
-															src="<%=frameroot%>/images/bt_r.jpg" /></td>
-														<td width="5"></td>
-														<td width="2%"></td>
+														<td width="4"><img src="<%=frameroot%>/images/bt_l.jpg"/></td>
+									                 	<td class="Operation_list" onclick="addTemplate();"><img src="<%=root%>/images/operationbtn/add.png"/>&nbsp;新&nbsp;建&nbsp;</td>
+									                 	<td width="4"><img src="<%=frameroot%>/images/bt_r.jpg"/></td>
+								                  		<td width="5"></td>
+								                  		<td width="4"><img src="<%=frameroot%>/images/bt_l.jpg"/></td>
+									                 	<td class="Operation_list" onclick="editTemplate();"><img src="<%=root%>/images/operationbtn/edit.png"/>&nbsp;编&nbsp;辑&nbsp;</td>
+									                 	<td width="4"><img src="<%=frameroot%>/images/bt_r.jpg"/></td>
+								                  		<td width="5"></td>
+								                  		<td width="4"><img src="<%=frameroot%>/images/bt_l.jpg"/></td>
+									                 	<td class="Operation_list" onclick="deleteTemplate();"><img src="<%=root%>/images/operationbtn/del.png"/>&nbsp;删&nbsp;除&nbsp;</td>
+									                 	<td width="4"><img src="<%=frameroot%>/images/bt_r.jpg"/></td>
+								                  		<td width="5"></td>
+								                  		<td width="2%"></td>
 													</tr>
 
 												</table>
@@ -79,7 +77,7 @@
 							</tr>
 							<tr>
 								<td><webflex:flexTable name="myTable" width="100%"
-										height="370px" wholeCss="table1" property="code"
+										height="370px" wholeCss="table1" property="dictCode"
 										isCanDrag="true" isCanFixUpCol="true" clickColor="#A9B2CA"
 										footShow="showCheck" getValueType="getValueByProperty"
 										collection='${page.result}' page="${page}">
@@ -117,7 +115,11 @@
 														<input class="Operation_list"
 															type="button" onClick="getListBySta();" />
 															
-													&nbsp;&nbsp;&nbsp;&nbsp;<input id="img_sousuo"
+													
+													</td>
+													<td  onclick="deleteTemplate();">选择案件</td>
+													<td>
+														&nbsp;&nbsp;&nbsp;&nbsp;<input id="img_sousuo"
 													type="button" onClick="getListBySta();" />
 													</td>
 												</tr>
