@@ -19,6 +19,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
 import com.strongit.oa.bo.ToaSenddoc;
+import com.strongit.oa.senddoc.manager.SendDocManager;
 import com.strongmvc.orm.hibernate.Page;
 
 /**
