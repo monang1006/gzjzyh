@@ -12,7 +12,7 @@
 	default-lazy-init="true">
 
 		<!-- 使用annotation自动注册bean,并检查@Required,@Autowired的属性已被注入 -->
-	<context:component-scan base-package="com.engine,com.strongit.oa,com.strongit.doc,com.strongit.workflow,com.strongit.form,com.strongit.uums,com.strongit.xxbs" />
+	<context:component-scan base-package="com.engine,com.strongit.oa,com.strongit.doc,com.strongit.workflow,com.strongit.form,com.strongit.uums,com.strongit.xxbs,com.strongit.gzjzyh" />
 	
 	<bean id="deployType" class="com.strongit.xxbs.common.DeployType">
 	  	<!-- 部署类型：0是报送端，1是采编端 -->
