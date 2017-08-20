@@ -43,6 +43,7 @@
          <value>com.strongit.doc.bo</value>
          <value>com.strongit.xxbs</value>
          <value>com.strongit.workflow.bo</value>
+         <value>com.strongit.gzjzyh.po</value>
       </list>
     </property>
     <property name="mappingDirectoryLocations">
@@ -65,6 +66,16 @@
 	<bean class="com.strongit.uums.security.ApplicationConfig">
 		<property name="md5Enable">
 			<value>true</value>
+		</property>
+	</bean>
+	
+	<!--
+		赣州经侦银行项目系统全局设置
+	-->
+	<bean class="com.strongit.gzjzyh.GzjzyhApplicationConfig">
+		<property name="deployType">
+			<!-- 0：集中式部署；1：分布式部署 -->
+			<value>0</value>
 		</property>
 	</bean>
 	
