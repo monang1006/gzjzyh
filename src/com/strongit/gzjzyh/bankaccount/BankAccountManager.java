@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.strongit.gzjzyh.GzjzyhApplicationConfig;
 import com.strongit.gzjzyh.GzjzyhConstants;
 import com.strongit.gzjzyh.tosync.IToSyncManager;
 import com.strongit.oa.bo.ToaPersonalInfo;
@@ -71,10 +72,13 @@ public class BankAccountManager implements IBankAccountManager {
 		if(isAdd){
 			TUumsBaseRole bankRole = this.roleManager.getRoleInfoByRoleCode(GzjzyhConstants.BANK_ROLE);
 			this.roleManager.saveRoleUsers(bankRole.getRoleId(), model.getUserId());
-			
-			this.toSyncManager.createToSyncMsg(model, GzjzyhConstants.OPERATION_TYPE_ADD);
+			if(GzjzyhApplicationConfig.isDistributedDeployed()){
+				this.toSyncManager.createToSyncMsg(model, GzjzyhConstants.OPERATION_TYPE_ADD);
+			}
 		}else{
-			this.toSyncManager.createToSyncMsg(model, GzjzyhConstants.OPERATION_TYPE_EDIT);
+			if(GzjzyhApplicationConfig.isDistributedDeployed()){
+				this.toSyncManager.createToSyncMsg(model, GzjzyhConstants.OPERATION_TYPE_EDIT);
+			}
 		}
 	}
 
@@ -136,7 +140,9 @@ public class BankAccountManager implements IBankAccountManager {
 					}
 					userService.saveUserForDel(model);
 				}
-				this.toSyncManager.createToSyncMsg(model, GzjzyhConstants.OPERATION_TYPE_DELETE);
+				if(GzjzyhApplicationConfig.isDistributedDeployed()){
+					this.toSyncManager.createToSyncMsg(model, GzjzyhConstants.OPERATION_TYPE_DELETE);
+				}
 			}
 		}
 	}
