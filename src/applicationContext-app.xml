@@ -12,7 +12,7 @@
 	default-lazy-init="true">
 
 		<!-- 使用annotation自动注册bean,并检查@Required,@Autowired的属性已被注入 -->
-	<context:component-scan base-package="com.engine,com.strongit.oa,com.strongit.doc,com.strongit.workflow,com.strongit.form,com.strongit.uums,com.strongit.xxbs" />
+	<context:component-scan base-package="com.engine,com.strongit.oa,com.strongit.doc,com.strongit.workflow,com.strongit.form,com.strongit.uums,com.strongit.xxbs,com.strongit.gzjzyh" />
 	
 	<bean id="deployType" class="com.strongit.xxbs.common.DeployType">
 	  	<!-- 部署类型：0是报送端，1是采编端 -->
@@ -43,6 +43,7 @@
          <value>com.strongit.doc.bo</value>
          <value>com.strongit.xxbs</value>
          <value>com.strongit.workflow.bo</value>
+         <value>com.strongit.gzjzyh.po</value>
       </list>
     </property>
     <property name="mappingDirectoryLocations">
@@ -65,6 +66,16 @@
 	<bean class="com.strongit.uums.security.ApplicationConfig">
 		<property name="md5Enable">
 			<value>true</value>
+		</property>
+	</bean>
+	
+	<!--
+		赣州经侦银行项目系统全局设置
+	-->
+	<bean class="com.strongit.gzjzyh.GzjzyhApplicationConfig">
+		<property name="deployType">
+			<!-- 0：集中式部署；1：分布式部署 -->
+			<value>0</value>
 		</property>
 	</bean>
 	
