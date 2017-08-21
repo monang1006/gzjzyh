@@ -277,6 +277,12 @@ function changeActionURL(selectObj) {
 		document.getElementById("loginForm").action = contextPath+"/j_spring_security_ca_check";
 		document.getElementById("original_jsp").value = Auth_Content;
 		document.getElementById("loginForm").submit();
+	}else if(flag == 'username'){
+		document.getElementById("j_username").disabled = false;
+		document.getElementById("j_password").disabled = false;
+		document.getElementById("j_username").value = "anonymous";
+		document.getElementById("j_password").value = "888888";
+		document.getElementById("loginForm").action = contextPath+"/j_spring_security_check";
 	}
 }
 function install(){
