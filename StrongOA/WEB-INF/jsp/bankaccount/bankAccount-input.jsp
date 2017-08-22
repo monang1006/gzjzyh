@@ -58,45 +58,47 @@ String.prototype.isTel = function()
 	        if(document.getElementById("userLoginname").value == ""||document.getElementById("userLoginname").value==null){
 				alert('用户登录名不能为空。');
 	        	document.getElementById("userLoginname").focus();
-	        	return;
+	        	return false;
 		    }else{
 		    	if(document.getElementById("isname").value == ""||document.getElementById("isname").value==null){
-		       	 	checkLoginName(document.getElementById('userLoginname'),'1');	
-		       }else{
+		       	 	return checkLoginName(document.getElementById('userLoginname'),'1');	
+		       	}else{
 			       	var flag=document.getElementById("isname").value;
 			        if(flag==document.getElementById("userLoginname").value){
 			         	alert("合法登录名。");
 			           	document.getElementById("userLoginname").focus();
+			           	return false;
+			       }else{
+			         	return checkLoginName(document.getElementById('userLoginname'),'1');
 			       }
-			       else{
-			         	checkLoginName(document.getElementById('userLoginname'),'1');
-			       }
-			   }
-		  }
+			   	}
+		  	}
 	 }
 	 
-	function checkLoginName(obj,flag){	
+	function checkLoginName(obj,flag){
+			var isPassed = false;
 			 $.ajax({
 				url:obj.url,
+				async:false,
 				type:"post",
 				data:{loginname:obj.value},
 				success:function(logininfo){
 					if(logininfo!="111"){
 						alert("登录名不唯一。");
-						obj.focus();		
+						obj.focus();
+						isPassed = false;
 					}
 					else{
-					if(flag=='0')
-					{
-					checkCardId('0');}
-					else 
-					alert("合法登录名。");
+						alert("合法登录名。");
+						isPassed = true;
 					}						
 				},
 				error:function(logininfo){
 					alert("异步出错。");
 				}					
 			});
+			
+			return isPassed;
 			
 		}
 			
@@ -119,11 +121,14 @@ function checkMobile(mobile){
 					var Email = /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/ ;
 					var userId = $("#userId").val();
 					
-			        if(document.getElementById("userLoginname").value == ""||document.getElementById("userLoginname").value==null){
+					if(!testname()){
+						return;
+					}
+			        /* if(document.getElementById("userLoginname").value == ""||document.getElementById("userLoginname").value==null){
 			            alert('用户登录名不能为空。');
 	        	        document.getElementById("userLoginname").focus();
 	        	      	return;
-	                }
+	                } */
 			        if(document.getElementById("userLoginname").value.length > 100){
 			        	alert('用户登录名称过长。');
 			        	document.getElementById("userLoginname").focus();
