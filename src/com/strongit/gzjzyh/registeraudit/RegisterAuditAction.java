@@ -51,6 +51,8 @@ public class RegisterAuditAction extends BaseActionSupport<TGzjzyhUserExtension>
 	private Date appStartDate;
 	private Date appEndDate;
 	
+	private String auditStatus;
+	
 	private String ueMainNo1Tmp;
 	private String ueMainNo2Tmp;
 	private String ueMainId1Tmp;
@@ -131,11 +133,6 @@ public class RegisterAuditAction extends BaseActionSupport<TGzjzyhUserExtension>
 	public String input() throws Exception {
 		// prepareModel();
 		// 获取md5加密设置
-		if (applicationConfig.isMd5Enable()) {
-			this.md5Enable = "1";
-		} else {
-			this.md5Enable = "0";
-		}
 
 		String isSupman = "0";
 		this.getRequest().setAttribute("isSupman", isSupman);
@@ -187,11 +184,10 @@ public class RegisterAuditAction extends BaseActionSupport<TGzjzyhUserExtension>
 			this.ueHelpNo2Tmp = this.model.getUeHelpNo2();
 		}
 		
-		//已审核的信息不允许再修改
-		if(GzjzyhConstants.STATUS_AUDIT_PASS.equals(this.model.getUeStatus())) {
-			return "view";
-		}else {
+		if(GzjzyhConstants.STATUS_WAIT_AUDIT.equals(this.model.getUeStatus())){
 			return INPUT;
+		}else{
+			return "view";
 		}
 	}
 
@@ -204,13 +200,8 @@ public class RegisterAuditAction extends BaseActionSupport<TGzjzyhUserExtension>
 	@Override
 	protected void prepareModel() throws Exception {
 		try {
-			User currentUser = this.userService.getCurrentUser();
-			model = this.registerManager.getUserExtensionByUserId(currentUser.getUserId());
-			if(model == null){
-				model = new TGzjzyhUserExtension();
-				TUumsBaseUser user = new TUumsBaseUser();
-				model.setTuumsBaseUser(user);
-				user.setUserSequence(userService.getNextUserSequenceCode());
+			if(this.ueId != null && !"".equals(this.ueId)){
+				model = this.registerManager.getUserExtensionById(this.ueId);
 			}
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -219,24 +210,17 @@ public class RegisterAuditAction extends BaseActionSupport<TGzjzyhUserExtension>
 
 	@Override
 	public String save() throws Exception {
-		// 添加用户还是编辑用户的标志
-		String flag = "edit";
-		if ("".equals(model.getUeId()) || model.getUeId() == null) {
-			flag = "add";
-			model.setUeId(null);
-		}
+		User currentUser = this.userService.getCurrentUser();
+		model.setUeStatus(this.auditStatus);
+		model.setUeAuditUser(currentUser.getUserName());
+		model.setUeAuditUserId(currentUser.getUserId());
 		this.registerManager.save(model);
 		
 		addActionMessage("保存成功");
 
 		// 添加日志信息
 		String ip = getRequest().getRemoteAddr();
-		String logInfo = "";
-		if (flag.equals("add")) {
-			logInfo = "添加了账号" + model.getTuumsBaseUser().getUserName();
-		} else {
-			logInfo = "编辑了账号" + model.getTuumsBaseUser().getUserName();
-		}
+		String logInfo = "审核了账号" + model.getTuumsBaseUser().getUserName();
 
 		this.myLogManager.addLog(logInfo, ip);
 
@@ -419,5 +403,13 @@ public class RegisterAuditAction extends BaseActionSupport<TGzjzyhUserExtension>
 
 	public String getUeId() {
 		return ueId;
+	}
+
+	public String getAuditStatus() {
+		return auditStatus;
+	}
+
+	public void setAuditStatus(String auditStatus) {
+		this.auditStatus = auditStatus;
 	}
 }

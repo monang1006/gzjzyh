@@ -293,7 +293,7 @@ function checkMobile(mobile){
 				}
 				
 				function openImageUpload(domElementId, windowTitle){
-					var imageUrl = window.showModalDialog("<%=path%>/policeregister/policeRegister!imageUpload.action?orgid="+orgid,window,'help:no;status:no;scroll:no;dialogWidth:450px; dialogHeight:500px');
+					var imageUrl = window.showModalDialog("<%=path%>/policeregister/policeRegister!imageUpload.action",window,'help:no;status:no;scroll:no;dialogWidth:450px; dialogHeight:500px');
 					if(imageUrl != null && imageUrl != ""){
 						document.getElementById(domElementId).value = imageUrl;
 						document.getElementById(domElementId + "Tmp").value = "<%=path%>" + imageUrl;
@@ -534,7 +534,7 @@ function checkMobile(mobile){
 							<td class="td1" align="left">
 								<input
 								id="orgName" name="orgName" type="text" size="44"
-								value="${orgName}">&nbsp;<a href="javascript:void(0);" class="button" onclick="tree()">选择单位</a>
+								value="${orgName}" readOnly="readonly">&nbsp;<a href="javascript:void(0);" class="button" onclick="tree()">选择单位</a>
 							</td>
 						</tr>
 						<tr style="display: none;">

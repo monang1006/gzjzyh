@@ -30,7 +30,7 @@
 	onload="initMenuT()">
 	<DIV id=contentborder align=center>
 		<s:form theme="simple" id="myTableForm"
-			action="/bankaccount/bankAccount.action">
+			action="/registeraudit/registerAudit.action">
 			<table width="100%" border="0" cellspacing="0" cellpadding="0"
 				style="vertical-align: top;">
 				<tr>
@@ -54,7 +54,7 @@
 																<tr>
 																		<td width="4"><img
 																			src="<%=frameroot%>/images/bt_l.jpg" /></td>
-																		<td class="Operation_list" onclick="addUser();"><img
+																		<td class="Operation_list" onclick="auditAccount();"><img
 																			src="<%=root%>/images/operationbtn/add.png">&nbsp;审&nbsp;核&nbsp;</td>
 																		<td width="4"><img
 																			src="<%=frameroot%>/images/bt_r.jpg" /></td>
@@ -82,15 +82,11 @@
 										<input id="searchLoginName"
 										name="searchLoginName" cssClass="search" title="请输入账号"
 										maxlength="50"
-										onkeyup="this.value=this.value.replace(/\s/g,'')"
-										onafterpaste="this.value=this.value.replace(/\s/g,'')"
 										value="${searchLoginName}"> 
 										&nbsp;&nbsp;姓名：&nbsp;
 										<input
 										id="searchName" name="searchName" cssClass="search"
 										title="请输入姓名" maxlength="50"
-										onkeyup="this.value=this.value.replace(/\s/g,'')"
-										onafterpaste="this.value=this.value.replace(/\s/g,'')"
 										value="${searchName}"> 
 										&nbsp;&nbsp;起始日期：&nbsp;<strong:newdate id="appStartDate" name="appStartDate" dateform="yyyy-MM-dd HH:mm:ss" isicon="true" dateobj="${appStartDate}" width="155px" classtyle="search" title="申请起始日期"/>
 							       		&nbsp;&nbsp;结束日期：&nbsp;<strong:newdate id="appEndDate" name="appEndDate" dateform="yyyy-MM-dd HH:mm:ss" isicon="true"  dateobj="${appEndDate}" width="155px" classtyle="search" title="申请结束日期"/>
@@ -100,10 +96,10 @@
 								</tr>
 							</table>
 							<webflex:flexCheckBoxCol caption="选择" property="ueId"
-								showValue="tuumsBaseUser.userName" width="5%" isCheckAll="true"
+								showValue="name" width="5%" isCheckAll="true"
 								isCanDrag="false" isCanSort="false"></webflex:flexCheckBoxCol>
-							<webflex:flexTextCol caption="账号" property="tuumsBaseUser.userLoginname"
-								showValue="tuumsBaseUser.userLoginname" width="20%" isCanDrag="true"
+							<webflex:flexTextCol caption="账号" property="loginname"
+								showValue="loginname" width="20%" isCanDrag="true"
 								isCanSort="false"></webflex:flexTextCol>
 							<webflex:flexTextCol caption="姓名" property="name"
 								showValue="name" width="20%" isCanDrag="true"
@@ -127,17 +123,13 @@ var sMenu = new Menu();
 function initMenuT(){
 	sMenu.registerToDoc(sMenu);
 	var item = null;
-	item = new MenuItem("<%=root%>/images/operationbtn/edit.png","审核","editUser",1,"ChangeWidthTable","checkOneDis");
+	item = new MenuItem("<%=root%>/images/operationbtn/edit.png","审核","auditAccount",1,"ChangeWidthTable","checkOneDis");
 	sMenu.addItem(item);
 	sMenu.addShowType("ChangeWidthTable");
     registerMenu(sMenu);
 }
-//添加用户
-function addUser(){
-	var audit= window.showModalDialog("<%=path%>/bankaccount/bankAccount!input.action",window,'help:no;status:no;scroll:no;dialogWidth:500px; dialogHeight:300px');
-}
-//编辑用户
-function editUser(){
+
+function auditAccount(){
 	var id=getValue();
 	if(id == null||id == ''){
 		alert('请选择要审核的账号。');
@@ -147,7 +139,7 @@ function editUser(){
 		alert('只能审核一个账号。');
 		return;
 	}
-	var audit = window.showModalDialog("<%=path%>/bankaccount/bankAccount!input.action?userId="+id,window,'help:no;status:no;scroll:no;dialogWidth:500px; dialogHeight:300px');
+	var audit = window.showModalDialog("<%=path%>/registeraudit/registerAudit!input.action?ueId="+id,window,'help:no;status:no;scroll:no;dialogWidth:500px; dialogHeight:300px');
 }
 
 

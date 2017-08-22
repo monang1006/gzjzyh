@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.strongit.gzjzyh.GzjzyhCommonService;
 import com.strongit.gzjzyh.GzjzyhConstants;
 import com.strongit.gzjzyh.po.TGzjzyhApplication;
 import com.strongit.gzjzyh.po.TGzjzyhUserExtension;
@@ -17,6 +18,7 @@ import com.strongit.oa.bo.ToaPersonalInfo;
 import com.strongit.oa.common.user.IUserService;
 import com.strongit.oa.common.user.util.Const;
 import com.strongit.oa.myinfo.MyInfoManager;
+import com.strongit.oa.sms.SmsManager;
 import com.strongit.uums.bo.TUumsBaseOrg;
 import com.strongit.uums.bo.TUumsBaseRole;
 import com.strongit.uums.bo.TUumsBaseUser;
@@ -41,6 +43,8 @@ public class PoliceRegisterManager implements IPoliceRegisterManager {
 	IRoleManager roleManager;
 	@Autowired
 	IToSyncManager toSyncManager;
+	@Autowired
+	GzjzyhCommonService commonSerivce;
 	
 	@Autowired
 	public void setSessionFactory(SessionFactory sessionFactory){
@@ -81,6 +85,16 @@ public class PoliceRegisterManager implements IPoliceRegisterManager {
 		model.setUeDate(new Date());
 		model.setUeStatus(GzjzyhConstants.STATUS_WAIT_AUDIT);
 		this.baseDao.save(model);
+	}
+	
+	@Transactional(readOnly = false)
+	public void audit(TGzjzyhUserExtension model) throws SystemException {
+		this.baseDao.save(model);
+		String content = "您的注册账号已审核通过。";
+		if(GzjzyhConstants.STATUS_AUDIT_BACK.equals(model.getUeStatus())){
+			content = "您的注册账号已被退回。";
+		}
+		this.commonSerivce.sendSms(model.getTuumsBaseUser().getUserId(), content);
 	}
 
 	@Override

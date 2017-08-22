@@ -288,6 +288,17 @@
   	</servlet-mapping>
 	<!-- JobExecutorServlet 结束-->
 	
+	<!-- 文件上传 -->
+	<servlet>
+		<servlet-name>uploadServlet</servlet-name>
+		<servlet-class>com.strongit.gzjzyh.upload.FileUploadServlet</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+  		<servlet-name>uploadServlet</servlet-name>
+    	<url-pattern>/servlet/upload</url-pattern>
+  	</servlet-mapping>
+	
 	<!-- 润乾报表设置 -->
 	<!-- 
 	<servlet>
