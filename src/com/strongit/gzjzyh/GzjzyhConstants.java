@@ -18,5 +18,12 @@ public class GzjzyhConstants {
 	public final static String OPERATION_TYPE_EDIT = "1";
 	//删除
 	public final static String OPERATION_TYPE_DELETE = "2";
+	
+	//待审核
+	public final static String STATUS_WAIT_AUDIT = "0";
+	//审核通过
+	public final static String STATUS_AUDIT_PASS = "1";
+	//退回
+	public final static String STATUS_AUDIT_BACK = "2";
 
 }

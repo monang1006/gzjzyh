@@ -1,4 +1,4 @@
-package com.strongit.gzjzyh.policeregister;
+package com.strongit.gzjzyh.registeraudit;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.strongit.gzjzyh.GzjzyhConstants;
 import com.strongit.gzjzyh.po.TGzjzyhUserExtension;
+import com.strongit.gzjzyh.policeregister.IPoliceRegisterManager;
 import com.strongit.oa.bo.ToaPersonalInfo;
 import com.strongit.oa.common.user.IUserService;
 import com.strongit.oa.common.user.model.User;
@@ -35,8 +36,8 @@ import com.strongmvc.orm.hibernate.Page;
 import com.strongmvc.webapp.action.BaseActionSupport;
 
 @ParentPackage("default")
-@Results({ @Result(name = BaseActionSupport.RELOAD, value = "policeRegister.action", type = ServletActionRedirectResult.class) })
-public class PoliceRegisterAction extends BaseActionSupport<TGzjzyhUserExtension> {
+@Results({ @Result(name = BaseActionSupport.RELOAD, value = "registerAudit.action", type = ServletActionRedirectResult.class) })
+public class RegisterAuditAction extends BaseActionSupport<TGzjzyhUserExtension> {
 
 	private Page<TGzjzyhUserExtension> page = new Page<TGzjzyhUserExtension>(
 			FlexTableTag.MIDDLE_ROWS, true);
@@ -45,6 +46,10 @@ public class PoliceRegisterAction extends BaseActionSupport<TGzjzyhUserExtension
 
 	private String ueId;
 	private String orgName;
+	private String searchLoginName;
+	private String searchName;
+	private Date appStartDate;
+	private Date appEndDate;
 	
 	private String ueMainNo1Tmp;
 	private String ueMainNo2Tmp;
@@ -55,8 +60,7 @@ public class PoliceRegisterAction extends BaseActionSupport<TGzjzyhUserExtension
 	private String ueHelpId1Tmp;
 	private String ueHelpId2Tmp;
 
-	// 用户是否启用
-	private Map userActiveTypeMap = new HashMap();
+	private Map statusMap = new HashMap();
 
 	private TGzjzyhUserExtension model = new TGzjzyhUserExtension();
 
@@ -193,6 +197,7 @@ public class PoliceRegisterAction extends BaseActionSupport<TGzjzyhUserExtension
 
 	@Override
 	public String list() throws Exception {
+		page = this.registerManager.queryApplyPage(page, searchLoginName, searchName, appStartDate, appEndDate);
 		return SUCCESS;
 	}
 
@@ -300,12 +305,12 @@ public class PoliceRegisterAction extends BaseActionSupport<TGzjzyhUserExtension
 		return page;
 	}
 
-	public Map getUserActiveTypeMap() {
-		return userActiveTypeMap;
+	public Map getStatusMap() {
+		return statusMap;
 	}
 
-	public void setUserActiveTypeMap(Map userActiveTypeMap) {
-		this.userActiveTypeMap = userActiveTypeMap;
+	public void setStatusMap(Map statusMap) {
+		this.statusMap = statusMap;
 	}
 
 	public String getOrgName() {
@@ -378,5 +383,41 @@ public class PoliceRegisterAction extends BaseActionSupport<TGzjzyhUserExtension
 
 	public void setUeHelpId2Tmp(String ueHelpId2Tmp) {
 		this.ueHelpId2Tmp = ueHelpId2Tmp;
+	}
+
+	public String getSearchLoginName() {
+		return searchLoginName;
+	}
+
+	public void setSearchLoginName(String searchLoginName) {
+		this.searchLoginName = searchLoginName;
+	}
+
+	public String getSearchName() {
+		return searchName;
+	}
+
+	public void setSearchName(String searchName) {
+		this.searchName = searchName;
+	}
+
+	public Date getAppStartDate() {
+		return appStartDate;
+	}
+
+	public void setAppStartDate(Date appStartDate) {
+		this.appStartDate = appStartDate;
+	}
+
+	public Date getAppEndDate() {
+		return appEndDate;
+	}
+
+	public void setAppEndDate(Date appEndDate) {
+		this.appEndDate = appEndDate;
+	}
+
+	public String getUeId() {
+		return ueId;
 	}
 }

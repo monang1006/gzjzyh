@@ -149,6 +149,11 @@ function checkMobile(mobile){
 			        	document.getElementById("userPassword").focus();
 			        	return;
 			        }
+			         
+			        if(document.getElementById("orgId").value == ""){
+			       		alert('请选择组织机构。');
+			  			return;
+			        }
 			        
 			        if(document.getElementById("userTel").value.length > 20){
 			        	alert('联系电话过长。');
@@ -181,9 +186,85 @@ function checkMobile(mobile){
 						}
 					}
 					
+					//扩展信息
+					if(!validateElement("ueMainName", 20, "主办警官姓名")){
+						return ;
+			        }
+					if(!validateElement("ueHelpName", 20, "协办警官姓名")){
+						return ;
+			        }
+					if(!validateElement("ueMainNo", 20, "主办警官警号")){
+						return ;
+			        }
+					if(!validateElement("ueHelpNo", 20, "协办警官警号")){
+						return ;
+			        }
+					if(!validateElement("ueMainId", 20, "主办警官身份证号")){
+						return ;
+			        }
+					if(!validateElement("ueHelpId", 20, "协办警官身份证号")){
+						return ;
+			        }
+					if(!validateElement("ueMainMobile", 15, "主办警官手机号码")){
+						return ;
+			        }
+					if(!validateElement("ueHelpMobile", 15, "协办警官手机号码")){
+						return ;
+			        }
+					var mobile = document.getElementById("ueMainMobile").value;
+			        if(!checkMobile(mobile)){
+			        	alert("请输入正确的主办警官手机号码。\n\n例如:13916752109");
+			        	return ;
+			        }
+			        var mobile = document.getElementById("ueHelpMobile").value;
+			        if(!checkMobile(mobile)){
+			        	alert("请输入正确的协办警官手机号码。\n\n例如:13916752109");
+			        	return ;
+			        }
+			        
+			        if(!validateElement("ueMainNo1", 200, "主办警官警官证正面")){
+						return ;
+			        }
+					if(!validateElement("ueMainNo2", 200, "主办警官警官证反面")){
+						return ;
+			        }
+					if(!validateElement("ueMainId1", 200, "主办警官身份证正面")){
+						return ;
+			        }
+					if(!validateElement("ueMainId2", 200, "主办警官身份证反面")){
+						return ;
+			        }
+					if(!validateElement("ueHelpNo1", 200, "协办警官警官证正面")){
+						return ;
+			        }
+					if(!validateElement("ueHelpNo2", 200, "协办警官警官证反面")){
+						return ;
+			        }
+					if(!validateElement("ueHelpId1", 200, "协办警官身份证正面")){
+						return ;
+			        }
+					if(!validateElement("ueHelpId2", 200, "协办警官身份证反面")){
+						return ;
+			        }
+					
 		             //----------------------END-----------------------
 					document.getElementById("usermanagesave").submit();
 				
+				}
+				
+				function validateElement(elementId, maxLength, elementName){
+					var isValidate = true;
+					if(document.getElementById(elementId).value == ""){
+			       		alert(elementName + '不能为空。');
+			       		document.getElementById(elementId).focus();
+			       		return false;
+			        }
+			        if(document.getElementById(elementId).value.length > maxLength){
+			        	alert(elementName + '过长。');
+			        	document.getElementById(elementId).focus();
+			        	return false;
+			        }
+			        return isValidate;
 				}
 				
 				function password(){
@@ -199,15 +280,157 @@ function checkMobile(mobile){
 				
 				function refreshList(){
 					window.dialogArguments.submitForm();
-				} 
+				}
+				
+				function tree(){
+					var orgid = document.getElementById("orgId").value;
+					window.showModalDialog("<%=path%>/policeregister/policeRegister!orgMoreTree.action?orgid="+orgid,window,'help:no;status:no;scroll:no;dialogWidth:450px; dialogHeight:500px');
+				}
+				
+				function setOrg(orgId, orgName){
+					document.getElementById("orgId").value = orgId;
+					document.getElementById("orgName").value = orgName;
+				}
+				
+				function openImageUpload(domElementId, windowTitle){
+					var imageUrl = window.showModalDialog("<%=path%>/policeregister/policeRegister!imageUpload.action?orgid="+orgid,window,'help:no;status:no;scroll:no;dialogWidth:450px; dialogHeight:500px');
+					if(imageUrl != null && imageUrl != ""){
+						document.getElementById(domElementId).value = imageUrl;
+						document.getElementById(domElementId + "Tmp").value = "<%=path%>" + imageUrl;
+					}
+				}
+				
+				function formReset(){
+					$("#userLoginname").val("");
+					$("#userPassword").val("");
+					$("#userName").val("");
+					$("#rest2").val("");
+					$("#userTel").val("");
+					$("#userAddr").val("");
+					$("#orgName").val("");
+					$("#orgId").val("");
+					$("#ueMainName").val("");
+					$("#ueMainId").val("");
+					$("#ueMainNo").val("");
+					$("#ueMainMobile").val("");
+					$("#ueMainNo1").val("");
+					$("#ueMainNo2").val("");
+					$("#ueMainId1").val("");
+					$("#ueMainId2").val("");
+					$("#ueHelpName").val("");
+					$("#ueHelpId").val("");
+					$("#ueHelpNo").val("");
+					$("#ueHelpMobile").val("");
+					$("#ueHelpNo1").val("");
+					$("#ueHelpNo2").val("");
+					$("#ueHelpId1").val("");
+					$("#ueHelpId2").val("");
+					
+					$("#ueMainNo1").attr("src", "<%=path%>/images/upload/defaultUpload.png");
+					$("#ueMainNo2").attr("src", "<%=path%>/images/upload/defaultUpload.png");
+					$("#ueMainId1").attr("src", "<%=path%>/images/upload/defaultUpload.png");
+					$("#ueMainId2").attr("src", "<%=path%>/images/upload/defaultUpload.png");
+					$("#ueHelpNo1").attr("src", "<%=path%>/images/upload/defaultUpload.png");
+					$("#ueHelpNo2").attr("src", "<%=path%>/images/upload/defaultUpload.png");
+					$("#ueHelpId1").attr("src", "<%=path%>/images/upload/defaultUpload.png");
+					$("#ueHelpId2").attr("src", "<%=path%>/images/upload/defaultUpload.png");
+				}
 				
 			</script>
 </head>
 <base target="_self" />
 <body class=contentbodymargin oncontextmenu="return false;">
 	<DIV id=contentborder align=center>
+		<s:form id="usermanagesave" target="hiddenFrame"
+						action="/policeregister/policeRegister!save.action" theme="simple">
 		<table width="100%" border="0" cellspacing="0" cellpadding="0"
 			style="vertical-align: top;">
+			<tr>
+				<td height="100%">
+					<table width="100%" border="0" cellspacing="0" cellpadding="0">
+						<tr>
+							<td height="40" class="table_headtd">
+								<table width="100%" border="0" cellspacing="0" cellpadding="00">
+									<tr>
+										<td>&nbsp;</td>
+										<td class="table_headtd_img"><img
+											src="<%=frameroot%>/images/ico/ico.gif">&nbsp;</td>
+										<td align="left"><strong>审核状态</strong></td>
+										<td align="right">
+											<table border="0" align="right" cellpadding="00"
+												cellspacing="0">
+												<tr>
+													<td width="7"><img
+														src="<%=frameroot%>/images/ch_h_l.gif" /></td>
+													<td class="Operation_input" onclick="onsubmitform();">&nbsp;保&nbsp;存&nbsp;</td>
+													<td width="7"><img
+														src="<%=frameroot%>/images/ch_h_r.gif" /></td>
+													<td width="5"></td>
+													<td width="8"><img
+														src="<%=frameroot%>/images/ch_z_l.gif" /></td>
+													<td class="Operation_input1" onclick="formReset()">&nbsp;重&nbsp;置&nbsp;</td>
+													<td width="7"><img
+														src="<%=frameroot%>/images/ch_z_r.gif" /></td>
+													<td width="6"></td>
+												</tr>
+											</table>
+										</td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+					</table> 
+					<table width="100%" height="10%" border="0" cellpadding="0"
+						cellspacing="0" align="center" class="table1">
+						<tr>
+							<td width="25%" height="21" class="biao_bg1" align="right">
+								<span class="wz">审核状态：</span>
+							</td>
+							<td class="td1" align="left" width="40%">
+								<script>
+									var displayStatus = "";
+									if("${model.ueStatus}" == "0"){
+										displayStatus = "待审核";
+									}else if("${model.ueStatus}" == "1"){
+										displayStatus = "审核通过";
+									}else if("${model.ueStatus}" == "2"){
+										displayStatus = "已退回";
+									}
+									document.write(displayStatus);
+								</script>
+							</td>
+							<td width="25%" height="21" class="biao_bg1" align="right">
+								<span class="wz">审核人员：</span>
+							</td>
+							<td class="td1" align="left">
+								<script>
+									if("${model.ueStatus}" == "1" || "${model.ueStatus}" == "2"){
+										document.write("${model.ueAuditUser}");
+									}
+								</script>
+							</td>
+						</tr>
+						<tr>
+							<td width="25%" height="21" class="biao_bg1" align="right">
+								<span class="wz">退回意见：</span>
+							</td>
+							<td class="td1" align="left" colspan="3">
+								<script>
+									if("${model.ueStatus}" == "2"){
+										document.write("${model.ueNgReason}");
+									}
+								</script>
+							</td>
+						</tr>
+						<td class="table1_td"></td>
+						<td></td>
+						</tr>
+					</table>
+					<table id="annex" width="90%" height="10%" border="0"
+						cellpadding="0" cellspacing="1" align="center" class="table1">
+					</table>
+				</td>
+			</tr>
 			<tr>
 				<td height="100%">
 					<table width="100%" border="0" cellspacing="0" cellpadding="0">
@@ -243,100 +466,115 @@ function checkMobile(mobile){
 							</td>
 						</tr>
 					</table> 
-					<s:form id="usermanagesave" target="hiddenFrame"
-						action="/policeregister/policeRegister!save.action" theme="simple">
-						<input type="hidden" id="hasPasswordEdited"
-							name="hasPasswordEdited" value="0" />
-						<input type="hidden" id="oldPassword" name="oldPassword"
-							value="${model.tuumsBaseUser.userPassword}" />
-						<input type="hidden" id="userId" name="userId"
-							value="${model.tuumsBaseUser.userId}">
-						<input type="hidden" id="isname" name="isname"
-							value="${model.tuumsBaseUser.userLoginname}">
-						<input type="hidden" id="isSupman" name="isSupman"
-							value="${isSupman}">
-						<input type="hidden" id="orgId" name="model.tuumsBaseUser.orgId"
-							value="${model.tuumsBaseUser.orgId}">
-						<table width="100%" height="10%" border="0" cellpadding="0"
-							cellspacing="0" align="center" class="table1">
-							<tr>
-								<td width="25%" height="21" class="biao_bg1" align="right">
-									<span class="wz"><font color="red">*</font>&nbsp;登录账号：</span>
-								</td>
-								<td class="td1" align="left" width="40%"><input
-									id="userLoginname"
-									url="<%=path%>/usermanage/usermanage!checkLoginName.action"
-									name="model.tuumsBaseUser.userLoginname" type="text" size="44" maxLength="50"
-									onkeyup="this.value=this.value.replace(/\s/g,'')"
-									onafterpaste="this.value=this.value.replace(/\s/g,'')"
-									value="${model.tuumsBaseUser.userLoginname}"></td>
-								<td width="25%" height="21" class="biao_bg1" align="right">
-									<span class="wz"><font color="red">*</font>&nbsp;登录密码：</span>
-								</td>
-								<td class="td1" align="left"><input
-									id="userPassword" name="model.tuumsBaseUser.userPassword" type="password"
-									size="44" value="${model.tuumsBaseUser.userPassword}" readonly="readonly">
-									&nbsp;<a href="javascript:void(0);" class="button"
-									onclick="password()">设置密码</a><input id="rePassword" name="rePassword" type="hidden"
-									value="${rePassword}"></td>
-							</tr>
-							<tr>
-								<td width="25%" height="21" class="biao_bg1" align="right">
-									<span class="wz"><font color="red">*</font>&nbsp;用户姓名：</span>
-								</td>
-								<td class="td1" align="left"><input
-									id="userName" name="model.tuumsBaseUser.userName" type="text" maxLength="50"
-									onkeyup="this.value=this.value.replace(/\s/g,'')"
-									onafterpaste="this.value=this.value.replace(/\s/g,'')"
-									size="44" value="${model.tuumsBaseUser.userName}"></td>
-								<td width="25%" height="21" class="biao_bg1" align="right">
-									<span class="wz"><font color="red">*</font>&nbsp;所属单位：</span>
-								</td>
-								<td class="td1" align="left">
-									<input
-									id="orgName" name="orgName" type="text" size="44"
-									maxLength="20" value="${orgName}">&nbsp;<a href="javascript:void(0);" class="button" onclick="selectOrg()">选择单位</a>
-								</td>
-							</tr>
-							<tr style="display: none;">
-								<td width="25%" height="21" class="biao_bg1" align="right">
-									<span class="wz"><font color="red">*</font>&nbsp;排序序号：</span>
-								</td>
-								<td class="td1" colspan="3" align="left"><input
-									id="userSequence" name="model.tuumsBaseUser.userSequence" maxlength="10"
-									value="${model.tuumsBaseUser.userSequence}" type="text" size="22">
-									&nbsp;<font color="#999999">( 数值越小排名越前 )</font></td>
-							</tr>
-							<tr>
-								<td width="25%" height="21" class="biao_bg1" align="right">
-									<span class="wz">手机号码：</span>
-								</td>
-								<td class="td1" align="left"><input id="rest2"
-									name="model.tuumsBaseUser.rest2" type="text" size="44" maxLength="20"
-									value="${model.tuumsBaseUser.rest2}"></td>
-								<td width="25%" height="21" class="biao_bg1" align="right">
-									<span class="wz">办公电话：</span>
-								</td>
-								<td class="td1" align="left"><input
-									id="userTel" name="model.tuumsBaseUser.userTel" type="text" size="44"
-									maxLength="20" value="${model.tuumsBaseUser.userTel}"></td>
-							</tr>
-							<tr>
-								<td width="25%" height="21" class="biao_bg1" align="right">
-									<span class="wz">联系地址：</span>
-								</td>
-								<td class="td1" colspan="3" align="left"><input
-									id="userAddr" name="model.tuumsBaseUser.userAddr" type="text" size="44"
-									value="${model.tuumsBaseUser.userAddr}"></td>
-							</tr>
-							<td class="table1_td"></td>
-							<td></td>
-							</tr>
-						</table>
-						<table id="annex" width="90%" height="10%" border="0"
-							cellpadding="0" cellspacing="1" align="center" class="table1">
-						</table>
-					</s:form>
+					<input type="hidden" id="hasPasswordEdited"
+						name="hasPasswordEdited" value="0" />
+					<input type="hidden" id="oldPassword" name="oldPassword"
+						value="${model.tuumsBaseUser.userPassword}" />
+					<input type="hidden" id="userId" name="userId"
+						value="${model.tuumsBaseUser.userId}">
+					<input type="hidden" id="isname" name="isname"
+						value="${model.tuumsBaseUser.userLoginname}">
+					<input type="hidden" id="isSupman" name="isSupman"
+						value="${isSupman}">
+					<input type="hidden" id="orgId" name="model.tuumsBaseUser.orgId"
+						value="${model.tuumsBaseUser.orgId}">
+					<input type="hidden" id="ueMainNo1" name="model.ueMainNo1"
+						value="${model.ueMainNo1}">
+					<input type="hidden" id="ueMainNo2" name="model.ueMainNo2"
+						value="${model.ueMainNo2}">
+					<input type="hidden" id="ueMainId1" name="model.ueMainId1"
+						value="${model.ueMainId1}">
+					<input type="hidden" id="ueMainId2" name="model.ueMainId2"
+						value="${model.ueMainId2}">
+					<input type="hidden" id="ueHelpNo1" name="model.ueHelpNo1"
+						value="${model.ueHelpNo1}">
+					<input type="hidden" id="ueHelpNo2" name="model.ueHelpNo2"
+						value="${model.ueHelpNo2}">
+					<input type="hidden" id="ueHelpId1" name="model.ueHelpId1"
+						value="${model.ueHelpId1}">
+					<input type="hidden" id="ueHelpId2" name="model.ueHelpId2"
+						value="${model.ueHelpId2}">
+					<input type="hidden" id="ueId" name="model.ueId"
+						value="${model.ueId}">
+					<table width="100%" height="10%" border="0" cellpadding="0"
+						cellspacing="0" align="center" class="table1">
+						<tr>
+							<td width="25%" height="21" class="biao_bg1" align="right">
+								<span class="wz"><font color="red">*</font>&nbsp;登录账号：</span>
+							</td>
+							<td class="td1" align="left" width="40%"><input
+								id="userLoginname"
+								url="<%=path%>/usermanage/usermanage!checkLoginName.action"
+								name="model.tuumsBaseUser.userLoginname" type="text" size="44" maxLength="50"
+								onkeyup="this.value=this.value.replace(/\s/g,'')"
+								onafterpaste="this.value=this.value.replace(/\s/g,'')"
+								value="${model.tuumsBaseUser.userLoginname}"></td>
+							<td width="25%" height="21" class="biao_bg1" align="right">
+								<span class="wz"><font color="red">*</font>&nbsp;登录密码：</span>
+							</td>
+							<td class="td1" align="left"><input
+								id="userPassword" name="model.tuumsBaseUser.userPassword" type="password"
+								size="44" value="${model.tuumsBaseUser.userPassword}" readonly="readonly">
+								&nbsp;<a href="javascript:void(0);" class="button"
+								onclick="password()">设置密码</a><input id="rePassword" name="rePassword" type="hidden"
+								value="${rePassword}"></td>
+						</tr>
+						<tr>
+							<td width="25%" height="21" class="biao_bg1" align="right">
+								<span class="wz"><font color="red">*</font>&nbsp;用户姓名：</span>
+							</td>
+							<td class="td1" align="left"><input
+								id="userName" name="model.tuumsBaseUser.userName" type="text" maxLength="50"
+								onkeyup="this.value=this.value.replace(/\s/g,'')"
+								onafterpaste="this.value=this.value.replace(/\s/g,'')"
+								size="44" value="${model.tuumsBaseUser.userName}"></td>
+							<td width="25%" height="21" class="biao_bg1" align="right">
+								<span class="wz"><font color="red">*</font>&nbsp;所属单位：</span>
+							</td>
+							<td class="td1" align="left">
+								<input
+								id="orgName" name="orgName" type="text" size="44"
+								value="${orgName}">&nbsp;<a href="javascript:void(0);" class="button" onclick="tree()">选择单位</a>
+							</td>
+						</tr>
+						<tr style="display: none;">
+							<td width="25%" height="21" class="biao_bg1" align="right">
+								<span class="wz"><font color="red">*</font>&nbsp;排序序号：</span>
+							</td>
+							<td class="td1" colspan="3" align="left"><input
+								id="userSequence" name="model.tuumsBaseUser.userSequence" maxlength="10"
+								value="${model.tuumsBaseUser.userSequence}" type="text" size="22">
+								&nbsp;<font color="#999999">( 数值越小排名越前 )</font></td>
+						</tr>
+						<tr>
+							<td width="25%" height="21" class="biao_bg1" align="right">
+								<span class="wz">手机号码：</span>
+							</td>
+							<td class="td1" align="left"><input id="rest2"
+								name="model.tuumsBaseUser.rest2" type="text" size="44" maxLength="20"
+								value="${model.tuumsBaseUser.rest2}"></td>
+							<td width="25%" height="21" class="biao_bg1" align="right">
+								<span class="wz">办公电话：</span>
+							</td>
+							<td class="td1" align="left"><input
+								id="userTel" name="model.tuumsBaseUser.userTel" type="text" size="44"
+								maxLength="20" value="${model.tuumsBaseUser.userTel}"></td>
+						</tr>
+						<tr>
+							<td width="25%" height="21" class="biao_bg1" align="right">
+								<span class="wz">联系地址：</span>
+							</td>
+							<td class="td1" colspan="3" align="left"><input
+								id="userAddr" name="model.tuumsBaseUser.userAddr" type="text" size="44"
+								value="${model.tuumsBaseUser.userAddr}"></td>
+						</tr>
+						<td class="table1_td"></td>
+						<td></td>
+						</tr>
+					</table>
+					<table id="annex" width="90%" height="10%" border="0"
+						cellpadding="0" cellspacing="1" align="center" class="table1">
+					</table>
 				</td>
 			</tr>
 			<tr>
@@ -391,90 +629,104 @@ function checkMobile(mobile){
 								<span class="wz"><font color="red">*</font>&nbsp;警官姓名：</span>
 							</td>
 							<td class="td1" align="left"><input
-								id="userLoginname"
-								url="<%=path%>/usermanage/usermanage!checkLoginName.action"
-								name="model.tuumsBaseUser.userLoginname" type="text" size="44" maxLength="50"
-								onkeyup="this.value=this.value.replace(/\s/g,'')"
-								onafterpaste="this.value=this.value.replace(/\s/g,'')"
-								value="${model.tuumsBaseUser.userLoginname}"></td>
+								id="ueMainName"
+								name="model.ueMainName" type="text" size="44" maxLength="50"
+								value="${model.ueMainName}"></td>
 							<td width="25%" height="21" class="biao_bg1" align="right">
 								<span class="wz"><font color="red">*</font>&nbsp;警官姓名：</span>
 							</td>
 							<td class="td1" align="left"><input
-								id="userPassword" name="model.tuumsBaseUser.userPassword" type="password"
-								size="44" value="${model.tuumsBaseUser.userPassword}" readonly="readonly">
-								<input id="rePassword" name="rePassword" type="hidden"
-								value="${rePassword}">&nbsp;<a href="javascript:void(0);" class="button"
-									onclick="password()" style="display:none;">设置密码</a></td>
+								id="ueHelpName" name="model.ueHelpName" type="text"
+								size="44" maxLength="50" value="${model.ueHelpName}"></td>
 						</tr>
 						<tr>
 							<td width="25%" height="21" class="biao_bg1" align="right">
 								<span class="wz"><font color="red">*</font>&nbsp;警官警号：</span>
 							</td>
 							<td class="td1" align="left"><input
-								id="userName" name="model.tuumsBaseUser.userName" type="text" maxLength="50"
-								onkeyup="this.value=this.value.replace(/\s/g,'')"
-								onafterpaste="this.value=this.value.replace(/\s/g,'')"
-								size="44" value="${model.tuumsBaseUser.userName}"></td>
+								id="ueMainNo" name="model.ueMainNo" type="text" maxLength="50"
+								size="44" value="${model.ueMainNo}"></td>
 							<td width="25%" height="21" class="biao_bg1" align="right">
 								<span class="wz"><font color="red">*</font>&nbsp;警官警号：</span>
 							</td>
 							<td class="td1" align="left">
 								<input
-								id="orgName" name="orgName" type="text" size="44"
-								maxLength="20" value="${orgName}">
+								id="ueHelpNo" name="model.ueHelpNo" type="text" size="44"
+								maxLength="50" value="${model.ueHelpNo}">
 							</td>
 						</tr>
 						<tr>
 							<td width="25%" height="21" class="biao_bg1" align="right">
 								<span class="wz"><font color="red">*</font>&nbsp;身份证号：</span>
 							</td>
-							<td class="td1" align="left"><input id="rest2"
-								name="model.tuumsBaseUser.rest2" type="text" size="44" maxLength="20"
-								value="${model.tuumsBaseUser.rest2}"></td>
+							<td class="td1" align="left"><input id="ueMainId"
+								name="model.ueMainId" type="text" size="44"
+								value="${model.ueMainId}"></td>
 							<td width="25%" height="21" class="biao_bg1" align="right">
 								<span class="wz"><font color="red">*</font>&nbsp;身份证号：</span>
 							</td>
 							<td class="td1" align="left"><input
-								id="userTel" name="model.tuumsBaseUser.userTel" type="text" size="44"
-								maxLength="20" value="${model.tuumsBaseUser.userTel}"></td>
+								id="ueHelpId" name="model.ueHelpId" type="text" size="44" value="${model.ueHelpId}"></td>
 						</tr>
 						<tr>
 							<td width="25%" height="21" class="biao_bg1" align="right">
 								<span class="wz">手机号码：</span>
 							</td>
-							<td class="td1" align="left"><input id="rest2"
-								name="model.tuumsBaseUser.rest2" type="text" size="44" maxLength="20"
-								value="${model.tuumsBaseUser.rest2}"></td>
+							<td class="td1" align="left"><input id="ueMainMobile"
+								name="model.ueMainMobile" type="text" size="44"
+								value="${model.ueMainMobile}"></td>
 							<td width="25%" height="21" class="biao_bg1" align="right">
 								<span class="wz">手机号码：</span>
 							</td>
 							<td class="td1" align="left"><input
-								id="userTel" name="model.tuumsBaseUser.userTel" type="text" size="44"
-								maxLength="20" value="${model.tuumsBaseUser.userTel}"></td>
+								id="ueHelpMobile" name="model.ueHelpMobile" type="text" size="44" value="${model.ueHelpMobile}"></td>
 						</tr>
 						<tr>
 							<td colspan="2" class="td1" align="left">
 								<table style="width:100%;">
 									<tr>
-										<td width="50%" align="center"><img alt="" src="" style="width:100%;height:200px;"><div>警官证（正）</div></td>
-										<td width="50%" align="center"><img alt="" src="" style="width:100%;height:200px;"><div>警官证（反）</div></td>
+										<td width="50%" align="center">
+											<img id="ueMainNo1Tmp" src="<%=path %>${ueMainNo1Tmp }" style="width:100%;height:200px;">
+											<div><a href="javascript:void(0);" onclick="openImageUpload('ueMainNo1', '主办警官警官证（正）')">警官证（正）</a></div>
+										</td>
+										<td width="50%" align="center">
+											<img id="ueMainNo2Tmp" src="<%=path %>${ueMainNo2Tmp }" style="width:100%;height:200px;">
+											<div><a href="javascript:void(0);" onclick="openImageUpload('ueMainNo2', '主办警官警官证（反）')">警官证（反）</a></div>
+										</td>
 									</tr>
 									<tr>
-										<td width="50%" align="center"><img alt="" src="" style="width:100%;height:200px;"><div>身份证（正）</div></td>
-										<td width="50%" align="center"><img alt="" src="" style="width:100%;height:200px;"><div>身份证（反）</div></td>
+										<td width="50%" align="center">
+											<img id="ueMainId1Tmp" src="<%=path %>${ueMainId1Tmp }" style="width:100%;height:200px;">
+											<div><a href="javascript:void(0);" onclick="openImageUpload('ueMainId1', '主办警官身份证（正）')">身份证（正）</a></div>
+										</td>
+										<td width="50%" align="center">
+											<img id="ueMainId2Tmp" src="<%=path %>${ueMainId2Tmp }" style="width:100%;height:200px;">
+											<div><a href="javascript:void(0);" onclick="openImageUpload('ueMainId2', '主办警官身份证（反）')">身份证（反）</a></div>
+										</td>
 									</tr>
 								</table>
 							</td>
 							<td class="td1" colspan="2" align="left">
 								<table style="width:100%;">
 									<tr>
-										<td width="50%" align="center"><img alt="" src="" style="width:100%;height:200px;"><div>警官证（正）</div></td>
-										<td width="50%" align="center"><img alt="" src="" style="width:100%;height:200px;"><div>警官证（反）</div></td>
+										<td width="50%" align="center">
+											<img id="ueHelpNo1Tmp" src="<%=path %>${ueHelpNo1Tmp }" style="width:100%;height:200px;">
+											<div><a href="javascript:void(0);" onclick="openImageUpload('ueHelpNo1', '协办警官警官证（正）')">警官证（正）</a></div>
+										</td>
+										<td width="50%" align="center">
+											<img id="ueHelpNo2Tmp" src="<%=path %>${ueHelpNo2Tmp }" style="width:100%;height:200px;">
+											<div><a href="javascript:void(0);" onclick="openImageUpload('ueHelpNo2', '协办警官警官证（反）')">警官证（反）</a></div>
+										</td>
 									</tr>
 									<tr>
-										<td width="50%" align="center"><img alt="" src="" style="width:100%;height:200px;"><div>身份证（正）</div></td>
-										<td width="50%" align="center"><img alt="" src="" style="width:100%;height:200px;"><div>身份证（反）</div></td>
+										<td width="50%" align="center">
+											<img id="ueHelpId1Tmp" src="<%=path %>${ueHelpId1Tmp }" style="width:100%;height:200px;">
+											<div><a href="javascript:void(0);" onclick="openImageUpload('ueHelpId1', '协办警官身份证（正）')">身份证（正）</a></div>
+										</td>
+										<td width="50%" align="center">
+											<img id="ueHelpId2Tmp" src="<%=path %>${ueHelpId2Tmp }" style="width:100%;height:200px;">
+											<div><a href="javascript:void(0);" onclick="openImageUpload('ueHelpId2', '协办警官身份证（反）')">身份证（反）</a></div>
+										</td>
 									</tr>
 								</table>
 							</td>
@@ -489,6 +741,7 @@ function checkMobile(mobile){
 				</td>
 			</tr>
 		</table>
+		</s:form>
 	</DIV>
 </body>
 <iframe id="hiddenFrame" name="hiddenFrame" style="width:0px;height:0px;display:none;"></iframe>

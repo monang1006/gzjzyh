@@ -1,6 +1,7 @@
 package com.strongit.gzjzyh.po;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,9 +11,13 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import com.strongit.gzjzyh.GzjzyhConstants;
 import com.strongit.uums.bo.TUumsBaseUser;
 
 @Entity
@@ -38,12 +43,17 @@ public class TGzjzyhUserExtension implements Serializable {
 	private String ueHelpNo2;
 	private String ueHelpId1;
 	private String ueHelpId2;
-	private String ueStatus;
+	private String ueStatus = GzjzyhConstants.STATUS_WAIT_AUDIT;
+	private Date ueDate;
 	private String ueAuditUser;
 	private String ueAuditUserId;
 	private String ueNgReason;
 	/** persistent field */
 	private TUumsBaseUser tuumsBaseUser;
+	
+	private String loginName;
+	private String name;
+	private String orgName;
 
 	public TGzjzyhUserExtension() {
 
@@ -249,6 +259,43 @@ public class TGzjzyhUserExtension implements Serializable {
 
 	public void setTuumsBaseUser(TUumsBaseUser tuumsBaseUser) {
 		this.tuumsBaseUser = tuumsBaseUser;
+	}
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "UE_DATE")
+	public Date getUeDate() {
+		return ueDate;
+	}
+
+	public void setUeDate(Date ueDate) {
+		this.ueDate = ueDate;
+	}
+
+	@Transient
+	public String getLoginName() {
+		return loginName;
+	}
+
+	public void setLoginName(String loginName) {
+		this.loginName = loginName;
+	}
+
+	@Transient
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	@Transient
+	public String getOrgName() {
+		return orgName;
+	}
+
+	public void setOrgName(String orgName) {
+		this.orgName = orgName;
 	}
 
 }
