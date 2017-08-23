@@ -45,7 +45,7 @@ public class RegisterAuditAction extends BaseActionSupport<TGzjzyhUserExtension>
 	private static final String DEFAULT_UPLOAD_IMAGE = "/images/upload/defaultUpload.png";
 
 	private String ueId;
-	private String orgName;
+	private String userOrgName;
 	private String searchLoginName;
 	private String searchName;
 	private Date appStartDate;
@@ -92,6 +92,12 @@ public class RegisterAuditAction extends BaseActionSupport<TGzjzyhUserExtension>
 	public void setMd5Enable(String md5Enable) {
 		this.md5Enable = md5Enable;
 	}
+	
+	public RegisterAuditAction() {
+		statusMap.put(GzjzyhConstants.STATUS_AUDIT_BACK, "已退回");
+		statusMap.put(GzjzyhConstants.STATUS_AUDIT_PASS, "已审核");
+		statusMap.put(GzjzyhConstants.STATUS_WAIT_AUDIT, "待审核");
+	} 
 
 	/**
 	 * 把字符串转成utf8编码，保证中文文件名不会乱码
@@ -139,7 +145,7 @@ public class RegisterAuditAction extends BaseActionSupport<TGzjzyhUserExtension>
 		
 		if(this.model.getTuumsBaseUser().getOrgId() != null && !"".equals(this.model.getTuumsBaseUser().getOrgId())) {
 			TUumsBaseOrg org = this.userService.getOrgInfoByOrgId(this.model.getTuumsBaseUser().getOrgId());
-			this.orgName = org.getOrgName();
+			this.userOrgName = org.getOrgName();
 		}
 		
 		if(this.model.getUeMainId1() == null || "".equals(this.model.getUeMainId1())) {
@@ -297,14 +303,6 @@ public class RegisterAuditAction extends BaseActionSupport<TGzjzyhUserExtension>
 		this.statusMap = statusMap;
 	}
 
-	public String getOrgName() {
-		return orgName;
-	}
-
-	public void setOrgName(String orgName) {
-		this.orgName = orgName;
-	}
-
 	public String getUeMainNo1Tmp() {
 		return ueMainNo1Tmp;
 	}
@@ -411,5 +409,13 @@ public class RegisterAuditAction extends BaseActionSupport<TGzjzyhUserExtension>
 
 	public void setAuditStatus(String auditStatus) {
 		this.auditStatus = auditStatus;
+	}
+
+	public String getUserOrgName() {
+		return userOrgName;
+	}
+
+	public void setUserOrgName(String userOrgName) {
+		this.userOrgName = userOrgName;
 	}
 }

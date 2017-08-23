@@ -2,7 +2,11 @@ package com.strongit.gzjzyh.policeregister;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,20 +15,16 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.strongit.gzjzyh.GzjzyhCommonService;
 import com.strongit.gzjzyh.GzjzyhConstants;
-import com.strongit.gzjzyh.po.TGzjzyhApplication;
 import com.strongit.gzjzyh.po.TGzjzyhUserExtension;
 import com.strongit.gzjzyh.tosync.IToSyncManager;
 import com.strongit.oa.bo.ToaPersonalInfo;
 import com.strongit.oa.common.user.IUserService;
 import com.strongit.oa.common.user.util.Const;
 import com.strongit.oa.myinfo.MyInfoManager;
-import com.strongit.oa.sms.SmsManager;
 import com.strongit.uums.bo.TUumsBaseOrg;
 import com.strongit.uums.bo.TUumsBaseRole;
 import com.strongit.uums.bo.TUumsBaseUser;
 import com.strongit.uums.rolemanage.IRoleManager;
-import com.strongmvc.exception.DAOException;
-import com.strongmvc.exception.ServiceException;
 import com.strongmvc.exception.SystemException;
 import com.strongmvc.orm.hibernate.GenericDAOHibernate;
 import com.strongmvc.orm.hibernate.Page;
@@ -62,6 +62,7 @@ public class PoliceRegisterManager implements IPoliceRegisterManager {
 			user.setSupOrgCode("," + org.getOrgSyscode() + ",");
 			user.setUserIsactive(Const.IS_YES);
 		}
+		user.setUserSyscode(user.getUserLoginname());
 		this.userService.saveUser(user);
 		
 		// 处理同步到个人信息中；added by dengzc 2010年5月18日10:56:21
@@ -148,6 +149,32 @@ public class PoliceRegisterManager implements IPoliceRegisterManager {
 
 		hql.append(" order by t.ueStatus, t.ueDate desc");
 		page = this.baseDao.find(page, hql.toString(), values.toArray());
+		
+		if(page != null) {
+			List<TGzjzyhUserExtension> result = page.getResult();
+			if(result != null && !result.isEmpty()) {
+				Set<String> orgIds = new HashSet<String>(0);
+				for(TGzjzyhUserExtension obj : result) {
+					obj.setLoginName(obj.getTuumsBaseUser().getUserLoginname());
+					obj.setName(obj.getTuumsBaseUser().getUserName());
+					orgIds.add(obj.getTuumsBaseUser().getOrgId());
+				}
+				StringBuilder tmpHql = new StringBuilder("");
+				for(String orgId : orgIds) {
+					tmpHql.append(",?");
+				}
+				String orgHql = "select t.orgId, t.orgName from TUumsBaseOrg t where t.orgId in (" + tmpHql.toString().substring(1) + ")";
+				List<String[]> orgs = this.baseDao.find(orgHql, orgIds.toArray());
+				Map<String, String> orgMap = new HashMap<String, String>(0);
+				for(Object[] org : orgs) {
+					orgMap.put(org[0].toString(), org[1].toString());
+				}
+				for(TGzjzyhUserExtension obj : result) {
+					obj.setOrgName(orgMap.get(obj.getTuumsBaseUser().getOrgId()));
+				}
+			}
+		}
+		
 		return page;
 	}
 

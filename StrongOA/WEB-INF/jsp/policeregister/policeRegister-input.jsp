@@ -61,7 +61,6 @@ String.prototype.isTel = function()
 		       }else{
 			       	var flag=document.getElementById("isname").value;
 			        if(flag==document.getElementById("userLoginname").value){
-			         	alert("合法登录名。");
 			           	document.getElementById("userLoginname").focus();
 			           	return true;
 			       }
@@ -85,7 +84,6 @@ String.prototype.isTel = function()
 						obj.focus();
 					}
 					else{
-						alert("合法登录名。");
 						isValidated = true;
 					}						
 				},
@@ -179,10 +177,10 @@ function checkMobile(mobile){
 			        	return;
 			        }
 	        
-			      	var userId = $("#userId").val();
-					if(userId == "" || document.getElementById("hasPasswordEdited").value == "1"){
+			      	var ueId = $("#ueId").val();
+					if(ueId == "" || document.getElementById("hasPasswordEdited").value == "1"){
 						if("${md5Enable}" == "1"){	
-							document.getElementById("userPassword").value = hex_md5(document.getElementById("userPassword").value);
+							//document.getElementById("userPassword").value = hex_md5(document.getElementById("userPassword").value);
 						}
 					}
 					
@@ -205,18 +203,22 @@ function checkMobile(mobile){
 					if(!validateElement("ueHelpId", 20, "协办警官身份证号")){
 						return ;
 			        }
-					if(!validateElement("ueMainMobile", 15, "主办警官手机号码")){
-						return ;
-			        }
-					if(!validateElement("ueHelpMobile", 15, "协办警官手机号码")){
-						return ;
-			        }
 					var mobile = document.getElementById("ueMainMobile").value;
+					if(mobile.length > 15){
+			        	alert("主办警官手机号码过长。");
+			        	document.getElementById("ueMainMobile").focus();
+			        	return false;
+			        }
 			        if(!checkMobile(mobile)){
 			        	alert("请输入正确的主办警官手机号码。\n\n例如:13916752109");
 			        	return ;
 			        }
 			        var mobile = document.getElementById("ueHelpMobile").value;
+			        if(mobile.length > 15){
+			        	alert("协办警官手机号码过长。");
+			        	document.getElementById("ueHelpMobile").focus();
+			        	return false;
+			        }
 			        if(!checkMobile(mobile)){
 			        	alert("请输入正确的协办警官手机号码。\n\n例如:13916752109");
 			        	return ;
@@ -289,14 +291,14 @@ function checkMobile(mobile){
 				
 				function setOrg(orgId, orgName){
 					document.getElementById("orgId").value = orgId;
-					document.getElementById("orgName").value = orgName;
+					document.getElementById("userOrgName").value = orgName;
 				}
 				
 				function openImageUpload(domElementId, windowTitle){
-					var imageUrl = window.showModalDialog("<%=path%>/policeregister/policeRegister!imageUpload.action",window,'help:no;status:no;scroll:no;dialogWidth:450px; dialogHeight:500px');
+					var imageUrl = window.showModalDialog("<%=path%>/policeregister/policeRegister!imageUpload.action",window,'help:no;status:no;scroll:no;dialogWidth:800px; dialogHeight:600px');
 					if(imageUrl != null && imageUrl != ""){
 						document.getElementById(domElementId).value = imageUrl;
-						document.getElementById(domElementId + "Tmp").value = "<%=path%>" + imageUrl;
+						document.getElementById(domElementId + "Tmp").src = "<%=path%>" + imageUrl;
 					}
 				}
 				
@@ -307,7 +309,7 @@ function checkMobile(mobile){
 					$("#rest2").val("");
 					$("#userTel").val("");
 					$("#userAddr").val("");
-					$("#orgName").val("");
+					$("#userOrgName").val("");
 					$("#orgId").val("");
 					$("#ueMainName").val("");
 					$("#ueMainId").val("");
@@ -383,40 +385,40 @@ function checkMobile(mobile){
 					<table width="100%" height="10%" border="0" cellpadding="0"
 						cellspacing="0" align="center" class="table1">
 						<tr>
-							<td width="25%" height="21" class="biao_bg1" align="right">
+							<td height="21" class="biao_bg1" align="right">
 								<span class="wz">审核状态：</span>
 							</td>
 							<td class="td1" align="left" width="40%">
 								<script>
 									var displayStatus = "";
-									if("${model.ueStatus}" == "0"){
+									if("${model.ueStatus}" == "1"){
 										displayStatus = "待审核";
-									}else if("${model.ueStatus}" == "1"){
-										displayStatus = "审核通过";
 									}else if("${model.ueStatus}" == "2"){
+										displayStatus = "审核通过";
+									}else if("${model.ueStatus}" == "0"){
 										displayStatus = "已退回";
 									}
 									document.write(displayStatus);
 								</script>
 							</td>
-							<td width="25%" height="21" class="biao_bg1" align="right">
+							<td height="21" class="biao_bg1" align="right">
 								<span class="wz">审核人员：</span>
 							</td>
 							<td class="td1" align="left">
 								<script>
-									if("${model.ueStatus}" == "1" || "${model.ueStatus}" == "2"){
+									if("${model.ueStatus}" == "0" || "${model.ueStatus}" == "2"){
 										document.write("${model.ueAuditUser}");
 									}
 								</script>
 							</td>
 						</tr>
 						<tr>
-							<td width="25%" height="21" class="biao_bg1" align="right">
+							<td height="21" class="biao_bg1" align="right">
 								<span class="wz">退回意见：</span>
 							</td>
 							<td class="td1" align="left" colspan="3">
 								<script>
-									if("${model.ueStatus}" == "2"){
+									if("${model.ueStatus}" == "0"){
 										document.write("${model.ueNgReason}");
 									}
 								</script>
@@ -496,10 +498,12 @@ function checkMobile(mobile){
 						value="${model.ueHelpId2}">
 					<input type="hidden" id="ueId" name="model.ueId"
 						value="${model.ueId}">
+					<input id="rePassword" name="rePassword" type="hidden"
+								value="${rePassword}">
 					<table width="100%" height="10%" border="0" cellpadding="0"
 						cellspacing="0" align="center" class="table1">
 						<tr>
-							<td width="25%" height="21" class="biao_bg1" align="right">
+							<td height="21" class="biao_bg1" align="right">
 								<span class="wz"><font color="red">*</font>&nbsp;登录账号：</span>
 							</td>
 							<td class="td1" align="left" width="40%"><input
@@ -509,18 +513,17 @@ function checkMobile(mobile){
 								onkeyup="this.value=this.value.replace(/\s/g,'')"
 								onafterpaste="this.value=this.value.replace(/\s/g,'')"
 								value="${model.tuumsBaseUser.userLoginname}"></td>
-							<td width="25%" height="21" class="biao_bg1" align="right">
+							<td height="21" class="biao_bg1" align="right">
 								<span class="wz"><font color="red">*</font>&nbsp;登录密码：</span>
 							</td>
 							<td class="td1" align="left"><input
 								id="userPassword" name="model.tuumsBaseUser.userPassword" type="password"
-								size="44" value="${model.tuumsBaseUser.userPassword}" readonly="readonly">
-								&nbsp;<a href="javascript:void(0);" class="button"
-								onclick="password()">设置密码</a><input id="rePassword" name="rePassword" type="hidden"
-								value="${rePassword}"></td>
+								size="44" value="${model.tuumsBaseUser.userPassword}" readonly="readonly">&nbsp;<a href="javascript:void(0);" class="button"
+								onclick="password()">设置密码</a>
+							</td>
 						</tr>
 						<tr>
-							<td width="25%" height="21" class="biao_bg1" align="right">
+							<td height="21" class="biao_bg1" align="right">
 								<span class="wz"><font color="red">*</font>&nbsp;用户姓名：</span>
 							</td>
 							<td class="td1" align="left"><input
@@ -528,17 +531,17 @@ function checkMobile(mobile){
 								onkeyup="this.value=this.value.replace(/\s/g,'')"
 								onafterpaste="this.value=this.value.replace(/\s/g,'')"
 								size="44" value="${model.tuumsBaseUser.userName}"></td>
-							<td width="25%" height="21" class="biao_bg1" align="right">
+							<td height="21" class="biao_bg1" align="right">
 								<span class="wz"><font color="red">*</font>&nbsp;所属单位：</span>
 							</td>
 							<td class="td1" align="left">
 								<input
-								id="orgName" name="orgName" type="text" size="44"
-								value="${orgName}" readOnly="readonly">&nbsp;<a href="javascript:void(0);" class="button" onclick="tree()">选择单位</a>
+								id="userOrgName" name="userOrgName" type="text" size="44"
+								value="${userOrgName}" readOnly="readonly">&nbsp;<a href="javascript:void(0);" class="button" onclick="tree()">选择单位</a>
 							</td>
 						</tr>
 						<tr style="display: none;">
-							<td width="25%" height="21" class="biao_bg1" align="right">
+							<td height="21" class="biao_bg1" align="right">
 								<span class="wz"><font color="red">*</font>&nbsp;排序序号：</span>
 							</td>
 							<td class="td1" colspan="3" align="left"><input
@@ -547,13 +550,13 @@ function checkMobile(mobile){
 								&nbsp;<font color="#999999">( 数值越小排名越前 )</font></td>
 						</tr>
 						<tr>
-							<td width="25%" height="21" class="biao_bg1" align="right">
+							<td height="21" class="biao_bg1" align="right">
 								<span class="wz">手机号码：</span>
 							</td>
 							<td class="td1" align="left"><input id="rest2"
 								name="model.tuumsBaseUser.rest2" type="text" size="44" maxLength="20"
 								value="${model.tuumsBaseUser.rest2}"></td>
-							<td width="25%" height="21" class="biao_bg1" align="right">
+							<td height="21" class="biao_bg1" align="right">
 								<span class="wz">办公电话：</span>
 							</td>
 							<td class="td1" align="left"><input
@@ -561,7 +564,7 @@ function checkMobile(mobile){
 								maxLength="20" value="${model.tuumsBaseUser.userTel}"></td>
 						</tr>
 						<tr>
-							<td width="25%" height="21" class="biao_bg1" align="right">
+							<td height="21" class="biao_bg1" align="right">
 								<span class="wz">联系地址：</span>
 							</td>
 							<td class="td1" colspan="3" align="left"><input
@@ -615,24 +618,24 @@ function checkMobile(mobile){
 					<table width="100%" height="10%" border="0" cellpadding="0"
 							cellspacing="0" align="center" class="table1">
 						<tr>
-							<td width="25%" height="21" class="biao_bg1" align="right">
+							<td height="21" class="biao_bg1" align="right">
 								<span class="wz"><strong>主办警官：</strong></span>
 							</td>
 							<td class="td1" align="left" width="40%"></td>
-							<td width="25%" height="21" class="biao_bg1" align="right">
+							<td height="21" class="biao_bg1" align="right">
 								<span class="wz"><strong>协办警官：</strong></span>
 							</td>
 							<td class="td1" align="left"></td>
 						</tr>
 						<tr>
-							<td width="25%" height="21" class="biao_bg1" align="right">
+							<td height="21" class="biao_bg1" align="right">
 								<span class="wz"><font color="red">*</font>&nbsp;警官姓名：</span>
 							</td>
-							<td class="td1" align="left"><input
+							<td class="td1" align="left" width="40%"><input
 								id="ueMainName"
 								name="model.ueMainName" type="text" size="44" maxLength="50"
 								value="${model.ueMainName}"></td>
-							<td width="25%" height="21" class="biao_bg1" align="right">
+							<td height="21" class="biao_bg1" align="right">
 								<span class="wz"><font color="red">*</font>&nbsp;警官姓名：</span>
 							</td>
 							<td class="td1" align="left"><input
@@ -640,13 +643,13 @@ function checkMobile(mobile){
 								size="44" maxLength="50" value="${model.ueHelpName}"></td>
 						</tr>
 						<tr>
-							<td width="25%" height="21" class="biao_bg1" align="right">
+							<td height="21" class="biao_bg1" align="right">
 								<span class="wz"><font color="red">*</font>&nbsp;警官警号：</span>
 							</td>
-							<td class="td1" align="left"><input
+							<td class="td1" align="left" width="40%"><input
 								id="ueMainNo" name="model.ueMainNo" type="text" maxLength="50"
 								size="44" value="${model.ueMainNo}"></td>
-							<td width="25%" height="21" class="biao_bg1" align="right">
+							<td height="21" class="biao_bg1" align="right">
 								<span class="wz"><font color="red">*</font>&nbsp;警官警号：</span>
 							</td>
 							<td class="td1" align="left">
@@ -656,83 +659,79 @@ function checkMobile(mobile){
 							</td>
 						</tr>
 						<tr>
-							<td width="25%" height="21" class="biao_bg1" align="right">
+							<td height="21" class="biao_bg1" align="right">
 								<span class="wz"><font color="red">*</font>&nbsp;身份证号：</span>
 							</td>
-							<td class="td1" align="left"><input id="ueMainId"
+							<td class="td1" align="left" width="40%"><input id="ueMainId"
 								name="model.ueMainId" type="text" size="44"
 								value="${model.ueMainId}"></td>
-							<td width="25%" height="21" class="biao_bg1" align="right">
+							<td height="21" class="biao_bg1" align="right">
 								<span class="wz"><font color="red">*</font>&nbsp;身份证号：</span>
 							</td>
 							<td class="td1" align="left"><input
 								id="ueHelpId" name="model.ueHelpId" type="text" size="44" value="${model.ueHelpId}"></td>
 						</tr>
 						<tr>
-							<td width="25%" height="21" class="biao_bg1" align="right">
+							<td height="21" class="biao_bg1" align="right">
 								<span class="wz">手机号码：</span>
 							</td>
-							<td class="td1" align="left"><input id="ueMainMobile"
+							<td class="td1" align="left" width="40%"><input id="ueMainMobile"
 								name="model.ueMainMobile" type="text" size="44"
 								value="${model.ueMainMobile}"></td>
-							<td width="25%" height="21" class="biao_bg1" align="right">
+							<td height="21" class="biao_bg1" align="right">
 								<span class="wz">手机号码：</span>
 							</td>
 							<td class="td1" align="left"><input
 								id="ueHelpMobile" name="model.ueHelpMobile" type="text" size="44" value="${model.ueHelpMobile}"></td>
 						</tr>
 						<tr>
-							<td colspan="2" class="td1" align="left">
+							<!-- <td colspan="2" class="td1" align="center"> -->
+							<td colspan="4" class="td1" align="center" style="height:20px;">
+							</td>
+						<tr>
+							<!-- <td colspan="2" class="td1" align="center"> -->
+							<td colspan="4" class="td1" align="center">
 								<table style="width:100%;">
 									<tr>
-										<td width="50%" align="center">
-											<img id="ueMainNo1Tmp" src="<%=path %>${ueMainNo1Tmp }" style="width:100%;height:200px;">
-											<div><a href="javascript:void(0);" onclick="openImageUpload('ueMainNo1', '主办警官警官证（正）')">警官证（正）</a></div>
+										<td align="center">
+											<img id="ueMainNo1Tmp" src="<%=path %>${ueMainNo1Tmp }" style="width:300px;height:200px;">
+											<div style="padding-top:10px; padding-bottom:20px;"><a href="javascript:void(0);" onclick="openImageUpload('ueMainNo1', '主办警官警官证（正）')">警官证（正）</a></div>
 										</td>
-										<td width="50%" align="center">
-											<img id="ueMainNo2Tmp" src="<%=path %>${ueMainNo2Tmp }" style="width:100%;height:200px;">
-											<div><a href="javascript:void(0);" onclick="openImageUpload('ueMainNo2', '主办警官警官证（反）')">警官证（反）</a></div>
+										<td align="center">
+											<img id="ueMainNo2Tmp" src="<%=path %>${ueMainNo2Tmp }" style="width:300px;height:200px;">
+											<div style="padding-top:10px; padding-bottom:20px;"><a href="javascript:void(0);" onclick="openImageUpload('ueMainNo2', '主办警官警官证（反）')">警官证（反）</a></div>
+										</td>
+										<td align="center">
+											<img id="ueHelpNo1Tmp" src="<%=path %>${ueHelpNo1Tmp }" style="width:300px;height:200px;">
+											<div style="padding-top:10px; padding-bottom:20px;"><a href="javascript:void(0);" onclick="openImageUpload('ueHelpNo1', '协办警官警官证（正）')">警官证（正）</a></div>
+										</td>
+										<td align="center">
+											<img id="ueHelpNo2Tmp" src="<%=path %>${ueHelpNo2Tmp }" style="width:300px;height:200px;">
+											<div style="padding-top:10px; padding-bottom:20px;"><a href="javascript:void(0);" onclick="openImageUpload('ueHelpNo2', '协办警官警官证（反）')">警官证（反）</a></div>
 										</td>
 									</tr>
 									<tr>
-										<td width="50%" align="center">
-											<img id="ueMainId1Tmp" src="<%=path %>${ueMainId1Tmp }" style="width:100%;height:200px;">
-											<div><a href="javascript:void(0);" onclick="openImageUpload('ueMainId1', '主办警官身份证（正）')">身份证（正）</a></div>
+										<td align="center">
+											<img id="ueMainId1Tmp" src="<%=path %>${ueMainId1Tmp }" style="width:300px;height:200px;">
+											<div style="padding-top:10px; padding-bottom:20px;"><a href="javascript:void(0);" onclick="openImageUpload('ueMainId1', '主办警官身份证（正）')">身份证（正）</a></div>
 										</td>
-										<td width="50%" align="center">
-											<img id="ueMainId2Tmp" src="<%=path %>${ueMainId2Tmp }" style="width:100%;height:200px;">
-											<div><a href="javascript:void(0);" onclick="openImageUpload('ueMainId2', '主办警官身份证（反）')">身份证（反）</a></div>
+										<td align="center">
+											<img id="ueMainId2Tmp" src="<%=path %>${ueMainId2Tmp }" style="width:300px;height:200px;">
+											<div style="padding-top:10px; padding-bottom:20px;"><a href="javascript:void(0);" onclick="openImageUpload('ueMainId2', '主办警官身份证（反）')">身份证（反）</a></div>
+										</td>
+										<td align="center">
+											<img id="ueHelpId1Tmp" src="<%=path %>${ueHelpId1Tmp }" style="width:300px;height:200px;">
+											<div style="padding-top:10px; padding-bottom:20px;"><a href="javascript:void(0);" onclick="openImageUpload('ueHelpId1', '协办警官身份证（正）')">身份证（正）</a></div>
+										</td>
+										<td align="center">
+											<img id="ueHelpId2Tmp" src="<%=path %>${ueHelpId2Tmp }" style="width:300px;height:200px;">
+											<div style="padding-top:10px; padding-bottom:20px;"><a href="javascript:void(0);" onclick="openImageUpload('ueHelpId2', '协办警官身份证（反）')">身份证（反）</a></div>
 										</td>
 									</tr>
 								</table>
+							<!-- </td>
+							<td class="td1" colspan="2" align="center"> -->
 							</td>
-							<td class="td1" colspan="2" align="left">
-								<table style="width:100%;">
-									<tr>
-										<td width="50%" align="center">
-											<img id="ueHelpNo1Tmp" src="<%=path %>${ueHelpNo1Tmp }" style="width:100%;height:200px;">
-											<div><a href="javascript:void(0);" onclick="openImageUpload('ueHelpNo1', '协办警官警官证（正）')">警官证（正）</a></div>
-										</td>
-										<td width="50%" align="center">
-											<img id="ueHelpNo2Tmp" src="<%=path %>${ueHelpNo2Tmp }" style="width:100%;height:200px;">
-											<div><a href="javascript:void(0);" onclick="openImageUpload('ueHelpNo2', '协办警官警官证（反）')">警官证（反）</a></div>
-										</td>
-									</tr>
-									<tr>
-										<td width="50%" align="center">
-											<img id="ueHelpId1Tmp" src="<%=path %>${ueHelpId1Tmp }" style="width:100%;height:200px;">
-											<div><a href="javascript:void(0);" onclick="openImageUpload('ueHelpId1', '协办警官身份证（正）')">身份证（正）</a></div>
-										</td>
-										<td width="50%" align="center">
-											<img id="ueHelpId2Tmp" src="<%=path %>${ueHelpId2Tmp }" style="width:100%;height:200px;">
-											<div><a href="javascript:void(0);" onclick="openImageUpload('ueHelpId2', '协办警官身份证（反）')">身份证（反）</a></div>
-										</td>
-									</tr>
-								</table>
-							</td>
-						</tr>
-						<td class="table1_td"></td>
-						<td></td>
 						</tr>
 					</table>
 					<table id="annex" width="90%" height="10%" border="0"

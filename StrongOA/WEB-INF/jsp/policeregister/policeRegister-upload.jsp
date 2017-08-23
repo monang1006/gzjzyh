@@ -70,6 +70,8 @@
 		uploader.on('error', function(type) {
 			if (type == "Q_EXCEED_NUM_LIMIT") {
 				alert("超出最大张数");
+			}else{
+				alert("上传图片失败。");
 			}
 		});
 	});
@@ -81,7 +83,8 @@
 		}
 		var imageX = $("#imageX").val();
 		if(imageX == null || imageX == ""){
-			
+			window.returnValue = srcImagePath;
+        	window.close();
 		}else{
 			imageX = parseInt(imageX);
 			var imageY = parseInt($("#imageY").val());
@@ -92,9 +95,13 @@
 	            type: "POST",
 	            url: "<%=path%>/upload/fileUpload!cutImage.action",
 	            data: {srcImagePath:srcImagePath, selectX:imageX, selectY:imageY, selectW:imageW, selectH:imageH},
-	            dataType: "json",
+	            dataType: "text",
 	            success: function(data){
-	            	jcropApi.setImage("<%=path%>" + data);
+	            	window.returnValue = data;
+	            	window.close();
+	            },
+	            error:function(){
+	            	alert("上传图片失败。");
 	            }
 	        });
 		}
@@ -160,7 +167,7 @@
 						</tr>
 						<tr>
 							<td align="center">
-								<img id="imgField" name="imgField"></img>
+								<div style="width:750px; height:450px; overflow:auto;"><img id="imgField" name="imgField"></img></div>
 							</td>
 						</tr>
 					</table>

@@ -41,10 +41,10 @@ public class PoliceRegisterAction extends BaseActionSupport<TGzjzyhUserExtension
 	private Page<TGzjzyhUserExtension> page = new Page<TGzjzyhUserExtension>(
 			FlexTableTag.MIDDLE_ROWS, true);
 	
-	private static final String DEFAULT_UPLOAD_IMAGE = "/images/upload/defaultUpload.png";
+	private static final String DEFAULT_UPLOAD_IMAGE = "/images/upload/defaultUpload.jpg";
 
 	private String ueId;
-	private String orgName;
+	private String userOrgName;
 	
 	private String ueMainNo1Tmp;
 	private String ueMainNo2Tmp;
@@ -138,7 +138,7 @@ public class PoliceRegisterAction extends BaseActionSupport<TGzjzyhUserExtension
 		
 		if(this.model.getTuumsBaseUser().getOrgId() != null && !"".equals(this.model.getTuumsBaseUser().getOrgId())) {
 			TUumsBaseOrg org = this.userService.getOrgInfoByOrgId(this.model.getTuumsBaseUser().getOrgId());
-			this.orgName = org.getOrgName();
+			this.userOrgName = org.getOrgName();
 		}
 		
 		if(this.model.getUeMainId1() == null || "".equals(this.model.getUeMainId1())) {
@@ -149,7 +149,7 @@ public class PoliceRegisterAction extends BaseActionSupport<TGzjzyhUserExtension
 		if(this.model.getUeMainId2() == null || "".equals(this.model.getUeMainId2())) {
 			this.ueMainId2Tmp = this.DEFAULT_UPLOAD_IMAGE;
 		}else {
-			this.ueMainId2Tmp = this.model.getUeMainId1();
+			this.ueMainId2Tmp = this.model.getUeMainId2();
 		}
 		if(this.model.getUeMainNo1() == null || "".equals(this.model.getUeMainNo1())) {
 			this.ueMainNo1Tmp = this.DEFAULT_UPLOAD_IMAGE;
@@ -170,7 +170,7 @@ public class PoliceRegisterAction extends BaseActionSupport<TGzjzyhUserExtension
 		if(this.model.getUeHelpId2() == null || "".equals(this.model.getUeHelpId2())) {
 			this.ueHelpId2Tmp = this.DEFAULT_UPLOAD_IMAGE;
 		}else {
-			this.ueHelpId2Tmp = this.model.getUeHelpId1();
+			this.ueHelpId2Tmp = this.model.getUeHelpId2();
 		}
 		if(this.model.getUeHelpNo1() == null || "".equals(this.model.getUeHelpNo1())) {
 			this.ueHelpNo1Tmp = this.DEFAULT_UPLOAD_IMAGE;
@@ -234,8 +234,10 @@ public class PoliceRegisterAction extends BaseActionSupport<TGzjzyhUserExtension
 		}
 
 		this.myLogManager.addLog(logInfo, ip);
+		
+		this.renderHtml("<script>alert('保存成功。')</script>");
 
-		return "winclose";
+		return null;
 	}
 	
 	public String orgMoreTree() throws Exception {
@@ -308,14 +310,6 @@ public class PoliceRegisterAction extends BaseActionSupport<TGzjzyhUserExtension
 		this.userActiveTypeMap = userActiveTypeMap;
 	}
 
-	public String getOrgName() {
-		return orgName;
-	}
-
-	public void setOrgName(String orgName) {
-		this.orgName = orgName;
-	}
-
 	public String getUeMainNo1Tmp() {
 		return ueMainNo1Tmp;
 	}
@@ -378,5 +372,17 @@ public class PoliceRegisterAction extends BaseActionSupport<TGzjzyhUserExtension
 
 	public void setUeHelpId2Tmp(String ueHelpId2Tmp) {
 		this.ueHelpId2Tmp = ueHelpId2Tmp;
+	}
+
+	public String getUserOrgName() {
+		return userOrgName;
+	}
+
+	public void setUserOrgName(String userOrgName) {
+		this.userOrgName = userOrgName;
+	}
+
+	public String getUeId() {
+		return ueId;
 	}
 }

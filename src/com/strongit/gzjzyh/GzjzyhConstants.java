@@ -20,10 +20,10 @@ public class GzjzyhConstants {
 	public final static String OPERATION_TYPE_DELETE = "2";
 	
 	//待审核
-	public final static String STATUS_WAIT_AUDIT = "0";
+	public final static String STATUS_WAIT_AUDIT = "1";
 	//审核通过
-	public final static String STATUS_AUDIT_PASS = "1";
+	public final static String STATUS_AUDIT_PASS = "2";
 	//退回
-	public final static String STATUS_AUDIT_BACK = "2";
+	public final static String STATUS_AUDIT_BACK = "0";
 
 }

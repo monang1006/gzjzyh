@@ -70,11 +70,11 @@
 							<td class="td1" align="left" width="40%">
 								<script>
 									var displayStatus = "";
-									if("${model.ueStatus}" == "0"){
+									if("${model.ueStatus}" == "1"){
 										displayStatus = "待审核";
-									}else if("${model.ueStatus}" == "1"){
-										displayStatus = "审核通过";
 									}else if("${model.ueStatus}" == "2"){
+										displayStatus = "审核通过";
+									}else if("${model.ueStatus}" == "0"){
 										displayStatus = "已退回";
 									}
 									document.write(displayStatus);
@@ -85,7 +85,7 @@
 							</td>
 							<td class="td1" align="left">
 								<script>
-									if("${model.ueStatus}" == "1" || "${model.ueStatus}" == "2"){
+									if("${model.ueStatus}" == "0" || "${model.ueStatus}" == "2"){
 										document.write("${model.ueAuditUser}");
 									}
 								</script>
@@ -97,7 +97,7 @@
 							</td>
 							<td class="td1" align="left" colspan="3">
 								<script>
-									if("${model.ueStatus}" == "2"){
+									if("${model.ueStatus}" == "0"){
 										document.write("${model.ueNgReason}");
 									}
 								</script>
@@ -167,7 +167,7 @@
 								<td width="25%" height="21" class="biao_bg1" align="right">
 									<span class="wz"><font color="red">*</font>&nbsp;所属单位：</span>
 								</td>
-								<td class="td1" align="left">${orgName}</td>
+								<td class="td1" align="left">${userOrgName}</td>
 							</tr>
 							<tr>
 								<td width="25%" height="21" class="biao_bg1" align="right">
@@ -282,57 +282,49 @@
 							<td class="td1" align="left">${model.ueHelpMobile}</td>
 						</tr>
 						<tr>
-							<td colspan="2" class="td1" align="left">
+							<!-- <td colspan="2" class="td1" align="center"> -->
+							<td colspan="4" class="td1" align="center">
 								<table style="width:100%;">
 									<tr>
-										<td width="50%" align="center">
-											<img id="ueMainNo1Tmp" src="<%=path %>${ueMainNo1Tmp }" style="width:100%;height:200px;">
-											<div>警官证（正）</div>
+										<td align="center">
+											<img id="ueMainNo1Tmp" src="<%=path %>${ueMainNo1Tmp }" style="width:300px;height:200px;">
+											<div style="padding-top:10px; padding-bottom:20px;">警官证（正）</div>
 										</td>
-										<td width="50%" align="center">
-											<img id="ueMainNo2Tmp" src="<%=path %>${ueMainNo2Tmp }" style="width:100%;height:200px;">
-											<div>警官证（反）</div>
+										<td align="center">
+											<img id="ueMainNo2Tmp" src="<%=path %>${ueMainNo2Tmp }" style="width:300px;height:200px;">
+											<div style="padding-top:10px; padding-bottom:20px;">警官证（反）</div>
+										</td>
+										<td align="center">
+											<img id="ueHelpNo1Tmp" src="<%=path %>${ueHelpNo1Tmp }" style="width:300px;height:200px;">
+											<div style="padding-top:10px; padding-bottom:20px;">警官证（正）</div>
+										</td>
+										<td align="center">
+											<img id="ueHelpNo2Tmp" src="<%=path %>${ueHelpNo2Tmp }" style="width:300px;height:200px;">
+											<div style="padding-top:10px; padding-bottom:20px;">警官证（反）</div>
 										</td>
 									</tr>
 									<tr>
-										<td width="50%" align="center">
-											<img id="ueMainId1Tmp" src="<%=path %>${ueMainId1Tmp }" style="width:100%;height:200px;">
-											<div>身份证（正）</div>
+										<td align="center">
+											<img id="ueMainId1Tmp" src="<%=path %>${ueMainId1Tmp }" style="width:300px;height:200px;">
+											<div style="padding-top:10px; padding-bottom:20px;">身份证（正）</div>
 										</td>
-										<td width="50%" align="center">
-											<img id="ueMainId2Tmp" src="<%=path %>${ueMainId2Tmp }" style="width:100%;height:200px;">
-											<div>身份证（反）</div>
+										<td align="center">
+											<img id="ueMainId2Tmp" src="<%=path %>${ueMainId2Tmp }" style="width:300px;height:200px;">
+											<div style="padding-top:10px; padding-bottom:20px;">身份证（反）</div>
+										</td>
+										<td align="center">
+											<img id="ueHelpId1Tmp" src="<%=path %>${ueHelpId1Tmp }" style="width:300px;height:200px;">
+											<div style="padding-top:10px; padding-bottom:20px;">身份证（正）</div>
+										</td>
+										<td align="center">
+											<img id="ueHelpId2Tmp" src="<%=path %>${ueHelpId2Tmp }" style="width:300px;height:200px;">
+											<div style="padding-top:10px; padding-bottom:20px;">身份证（反）</div>
 										</td>
 									</tr>
 								</table>
+							<!-- </td>
+							<td class="td1" colspan="2" align="center"> -->
 							</td>
-							<td class="td1" colspan="2" align="left">
-								<table style="width:100%;">
-									<tr>
-										<td width="50%" align="center">
-											<img id="ueHelpNo1Tmp" src="<%=path %>${ueHelpNo1Tmp }" style="width:100%;height:200px;">
-											<div>警官证（正）</div>
-										</td>
-										<td width="50%" align="center">
-											<img id="ueHelpNo2Tmp" src="<%=path %>${ueHelpNo2Tmp }" style="width:100%;height:200px;">
-											<div>警官证（反）</div>
-										</td>
-									</tr>
-									<tr>
-										<td width="50%" align="center">
-											<img id="ueHelpId1Tmp" src="<%=path %>${ueHelpId1Tmp }" style="width:100%;height:200px;">
-											<div>身份证（正）</div>
-										</td>
-										<td width="50%" align="center">
-											<img id="ueHelpId2Tmp" src="<%=path %>${ueHelpId2Tmp }" style="width:100%;height:200px;">
-											<div>身份证（反）</div>
-										</td>
-									</tr>
-								</table>
-							</td>
-						</tr>
-						<td class="table1_td"></td>
-						<td></td>
 						</tr>
 					</table>
 					<table id="annex" width="90%" height="10%" border="0"

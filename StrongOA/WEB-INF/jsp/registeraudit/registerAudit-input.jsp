@@ -20,7 +20,7 @@
 <script type="text/javascript">
 	function onsubmitform(){
 		if(document.getElementById("ueNgReason").value.length > 1000){
-        	alert('联系电话过长。');
+        	alert('退回意见过长。');
         	document.getElementById("ueNgReason").focus();
         	return;
         }
@@ -83,8 +83,8 @@
 							</td>
 							<td class="td1" align="left" colspan="3">
 								<select id="auditStatus" name="auditStatus">
-									<option value="1">审核通过</option>
-									<option value="2">审核退回</option>
+									<option value="2">审核通过</option>
+									<option value="0">审核退回</option>
 								</select>
 							</td>
 						</tr>
@@ -140,51 +140,51 @@
 							</td>
 						</tr>
 					</table> 
-						<table width="100%" height="10%" border="0" cellpadding="0"
-							cellspacing="0" align="center" class="table1">
-							<tr>
-								<td width="25%" height="21" class="biao_bg1" align="right">
-									<span class="wz"><font color="red">*</font>&nbsp;登录账号：</span>
-								</td>
-								<td class="td1" align="left" width="40%">${model.tuumsBaseUser.userLoginname}</td>
-								<td width="25%" height="21" class="biao_bg1" align="right">
-									<span class="wz"><font color="red">*</font>&nbsp;登录密码：</span>
-								</td>
-								<td class="td1" align="left">${model.tuumsBaseUser.userPassword}</td>
-							</tr>
-							<tr>
-								<td width="25%" height="21" class="biao_bg1" align="right">
-									<span class="wz"><font color="red">*</font>&nbsp;用户姓名：</span>
-								</td>
-								<td class="td1" align="left"${model.tuumsBaseUser.userName}</td>
-								<td width="25%" height="21" class="biao_bg1" align="right">
-									<span class="wz"><font color="red">*</font>&nbsp;所属单位：</span>
-								</td>
-								<td class="td1" align="left">${orgName}</td>
-							</tr>
-							<tr>
-								<td width="25%" height="21" class="biao_bg1" align="right">
-									<span class="wz">手机号码：</span>
-								</td>
-								<td class="td1" align="left">${model.tuumsBaseUser.rest2}</td>
-								<td width="25%" height="21" class="biao_bg1" align="right">
-									<span class="wz">办公电话：</span>
-								</td>
-								<td class="td1" align="left">${model.tuumsBaseUser.userTel}</td>
-							</tr>
-							<tr>
-								<td width="25%" height="21" class="biao_bg1" align="right">
-									<span class="wz">联系地址：</span>
-								</td>
-								<td class="td1" colspan="3" align="left">${model.tuumsBaseUser.userAddr}</td>
-							</tr>
-							<td class="table1_td"></td>
-							<td></td>
-							</tr>
-						</table>
-						<table id="annex" width="90%" height="10%" border="0"
-							cellpadding="0" cellspacing="1" align="center" class="table1">
-						</table>
+					<table width="100%" height="10%" border="0" cellpadding="0"
+						cellspacing="0" align="center" class="table1">
+						<tr>
+							<td width="25%" height="21" class="biao_bg1" align="right">
+								<span class="wz"><font color="red">*</font>&nbsp;登录账号：</span>
+							</td>
+							<td class="td1" align="left" width="40%">${model.tuumsBaseUser.userLoginname}</td>
+							<td width="25%" height="21" class="biao_bg1" align="right">
+								<span class="wz"><font color="red">*</font>&nbsp;登录密码：</span>
+							</td>
+							<td class="td1" align="left">${model.tuumsBaseUser.userPassword}</td>
+						</tr>
+						<tr>
+							<td width="25%" height="21" class="biao_bg1" align="right">
+								<span class="wz"><font color="red">*</font>&nbsp;用户姓名：</span>
+							</td>
+							<td class="td1" align="left"${model.tuumsBaseUser.userName}</td>
+							<td width="25%" height="21" class="biao_bg1" align="right">
+								<span class="wz"><font color="red">*</font>&nbsp;所属单位：</span>
+							</td>
+							<td class="td1" align="left">${userOrgName}</td>
+						</tr>
+						<tr>
+							<td width="25%" height="21" class="biao_bg1" align="right">
+								<span class="wz">手机号码：</span>
+							</td>
+							<td class="td1" align="left">${model.tuumsBaseUser.rest2}</td>
+							<td width="25%" height="21" class="biao_bg1" align="right">
+								<span class="wz">办公电话：</span>
+							</td>
+							<td class="td1" align="left">${model.tuumsBaseUser.userTel}</td>
+						</tr>
+						<tr>
+							<td width="25%" height="21" class="biao_bg1" align="right">
+								<span class="wz">联系地址：</span>
+							</td>
+							<td class="td1" colspan="3" align="left">${model.tuumsBaseUser.userAddr}</td>
+						</tr>
+						<td class="table1_td"></td>
+						<td></td>
+						</tr>
+					</table>
+					<table id="annex" width="90%" height="10%" border="0"
+						cellpadding="0" cellspacing="1" align="center" class="table1">
+					</table>
 				</td>
 			</tr>
 			<tr>
@@ -275,53 +275,48 @@
 							<td class="td1" align="left">${model.ueHelpMobile}</td>
 						</tr>
 						<tr>
-							<td colspan="2" class="td1" align="left">
+							<!-- <td colspan="2" class="td1" align="center"> -->
+							<td colspan="4" class="td1" align="center">
 								<table style="width:100%;">
 									<tr>
-										<td width="50%" align="center">
-											<img id="ueMainNo1Tmp" src="<%=path %>${ueMainNo1Tmp }" style="width:100%;height:200px;">
-											<div>警官证（正）</div>
+										<td align="center">
+											<img id="ueMainNo1Tmp" src="<%=path %>${ueMainNo1Tmp }" style="width:300px;height:200px;">
+											<div style="padding-top:10px; padding-bottom:20px;">警官证（正）</div>
 										</td>
-										<td width="50%" align="center">
-											<img id="ueMainNo2Tmp" src="<%=path %>${ueMainNo2Tmp }" style="width:100%;height:200px;">
-											<div>警官证（反）</div>
+										<td align="center">
+											<img id="ueMainNo2Tmp" src="<%=path %>${ueMainNo2Tmp }" style="width:300px;height:200px;">
+											<div style="padding-top:10px; padding-bottom:20px;">警官证（反）</div>
+										</td>
+										<td align="center">
+											<img id="ueHelpNo1Tmp" src="<%=path %>${ueHelpNo1Tmp }" style="width:300px;height:200px;">
+											<div style="padding-top:10px; padding-bottom:20px;">警官证（正）</div>
+										</td>
+										<td align="center">
+											<img id="ueHelpNo2Tmp" src="<%=path %>${ueHelpNo2Tmp }" style="width:300px;height:200px;">
+											<div style="padding-top:10px; padding-bottom:20px;">警官证（反）</div>
 										</td>
 									</tr>
 									<tr>
-										<td width="50%" align="center">
-											<img id="ueMainId1Tmp" src="<%=path %>${ueMainId1Tmp }" style="width:100%;height:200px;">
-											<div>身份证（正）</div>
+										<td align="center">
+											<img id="ueMainId1Tmp" src="<%=path %>${ueMainId1Tmp }" style="width:300px;height:200px;">
+											<div style="padding-top:10px; padding-bottom:20px;">身份证（正）</div>
 										</td>
-										<td width="50%" align="center">
-											<img id="ueMainId2Tmp" src="<%=path %>${ueMainId2Tmp }" style="width:100%;height:200px;">
-											<div>身份证（反）</div>
+										<td align="center">
+											<img id="ueMainId2Tmp" src="<%=path %>${ueMainId2Tmp }" style="width:300px;height:200px;">
+											<div style="padding-top:10px; padding-bottom:20px;">身份证（反）</div>
+										</td>
+										<td align="center">
+											<img id="ueHelpId1Tmp" src="<%=path %>${ueHelpId1Tmp }" style="width:300px;height:200px;">
+											<div style="padding-top:10px; padding-bottom:20px;">身份证（正）</div>
+										</td>
+										<td align="center">
+											<img id="ueHelpId2Tmp" src="<%=path %>${ueHelpId2Tmp }" style="width:300px;height:200px;">
+											<div style="padding-top:10px; padding-bottom:20px;">身份证（反）</div>
 										</td>
 									</tr>
 								</table>
-							</td>
-							<td class="td1" colspan="2" align="left">
-								<table style="width:100%;">
-									<tr>
-										<td width="50%" align="center">
-											<img id="ueHelpNo1Tmp" src="<%=path %>${ueHelpNo1Tmp }" style="width:100%;height:200px;">
-											<div>警官证（正）</div>
-										</td>
-										<td width="50%" align="center">
-											<img id="ueHelpNo2Tmp" src="<%=path %>${ueHelpNo2Tmp }" style="width:100%;height:200px;">
-											<div>警官证（反）</div>
-										</td>
-									</tr>
-									<tr>
-										<td width="50%" align="center">
-											<img id="ueHelpId1Tmp" src="<%=path %>${ueHelpId1Tmp }" style="width:100%;height:200px;">
-											<div>身份证（正）</div>
-										</td>
-										<td width="50%" align="center">
-											<img id="ueHelpId2Tmp" src="<%=path %>${ueHelpId2Tmp }" style="width:100%;height:200px;">
-											<div>身份证（反）</div>
-										</td>
-									</tr>
-								</table>
+							<!-- </td>
+							<td class="td1" colspan="2" align="center"> -->
 							</td>
 						</tr>
 						<td class="table1_td"></td>

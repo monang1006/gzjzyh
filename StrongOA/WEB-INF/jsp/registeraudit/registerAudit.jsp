@@ -1,5 +1,6 @@
 <%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
 <%@ taglib uri="/tags/web-flex" prefix="webflex"%>
+<%@ taglib uri="/tags/web-newdate" prefix="strong"%>
 <%@ taglib uri="/struts-tags" prefix="s"%>
 <%@	include file="/common/include/rootPath.jsp"%>
 <%@ taglib uri="/tags/security" prefix="security"%>
@@ -21,6 +22,8 @@
 <script language="javascript"
 	src="<%=path%>/common/js/common/windowsadaptive.js"></script>
 <SCRIPT language="javascript" src="<%=path%>/common/js/menu/menu.js"></SCRIPT>
+<script type="text/javascript"
+      src="<%=path%>/common/js/newdate/WdatePicker.js"></script>
 <!--右键菜单脚本
 		<script language="javascript" src="<%=path%>/common/js/common/search.js"></script>
 		-->
@@ -98,8 +101,8 @@
 							<webflex:flexCheckBoxCol caption="选择" property="ueId"
 								showValue="name" width="5%" isCheckAll="true"
 								isCanDrag="false" isCanSort="false"></webflex:flexCheckBoxCol>
-							<webflex:flexTextCol caption="账号" property="loginname"
-								showValue="loginname" width="20%" isCanDrag="true"
+							<webflex:flexTextCol caption="账号" property="loginName"
+								showValue="loginName" width="20%" isCanDrag="true"
 								isCanSort="false"></webflex:flexTextCol>
 							<webflex:flexTextCol caption="姓名" property="name"
 								showValue="name" width="20%" isCanDrag="true"
@@ -139,7 +142,7 @@ function auditAccount(){
 		alert('只能审核一个账号。');
 		return;
 	}
-	var audit = window.showModalDialog("<%=path%>/registeraudit/registerAudit!input.action?ueId="+id,window,'help:no;status:no;scroll:no;dialogWidth:500px; dialogHeight:300px');
+	var audit = window.showModalDialog("<%=path%>/registeraudit/registerAudit!input.action?ueId="+id,window,'help:no;status:no;scroll:no;dialogWidth:1500px; dialogHeight:800px');
 }
 
 

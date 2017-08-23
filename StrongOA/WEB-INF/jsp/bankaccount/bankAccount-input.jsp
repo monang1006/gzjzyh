@@ -65,7 +65,6 @@ String.prototype.isTel = function()
 		       	}else{
 			       	var flag=document.getElementById("isname").value;
 			        if(flag==document.getElementById("userLoginname").value){
-			         	alert("合法登录名。");
 			           	document.getElementById("userLoginname").focus();
 			           	return false;
 			       }else{
@@ -89,7 +88,6 @@ String.prototype.isTel = function()
 						isPassed = false;
 					}
 					else{
-						alert("合法登录名。");
 						isPassed = true;
 					}						
 				},
@@ -101,6 +99,54 @@ String.prototype.isTel = function()
 			return isPassed;
 			
 		}
+	
+	function judgename(){		 
+        if(document.getElementById("userLoginname").value == ""||document.getElementById("userLoginname").value==null){
+			alert('用户登录名不能为空。');
+        	document.getElementById("userLoginname").focus();
+        	return false;
+	    }else{
+	    	if(document.getElementById("isname").value == ""||document.getElementById("isname").value==null){
+	       	 	return judgeLoginName(document.getElementById('userLoginname'),'1');	
+	       	}else{
+		       	var flag=document.getElementById("isname").value;
+		        if(flag==document.getElementById("userLoginname").value){
+		         	alert("合法登录名。");
+		           	document.getElementById("userLoginname").focus();
+		           	return false;
+		       }else{
+		         	return judgeLoginName(document.getElementById('userLoginname'),'1');
+		       }
+		   	}
+	  	}
+ }
+ 
+function judgeLoginName(obj,flag){
+		var isPassed = false;
+		 $.ajax({
+			url:obj.url,
+			async:false,
+			type:"post",
+			data:{loginname:obj.value},
+			success:function(logininfo){
+				if(logininfo!="111"){
+					alert("登录名不唯一。");
+					obj.focus();
+					isPassed = false;
+				}
+				else{
+					alert("合法登录名。");
+					isPassed = true;
+				}						
+			},
+			error:function(logininfo){
+				alert("异步出错。");
+			}					
+		});
+		
+		return isPassed;
+		
+	}
 			
 	//校验手机号码
 function checkMobile(mobile){
@@ -280,7 +326,7 @@ function checkMobile(mobile){
 									onkeyup="this.value=this.value.replace(/\s/g,'')"
 									onafterpaste="this.value=this.value.replace(/\s/g,'')"
 									value="${model.userLoginname}">&nbsp; <a href="#"
-									class="button" onclick="testname()">检测合法性</a></td>
+									class="button" onclick="judgename()">检测合法性</a></td>
 							</tr>
 							<tr>
 								<td width="25%" height="21" class="biao_bg1" align="right">

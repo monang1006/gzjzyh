@@ -83,7 +83,7 @@
 									<table border="0" align="right" cellpadding="00" cellspacing="0">
 										<tr>
 					                  		<td width="7"><img src="<%=frameroot%>/images/ch_h_l.gif"/></td>
-											<td></td>
+											<td class="Operation_input1" onclick="window.close();">&nbsp;取&nbsp;消&nbsp;</td>
 											<td width="7"><img src="<%=frameroot%>/images/ch_h_r.gif"/></td>
 					                  		<td width="5"></td>
 											<td width="7"><img src="<%=frameroot%>/images/ch_z_l.gif"/></td>
