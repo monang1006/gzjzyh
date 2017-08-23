@@ -53,9 +53,6 @@
 	<BODY>
 	
 	
-	<form id="form" theme="simple" action="" method="post">
-		<input type=hidden id="orgid" name="orgid" value="${orgid }"/>
-	</form>
 	<div style="overflow:auto; height:500px;">
 		<!--<div id=d1 class="tree_box" style="position: relative;">
 
@@ -83,7 +80,7 @@
 									<table border="0" align="right" cellpadding="00" cellspacing="0">
 										<tr>
 					                  		<td width="7"><img src="<%=frameroot%>/images/ch_h_l.gif"/></td>
-											<td class="Operation_input1" onclick="window.close();">&nbsp;取&nbsp;消&nbsp;</td>
+											<td class="Operation_input" onclick="window.close();">&nbsp;取&nbsp;消&nbsp;</td>
 											<td width="7"><img src="<%=frameroot%>/images/ch_h_r.gif"/></td>
 					                  		<td width="5"></td>
 											<td width="7"><img src="<%=frameroot%>/images/ch_z_l.gif"/></td>

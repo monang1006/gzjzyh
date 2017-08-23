@@ -76,6 +76,7 @@ public class PoliceRegisterManager implements IPoliceRegisterManager {
 		myInfo.setPrsnMobile1(user.getRest2());// 手机号码
 		myInfo.setPrsnMail1(user.getUserEmail());// email
 		myInfo.setPrsnTel1(user.getUserTel());// 电话
+		myInfo.setHomeAddress(user.getUserAddr());
 		myInfoManager.saveObj(myInfo);
 		
 		if(isAdd) {
@@ -91,9 +92,11 @@ public class PoliceRegisterManager implements IPoliceRegisterManager {
 	@Transactional(readOnly = false)
 	public void audit(TGzjzyhUserExtension model) throws SystemException {
 		this.baseDao.save(model);
-		String content = "您的注册账号已审核通过。";
-		if(GzjzyhConstants.STATUS_AUDIT_BACK.equals(model.getUeStatus())){
-			content = "您的注册账号已被退回。";
+		String content = "您的注册账号已被退回。";
+		if(GzjzyhConstants.STATUS_AUDIT_PASS.equals(model.getUeStatus())){
+			content = "您的注册账号已审核通过。";
+			TUumsBaseRole policeRole = this.roleManager.getRoleInfoByRoleCode(GzjzyhConstants.POLICE_ROLE);
+			this.roleManager.saveRoleUsers(policeRole.getRoleId(), model.getTuumsBaseUser().getUserId());
 		}
 		this.commonSerivce.sendSms(model.getTuumsBaseUser().getUserId(), content);
 	}

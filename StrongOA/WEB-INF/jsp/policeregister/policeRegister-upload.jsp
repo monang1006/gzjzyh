@@ -83,7 +83,8 @@
 		}
 		var imageX = $("#imageX").val();
 		if(imageX == null || imageX == ""){
-			window.returnValue = srcImagePath;
+			//window.returnValue = srcImagePath;
+			window.opener.setImageUpload("${domElementId}", srcImagePath);
         	window.close();
 		}else{
 			imageX = parseInt(imageX);
@@ -97,7 +98,8 @@
 	            data: {srcImagePath:srcImagePath, selectX:imageX, selectY:imageY, selectW:imageW, selectH:imageH},
 	            dataType: "text",
 	            success: function(data){
-	            	window.returnValue = data;
+	            	//window.returnValue = data;
+	            	window.opener.setImageUpload("${domElementId}", data);
 	            	window.close();
 	            },
 	            error:function(){

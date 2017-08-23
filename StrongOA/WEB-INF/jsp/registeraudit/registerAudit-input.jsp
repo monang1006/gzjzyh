@@ -150,7 +150,7 @@
 							<td height="21" class="biao_bg1" align="right">
 								<span class="wz"><font color="red">*</font>&nbsp;登录密码：</span>
 							</td>
-							<td class="td1" align="left">${model.tuumsBaseUser.userPassword}</td>
+							<td class="td1" align="left">******</td>
 						</tr>
 						<tr>
 							<td height="21" class="biao_bg1" align="right">

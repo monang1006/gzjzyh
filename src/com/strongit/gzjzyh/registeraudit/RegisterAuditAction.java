@@ -42,7 +42,7 @@ public class RegisterAuditAction extends BaseActionSupport<TGzjzyhUserExtension>
 	private Page<TGzjzyhUserExtension> page = new Page<TGzjzyhUserExtension>(
 			FlexTableTag.MIDDLE_ROWS, true);
 	
-	private static final String DEFAULT_UPLOAD_IMAGE = "/images/upload/defaultUpload.png";
+	private static final String DEFAULT_UPLOAD_IMAGE = "/images/upload/defaultUpload.jpg";
 
 	private String ueId;
 	private String userOrgName;

@@ -45,6 +45,7 @@ public class PoliceRegisterAction extends BaseActionSupport<TGzjzyhUserExtension
 
 	private String ueId;
 	private String userOrgName;
+	private String domElementId;
 	
 	private String ueMainNo1Tmp;
 	private String ueMainNo2Tmp;
@@ -384,5 +385,13 @@ public class PoliceRegisterAction extends BaseActionSupport<TGzjzyhUserExtension
 
 	public String getUeId() {
 		return ueId;
+	}
+
+	public String getDomElementId() {
+		return domElementId;
+	}
+
+	public void setDomElementId(String domElementId) {
+		this.domElementId = domElementId;
 	}
 }

@@ -64,7 +64,7 @@
 					<table width="100%" height="10%" border="0" cellpadding="0"
 						cellspacing="0" align="center" class="table1">
 						<tr>
-							<td width="25%" height="21" class="biao_bg1" align="right">
+							<td height="21" class="biao_bg1" align="right">
 								<span class="wz">审核状态：</span>
 							</td>
 							<td class="td1" align="left" width="40%">
@@ -80,7 +80,7 @@
 									document.write(displayStatus);
 								</script>
 							</td>
-							<td width="25%" height="21" class="biao_bg1" align="right">
+							<td height="21" class="biao_bg1" align="right">
 								<span class="wz">审核人员：</span>
 							</td>
 							<td class="td1" align="left">
@@ -92,7 +92,7 @@
 							</td>
 						</tr>
 						<tr>
-							<td width="25%" height="21" class="biao_bg1" align="right">
+							<td height="21" class="biao_bg1" align="right">
 								<span class="wz">退回意见：</span>
 							</td>
 							<td class="td1" align="left" colspan="3">
@@ -150,37 +150,37 @@
 						<table width="100%" height="10%" border="0" cellpadding="0"
 							cellspacing="0" align="center" class="table1">
 							<tr>
-								<td width="25%" height="21" class="biao_bg1" align="right">
+								<td height="21" class="biao_bg1" align="right">
 									<span class="wz"><font color="red">*</font>&nbsp;登录账号：</span>
 								</td>
 								<td class="td1" align="left" width="40%">${model.tuumsBaseUser.userLoginname}</td>
-								<td width="25%" height="21" class="biao_bg1" align="right">
+								<td height="21" class="biao_bg1" align="right">
 									<span class="wz"><font color="red">*</font>&nbsp;登录密码：</span>
 								</td>
-								<td class="td1" align="left">${model.tuumsBaseUser.userPassword}</td>
+								<td class="td1" align="left">******</td>
 							</tr>
 							<tr>
-								<td width="25%" height="21" class="biao_bg1" align="right">
+								<td height="21" class="biao_bg1" align="right">
 									<span class="wz"><font color="red">*</font>&nbsp;用户姓名：</span>
 								</td>
 								<td class="td1" align="left"${model.tuumsBaseUser.userName}</td>
-								<td width="25%" height="21" class="biao_bg1" align="right">
+								<td height="21" class="biao_bg1" align="right">
 									<span class="wz"><font color="red">*</font>&nbsp;所属单位：</span>
 								</td>
 								<td class="td1" align="left">${userOrgName}</td>
 							</tr>
 							<tr>
-								<td width="25%" height="21" class="biao_bg1" align="right">
+								<td height="21" class="biao_bg1" align="right">
 									<span class="wz">手机号码：</span>
 								</td>
 								<td class="td1" align="left">${model.tuumsBaseUser.rest2}</td>
-								<td width="25%" height="21" class="biao_bg1" align="right">
+								<td height="21" class="biao_bg1" align="right">
 									<span class="wz">办公电话：</span>
 								</td>
 								<td class="td1" align="left">${model.tuumsBaseUser.userTel}</td>
 							</tr>
 							<tr>
-								<td width="25%" height="21" class="biao_bg1" align="right">
+								<td height="21" class="biao_bg1" align="right">
 									<span class="wz">联系地址：</span>
 								</td>
 								<td class="td1" colspan="3" align="left">${model.tuumsBaseUser.userAddr}</td>
@@ -232,54 +232,59 @@
 					<table width="100%" height="10%" border="0" cellpadding="0"
 							cellspacing="0" align="center" class="table1">
 						<tr>
-							<td width="25%" height="21" class="biao_bg1" align="right">
+							<td height="21" class="biao_bg1" align="right">
 								<span class="wz"><strong>主办警官：</strong></span>
 							</td>
 							<td class="td1" align="left" width="40%"></td>
-							<td width="25%" height="21" class="biao_bg1" align="right">
+							<td height="21" class="biao_bg1" align="right">
 								<span class="wz"><strong>协办警官：</strong></span>
 							</td>
 							<td class="td1" align="left"></td>
 						</tr>
 						<tr>
-							<td width="25%" height="21" class="biao_bg1" align="right">
+							<td height="21" class="biao_bg1" align="right">
 								<span class="wz"><font color="red">*</font>&nbsp;警官姓名：</span>
 							</td>
-							<td class="td1" align="left">${model.ueMainName}</td>
-							<td width="25%" height="21" class="biao_bg1" align="right">
+							<td class="td1" align="left" width="40%">${model.ueMainName}</td>
+							<td height="21" class="biao_bg1" align="right">
 								<span class="wz"><font color="red">*</font>&nbsp;警官姓名：</span>
 							</td>
 							<td class="td1" align="left">${model.ueHelpName}</td>
 						</tr>
 						<tr>
-							<td width="25%" height="21" class="biao_bg1" align="right">
+							<td height="21" class="biao_bg1" align="right">
 								<span class="wz"><font color="red">*</font>&nbsp;警官警号：</span>
 							</td>
-							<td class="td1" align="left">${model.ueMainNo}</td>
-							<td width="25%" height="21" class="biao_bg1" align="right">
+							<td class="td1" align="left" width="40%">${model.ueMainNo}</td>
+							<td height="21" class="biao_bg1" align="right">
 								<span class="wz"><font color="red">*</font>&nbsp;警官警号：</span>
 							</td>
 							<td class="td1" align="left">${model.ueHelpNo}</td>
 						</tr>
 						<tr>
-							<td width="25%" height="21" class="biao_bg1" align="right">
+							<td height="21" class="biao_bg1" align="right">
 								<span class="wz"><font color="red">*</font>&nbsp;身份证号：</span>
 							</td>
-							<td class="td1" align="left">${model.ueMainId}</td>
-							<td width="25%" height="21" class="biao_bg1" align="right">
+							<td class="td1" align="left" width="40%">${model.ueMainId}</td>
+							<td height="21" class="biao_bg1" align="right">
 								<span class="wz"><font color="red">*</font>&nbsp;身份证号：</span>
 							</td>
 							<td class="td1" align="left">${model.ueHelpId}</td>
 						</tr>
 						<tr>
-							<td width="25%" height="21" class="biao_bg1" align="right">
+							<td height="21" class="biao_bg1" align="right">
 								<span class="wz">手机号码：</span>
 							</td>
-							<td class="td1" align="left">${model.ueMainMobile}</td>
-							<td width="25%" height="21" class="biao_bg1" align="right">
+							<td class="td1" align="left" width="40%">${model.ueMainMobile}</td>
+							<td height="21" class="biao_bg1" align="right">
 								<span class="wz">手机号码：</span>
 							</td>
 							<td class="td1" align="left">${model.ueHelpMobile}</td>
+						</tr>
+						<tr>
+							<!-- <td colspan="2" class="td1" align="center"> -->
+							<td colspan="4" class="td1" align="center" style="height:20px;">
+							</td>
 						</tr>
 						<tr>
 							<!-- <td colspan="2" class="td1" align="center"> -->
