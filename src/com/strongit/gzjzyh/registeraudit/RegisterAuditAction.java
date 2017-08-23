@@ -156,7 +156,7 @@ public class RegisterAuditAction extends BaseActionSupport<TGzjzyhUserExtension>
 		if(this.model.getUeMainId2() == null || "".equals(this.model.getUeMainId2())) {
 			this.ueMainId2Tmp = this.DEFAULT_UPLOAD_IMAGE;
 		}else {
-			this.ueMainId2Tmp = this.model.getUeMainId1();
+			this.ueMainId2Tmp = this.model.getUeMainId2();
 		}
 		if(this.model.getUeMainNo1() == null || "".equals(this.model.getUeMainNo1())) {
 			this.ueMainNo1Tmp = this.DEFAULT_UPLOAD_IMAGE;
@@ -177,7 +177,7 @@ public class RegisterAuditAction extends BaseActionSupport<TGzjzyhUserExtension>
 		if(this.model.getUeHelpId2() == null || "".equals(this.model.getUeHelpId2())) {
 			this.ueHelpId2Tmp = this.DEFAULT_UPLOAD_IMAGE;
 		}else {
-			this.ueHelpId2Tmp = this.model.getUeHelpId1();
+			this.ueHelpId2Tmp = this.model.getUeHelpId2();
 		}
 		if(this.model.getUeHelpNo1() == null || "".equals(this.model.getUeHelpNo1())) {
 			this.ueHelpNo1Tmp = this.DEFAULT_UPLOAD_IMAGE;
@@ -199,7 +199,7 @@ public class RegisterAuditAction extends BaseActionSupport<TGzjzyhUserExtension>
 
 	@Override
 	public String list() throws Exception {
-		page = this.registerManager.queryApplyPage(page, searchLoginName, searchName, appStartDate, appEndDate);
+		page = this.registerManager.queryApplyPage(page, searchLoginName, searchName, GzjzyhConstants.STATUS_WAIT_AUDIT, appStartDate, appEndDate);
 		return SUCCESS;
 	}
 
@@ -220,7 +220,7 @@ public class RegisterAuditAction extends BaseActionSupport<TGzjzyhUserExtension>
 		model.setUeStatus(this.auditStatus);
 		model.setUeAuditUser(currentUser.getUserName());
 		model.setUeAuditUserId(currentUser.getUserId());
-		this.registerManager.save(model);
+		this.registerManager.audit(model);
 		
 		addActionMessage("保存成功");
 

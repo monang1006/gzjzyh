@@ -14,7 +14,7 @@ import javax.persistence.TemporalType;
 import org.hibernate.annotations.GenericGenerator;
 
 /**
- * The persistent class for the T_INFO_BASE_TOTAL_SCORE database table.
+ * The persistent class for the T_GZJZYH_APPLICATION database table.
  * 
  */
 @Entity
@@ -43,7 +43,7 @@ public class TGzjzyhApplication implements Serializable {
 	@Column(name = "APP_FILENO")
 	private String appFileno;
 
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIME)
 	@Column(name = "APP_DATE")
 	private Date appDate;
 
@@ -74,22 +74,28 @@ public class TGzjzyhApplication implements Serializable {
 	@Column(name = "APP_DATE_TYPE")
 	private String appDateType;
 
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIME)
 	@Column(name = "APP_START_DATE")
 	private Date appStartDate;
 
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIME)
 	@Column(name = "APP_END_DATE")
 	private Date appEndDate;
 
 	@Column(name = "APP_STATUS")
 	private String appStatus;
 
+	@Column(name = "APP_AUDIT_USERID")
+	private String appAuditUserId;
+
 	@Column(name = "APP_AUDIT_USER")
 	private String appAuditUser;
 
 	@Column(name = "APP_NG_REASON")
 	private String appNgReason;
+
+	@Column(name = "APP_RECEIVERID")
+	private String appReceiverId;
 
 	@Column(name = "APP_RECEIVER")
 	private String appReceiver;
@@ -99,6 +105,9 @@ public class TGzjzyhApplication implements Serializable {
 
 	@Column(name = "APP_RESPONSEFILE")
 	private String appResponsefile;
+
+	@Column(name = "APP_RESPONSERID")
+	private String appResponserId;
 
 	@Column(name = "APP_RESPONSER")
 	private String appResponser;
@@ -304,6 +313,30 @@ public class TGzjzyhApplication implements Serializable {
 
 	public void setAppResponser(String appResponser) {
 		this.appResponser = appResponser;
+	}
+
+	public String getAppAuditUserId() {
+		return appAuditUserId;
+	}
+
+	public void setAppAuditUserId(String appAuditUserId) {
+		this.appAuditUserId = appAuditUserId;
+	}
+
+	public String getAppReceiverId() {
+		return appReceiverId;
+	}
+
+	public void setAppReceiverId(String appReceiverId) {
+		this.appReceiverId = appReceiverId;
+	}
+
+	public String getAppResponserId() {
+		return appResponserId;
+	}
+
+	public void setAppResponserId(String appResponserId) {
+		this.appResponserId = appResponserId;
 	}
 
 }

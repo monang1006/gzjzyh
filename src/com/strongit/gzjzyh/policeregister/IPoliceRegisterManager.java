@@ -15,8 +15,10 @@ public interface IPoliceRegisterManager {
 	
 	public void save(TGzjzyhUserExtension userExtension) throws SystemException;
 	
+	public void audit(TGzjzyhUserExtension userExtension) throws SystemException;
+	
 	public Page<TGzjzyhUserExtension> queryApplyPage(
-			Page page, String searchLoginName, String searchName,
+			Page page, String searchLoginName, String searchName, String searchStatus,
 			Date appStartDate, Date appEndDate) throws SystemException;
 	
 }

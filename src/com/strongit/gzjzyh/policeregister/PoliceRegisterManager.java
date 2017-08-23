@@ -125,7 +125,7 @@ public class PoliceRegisterManager implements IPoliceRegisterManager {
 	
 	@Override
 	public Page<TGzjzyhUserExtension> queryApplyPage(
-			Page page, String searchLoginName, String searchName,
+			Page page, String searchLoginName, String searchName, String searchStatus,
 			Date appStartDate, Date appEndDate) throws SystemException {
 		StringBuffer hql = new StringBuffer(
 				"from TGzjzyhUserExtension t where 1=1");
@@ -145,6 +145,10 @@ public class PoliceRegisterManager implements IPoliceRegisterManager {
 		if (appEndDate != null) {
 			hql.append(" and t.ueDate <= ? ");
 			values.add(appEndDate);
+		}
+		if (searchStatus != null && !"".equals(searchStatus)) {
+			hql.append(" and t.ueStatus = ? ");
+			values.add(searchStatus);
 		}
 
 		hql.append(" order by t.ueStatus, t.ueDate desc");
