@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.beanutils.BeanUtils;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,8 @@ import com.strongit.gzjzyh.GzjzyhApplicationConfig;
 import com.strongit.gzjzyh.GzjzyhConstants;
 import com.strongit.gzjzyh.po.TGzjzyhApplication;
 import com.strongit.gzjzyh.po.TGzjzyhToSync;
+import com.strongit.gzjzyh.po.TGzjzyhUserExtension;
+import com.strongit.gzjzyh.util.FileKit;
 import com.strongit.gzjzyh.util.HttpConnector;
 import com.strongit.gzjzyh.vo.Packet;
 import com.strongit.oa.bo.ToaPersonalInfo;
@@ -40,33 +43,38 @@ public class ToSyncManager implements IToSyncManager {
 	@Transactional(readOnly = false)
 	public void createToSyncMsg(Object obj, String operation)
 			throws SystemException {
-		if(!GzjzyhApplicationConfig.isDistributedDeployed()) {
+		if (!GzjzyhApplicationConfig.isDistributedDeployed()) {
 			return;
 		}
 		if (GzjzyhConstants.OPERATION_TYPE_ADD_BANKACCOUNT.equals(operation)) {
-			this.createBankAccountSyncMsg((TUumsBaseUser)obj, operation);
-		} else if (GzjzyhConstants.OPERATION_TYPE_EDIT_BANKACCOUNT.equals(operation)) {
-			this.createBankAccountSyncMsg((TUumsBaseUser)obj, operation);
-		} else if (GzjzyhConstants.OPERATION_TYPE_DELETE_BANKACCOUNT.equals(operation)) {
-			this.createBankAccountSyncMsg((TUumsBaseUser)obj, operation);
-		} else if (GzjzyhConstants.OPERATION_TYPE_EDIT_BANKACCOUNT_PERSONAL.equals(operation)) {
-			this.createBankAccountPersonalSyncMsg((ToaPersonalInfo)obj, operation);
+			this.createBankAccountSyncMsg((TUumsBaseUser) obj, operation);
+		} else if (GzjzyhConstants.OPERATION_TYPE_EDIT_BANKACCOUNT
+				.equals(operation)) {
+			this.createBankAccountSyncMsg((TUumsBaseUser) obj, operation);
+		} else if (GzjzyhConstants.OPERATION_TYPE_DELETE_BANKACCOUNT
+				.equals(operation)) {
+			this.createBankAccountSyncMsg((TUumsBaseUser) obj, operation);
+		} else if (GzjzyhConstants.OPERATION_TYPE_EDIT_BANKACCOUNT_PERSONAL
+				.equals(operation)) {
+			this.createBankAccountPersonalSyncMsg((ToaPersonalInfo) obj,
+					operation);
 		} else if (GzjzyhConstants.OPERATION_TYPE_ADD_APP.equals(operation)) {
-			this.createApplicationSyncMsg((TGzjzyhApplication)obj, operation);
+			this.createApplicationSyncMsg((TGzjzyhApplication) obj, operation);
 		} else if (GzjzyhConstants.OPERATION_TYPE_REFUSED_APP.equals(operation)) {
-			this.createApplicationSyncMsg((TGzjzyhApplication)obj, operation);
+			this.createApplicationSyncMsg((TGzjzyhApplication) obj, operation);
 		} else if (GzjzyhConstants.OPERATION_TYPE_RETURN_APP.equals(operation)) {
-			this.createApplicationSyncMsg((TGzjzyhApplication)obj, operation);
+			this.createApplicationSyncMsg((TGzjzyhApplication) obj, operation);
 		}
 	}
 
 	private void createBankAccountSyncMsg(TUumsBaseUser user, String operation)
 			throws SystemException {
 		TGzjzyhToSync toSyncVo = new TGzjzyhToSync();
-		
+
 		JSONObject json = new JSONObject();
-		if(GzjzyhConstants.OPERATION_TYPE_ADD_BANKACCOUNT.equals(operation)
-				|| GzjzyhConstants.OPERATION_TYPE_EDIT_BANKACCOUNT.equals(operation)) {
+		if (GzjzyhConstants.OPERATION_TYPE_ADD_BANKACCOUNT.equals(operation)
+				|| GzjzyhConstants.OPERATION_TYPE_EDIT_BANKACCOUNT
+						.equals(operation)) {
 			json.put("userId", user.getUserId());
 			json.put("userName", user.getUserName());
 			json.put("userSyscode", user.getUserSyscode());
@@ -76,24 +84,25 @@ public class ToSyncManager implements IToSyncManager {
 			json.put("userSequence", user.getUserSequence());
 			json.put("userTel", user.getUserTel());
 			json.put("rest2", user.getRest2());
-		}else if(GzjzyhConstants.OPERATION_TYPE_DELETE_BANKACCOUNT.equals(operation)){
+		} else if (GzjzyhConstants.OPERATION_TYPE_DELETE_BANKACCOUNT
+				.equals(operation)) {
 			json.put("userId", user.getUserId());
 		}
-		
+
 		Packet packet = new Packet();
 		packet.setOperationType(operation);
 		packet.setOperationObj(json);
-		
+
 		toSyncVo.setTsToSyncMsg(JSONObject.toJSONString(packet));
 		toSyncVo.setTsToSyncTime(new Date());
-		
+
 		this.baseDao.insert(toSyncVo);
 	}
-	
-	private void createBankAccountPersonalSyncMsg(ToaPersonalInfo user, String operation)
-			throws SystemException {
+
+	private void createBankAccountPersonalSyncMsg(ToaPersonalInfo user,
+			String operation) throws SystemException {
 		TGzjzyhToSync toSyncVo = new TGzjzyhToSync();
-		
+
 		JSONObject json = new JSONObject();
 		json.put("prsnId", user.getPrsnId());
 		json.put("prsnName", user.getPrsnName());
@@ -102,14 +111,14 @@ public class ToSyncManager implements IToSyncManager {
 		json.put("homeAddress", user.getHomeAddress());
 		json.put("prsnMobile1", user.getPrsnMobile1());
 		json.put("homeAddress", user.getHomeAddress());
-		
+
 		Packet packet = new Packet();
 		packet.setOperationType(operation);
 		packet.setOperationObj(json);
-		
+
 		toSyncVo.setTsToSyncMsg(JSONObject.toJSONString(packet));
 		toSyncVo.setTsToSyncTime(new Date());
-		
+
 		this.baseDao.insert(toSyncVo);
 	}
 
@@ -117,45 +126,135 @@ public class ToSyncManager implements IToSyncManager {
 			String operation) throws SystemException {
 		TGzjzyhToSync toSyncVo = new TGzjzyhToSync();
 		JSONObject json = new JSONObject();
+		Object operationObj = json;
 		Map<String, String> attachments = null;
-		
+
 		if (GzjzyhConstants.OPERATION_TYPE_ADD_APP.equals(operation)) {
-			
+			try {
+				TGzjzyhApplication applicationCopy = new TGzjzyhApplication();
+				BeanUtils.copyProperties(applicationCopy, application);
+				String hql = "from TGzjzyhUserExtension t where t.tuumsBaseUser.userId = ?";
+				TGzjzyhUserExtension ue = (TGzjzyhUserExtension) this.baseDao
+						.findUnique(hql,
+								new Object[] { applicationCopy.getAppUserid() });
+				BeanUtils.copyProperties(applicationCopy, ue);
+				operationObj = applicationCopy;
+				
+				// 加载附件
+				if (applicationCopy.getAppMainId1() != null
+						&& !"".equals(applicationCopy.getAppMainId1())) {
+					attachments = new HashMap<String, String>(0);
+					String encodedFileContent = FileKit
+							.getBase64EncodedFileContentByRelativePath(applicationCopy
+									.getAppMainId1());
+					attachments.put("appMainId1", encodedFileContent);
+				}
+				if (applicationCopy.getAppMainId2() != null
+						&& !"".equals(applicationCopy.getAppMainId2())) {
+					attachments = new HashMap<String, String>(0);
+					String encodedFileContent = FileKit
+							.getBase64EncodedFileContentByRelativePath(applicationCopy
+									.getAppMainId2());
+					attachments.put("appMainId2", encodedFileContent);
+				}
+				if (applicationCopy.getAppMainNo1() != null
+						&& !"".equals(applicationCopy.getAppMainNo1())) {
+					attachments = new HashMap<String, String>(0);
+					String encodedFileContent = FileKit
+							.getBase64EncodedFileContentByRelativePath(applicationCopy
+									.getAppMainNo1());
+					attachments.put("appMainNo1", encodedFileContent);
+				}
+				if (applicationCopy.getAppMainNo2() != null
+						&& !"".equals(applicationCopy.getAppMainNo2())) {
+					attachments = new HashMap<String, String>(0);
+					String encodedFileContent = FileKit
+							.getBase64EncodedFileContentByRelativePath(applicationCopy
+									.getAppMainNo2());
+					attachments.put("appMainNo2", encodedFileContent);
+				}
+				if (applicationCopy.getAppHelpId1() != null
+						&& !"".equals(applicationCopy.getAppHelpId1())) {
+					attachments = new HashMap<String, String>(0);
+					String encodedFileContent = FileKit
+							.getBase64EncodedFileContentByRelativePath(applicationCopy
+									.getAppHelpId1());
+					attachments.put("appHelpId1", encodedFileContent);
+				}
+				if (applicationCopy.getAppHelpId2() != null
+						&& !"".equals(applicationCopy.getAppHelpId2())) {
+					attachments = new HashMap<String, String>(0);
+					String encodedFileContent = FileKit
+							.getBase64EncodedFileContentByRelativePath(applicationCopy
+									.getAppHelpId2());
+					attachments.put("appHelpId2", encodedFileContent);
+				}
+				if (applicationCopy.getAppHelpNo1() != null
+						&& !"".equals(applicationCopy.getAppHelpNo1())) {
+					attachments = new HashMap<String, String>(0);
+					String encodedFileContent = FileKit
+							.getBase64EncodedFileContentByRelativePath(applicationCopy
+									.getAppHelpNo1());
+					attachments.put("appHelpNo1", encodedFileContent);
+				}
+				if (applicationCopy.getAppHelpNo2() != null
+						&& !"".equals(applicationCopy.getAppHelpNo2())) {
+					attachments = new HashMap<String, String>(0);
+					String encodedFileContent = FileKit
+							.getBase64EncodedFileContentByRelativePath(applicationCopy
+									.getAppHelpNo2());
+					attachments.put("appHelpNo2", encodedFileContent);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+				throw new SystemException(e);
+			}
 		} else if (GzjzyhConstants.OPERATION_TYPE_REFUSED_APP.equals(operation)) {
 			json.put("appId", application.getAppId());
 			json.put("appReceiverId", application.getAppReceiverId());
 			json.put("appReceiver", application.getAppReceiver());
-			json.put("appReceivedate", application.getAppReceivedate().getTimes());
+			json.put("appReceivedate", application.getAppReceivedate());
 			json.put("appNgReason", application.getAppNgReason());
 		} else if (GzjzyhConstants.OPERATION_TYPE_RETURN_APP.equals(operation)) {
 			json.put("appId", application.getAppId());
 			json.put("appResponserId", application.getAppResponserId());
 			json.put("appResponser", application.getAppResponser());
 			json.put("appResponsefile", application.getAppResponsefile());
-			//加载附件
-			attachments = new HashMap<String, String>(0);
-			
+			// 加载附件
+			if (application.getAppResponsefile() != null
+					&& !"".equals(application.getAppResponsefile())) {
+				attachments = new HashMap<String, String>(0);
+				try {
+					String encodedFileContent = FileKit
+							.getBase64EncodedFileContentByRelativePath(application
+									.getAppResponsefile());
+					attachments.put("appResponsefile", encodedFileContent);
+				} catch (Exception e) {
+					e.printStackTrace();
+					throw new SystemException(e);
+				}
+			}
 		}
-		
+
 		Packet packet = new Packet();
 		packet.setOperationType(operation);
-		packet.setOperationObj(json);
+		packet.setOperationObj(operationObj);
 		packet.setAttachments(attachments);
-		
+
 		toSyncVo.setTsToSyncMsg(JSONObject.toJSONString(packet));
 		toSyncVo.setTsToSyncTime(new Date());
-		
+
 		this.baseDao.insert(toSyncVo);
 	}
-	
+
 	@Transactional(readOnly = false)
-	public int syncMsg() throws SystemException{
+	public int syncMsg() throws SystemException {
 		int counter = 0;
 		Page page = new Page(1, false);
-		String hql = "from TGzjzyhToSync t order by t.tsToSyncTime";
-		page = this.baseDao.find(page, hql, new Object[] {});
+		String hql = "from TGzjzyhToSync t where t.tsToSyncFlag = ? order by t.tsToSyncTime";
+		page = this.baseDao.find(page, hql, new Object[] {GzjzyhApplicationConfig.getFlag()});
 		List<TGzjzyhToSync> result = page.getResult();
-		if(result != null && !result.isEmpty()) {
+		if (result != null && !result.isEmpty()) {
 			counter = 1;
 			TGzjzyhToSync syncMsg = result.get(0);
 			this.getHttpConnector().perform(syncMsg.getTsToSyncMsg());
@@ -163,13 +262,13 @@ public class ToSyncManager implements IToSyncManager {
 		}
 		return counter;
 	}
-	
+
 	private HttpConnector getHttpConnector() throws SystemException {
-		if(this.connector == null) {
+		if (this.connector == null) {
 			this.connector = new HttpConnector();
 			this.connector.open(GzjzyhApplicationConfig.getSyncUrl());
 		}
 		return this.connector;
 	}
-	
+
 }

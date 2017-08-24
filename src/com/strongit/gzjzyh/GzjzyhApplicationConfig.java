@@ -4,6 +4,7 @@ public class GzjzyhApplicationConfig {
 	
 	private static String deployType;
 	private static String syncUrl;
+	private static String flag;
 
 	public static String getDeployType() {
 		return deployType;
@@ -23,6 +24,14 @@ public class GzjzyhApplicationConfig {
 
 	public static void setSyncUrl(String syncUrl) {
 		GzjzyhApplicationConfig.syncUrl = syncUrl;
+	}
+
+	public static String getFlag() {
+		return flag;
+	}
+
+	public static void setFlag(String flag) {
+		GzjzyhApplicationConfig.flag = flag;
 	}
 
 }

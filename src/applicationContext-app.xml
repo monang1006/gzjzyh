@@ -77,6 +77,12 @@
 			<!-- 0：集中式部署；1：分布式部署 -->
 			<value>0</value>
 		</property>
+		<property name="syncUrl">
+			<value>0</value>
+		</property>
+		<property name="flag">
+			<value>0</value>
+		</property>
 	</bean>
 	
 	<!-- DAO层配置 -->

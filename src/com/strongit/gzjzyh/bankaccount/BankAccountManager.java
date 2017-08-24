@@ -1,9 +1,12 @@
 package com.strongit.gzjzyh.bankaccount;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,6 +38,8 @@ public class BankAccountManager implements IBankAccountManager {
 	IRoleManager roleManager;
 	@Autowired
 	IToSyncManager toSyncManager;
+	@Autowired
+	JdbcTemplate jdbcTemplate; // 提供Jdbc操作支持
 	
 	@Autowired
 	public void setSessionFactory(SessionFactory sessionFactory){
@@ -77,6 +82,84 @@ public class BankAccountManager implements IBankAccountManager {
 		}else{
 			this.toSyncManager.createToSyncMsg(model, GzjzyhConstants.OPERATION_TYPE_EDIT_BANKACCOUNT);
 		}
+	}
+	
+	@Override
+	@Transactional(readOnly = false)
+	public void insertWithoutSync(TUumsBaseUser model) throws SystemException {
+		TUumsBaseOrg org = userService
+				.getOrgInfoBySyscode(GzjzyhConstants.DEFAULT_BANKORG_SYSCODE);
+		model.setUserSyscode(model.getUserLoginname());
+		model.setOrgId(org.getOrgId());
+		model.setOrgIds("," + org.getOrgId() + ",");
+		model.setSupOrgCode("," + org.getOrgSyscode() + ",");
+		
+		StringBuilder columnSb = new StringBuilder("");
+		StringBuilder valueSb = new StringBuilder("");
+		List values = new ArrayList(0);
+		
+		columnSb.append(",USER_ID");
+		valueSb.append(",?");
+		values.add(model.getUserId());
+		
+		columnSb.append(",ORG_ID");
+		valueSb.append(",?");
+		values.add(org.getOrgId());
+		
+		columnSb.append(",USER_NAME");
+		valueSb.append(",?");
+		values.add(model.getUserName());
+		
+		columnSb.append(",USER_SYSCODE");
+		valueSb.append(",?");
+		values.add(model.getUserSyscode());
+		
+		columnSb.append(",USER_LOGINNAME");
+		valueSb.append(",?");
+		values.add(model.getUserLoginname());
+		
+		columnSb.append(",USER_PASSWORD");
+		valueSb.append(",?");
+		values.add(model.getUserPassword());
+		
+		columnSb.append(",USER_ADDR");
+		valueSb.append(",?");
+		values.add(model.getUserAddr());
+		
+		columnSb.append(",USER_SEQUENCE");
+		valueSb.append(",?");
+		values.add(model.getUserSequence());
+		
+		columnSb.append(",USER_SEQUENCE");
+		valueSb.append(",?");
+		values.add(model.getUserSequence());
+
+		userService.saveUser(model);
+		
+		this.jdbcTemplate.update(sql, args)
+		
+		user.setUserSequence(jsonObj.getLong("userSequence"));
+		user.setUserTel(jsonObj.getString("userTel"));
+		user.setRest2(jsonObj.getString("rest2"));
+		
+		
+
+		// 处理同步到个人信息中；added by dengzc 2010年5月18日10:56:21
+		ToaPersonalInfo myInfo = myInfoManager.getInfoByUserid(model
+				.getUserId());
+		if (myInfo == null) {// 个人信息部存在
+			myInfo = new ToaPersonalInfo();
+			myInfo.setUserId(model.getUserId());
+		}
+		myInfo.setPrsnName(model.getUserName());// 姓名
+		myInfo.setPrsnMobile1(model.getRest2());// 手机号码
+		myInfo.setPrsnMail1(model.getUserEmail());// email
+		myInfo.setPrsnTel1(model.getUserTel());// 电话
+		myInfo.setHomeAddress(model.getUserAddr());//住址
+		myInfoManager.saveObj(myInfo);
+		
+		TUumsBaseRole bankRole = this.roleManager.getRoleInfoByRoleCode(GzjzyhConstants.BANK_ROLE);
+		this.roleManager.saveRoleUsers(bankRole.getRoleId(), model.getUserId());
 	}
 
 	@Override

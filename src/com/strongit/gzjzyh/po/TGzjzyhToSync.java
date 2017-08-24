@@ -13,6 +13,8 @@ import javax.persistence.TemporalType;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import com.strongit.gzjzyh.GzjzyhApplicationConfig;
+
 @Entity
 @Table(name = "T_GZJZYH_TO_SYNC")
 public class TGzjzyhToSync implements Serializable {
@@ -22,6 +24,7 @@ private static final long serialVersionUID = 1L;
 	private String tsId;
 	private String tsToSyncMsg;
 	private Date tsToSyncTime;
+	private String tsToSyncFlag = GzjzyhApplicationConfig.getFlag();
 	
 	public TGzjzyhToSync(){
 		
@@ -56,6 +59,15 @@ private static final long serialVersionUID = 1L;
 
 	public void setTsToSyncTime(Date tsToSyncTime) {
 		this.tsToSyncTime = tsToSyncTime;
+	}
+
+	@Column(name = "TS_TOSYNC_FLAG")
+	public String getTsToSyncFlag() {
+		return tsToSyncFlag;
+	}
+
+	public void setTsToSyncFlag(String tsToSyncFlag) {
+		this.tsToSyncFlag = tsToSyncFlag;
 	}
 
 }
