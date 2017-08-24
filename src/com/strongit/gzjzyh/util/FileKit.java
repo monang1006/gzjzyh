@@ -1,10 +1,19 @@
 package com.strongit.gzjzyh.util;
 
+import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Date;
+
+import com.strongmvc.exception.SystemException;
+
+import sun.misc.BASE64Decoder;
+import sun.misc.BASE64Encoder;
 
 public class FileKit {
 
@@ -39,6 +48,58 @@ public class FileKit {
 		return filePath;
 	}
 	
+	public final static String getBase64EncodedFileContentByRelativePath(String relativeFilePath) throws Exception{
+		return getProjectPath() + relativeFilePath;
+	}
+	
+	public final static String getBase64EncodedFileContent(String filePath) throws Exception{
+		String encodedFileContent = null;
+		if(filePath != null && !"".equals(filePath)) {
+			byte[] fileContent = FileKit.getFileContent(filePath);
+			if(fileContent != null) {
+				encodedFileContent = new BASE64Encoder().encode(fileContent);
+			}
+		}
+		return encodedFileContent;
+	}
+	
+	public final static byte[] getFileContent(String filePath) throws Exception {
+		byte[] fileContent = null;
+		File file = new File(filePath);
+		InputStream fileInputStream = null;
+		BufferedInputStream bufferedInputStream = null;
+		ByteArrayOutputStream outputStream = null;
+		try {
+			if(file.exists() && !file.isDirectory()) {
+				fileInputStream = new FileInputStream(file);
+				bufferedInputStream = new BufferedInputStream(fileInputStream);
+				outputStream = new ByteArrayOutputStream();
+				byte[] buffer = new byte[1024];
+				int count = 0;
+				while ((count = bufferedInputStream.read(buffer, 0, 1024)) > 0) {
+					outputStream.write(buffer, 0, count);
+				}
+				fileContent = outputStream.toByteArray();
+			}
+		} catch (FileNotFoundException e) {
+			throw e;
+		} catch (IOException e) {
+			throw e;
+		}finally {
+			if(fileInputStream != null) {
+				fileInputStream.close();
+			}
+			if(bufferedInputStream != null) {
+				bufferedInputStream.close();
+			}
+			if(outputStream != null) {
+				outputStream.close();
+			}
+		}
+		
+		return fileContent;
+	}
+	
 	public final static String relativePath2AbsolutePath(String relativePath){
 		return FileKit.getProjectPath() + relativePath;
 	}
@@ -48,16 +109,28 @@ public class FileKit {
 		Date now = new Date();
 		String folderName = TimeKit.formatDate(now, "yyyyMMdd");
 		String folderPath = FileKit.getProjectPath() + "/upload/" + folderName;
-		String newFileName = new Date().getTime() + originalFileName;
+		String newFileName = new Date().getTime() + originalFileName.substring(originalFileName.lastIndexOf("."));
 		filePath = "/upload/" + folderName + "/" + newFileName;
-		if(FileKit.saveFile(is, folderPath, newFileName)){
+		try {
+			FileKit.saveFile(is, folderPath, newFileName);
 			filePath = "/upload/" + folderName + "/" + newFileName;
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 		return filePath;
 	}
 	
-	public final static boolean saveFile(InputStream is, String destFilePath, String destFileName){
-		boolean isSaved = true;
+	public final static void saveFileByRelativePathAndEncodedContent(String relativeFilePath, String encodedFileContent) {
+		try {
+			byte[] fileContent = (new BASE64Decoder()).decodeBuffer(encodedFileContent);
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public final static void saveFile(InputStream is, String destFilePath, String destFileName) throws Exception{
 		FileOutputStream os = null;
 		try{
 			if (is != null) {
@@ -73,7 +146,7 @@ public class FileKit {
 			}
 		}catch(Exception ex){
 			ex.printStackTrace();
-			isSaved = false;
+			throw ex;
 		}finally{
 			if(os != null){
 				try {
@@ -90,7 +163,6 @@ public class FileKit {
 				}
 			}
 		}
-		return isSaved;
 	}
 
 }

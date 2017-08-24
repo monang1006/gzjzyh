@@ -67,18 +67,15 @@ public class BankAccountManager implements IBankAccountManager {
 		myInfo.setPrsnMobile1(model.getRest2());// 手机号码
 		myInfo.setPrsnMail1(model.getUserEmail());// email
 		myInfo.setPrsnTel1(model.getUserTel());// 电话
+		myInfo.setHomeAddress(model.getUserAddr());//住址
 		myInfoManager.saveObj(myInfo);
 		
 		if(isAdd){
 			TUumsBaseRole bankRole = this.roleManager.getRoleInfoByRoleCode(GzjzyhConstants.BANK_ROLE);
 			this.roleManager.saveRoleUsers(bankRole.getRoleId(), model.getUserId());
-			if(GzjzyhApplicationConfig.isDistributedDeployed()){
-				this.toSyncManager.createToSyncMsg(model, GzjzyhConstants.OPERATION_TYPE_ADD);
-			}
+			this.toSyncManager.createToSyncMsg(model, GzjzyhConstants.OPERATION_TYPE_ADD_BANKACCOUNT);
 		}else{
-			if(GzjzyhApplicationConfig.isDistributedDeployed()){
-				this.toSyncManager.createToSyncMsg(model, GzjzyhConstants.OPERATION_TYPE_EDIT);
-			}
+			this.toSyncManager.createToSyncMsg(model, GzjzyhConstants.OPERATION_TYPE_EDIT_BANKACCOUNT);
 		}
 	}
 
@@ -140,9 +137,7 @@ public class BankAccountManager implements IBankAccountManager {
 					}
 					userService.saveUserForDel(model);
 				}
-				if(GzjzyhApplicationConfig.isDistributedDeployed()){
-					this.toSyncManager.createToSyncMsg(model, GzjzyhConstants.OPERATION_TYPE_DELETE);
-				}
+				this.toSyncManager.createToSyncMsg(model, GzjzyhConstants.OPERATION_TYPE_DELETE_BANKACCOUNT);
 			}
 		}
 	}

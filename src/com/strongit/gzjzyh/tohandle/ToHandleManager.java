@@ -3,6 +3,7 @@ package com.strongit.gzjzyh.tohandle;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.strongit.gzjzyh.vo.Packet;
 import com.strongmvc.exception.SystemException;
 
 @Service
@@ -11,10 +12,8 @@ public class ToHandleManager implements IToHandleManager {
 
 	@Override
 	@Transactional(readOnly = false)
-	public void createToHandleMsg(Object obj, String operation)
-			throws SystemException {
-		// TODO Auto-generated method stub
-
+	public void handleMsg(Packet requestPacket) throws SystemException {
+		
 	}
 
 }
