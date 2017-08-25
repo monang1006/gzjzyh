@@ -38,5 +38,9 @@ public class GzjzyhConstants {
 	public final static String HTTP_RESPONSE_SUCCESS = "000000";
 	//通信协议报文类型
 	public static final String GZJZYH_CONTENT_TYPE = "application/gzjzyh-data";
-
+	
+	//申请拒签
+	public final static String APP_STATUS_REFUSE = "";
+	//申请反馈
+	public final static String APP_STATUS_RETURN = "";
 }

@@ -13,4 +13,6 @@ public interface IBankAccountManager {
 	
 	public void updateWithoutSync(TUumsBaseUser model) throws SystemException;
 	
+	public void deleteWithoutSync(String userId) throws SystemException;
+	
 }

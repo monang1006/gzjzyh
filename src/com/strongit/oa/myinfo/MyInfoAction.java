@@ -29,6 +29,8 @@ import org.apache.struts2.dispatcher.ServletActionRedirectResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.userdetails.UserDetails;
 
+import com.strongit.gzjzyh.GzjzyhConstants;
+import com.strongit.gzjzyh.tosync.IToSyncManager;
 import com.strongit.oa.attachment.AttachmentHelper;
 import com.strongit.oa.bo.ToaPersonalConfig;
 import com.strongit.oa.bo.ToaPersonalInfo;
@@ -71,6 +73,8 @@ public class MyInfoAction extends BaseActionSupport<ToaPersonalInfo>
 	private InfoConfigManager configManager;				//个人配置manager
 	@Autowired
 	private SystemsetManager systemsetManager; //系统全局设置
+	@Autowired
+	private IToSyncManager syncManager;
 	private DesktopSectionManager sectionManager;
 	private String prsnId;									//个人信息主键
 	private List<ToaPersonalConfig> list=new ArrayList<ToaPersonalConfig>(); //个人配置列表
@@ -253,6 +257,8 @@ public class MyInfoAction extends BaseActionSupport<ToaPersonalInfo>
    		User user=userManagers.getCurrentUser();
    		model.setUserId(user.getUserId());
    		String msg=infoManager.savePrsnInfo(model);	//保存个人信息
+   		//赣州经侦银行查询系统使用，同步数据到警局端
+   		this.syncManager.createToSyncMsg(model, GzjzyhConstants.OPERATION_TYPE_EDIT_BANKACCOUNT_PERSONAL);
    		if(upload != null) {//签名
    			FileInputStream fis = null;
    			try {

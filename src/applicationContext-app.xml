@@ -80,7 +80,10 @@
 		<property name="syncUrl">
 			<value>0</value>
 		</property>
-		<property name="flag">
+		<property name="syncFlag">
+			<value>0</value>
+		</property>
+		<property name="handleFlag">
 			<value>0</value>
 		</property>
 	</bean>

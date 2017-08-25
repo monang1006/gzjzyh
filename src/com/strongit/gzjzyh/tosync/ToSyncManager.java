@@ -110,7 +110,6 @@ public class ToSyncManager implements IToSyncManager {
 		json.put("prsnTel1", user.getPrsnTel1());
 		json.put("homeAddress", user.getHomeAddress());
 		json.put("prsnMobile1", user.getPrsnMobile1());
-		json.put("homeAddress", user.getHomeAddress());
 
 		Packet packet = new Packet();
 		packet.setOperationType(operation);
@@ -141,6 +140,30 @@ public class ToSyncManager implements IToSyncManager {
 				operationObj = applicationCopy;
 				
 				// 加载附件
+				if (applicationCopy.getAppLawfile() != null
+						&& !"".equals(applicationCopy.getAppLawfile())) {
+					attachments = new HashMap<String, String>(0);
+					String encodedFileContent = FileKit
+							.getBase64EncodedFileContentByRelativePath(applicationCopy
+									.getAppLawfile());
+					attachments.put("appLawfile", encodedFileContent);
+				}
+				if (applicationCopy.getAppLawfileR() != null
+						&& !"".equals(applicationCopy.getAppLawfileR())) {
+					attachments = new HashMap<String, String>(0);
+					String encodedFileContent = FileKit
+							.getBase64EncodedFileContentByRelativePath(applicationCopy
+									.getAppLawfileR());
+					attachments.put("appLawfileR", encodedFileContent);
+				}
+				if (applicationCopy.getAppAttachment() != null
+						&& !"".equals(applicationCopy.getAppAttachment())) {
+					attachments = new HashMap<String, String>(0);
+					String encodedFileContent = FileKit
+							.getBase64EncodedFileContentByRelativePath(applicationCopy
+									.getAppAttachment());
+					attachments.put("appAttachment", encodedFileContent);
+				}
 				if (applicationCopy.getAppMainId1() != null
 						&& !"".equals(applicationCopy.getAppMainId1())) {
 					attachments = new HashMap<String, String>(0);
@@ -252,7 +275,7 @@ public class ToSyncManager implements IToSyncManager {
 		int counter = 0;
 		Page page = new Page(1, false);
 		String hql = "from TGzjzyhToSync t where t.tsToSyncFlag = ? order by t.tsToSyncTime";
-		page = this.baseDao.find(page, hql, new Object[] {GzjzyhApplicationConfig.getFlag()});
+		page = this.baseDao.find(page, hql, new Object[] {GzjzyhApplicationConfig.getHandleflag()});
 		List<TGzjzyhToSync> result = page.getResult();
 		if (result != null && !result.isEmpty()) {
 			counter = 1;

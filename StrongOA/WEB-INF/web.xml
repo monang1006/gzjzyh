@@ -260,6 +260,10 @@
  	 <listener>
  	 	<listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
  	 </listener>
+ 	 <!-- 用于启动数据同步线程 -->
+ 	 <listener>
+ 	 	<listener-class>com.strongit.gzjzyh.schedule.StartScheduleListener</listener-class>
+ 	 </listener>
  	 <!-- session销毁时的监听类
  	 <listener>
  	 	<listener-class>com.strongit.uums.abrole.SessionOverListener</listener-class>

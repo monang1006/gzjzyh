@@ -24,7 +24,7 @@ private static final long serialVersionUID = 1L;
 	private String tsId;
 	private String tsToSyncMsg;
 	private Date tsToSyncTime;
-	private String tsToSyncFlag = GzjzyhApplicationConfig.getFlag();
+	private String tsToSyncFlag = GzjzyhApplicationConfig.getSyncflag();
 	
 	public TGzjzyhToSync(){
 		
