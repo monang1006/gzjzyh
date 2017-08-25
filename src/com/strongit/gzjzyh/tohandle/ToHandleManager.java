@@ -231,6 +231,7 @@ public class ToHandleManager implements IToHandleManager {
 		TGzjzyhApplication application = (TGzjzyhApplication)this.baseDao.getSession().load(TGzjzyhApplication.class, jsonObj.getString("appId"));
 		if(application != null) {
 			application.setAppStatus(GzjzyhConstants.APP_STATUS_RETURN);
+			application.setAppResponseDate(jsonObj.getDate("appResponseDate"));
 			application.setAppResponserId(jsonObj.getString("appResponserId"));
 			application.setAppResponser(jsonObj.getString("appResponser"));
 			application.setAppResponsefile(jsonObj.getString("appResponsefile"));

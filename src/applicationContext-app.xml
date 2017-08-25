@@ -72,19 +72,19 @@
 	<!--
 		赣州经侦银行项目系统全局设置
 	-->
-	<bean class="com.strongit.gzjzyh.GzjzyhApplicationConfig">
+	<bean class="com.strongit.gzjzyh.GzjzyhApplicationConfig" lazy-init="false">
 		<property name="deployType">
 			<!-- 0：集中式部署；1：分布式部署 -->
-			<value>0</value>
+			<value>1</value>
 		</property>
 		<property name="syncUrl">
 			<value>0</value>
 		</property>
-		<property name="syncFlag">
+		<property name="syncflag">
 			<value>0</value>
 		</property>
-		<property name="handleFlag">
-			<value>0</value>
+		<property name="handleflag">
+			<value>1</value>
 		</property>
 	</bean>
 	

@@ -2,16 +2,16 @@ package com.strongit.gzjzyh;
 
 public class GzjzyhApplicationConfig {
 	
-	private static String deployType;
-	private static String syncUrl;
-	private static String syncflag;
-	private static String handleflag;
+	public static String deployType;
+	public static String syncUrl;
+	public static String syncflag;
+	public static String handleflag;
 
 	public static String getDeployType() {
 		return deployType;
 	}
 
-	public static void setDeployType(String deployType) {
+	public void setDeployType(String deployType) {
 		GzjzyhApplicationConfig.deployType = deployType;
 	}
 	
@@ -23,7 +23,7 @@ public class GzjzyhApplicationConfig {
 		return syncUrl;
 	}
 
-	public static void setSyncUrl(String syncUrl) {
+	public void setSyncUrl(String syncUrl) {
 		GzjzyhApplicationConfig.syncUrl = syncUrl;
 	}
 
@@ -31,7 +31,7 @@ public class GzjzyhApplicationConfig {
 		return syncflag;
 	}
 
-	public static void setSyncflag(String syncflag) {
+	public void setSyncflag(String syncflag) {
 		GzjzyhApplicationConfig.syncflag = syncflag;
 	}
 
@@ -39,7 +39,7 @@ public class GzjzyhApplicationConfig {
 		return handleflag;
 	}
 
-	public static void setHandleflag(String handleflag) {
+	public void setHandleflag(String handleflag) {
 		GzjzyhApplicationConfig.handleflag = handleflag;
 	}
 
