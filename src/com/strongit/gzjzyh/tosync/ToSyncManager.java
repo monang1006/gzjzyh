@@ -15,6 +15,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.strongit.gzjzyh.GzjzyhApplicationConfig;
 import com.strongit.gzjzyh.GzjzyhConstants;
 import com.strongit.gzjzyh.po.TGzjzyhApplication;
+import com.strongit.gzjzyh.po.TGzjzyhCase;
 import com.strongit.gzjzyh.po.TGzjzyhToSync;
 import com.strongit.gzjzyh.po.TGzjzyhUserExtension;
 import com.strongit.gzjzyh.util.FileKit;
@@ -136,7 +137,32 @@ public class ToSyncManager implements IToSyncManager {
 				TGzjzyhUserExtension ue = (TGzjzyhUserExtension) this.baseDao
 						.findUnique(hql,
 								new Object[] { applicationCopy.getAppUserid() });
-				BeanUtils.copyProperties(applicationCopy, ue);
+				applicationCopy.setAppMainId(ue.getUeMainId());
+				applicationCopy.setAppMainMobile(ue.getUeMainMobile());
+				applicationCopy.setAppMainName(ue.getUeMainName());
+				applicationCopy.setAppMainNo(ue.getUeMainNo());
+				applicationCopy.setAppMainId1(ue.getUeMainId1());
+				applicationCopy.setAppMainId2(ue.getUeMainId2());
+				applicationCopy.setAppMainNo1(ue.getUeMainNo1());
+				applicationCopy.setAppMainNo2(ue.getUeMainNo2());
+				
+				applicationCopy.setAppHelpId(ue.getUeHelpId());
+				applicationCopy.setAppHelpMobile(ue.getUeHelpMobile());
+				applicationCopy.setAppHelpName(ue.getUeHelpName());
+				applicationCopy.setAppHelpNo(ue.getUeHelpNo());
+				applicationCopy.setAppHelpId1(ue.getUeHelpId1());
+				applicationCopy.setAppHelpId2(ue.getUeHelpId2());
+				applicationCopy.setAppHelpNo1(ue.getUeHelpNo1());
+				applicationCopy.setAppHelpNo2(ue.getUeHelpNo2());
+				
+				TGzjzyhCase gzjzyhCase = (TGzjzyhCase)this.baseDao.getSession().load(TGzjzyhCase.class, applicationCopy.getCaseId());
+				applicationCopy.setAppCaseCode(gzjzyhCase.getCaseCode());
+				applicationCopy.setAppCaseConfirmTime(gzjzyhCase.getCaseConfirmTime());
+				applicationCopy.setAppCaseAddress(gzjzyhCase.getCaseAddress());
+				applicationCopy.setAppCaseBeginTime(gzjzyhCase.getCaseBeginTime());
+				applicationCopy.setAppCaseName(gzjzyhCase.getCaseName());
+				applicationCopy.setAppCaseOrg(gzjzyhCase.getCaseOrg());
+				
 				operationObj = applicationCopy;
 				
 				// 加载附件

@@ -47,7 +47,7 @@ public class TGzjzyhApplication implements Serializable {
 	@Column(name = "APP_FILENO")
 	private String appFileno;
 
-	@Temporal(TemporalType.TIME)
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "APP_DATE")
 	private Date appDate;
 
@@ -78,11 +78,11 @@ public class TGzjzyhApplication implements Serializable {
 	@Column(name = "APP_DATE_TYPE")
 	private String appDateType;
 
-	@Temporal(TemporalType.TIME)
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "APP_START_DATE")
 	private Date appStartDate;
 
-	@Temporal(TemporalType.TIME)
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "APP_END_DATE")
 	private Date appEndDate;
 
@@ -95,7 +95,7 @@ public class TGzjzyhApplication implements Serializable {
 	@Column(name = "APP_AUDIT_USER")
 	private String appAuditUser;
 
-	@Temporal(TemporalType.TIME)
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "APP_AUDIT_DATE")
 	private Date appAuditDate;
 
@@ -108,7 +108,7 @@ public class TGzjzyhApplication implements Serializable {
 	@Column(name = "APP_RECEIVER")
 	private String appReceiver;
 
-	@Temporal(TemporalType.TIME)
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "APP_RECEIVE_DATE")
 	private Date appReceiveDate;
 
@@ -121,7 +121,7 @@ public class TGzjzyhApplication implements Serializable {
 	@Column(name = "APP_RESPONSER")
 	private String appResponser;
 
-	@Temporal(TemporalType.TIME)
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "APP_RESPONSE_DATE")
 	private Date appResponseDate;
 
@@ -172,6 +172,26 @@ public class TGzjzyhApplication implements Serializable {
 
 	@Column(name = "APP_HELP_ID2")
 	private String appHelpId2;
+	
+	@Column(name = "APP_CASE_CODE")
+	private String appCaseCode;
+
+	@Column(name = "APP_CASE_ORG")
+	private String appCaseOrg;
+
+	@Column(name = "APP_CASE_NAME")
+	private String appCaseName;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "APP_CASE_CONFIRMTIME")
+	private Date appCaseConfirmTime;
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "APP_CASE_BEGINTIME")
+	private Date appCaseBeginTime;
+	
+	@Column(name = "APP_CASE_ADDRESS")
+	private String appCaseAddress;
 
 	public TGzjzyhApplication() {
 	}
@@ -542,6 +562,54 @@ public class TGzjzyhApplication implements Serializable {
 
 	public void setAppHelpId2(String appHelpId2) {
 		this.appHelpId2 = appHelpId2;
+	}
+
+	public String getAppCaseCode() {
+		return appCaseCode;
+	}
+
+	public void setAppCaseCode(String appCaseCode) {
+		this.appCaseCode = appCaseCode;
+	}
+
+	public String getAppCaseOrg() {
+		return appCaseOrg;
+	}
+
+	public void setAppCaseOrg(String appCaseOrg) {
+		this.appCaseOrg = appCaseOrg;
+	}
+
+	public String getAppCaseName() {
+		return appCaseName;
+	}
+
+	public void setAppCaseName(String appCaseName) {
+		this.appCaseName = appCaseName;
+	}
+
+	public Date getAppCaseConfirmTime() {
+		return appCaseConfirmTime;
+	}
+
+	public void setAppCaseConfirmTime(Date appCaseConfirmTime) {
+		this.appCaseConfirmTime = appCaseConfirmTime;
+	}
+
+	public Date getAppCaseBeginTime() {
+		return appCaseBeginTime;
+	}
+
+	public void setAppCaseBeginTime(Date appCaseBeginTime) {
+		this.appCaseBeginTime = appCaseBeginTime;
+	}
+
+	public String getAppCaseAddress() {
+		return appCaseAddress;
+	}
+
+	public void setAppCaseAddress(String appCaseAddress) {
+		this.appCaseAddress = appCaseAddress;
 	}
 
 }

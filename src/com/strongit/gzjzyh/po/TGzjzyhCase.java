@@ -41,11 +41,11 @@ public class TGzjzyhCase implements Serializable {
 	@Column(name = "CASE_NAME")
 	private String caseName;
 
-	@Temporal(TemporalType.TIME)
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "CASE_BEGINTIME")
 	private Date caseBeginTime;
 
-	@Temporal(TemporalType.TIME)
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "CASE_CONFIRMTIME")
 	private Date caseConfirmTime;
 

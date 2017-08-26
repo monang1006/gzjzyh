@@ -182,6 +182,13 @@ public class ToHandleManager implements IToHandleManager {
 		this.buildSqlColumnAndValue(columnSb, valueSb, values, "APP_HELP_ID1", jsonObj.getString("appHelpId1"));
 		this.buildSqlColumnAndValue(columnSb, valueSb, values, "APP_HELP_ID2", jsonObj.getString("appHelpId2"));
 		
+		this.buildSqlColumnAndValue(columnSb, valueSb, values, "APP_CASE_CODE", jsonObj.getString("appCaseCode"));
+		this.buildSqlColumnAndValue(columnSb, valueSb, values, "APP_CASE_ORG", jsonObj.getString("appCaseOrg"));
+		this.buildSqlColumnAndValue(columnSb, valueSb, values, "APP_CASE_NAME", jsonObj.getString("appCaseName"));
+		this.buildSqlColumnAndValue(columnSb, valueSb, values, "APP_CASE_CONFIRMTIME", jsonObj.getString("appCaseConfirmTime"));
+		this.buildSqlColumnAndValue(columnSb, valueSb, values, "APP_CASE_BEGINTIME", jsonObj.getString("appCaseBeginTime"));
+		this.buildSqlColumnAndValue(columnSb, valueSb, values, "APP_CASE_ADDRESS", jsonObj.getString("appCaseAddress"));
+		
 		sql.append("insert into T_GZJZYH_APPLICATION (")
 			.append(columnSb.toString().substring(1))
 			.append(") values (")
