@@ -46,6 +46,7 @@ public class PoliceRegisterAction extends BaseActionSupport<TGzjzyhUserExtension
 	private String ueId;
 	private String userOrgName;
 	private String domElementId;
+	private String imageUrl;
 	
 	private String ueMainNo1Tmp;
 	private String ueMainNo2Tmp;
@@ -187,6 +188,8 @@ public class PoliceRegisterAction extends BaseActionSupport<TGzjzyhUserExtension
 		//已审核的信息不允许再修改
 		if(GzjzyhConstants.STATUS_AUDIT_PASS.equals(this.model.getUeStatus())) {
 			return "view";
+		}else if(GzjzyhConstants.STATUS_AUDIT_BACK.equals(this.model.getUeStatus())) {
+			return "input2";
 		}else {
 			return INPUT;
 		}
@@ -393,5 +396,13 @@ public class PoliceRegisterAction extends BaseActionSupport<TGzjzyhUserExtension
 
 	public void setDomElementId(String domElementId) {
 		this.domElementId = domElementId;
+	}
+
+	public String getImageUrl() {
+		return imageUrl;
+	}
+
+	public void setImageUrl(String imageUrl) {
+		this.imageUrl = imageUrl;
 	}
 }

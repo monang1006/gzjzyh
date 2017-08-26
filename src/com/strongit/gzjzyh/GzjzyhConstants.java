@@ -11,6 +11,10 @@ public class GzjzyhConstants {
 	public final static String POLICE_ROLE = "003";
 	//银行账号所属角色编码
 	public final static String BANK_ROLE = "004";
+	//用户管理员角色编码
+	public final static String USER_MANAGER_ROLE = "001";
+	//文书管理员角色编码
+	public final static String APPLICATION_MANAGER_ROLE = "002";
 	
 	//新增银行账号
 	public final static String OPERATION_TYPE_ADD_BANKACCOUNT = "0";
@@ -40,7 +44,7 @@ public class GzjzyhConstants {
 	public static final String GZJZYH_CONTENT_TYPE = "application/gzjzyh-data";
 	
 	//申请拒签
-	public final static String APP_STATUS_REFUSE = "";
+	public final static String APP_STATUS_REFUSE = "6";
 	//申请反馈
-	public final static String APP_STATUS_RETURN = "";
+	public final static String APP_STATUS_RETURN = "5";
 }

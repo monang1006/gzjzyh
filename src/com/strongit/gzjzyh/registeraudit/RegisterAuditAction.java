@@ -1,7 +1,9 @@
 package com.strongit.gzjzyh.registeraudit;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -16,14 +18,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.strongit.gzjzyh.GzjzyhConstants;
 import com.strongit.gzjzyh.po.TGzjzyhUserExtension;
 import com.strongit.gzjzyh.policeregister.IPoliceRegisterManager;
+import com.strongit.oa.bo.ToaAffiche;
 import com.strongit.oa.bo.ToaPersonalInfo;
 import com.strongit.oa.common.user.IUserService;
 import com.strongit.oa.common.user.model.User;
 import com.strongit.oa.common.user.util.Const;
 import com.strongit.oa.common.user.util.PropertiesUtil;
+import com.strongit.oa.desktop.DesktopSectionManager;
 import com.strongit.oa.im.cache.Cache;
 import com.strongit.oa.myinfo.MyInfoManager;
 import com.strongit.oa.mylog.MyLogManager;
+import com.strongit.oa.util.ListUtils;
 import com.strongit.platform.webcomponent.tree.JsonUtil;
 import com.strongit.platform.webcomponent.tree.TreeNode;
 import com.strongit.tag.web.grid.stronger.FlexTableTag;
@@ -61,6 +66,9 @@ public class RegisterAuditAction extends BaseActionSupport<TGzjzyhUserExtension>
 	private String ueHelpNo2Tmp;
 	private String ueHelpId1Tmp;
 	private String ueHelpId2Tmp;
+	
+	private String isDesktop;
+	private String blockId;
 
 	private Map statusMap = new HashMap();
 
@@ -74,6 +82,9 @@ public class RegisterAuditAction extends BaseActionSupport<TGzjzyhUserExtension>
 
 	@Autowired
 	IUserService userService;
+	
+	@Autowired
+	DesktopSectionManager sectionManager;
 	
 	@Autowired
 	IPoliceRegisterManager registerManager;
@@ -270,6 +281,124 @@ public class RegisterAuditAction extends BaseActionSupport<TGzjzyhUserExtension>
 		return "checkmore";
 	}
 	
+	public String showDesktop() throws Exception {
+		StringBuffer innerHtml = new StringBuffer();
+		
+		String blockid = getRequest().getParameter("blockid");//获取blockid
+		String subLength = getRequest().getParameter("subLength");
+		String showNum = getRequest().getParameter("showNum"); 
+		String showCreator = null;
+		String showDate = getRequest().getParameter("showDate");
+		String sectionFontSize = getRequest().getParameter("sectionFontSize");
+		if(blockid != null){
+			Map<String,String> map = sectionManager.getParam(blockid);//通过blockid获取映射对象
+			showNum = map.get("showNum");//显示条数
+			subLength = map.get("subLength");//主题长度
+			showCreator = map.get("showCreator");//是否显示作者
+			showDate = map.get("showDate");//是否显示日期
+			sectionFontSize = map.get("sectionFontSize");//是否显示字体大小
+		}
+		if(sectionFontSize == null || "".equals("sectionFontSize") || "null".equals("sectionFontSize") ){
+			sectionFontSize = "14";
+		}
+		int num = 0,length = 0;
+		if(showNum!=null&&!"".equals(showNum)&&!"null".equals(showNum)){
+			num = Integer.parseInt(showNum);
+		}
+		if(subLength!=null&&!"".equals(subLength)&&!"null".equals(subLength)){
+			length = Integer.parseInt(subLength);
+		}
+		if (sectionFontSize == null || "".equals(sectionFontSize)
+				|| "null".equals(sectionFontSize)) {
+			sectionFontSize = "14";
+		}
+		//链接
+		StringBuffer link = new StringBuffer();
+		link.append("javascript:window.parent.refreshWorkByTitle('").append(getRequest().getContextPath())
+			.append("/registeraudit/registerAudit.action")
+			.append("', '账号审核'")
+			.append(");");
+		
+		List<TGzjzyhUserExtension> list = null;
+		Page<TGzjzyhUserExtension> desktopPage = new Page<TGzjzyhUserExtension>(num, false);
+		desktopPage = this.registerManager.queryApplyPage(desktopPage, null, null, GzjzyhConstants.STATUS_WAIT_AUDIT, null, null);
+		list = desktopPage.getResult();
+		
+		if(list!=null){
+			for(int i=0;i<num&&i<list.size();i++){//获取在条数范围内的列表
+				TGzjzyhUserExtension notify = list.get(i);
+				//标题连接
+				StringBuffer titleLink = new StringBuffer();
+				titleLink.append("javascript:window.showModalDialog('")
+					.append(getRequest().getContextPath())
+					.append("/registeraudit/registerAudit!input.action?ueId=").append(notify.getUeId())
+					.append("&blockId=").append(blockid).append("&isDesktop=1").append("'")
+					.append(",window,'help:no;status:no;scroll:no;dialogWidth:1500px; dialogHeight:800px'")
+					.append(")");
+				
+				SimpleDateFormat st = new SimpleDateFormat("yyyy-MM-dd");
+				innerHtml.append("<table width=\"100%\" class=\"linkdiv\" title=\"\">");
+				innerHtml.append("<tr>");
+				innerHtml.append("<td>");
+				innerHtml.append("	<IMG SRC=\"").append(getRequest().getContextPath()).append("/oa/image/desktop/littlegif/news_bullet.gif\" WIDTH=\"15\" HEIGHT=\"10\" BORDER=\"0\" ALT=\"\">");
+				String title = notify.getTuumsBaseUser().getUserLoginname() + "（" + notify.getTuumsBaseUser().getUserName() + "）";
+				if(title==null){
+					title="";
+				}
+				
+				StringBuilder tip = new StringBuilder();
+				tip.append(title);
+				
+				if(title.length()>length)//如果显示的内容长度大于设置的主题长度，则过滤该长度
+					title = title.substring(0,length)+"...";
+				innerHtml.append("	<a href=\"#\" onclick=\"").append(titleLink.toString()).append("\">")
+							.append("<span style=\"font-size: "+sectionFontSize+"px;\" title=\"").append(tip).append("\">").append(title).append("</span></a>");
+				innerHtml.append("</td>");
+				if("1".equals(showCreator)){//如果设置为显示作者，则显示作者信息
+					innerHtml.append("<td width=\"115px\">");
+					if(notify.getName() == null){
+						innerHtml.append("");
+					}else{
+						innerHtml.append("<span class =\"linkgray\">").append(notify.getTuumsBaseUser().getUserName()).append("</span>&nbsp;&nbsp;&nbsp;");
+					}
+					innerHtml.append("</td>");
+				}
+				if("1".equals(showDate)){//如果设置为显示日期，则显示日期信息
+					innerHtml.append("<td width=\"100px\">");
+					innerHtml.append("<span class =\"linkgray10\">").append(st.format(notify.getUeDate())).append("</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
+					innerHtml.append("</td>");
+				}
+				innerHtml.append("</tr>");
+				innerHtml.append("</table>");
+			}
+		}
+		if(list==null){
+			for (int i = 0; i < num; i++) { // 获取在条数范围内的列表
+				innerHtml.append("<table width=\"100%\" class=\"linkdiv\" title=\"\">");
+				innerHtml.append("<tr>");
+				innerHtml.append("<td>");
+				innerHtml.append("	&nbsp;");
+				innerHtml.append("</td>");
+				innerHtml.append("</tr>");
+				innerHtml.append("	</table>");
+				}
+		}
+		if(list!=null&&list.size()<num){
+			for (int i = 0; i < num-list.size() ; i++) { // 获取在条数范围内的列表
+			innerHtml.append("<table width=\"100%\" class=\"linkdiv\" title=\"\">");
+			innerHtml.append("<tr>");
+			innerHtml.append("<td>");
+			innerHtml.append("	&nbsp;");
+			innerHtml.append("</td>");
+			innerHtml.append("</tr>");
+			innerHtml.append("	</table>");
+			}
+		}
+		innerHtml.append("<div align=\"right\" style=\"padding:2px；font-size:12px;\"><a href=\"#\" onclick=\"").append(link.toString()).append("\"> ")
+				 .append("<IMG SRC=\"").append(getRequest().getContextPath()).append("/oa/image/more.gif\" BORDER=\"0\" /></a></div>");
+		return renderHtml(innerHtml.toString());//用renderHtml将设置好的html代码返回桌面显示
+	}
+	
 	public String imageUpload() throws Exception {
 		return "upload";
 	}
@@ -417,5 +546,21 @@ public class RegisterAuditAction extends BaseActionSupport<TGzjzyhUserExtension>
 
 	public void setUserOrgName(String userOrgName) {
 		this.userOrgName = userOrgName;
+	}
+
+	public String getIsDesktop() {
+		return isDesktop;
+	}
+
+	public void setIsDesktop(String isDesktop) {
+		this.isDesktop = isDesktop;
+	}
+
+	public String getBlockId() {
+		return blockId;
+	}
+
+	public void setBlockId(String blockId) {
+		this.blockId = blockId;
 	}
 }

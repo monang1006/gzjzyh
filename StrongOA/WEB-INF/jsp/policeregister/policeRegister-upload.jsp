@@ -74,6 +74,11 @@
 				alert("上传图片失败。");
 			}
 		});
+		
+		if("${imageUrl}" != "/images/upload/defaultUpload.jpg"){
+			$("#imgField").attr("src", "<%=path%>${imageUrl}");
+			srcImagePath = "${imageUrl}";
+		}
 	});
 	
 	function cutImage(){
@@ -83,8 +88,8 @@
 		}
 		var imageX = $("#imageX").val();
 		if(imageX == null || imageX == ""){
-			//window.returnValue = srcImagePath;
-			window.opener.setImageUpload("${domElementId}", srcImagePath);
+			window.returnValue = srcImagePath;
+			//window.opener.setImageUpload("${domElementId}", srcImagePath);
         	window.close();
 		}else{
 			imageX = parseInt(imageX);
@@ -98,8 +103,8 @@
 	            data: {srcImagePath:srcImagePath, selectX:imageX, selectY:imageY, selectW:imageW, selectH:imageH},
 	            dataType: "text",
 	            success: function(data){
-	            	//window.returnValue = data;
-	            	window.opener.setImageUpload("${domElementId}", data);
+	            	window.returnValue = data;
+	            	//window.opener.setImageUpload("${domElementId}", data);
 	            	window.close();
 	            },
 	            error:function(){
@@ -169,7 +174,7 @@
 						</tr>
 						<tr>
 							<td align="center">
-								<div style="width:750px; height:450px; overflow:auto;"><img id="imgField" name="imgField"></img></div>
+								<div style="width:1150px; height:650px; overflow:auto;"><img id="imgField" name="imgField"></img></div>
 							</td>
 						</tr>
 					</table>

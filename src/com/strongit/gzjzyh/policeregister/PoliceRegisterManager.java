@@ -87,6 +87,16 @@ public class PoliceRegisterManager implements IPoliceRegisterManager {
 		model.setUeDate(new Date());
 		model.setUeStatus(GzjzyhConstants.STATUS_WAIT_AUDIT);
 		this.baseDao.save(model);
+		
+		//发送短信
+		String smsContent = "您有一条警官账号注册信息需要审核，请登录系统处理。";
+		TUumsBaseRole userManagerRole = this.roleManager.getRoleInfoByRoleCode(GzjzyhConstants.USER_MANAGER_ROLE);
+		List<TUumsBaseUser> userManagerLst = this.userService.getRoleUsersByRoleId(userManagerRole.getRoleId(), Const.IS_YES, Const.IS_NO);
+		if(userManagerLst != null && !userManagerLst.isEmpty()){
+			for(TUumsBaseUser userManager : userManagerLst){
+				this.commonSerivce.sendSms(userManager.getUserId(), smsContent);
+			}
+		}
 	}
 	
 	@Transactional(readOnly = false)
@@ -98,6 +108,7 @@ public class PoliceRegisterManager implements IPoliceRegisterManager {
 			TUumsBaseRole policeRole = this.roleManager.getRoleInfoByRoleCode(GzjzyhConstants.POLICE_ROLE);
 			this.roleManager.saveRoleUsers(policeRole.getRoleId(), model.getTuumsBaseUser().getUserId());
 		}
+		//发送短信
 		this.commonSerivce.sendSms(model.getTuumsBaseUser().getUserId(), content);
 	}
 

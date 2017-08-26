@@ -302,6 +302,17 @@
   		<servlet-name>uploadServlet</servlet-name>
     	<url-pattern>/servlet/upload</url-pattern>
   	</servlet-mapping>
+  	
+  	<!-- 数据同步 -->
+	<servlet>
+		<servlet-name>receiveServlet</servlet-name>
+		<servlet-class>com.strongit.gzjzyh.schedule.ReceiveHttpServlet</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+  		<servlet-name>receiveServlet</servlet-name>
+    	<url-pattern>/servlet/receive</url-pattern>
+  	</servlet-mapping>
 	
 	<!-- 润乾报表设置 -->
 	<!-- 

@@ -78,7 +78,7 @@
 			<value>1</value>
 		</property>
 		<property name="syncUrl">
-			<value>0</value>
+			<value>http://ip:port/contextName/servlet/receive</value>
 		</property>
 		<property name="syncflag">
 			<value>0</value>
