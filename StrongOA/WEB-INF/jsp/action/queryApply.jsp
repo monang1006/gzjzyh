@@ -378,6 +378,11 @@ function view(){
 			window,"dialogWidth:" + width + "pt;dialogHeight:" + height + "pt;"+"status:no;help:no;scroll:no;");
 }
 
+function changeCaseF(caseId,caseName){
+	document.getElementById("caseCode").value=caseId;
+	document.getElementById("caseName").value=caseName;
+}
+
 function submitForm() {
 	document.getElementById("myTableForm").submit();
 }

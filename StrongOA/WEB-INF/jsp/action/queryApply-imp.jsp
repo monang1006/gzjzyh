@@ -1,103 +1,115 @@
-<%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%@ taglib uri="/tags/web-flex" prefix="webflex"%>
-<%@ taglib uri="/struts-tags" prefix="s"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@ include file="/common/include/rootPath.jsp"%>
 <%@ taglib uri="/tags/web-newdate" prefix="strong"%>
-<%@include file="/common/include/rootPath.jsp"%>
-
-<HTML>
-<HEAD>
-<TITLE>账户导入</TITLE>
+<%@ taglib prefix="s" uri="/struts-tags"%>
+<html>
+<head>
+<title>账号注册</title>
 <%@include file="/common/include/meta.jsp"%>
+<!--  引用公共样式文件,建议所有样式都以文件方式定义在jsp文件外部,通常定义在WebRoot目录下的CSS文件夹下-->
+<LINK href="<%=frameroot%>/css/properties_windows_special.css"
+	type=text/css rel=stylesheet>
 <LINK href="<%=frameroot%>/css/properties_windows_add.css" type=text/css
 	rel=stylesheet>
-<script type="text/javascript"
-	src="<%=root%>/common/js/jquery/jquery-1.2.6.js"></script>
 <link href="<%=frameroot%>/css/strongitmenu.css" type="text/css"
 	rel="stylesheet">
-<!--右键菜单样式 -->
-<LINK href="<%=frameroot%>/css/properties_windows_list.css"
-	type=text/css rel=stylesheet>
-<script language="javascript"
-	src="<%=path%>/common/js/jquery/jquery-1.2.6.js"></script>
-<!--<script language="javascript"
-			src="<%=path%>/common/js/common/search.js"></script>-->
 <LINK type=text/css rel=stylesheet href="<%=frameroot%>/css/search.css">
 <script language='javascript'
 	src='<%=path%>/common/js/grid/ChangeWidthTable.js'></script>
 <SCRIPT language="javascript" src="<%=path%>/common/js/menu/menu.js"></SCRIPT>
 <script language="javascript"
 	src="<%=path%>/common/js/common/windowsadaptive.js"></script>
-<!--右键菜单脚本 -->
-<script language="JavaScript"
-	src="<%=path%>/common/js/commontab/service.js"></script>
-<script language="JavaScript"
-	src="<%=path%>/common/js/commontab/workservice.js"></script>
+
+<!--  引用公共及自定义js文件,建议js都以文件方式定义在jsp文件外部,通常定义在WebRoot目录下的js文件夹下-->
+<script src="<%=path%>/common/js/jquery/jquery-1.2.6.js"
+	type="text/javascript"></script>
+<script src="<%=path%>/common/js/validate/jquery.validate.js"
+	type="text/javascript"></script>
+<script src="<%=path%>/common/js/validate/formvalidate.js"
+	type="text/javascript"></script>
+<script src="<%=path%>/common/js/upload/jquery.MultiFile.js"
+	type="text/javascript"></script>
+<script src="<%=path%>/common/js/upload/jquery.blockUI.js"
+	language="javascript"></script>
 <script src="<%=path%>/common/js/common/common.js"
 	type="text/javascript"></script>
+<script type="text/javascript"
+	src="<%=path%>/common/js/newdate/WdatePicker.js"></script>
+<script type="text/javascript">
 
-</HEAD>
-<BODY class=contentbodymargin oncontextmenu="return false;">
-	<script language="javascript" type="text/javascript"
-		src="<%=path%>/common/js/newdate/WdatePicker.js"></script>
+	
+function formsubmit(){
+	document.getElementById("applySave").submit();
+}
+
+
+</script>
+</head>
+<base target="_self" />
+<body class=contentbodymargin oncontextmenu="return false;">
 	<DIV id=contentborder align=center>
-		<s:form theme="simple" id="myTableForm" action="/action/queryApply!casePage.action">
-			<table width="100%" border="0" cellspacing="0" cellpadding="0"
-				style="vertical-align: top;">
-				<tr>
-					<td height="100%">
-						<table width="100%" border="0" cellspacing="0" cellpadding="0">
-							<tr>
-								<td colspan="3" class="table_headtd">
-									<table border="0" cellspacing="0" cellpadding="00">
-										<tr>
-											<td class="table_headtd_img"><img
-												src="<%=frameroot%>/images/ico/ico.gif">&nbsp;</td>
-											<td align="left"><strong>账户模板</strong></td>
+		<s:form id="applySave" target="hiddenFrame" enctype="multipart/form-data"
+						action="/action/queryApply!upload.action"  theme="simple" >
+		
+			<input type="hidden" id="attrId" name="attrId" value="${attrId}"/>
+		<table width="100%" border="0" cellspacing="0" cellpadding="0"
+			style="vertical-align: top;">
+			<tr>
+				<td height="100%">
+					<table width="100%" border="0" cellspacing="0" cellpadding="0">
+						<tr>
+							<td height="40" class="table_headtd">
+								<table width="100%" border="0" cellspacing="0" cellpadding="00">
+									<tr>
+										<td width="30">&nbsp;</td>
+										<td class="table_headtd_img"><img
+											src="<%=frameroot%>/images/ico/ico.gif">&nbsp;</td>
+										<td align="left" width="140"><strong>文件导入</strong></td>
+										<td align="right">
+											<table border="0" align="right" cellpadding="00"
+												cellspacing="0">
+												<tr>
+													<td width="7"><img
+														src="<%=frameroot%>/images/ch_h_l.gif" /></td>
+													<td class="Operation_input" onclick="formsubmit();">&nbsp;保&nbsp;存&nbsp;</td>
+													<td width="7"><img
+														src="<%=frameroot%>/images/ch_h_r.gif" /></td>
+													<td width="5"></td>
+													<td width="8"><img
+														src="<%=frameroot%>/images/ch_z_l.gif" /></td>
+													<td class="Operation_input1" onclick="window.close()()">&nbsp;关&nbsp;闭&nbsp;</td>
+													<td width="7"><img
+														src="<%=frameroot%>/images/ch_z_r.gif" /></td>
+													<td width="6"></td>
+												</tr>
+											</table>
+										</td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+					</table> 
+					
+					<table width="100%" height="10%" border="0" cellpadding="0"
+						cellspacing="0" align="center" class="table1">
+						<tr>
+							<td height="21" class="biao_bg1_gz" align="right">
+								<span class="wz"><font color="red">*</font>&nbsp;文件导入：</span>
+							</td>
+							<td class="td1" align="left" width="40%"><input id="path" name="uploadFile" type="file"></td>
+						</tr>
+					</table>
+					<table id="annex" width="90%" height="10%" border="0"
+						cellpadding="0" cellspacing="1" align="center" class="table1">
+					</table>
+				</td>
+			</tr>
 
-										</tr>
-									</table>
-								</td>
-							</tr>
-							<tr>
-								<td>
-
-									<input id="path" name="upload" type="file" style="width: 50%;"/>
-								</td>
-							</tr>
-							
-							<tr>
-								<td>
-									<a href="<%=path%>/action/queryApply!download.action" style="color:red;text-decoration:underline;"  >下载账户模板</a>
-								</td>	
-							</tr>
-							
-							<tr>
-								<td colspan="3" class="table_headtd">
-									<table border="0" align="center" cellpadding="00"
-										cellspacing="0">
-										<tr>
-											<td width="7"><img
-												src="<%=frameroot%>/images/ch_h_l.gif" /></td>
-											<td class="Operation_input" onclick="changeCase();">&nbsp;确&nbsp;定&nbsp;</td>
-											<td width="7"><img
-												src="<%=frameroot%>/images/ch_h_r.gif" /></td>
-											<td width="5"></td>
-											<td width="8"><img
-												src="<%=frameroot%>/images/ch_z_l.gif" /></td>
-											<td class="Operation_input1" onclick="window.close();">&nbsp;取&nbsp;消&nbsp;</td>
-											<td width="7"><img
-												src="<%=frameroot%>/images/ch_z_r.gif" /></td>
-
-										</tr>
-									</table>
-								</td>
-							</tr>
-						</table> </s:form>
-						</DIV> <script language="javascript">
-							function downTemplate() {
-								var url = "<%=path%>/action/queryApply!download.action";
-								location.href=url;
-							}
-						</script>
-</BODY>
-</HTML>
+			
+		</table>
+		</s:form>
+	</DIV>
+</body>
+<iframe id="hiddenFrame" name="hiddenFrame" style="width:0px;height:0px;display:none;"></iframe>
+</html>
