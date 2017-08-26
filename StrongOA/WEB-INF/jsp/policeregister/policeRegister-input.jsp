@@ -605,37 +605,37 @@ function checkMobile(mobile){
 								<table style="width:100%;">
 									<tr>
 										<td align="center">
-											<img id="ueMainNo1Tmp" onclick="openImageUpload('ueMainNo1', '主办警官警官证（正）', '${ueMainNo1Tmp }')" src="<%=path %>${ueMainNo1Tmp }" style="width:300px;height:200px;cursor:pointer;">
+											<img id="ueMainNo1Tmp" onclick="openImageUpload('ueMainNo1', '主办警官警官证（正）', '${ueMainNo1Tmp }')" src="<%=path %>${ueMainNo1Tmp }" style="width:200px;height:200px;cursor:pointer;">
 											<div style="padding-top:10px; padding-bottom:20px;"><a href="javascript:void(0);" onclick="openImageUpload('ueMainNo1', '主办警官警官证（正）', '${ueMainNo1Tmp }')">警官证（正）</a></div>
 										</td>
 										<td align="center">
-											<img id="ueMainNo2Tmp" onclick="openImageUpload('ueMainNo2', '主办警官警官证（反）', '${ueMainNo2Tmp }')" src="<%=path %>${ueMainNo2Tmp }" style="width:300px;height:200px;cursor:pointer;">
+											<img id="ueMainNo2Tmp" onclick="openImageUpload('ueMainNo2', '主办警官警官证（反）', '${ueMainNo2Tmp }')" src="<%=path %>${ueMainNo2Tmp }" style="width:200px;height:200px;cursor:pointer;">
 											<div style="padding-top:10px; padding-bottom:20px;"><a href="javascript:void(0);" onclick="openImageUpload('ueMainNo2', '主办警官警官证（反）', '${ueMainNo2Tmp }')">警官证（反）</a></div>
 										</td>
 										<td align="center">
-											<img id="ueHelpNo1Tmp" onclick="openImageUpload('ueHelpNo1', '协办警官警官证（正）', '${ueHelpNo1Tmp }')" src="<%=path %>${ueHelpNo1Tmp }" style="width:300px;height:200px;cursor:pointer;">
+											<img id="ueHelpNo1Tmp" onclick="openImageUpload('ueHelpNo1', '协办警官警官证（正）', '${ueHelpNo1Tmp }')" src="<%=path %>${ueHelpNo1Tmp }" style="width:200px;height:200px;cursor:pointer;">
 											<div style="padding-top:10px; padding-bottom:20px;"><a href="javascript:void(0);" onclick="openImageUpload('ueHelpNo1', '协办警官警官证（正）', '${ueHelpNo1Tmp }')">警官证（正）</a></div>
 										</td>
 										<td align="center">
-											<img id="ueHelpNo2Tmp" onclick="openImageUpload('ueHelpNo2', '协办警官警官证（反）', '${ueHelpNo2Tmp }')" src="<%=path %>${ueHelpNo2Tmp }" style="width:300px;height:200px;cursor:pointer;">
+											<img id="ueHelpNo2Tmp" onclick="openImageUpload('ueHelpNo2', '协办警官警官证（反）', '${ueHelpNo2Tmp }')" src="<%=path %>${ueHelpNo2Tmp }" style="width:200px;height:200px;cursor:pointer;">
 											<div style="padding-top:10px; padding-bottom:20px;"><a href="javascript:void(0);" onclick="openImageUpload('ueHelpNo2', '协办警官警官证（反）', '${ueHelpNo2Tmp }')">警官证（反）</a></div>
 										</td>
 									</tr>
 									<tr>
 										<td align="center">
-											<img id="ueMainId1Tmp" onclick="openImageUpload('ueMainId1', '主办警官身份证（正）', '${ueMainId1Tmp }')" src="<%=path %>${ueMainId1Tmp }" style="width:300px;height:200px;cursor:pointer;">
+											<img id="ueMainId1Tmp" onclick="openImageUpload('ueMainId1', '主办警官身份证（正）', '${ueMainId1Tmp }')" src="<%=path %>${ueMainId1Tmp }" style="width:200px;height:200px;cursor:pointer;">
 											<div style="padding-top:10px; padding-bottom:20px;"><a href="javascript:void(0);" onclick="openImageUpload('ueMainId1', '主办警官身份证（正）', '${ueMainId1Tmp }')">身份证（正）</a></div>
 										</td>
 										<td align="center">
-											<img id="ueMainId2Tmp" onclick="openImageUpload('ueMainId2', '主办警官身份证（反）', '${ueMainId2Tmp }')" src="<%=path %>${ueMainId2Tmp }" style="width:300px;height:200px;cursor:pointer;">
+											<img id="ueMainId2Tmp" onclick="openImageUpload('ueMainId2', '主办警官身份证（反）', '${ueMainId2Tmp }')" src="<%=path %>${ueMainId2Tmp }" style="width:200px;height:200px;cursor:pointer;">
 											<div style="padding-top:10px; padding-bottom:20px;"><a href="javascript:void(0);" onclick="openImageUpload('ueMainId2', '主办警官身份证（反）', '${ueMainId2Tmp }')">身份证（反）</a></div>
 										</td>
 										<td align="center">
-											<img id="ueHelpId1Tmp" onclick="openImageUpload('ueHelpId1', '协办警官身份证（正）', '${ueHelpId1Tmp }')" src="<%=path %>${ueHelpId1Tmp }" style="width:300px;height:200px;cursor:pointer;">
+											<img id="ueHelpId1Tmp" onclick="openImageUpload('ueHelpId1', '协办警官身份证（正）', '${ueHelpId1Tmp }')" src="<%=path %>${ueHelpId1Tmp }" style="width:200px;height:200px;cursor:pointer;">
 											<div style="padding-top:10px; padding-bottom:20px;"><a href="javascript:void(0);" onclick="openImageUpload('ueHelpId1', '协办警官身份证（正）', '${ueHelpId1Tmp }')">身份证（正）</a></div>
 										</td>
 										<td align="center">
-											<img id="ueHelpId2Tmp" onclick="openImageUpload('ueHelpId2', '协办警官身份证（反）', '${ueHelpId2Tmp }')" src="<%=path %>${ueHelpId2Tmp }" style="width:300px;height:200px;cursor:pointer;">
+											<img id="ueHelpId2Tmp" onclick="openImageUpload('ueHelpId2', '协办警官身份证（反）', '${ueHelpId2Tmp }')" src="<%=path %>${ueHelpId2Tmp }" style="width:200px;height:200px;cursor:pointer;">
 											<div style="padding-top:10px; padding-bottom:20px;"><a href="javascript:void(0);" onclick="openImageUpload('ueHelpId2', '协办警官身份证（反）', '${ueHelpId2Tmp }')">身份证（反）</a></div>
 										</td>
 									</tr>

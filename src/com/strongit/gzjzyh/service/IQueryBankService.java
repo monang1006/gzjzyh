@@ -17,38 +17,57 @@ import com.strongmvc.orm.hibernate.Page;
  * @CreateDate: 2017年8月17日
  * @version: V2.0
  */
-public interface IQueryApplyService {
+public interface IQueryBankService {
 
-	/**
+	/**未签收列表
 	 * @param page
 	 * @param accoutType
 	 * @param appFileno
 	 * @param appBankuser
 	 * @param appStartDate
 	 * @param appEndDate
-	 * @param caseCode
 	 * @return
 	 * @throws ServiceException
 	 * @throws SystemException
 	 * @throws DAOException
 	 */
-	public Page<TGzjzyhApplication> findQueryApplyPage(
+	public Page<TGzjzyhApplication> findQueryBankNotSignPage(
 			Page<TGzjzyhApplication> page, String accoutType, String appFileno,
-			String appBankuser, Date appStartDate, Date appEndDate,
-			String caseCode)
+			String appBankuser, Date appStartDate, Date appEndDate)
 			throws ServiceException, SystemException, DAOException;
 
-	/**
+	/**已签收列表
 	 * @param page
-	 * @param caseCode
-	 * @param caseName
+	 * @param accoutType
+	 * @param appFileno
+	 * @param appBankuser
+	 * @param appStartDate
+	 * @param appEndDate
 	 * @return
 	 * @throws ServiceException
 	 * @throws SystemException
 	 * @throws DAOException
 	 */
-	public Page<TGzjzyhCase> findCasePage(Page<TGzjzyhCase> page,
-			String caseCode, String caseName)
+	public Page<TGzjzyhApplication> findQueryBankSignPage(
+			Page<TGzjzyhApplication> page, String accoutType, String appFileno,
+			String appBankuser, Date appStartDate, Date appEndDate)
+			throws ServiceException, SystemException, DAOException;
+
+	/**已处理列表
+	 * @param page
+	 * @param accoutType
+	 * @param appFileno
+	 * @param appBankuser
+	 * @param appStartDate
+	 * @param appEndDate
+	 * @return
+	 * @throws ServiceException
+	 * @throws SystemException
+	 * @throws DAOException
+	 */
+	public Page<TGzjzyhApplication> findQueryBankProcessedPage(
+			Page<TGzjzyhApplication> page, String accoutType, String appFileno,
+			String appBankuser, Date appStartDate, Date appEndDate)
 			throws ServiceException, SystemException, DAOException;
 
 	/**
@@ -57,25 +76,7 @@ public interface IQueryApplyService {
 	 * @throws SystemException
 	 * @throws DAOException
 	 */
-	public void save(TGzjzyhApplyVo vo)
-			throws ServiceException, SystemException, DAOException;
-
-	/**
-	 * @param vo
-	 * @throws ServiceException
-	 * @throws SystemException
-	 * @throws DAOException
-	 */
-	public void update(TGzjzyhApplyVo vo)
-			throws ServiceException, SystemException, DAOException;
-
-	/**
-	 * @param ids
-	 * @throws ServiceException
-	 * @throws SystemException
-	 * @throws DAOException
-	 */
-	public void delete(String ids)
+	public void doSign(TGzjzyhApplyVo vo)
 			throws ServiceException, SystemException, DAOException;
 
 	/**
@@ -88,57 +89,20 @@ public interface IQueryApplyService {
 			throws ServiceException, SystemException, DAOException;
 
 	/**
-	 * @param userId
+	 * @param vo
 	 * @throws ServiceException
 	 * @throws SystemException
 	 * @throws DAOException
 	 */
-	public TGzjzyhApplyVo getExtensionByUserId(String userId)
-			throws ServiceException, SystemException, DAOException;
-
-	/**批量提交
-	 * @param ids
-	 * @throws ServiceException
-	 * @throws SystemException
-	 * @throws DAOException
-	 */
-	public void goCommits(String ids)
-			throws ServiceException, SystemException, DAOException;
-
-	/**撤消
-	 * @param ids
-	 * @throws ServiceException
-	 * @throws SystemException
-	 * @throws DAOException
-	 */
-	public void goBack(String ids)
-			throws ServiceException, SystemException, DAOException;
-
-	/**保存并提交
-	 * @param ids
-	 * @throws ServiceException
-	 * @throws SystemException
-	 * @throws DAOException
-	 */
-	public void saveOrCommit(TGzjzyhApplyVo vo)
-			throws ServiceException, SystemException, DAOException;
-
-	/**修改并提交
-	 * @param ids
-	 * @throws ServiceException
-	 * @throws SystemException
-	 * @throws DAOException
-	 */
-	public void updateOrCommit(TGzjzyhApplyVo vo)
+	public void back(TGzjzyhApplyVo vo)
 			throws ServiceException, SystemException, DAOException;
 
 	/**
-	 * @param appId
+	 * @param vo
 	 * @throws ServiceException
 	 * @throws SystemException
 	 * @throws DAOException
 	 */
-	public TGzjzyhApplyVo getViewById(String appId)
+	public void process(TGzjzyhApplyVo vo)
 			throws ServiceException, SystemException, DAOException;
-
 }

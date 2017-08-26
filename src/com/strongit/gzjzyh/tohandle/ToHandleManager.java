@@ -216,7 +216,7 @@ public class ToHandleManager implements IToHandleManager {
 			application.setAppStatus(GzjzyhConstants.APP_STATUS_REFUSE);
 			application.setAppReceiverId(jsonObj.getString("appReceiverId"));
 			application.setAppReceiver(jsonObj.getString("appReceiver"));
-			application.setAppReceivedate(jsonObj.getDate("appReceivedate"));
+			application.setAppReceiveDate(jsonObj.getDate("appReceiveDate"));
 			application.setAppNgReason(jsonObj.getString("appNgReason"));
 			
 			this.baseDao.save(application);

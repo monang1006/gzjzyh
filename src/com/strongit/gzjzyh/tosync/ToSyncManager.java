@@ -236,7 +236,7 @@ public class ToSyncManager implements IToSyncManager {
 			json.put("appId", application.getAppId());
 			json.put("appReceiverId", application.getAppReceiverId());
 			json.put("appReceiver", application.getAppReceiver());
-			json.put("appReceivedate", application.getAppReceivedate());
+			json.put("appReceiveDate", application.getAppReceiveDate());
 			json.put("appNgReason", application.getAppNgReason());
 		} else if (GzjzyhConstants.OPERATION_TYPE_RETURN_APP.equals(operation)) {
 			json.put("appId", application.getAppId());

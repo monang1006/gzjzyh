@@ -3,10 +3,14 @@ package com.strongit.gzjzyh.po;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -91,6 +95,10 @@ public class TGzjzyhApplication implements Serializable {
 	@Column(name = "APP_AUDIT_USER")
 	private String appAuditUser;
 
+	@Temporal(TemporalType.TIME)
+	@Column(name = "APP_AUDIT_DATE")
+	private Date appAuditDate;
+
 	@Column(name = "APP_NG_REASON")
 	private String appNgReason;
 
@@ -100,8 +108,9 @@ public class TGzjzyhApplication implements Serializable {
 	@Column(name = "APP_RECEIVER")
 	private String appReceiver;
 
+	@Temporal(TemporalType.TIME)
 	@Column(name = "APP_RECEIVE_DATE")
-	private String appReceivedate;
+	private Date appReceiveDate;
 
 	@Column(name = "APP_RESPONSEFILE")
 	private String appResponsefile;
@@ -111,6 +120,58 @@ public class TGzjzyhApplication implements Serializable {
 
 	@Column(name = "APP_RESPONSER")
 	private String appResponser;
+
+	@Temporal(TemporalType.TIME)
+	@Column(name = "APP_RESPONSE_DATE")
+	private Date appResponseDate;
+
+	@Column(name = "APP_MAIN_NAME")
+	private String appMainName;
+
+	@Column(name = "APP_MAIN_ID")
+	private String appMainId;
+
+	@Column(name = "APP_MAIN_NO")
+	private String appMainNo;
+
+	@Column(name = "APP_MAIN_MOBILE")
+	private String appMainMobile;
+
+	@Column(name = "APP_MAIN_NO1")
+	private String appMainNo1;
+
+	@Column(name = "APP_MAIN_NO2")
+	private String appMainNo2;
+
+	@Column(name = "APP_MAIN_ID1")
+	private String appMainId1;
+
+	@Column(name = "APP_MAIN_ID2")
+	private String appMainId2;
+
+	@Column(name = "APP_HELP_NAME")
+	private String appHelpName;
+
+	@Column(name = "APP_HELP_ID")
+	private String appHelpId;
+
+	@Column(name = "APP_HELP_NO")
+	private String appHelpNo;
+
+	@Column(name = "APP_HELP_MOBILE")
+	private String appHelpMobile;
+
+	@Column(name = "APP_HELP_NO1")
+	private String appHelpNo1;
+
+	@Column(name = "APP_HELP_NO2")
+	private String appHelpNo2;
+
+	@Column(name = "APP_HELP_ID1")
+	private String appHelpId1;
+
+	@Column(name = "APP_HELP_ID2")
+	private String appHelpId2;
 
 	public TGzjzyhApplication() {
 	}
@@ -291,12 +352,12 @@ public class TGzjzyhApplication implements Serializable {
 		this.appReceiver = appReceiver;
 	}
 
-	public String getAppReceivedate() {
-		return appReceivedate;
+	public Date getAppReceiveDate() {
+		return appReceiveDate;
 	}
 
-	public void setAppReceivedate(String appReceivedate) {
-		this.appReceivedate = appReceivedate;
+	public void setAppReceiveDate(Date appReceiveDate) {
+		this.appReceiveDate = appReceiveDate;
 	}
 
 	public String getAppResponsefile() {
@@ -323,6 +384,14 @@ public class TGzjzyhApplication implements Serializable {
 		this.appAuditUserId = appAuditUserId;
 	}
 
+	public Date getAppAuditDate() {
+		return appAuditDate;
+	}
+
+	public void setAppAuditDate(Date appAuditDate) {
+		this.appAuditDate = appAuditDate;
+	}
+
 	public String getAppReceiverId() {
 		return appReceiverId;
 	}
@@ -337,6 +406,142 @@ public class TGzjzyhApplication implements Serializable {
 
 	public void setAppResponserId(String appResponserId) {
 		this.appResponserId = appResponserId;
+	}
+
+	public Date getAppResponseDate() {
+		return appResponseDate;
+	}
+
+	public void setAppResponseDate(Date appResponseDate) {
+		this.appResponseDate = appResponseDate;
+	}
+
+	public String getAppMainName() {
+		return appMainName;
+	}
+
+	public void setAppMainName(String appMainName) {
+		this.appMainName = appMainName;
+	}
+
+	public String getAppMainId() {
+		return appMainId;
+	}
+
+	public void setAppMainId(String appMainId) {
+		this.appMainId = appMainId;
+	}
+
+	public String getAppMainNo() {
+		return appMainNo;
+	}
+
+	public void setAppMainNo(String appMainNo) {
+		this.appMainNo = appMainNo;
+	}
+
+	public String getAppMainMobile() {
+		return appMainMobile;
+	}
+
+	public void setAppMainMobile(String appMainMobile) {
+		this.appMainMobile = appMainMobile;
+	}
+
+	public String getAppMainNo1() {
+		return appMainNo1;
+	}
+
+	public void setAppMainNo1(String appMainNo1) {
+		this.appMainNo1 = appMainNo1;
+	}
+
+	public String getAppMainNo2() {
+		return appMainNo2;
+	}
+
+	public void setAppMainNo2(String appMainNo2) {
+		this.appMainNo2 = appMainNo2;
+	}
+
+	public String getAppMainId1() {
+		return appMainId1;
+	}
+
+	public void setAppMainId1(String appMainId1) {
+		this.appMainId1 = appMainId1;
+	}
+
+	public String getAppMainId2() {
+		return appMainId2;
+	}
+
+	public void setAppMainId2(String appMainId2) {
+		this.appMainId2 = appMainId2;
+	}
+
+	public String getAppHelpName() {
+		return appHelpName;
+	}
+
+	public void setAppHelpName(String appHelpName) {
+		this.appHelpName = appHelpName;
+	}
+
+	public String getAppHelpId() {
+		return appHelpId;
+	}
+
+	public void setAppHelpId(String appHelpId) {
+		this.appHelpId = appHelpId;
+	}
+
+	public String getAppHelpNo() {
+		return appHelpNo;
+	}
+
+	public void setAppHelpNo(String appHelpNo) {
+		this.appHelpNo = appHelpNo;
+	}
+
+	public String getAppHelpMobile() {
+		return appHelpMobile;
+	}
+
+	public void setAppHelpMobile(String appHelpMobile) {
+		this.appHelpMobile = appHelpMobile;
+	}
+
+	public String getAppHelpNo1() {
+		return appHelpNo1;
+	}
+
+	public void setAppHelpNo1(String appHelpNo1) {
+		this.appHelpNo1 = appHelpNo1;
+	}
+
+	public String getAppHelpNo2() {
+		return appHelpNo2;
+	}
+
+	public void setAppHelpNo2(String appHelpNo2) {
+		this.appHelpNo2 = appHelpNo2;
+	}
+
+	public String getAppHelpId1() {
+		return appHelpId1;
+	}
+
+	public void setAppHelpId1(String appHelpId1) {
+		this.appHelpId1 = appHelpId1;
+	}
+
+	public String getAppHelpId2() {
+		return appHelpId2;
+	}
+
+	public void setAppHelpId2(String appHelpId2) {
+		this.appHelpId2 = appHelpId2;
 	}
 
 }
