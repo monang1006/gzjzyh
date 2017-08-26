@@ -260,6 +260,12 @@ a:link,a:visited,a:hover,a:active{
 	color: #454953;
 	width : 140px;
 }
+.biao_bg1_gz {
+	line-height: 34px;
+	height: 30px;
+	color: #454953;
+	width : 250px;
+}
 .biao_bg2 {
 	background-image: url(../images/perspective_leftside/biao_bg.jpg);
 }
