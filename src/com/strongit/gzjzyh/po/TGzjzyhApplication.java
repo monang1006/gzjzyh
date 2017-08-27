@@ -176,8 +176,8 @@ public class TGzjzyhApplication implements Serializable {
 	@Column(name = "APP_CASE_CODE")
 	private String appCaseCode;
 
-	@Column(name = "APP_CASE_ORG")
-	private String appCaseOrg;
+	@Column(name = "APP_ORG")
+	private String appOrg;
 
 	@Column(name = "APP_CASE_NAME")
 	private String appCaseName;
@@ -186,12 +186,8 @@ public class TGzjzyhApplication implements Serializable {
 	@Column(name = "APP_CASE_CONFIRMTIME")
 	private Date appCaseConfirmTime;
 	
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "APP_CASE_BEGINTIME")
-	private Date appCaseBeginTime;
-	
-	@Column(name = "APP_CASE_ADDRESS")
-	private String appCaseAddress;
+	@Column(name = "APP_ADDRESS")
+	private String appAddress;
 
 	public TGzjzyhApplication() {
 	}
@@ -572,14 +568,6 @@ public class TGzjzyhApplication implements Serializable {
 		this.appCaseCode = appCaseCode;
 	}
 
-	public String getAppCaseOrg() {
-		return appCaseOrg;
-	}
-
-	public void setAppCaseOrg(String appCaseOrg) {
-		this.appCaseOrg = appCaseOrg;
-	}
-
 	public String getAppCaseName() {
 		return appCaseName;
 	}
@@ -596,20 +584,20 @@ public class TGzjzyhApplication implements Serializable {
 		this.appCaseConfirmTime = appCaseConfirmTime;
 	}
 
-	public Date getAppCaseBeginTime() {
-		return appCaseBeginTime;
+	public String getAppOrg() {
+		return appOrg;
 	}
 
-	public void setAppCaseBeginTime(Date appCaseBeginTime) {
-		this.appCaseBeginTime = appCaseBeginTime;
+	public void setAppOrg(String appOrg) {
+		this.appOrg = appOrg;
 	}
 
-	public String getAppCaseAddress() {
-		return appCaseAddress;
+	public String getAppAddress() {
+		return appAddress;
 	}
 
-	public void setAppCaseAddress(String appCaseAddress) {
-		this.appCaseAddress = appCaseAddress;
+	public void setAppAddress(String appAddress) {
+		this.appAddress = appAddress;
 	}
 
 }

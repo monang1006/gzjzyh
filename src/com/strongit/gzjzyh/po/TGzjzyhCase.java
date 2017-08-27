@@ -35,22 +35,12 @@ public class TGzjzyhCase implements Serializable {
 	@Column(name = "CASE_CODE")
 	private String caseCode;
 
-	@Column(name = "CASE_ORG")
-	private String caseOrg;
-
 	@Column(name = "CASE_NAME")
 	private String caseName;
 
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "CASE_BEGINTIME")
-	private Date caseBeginTime;
-
-	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "CASE_CONFIRMTIME")
 	private Date caseConfirmTime;
-
-	@Column(name = "CASE_ADDRESS")
-	private String caseAddress;
 
 	public String getCaseId() {
 		return caseId;
@@ -68,14 +58,6 @@ public class TGzjzyhCase implements Serializable {
 		this.caseCode = caseCode;
 	}
 
-	public String getCaseOrg() {
-		return caseOrg;
-	}
-
-	public void setCaseOrg(String caseOrg) {
-		this.caseOrg = caseOrg;
-	}
-
 	public String getCaseName() {
 		return caseName;
 	}
@@ -84,28 +66,12 @@ public class TGzjzyhCase implements Serializable {
 		this.caseName = caseName;
 	}
 
-	public Date getCaseBeginTime() {
-		return caseBeginTime;
-	}
-
-	public void setCaseBeginTime(Date caseBeginTime) {
-		this.caseBeginTime = caseBeginTime;
-	}
-
 	public Date getCaseConfirmTime() {
 		return caseConfirmTime;
 	}
 
 	public void setCaseConfirmTime(Date caseConfirmTime) {
 		this.caseConfirmTime = caseConfirmTime;
-	}
-
-	public String getCaseAddress() {
-		return caseAddress;
-	}
-
-	public void setCaseAddress(String caseAddress) {
-		this.caseAddress = caseAddress;
 	}
 
 }
