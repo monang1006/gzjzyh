@@ -31,6 +31,7 @@ public class FileUploadAction extends BaseActionSupport {
 
 	private Object model = new Object();
 
+	private String imageUrl;
 	private String srcImagePath;
 	private int selectX;
 	private int selectY;
@@ -74,6 +75,10 @@ public class FileUploadAction extends BaseActionSupport {
 
 		this.renderText(destImagePath);
 		return null;
+	}
+	
+	public String imageUpload() throws Exception {
+		return "upload";
 	}
 
 	@Override
@@ -120,5 +125,13 @@ public class FileUploadAction extends BaseActionSupport {
 
 	public void setSelectH(int selectH) {
 		this.selectH = selectH;
+	}
+
+	public String getImageUrl() {
+		return imageUrl;
+	}
+
+	public void setImageUrl(String imageUrl) {
+		this.imageUrl = imageUrl;
 	}
 }

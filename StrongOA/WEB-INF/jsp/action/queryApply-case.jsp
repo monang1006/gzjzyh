@@ -71,14 +71,11 @@
 											<tr>
 												<td>&nbsp;&nbsp;案件编号：&nbsp;<input id="caseCode"
 													name="caseCode" type="text">
-												</td>
-												<td>&nbsp;&nbsp;案件名称：&nbsp;<input id="caseName"
+													&nbsp;&nbsp;案件名称：&nbsp;<input id="caseName"
 													name="caseName" type="text">
 													&nbsp;&nbsp;&nbsp;&nbsp;<input id="img_sousuo"
 													type="button" onClick="castList();" />
 												</td>
-
-
 											</tr>
 										</table>
 										<webflex:flexRadioCol caption="选择" property="caseId"
@@ -105,7 +102,7 @@
 											<td width="5"></td>
 											<td width="8"><img
 												src="<%=frameroot%>/images/ch_z_l.gif" /></td>
-											<td class="Operation_input1" onclick="window.close();">&nbsp;取&nbsp;消&nbsp;</td>
+											<td class="Operation_input1" onclick="window.close();">&nbsp;关&nbsp;闭&nbsp;</td>
 											<td width="7"><img
 												src="<%=frameroot%>/images/ch_z_r.gif" /></td>
 

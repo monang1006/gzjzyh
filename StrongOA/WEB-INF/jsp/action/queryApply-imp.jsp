@@ -5,7 +5,7 @@
 <%@ taglib prefix="s" uri="/struts-tags"%>
 <html>
 <head>
-<title>账号注册</title>
+<title>文件导入</title>
 <%@include file="/common/include/meta.jsp"%>
 <!--  引用公共样式文件,建议所有样式都以文件方式定义在jsp文件外部,通常定义在WebRoot目录下的CSS文件夹下-->
 <LINK href="<%=frameroot%>/css/properties_windows_special.css"
@@ -37,13 +37,9 @@
 <script type="text/javascript"
 	src="<%=path%>/common/js/newdate/WdatePicker.js"></script>
 <script type="text/javascript">
-
-	
 function formsubmit(){
 	document.getElementById("applySave").submit();
 }
-
-
 </script>
 </head>
 <base target="_self" />
@@ -72,7 +68,7 @@ function formsubmit(){
 												<tr>
 													<td width="7"><img
 														src="<%=frameroot%>/images/ch_h_l.gif" /></td>
-													<td class="Operation_input" onclick="formsubmit();">&nbsp;保&nbsp;存&nbsp;</td>
+													<td class="Operation_input" onclick="formsubmit();">&nbsp;导&nbsp;入&nbsp;</td>
 													<td width="7"><img
 														src="<%=frameroot%>/images/ch_h_r.gif" /></td>
 													<td width="5"></td>
@@ -90,14 +86,17 @@ function formsubmit(){
 							</td>
 						</tr>
 					</table> 
-					
 					<table width="100%" height="10%" border="0" cellpadding="0"
 						cellspacing="0" align="center" class="table1">
 						<tr>
-							<td height="21" class="biao_bg1_gz" align="right">
-								<span class="wz"><font color="red">*</font>&nbsp;文件导入：</span>
+							<td height="20px">
 							</td>
-							<td class="td1" align="left" width="40%"><input id="path" name="uploadFile" type="file"></td>
+						</tr>
+						<tr>
+							<td class="td1" align="center">
+								<input id="path" style="width:300px;" name="uploadFile" type="file">
+								&nbsp;&nbsp;<a href="<%=path%>/template/账号导入模板.xls">下载Excel模板</a>
+							</td>
 						</tr>
 					</table>
 					<table id="annex" width="90%" height="10%" border="0"
@@ -105,8 +104,6 @@ function formsubmit(){
 					</table>
 				</td>
 			</tr>
-
-			
 		</table>
 		</s:form>
 	</DIV>

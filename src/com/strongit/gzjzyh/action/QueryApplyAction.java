@@ -15,6 +15,7 @@ import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFRow;
@@ -31,9 +32,14 @@ import com.strongit.gzjzyh.po.TGzjzyhCase;
 import com.strongit.gzjzyh.service.IQueryApplyService;
 import com.strongit.gzjzyh.vo.TGzjzyhApplyVo;
 import com.strongit.oa.common.user.IUserService;
+import com.strongit.oa.common.user.model.User;
 import com.strongit.oa.mylog.MyLogManager;
 import com.strongit.oa.util.LogPrintStackUtil;
+import com.strongit.uums.bo.TUumsBaseOrg;
+import com.strongit.uums.bo.TUumsBaseRole;
 import com.strongit.uums.bo.TUumsBaseUser;
+import com.strongit.uums.rolemanage.IRoleManager;
+import com.strongit.uums.util.Const;
 import com.strongmvc.orm.hibernate.Page;
 import com.strongmvc.webapp.action.BaseActionSupport;
 import com.strongmvc.exception.ServiceException;
@@ -44,11 +50,16 @@ public class QueryApplyAction extends BaseActionSupport {
 	public TGzjzyhApplyVo model = new TGzjzyhApplyVo();
 
 	private IQueryApplyService queryApplyService = null;
+	
+	@Autowired
+	IRoleManager roleManager;
 
 	private Page<TGzjzyhApplication> page = new Page<TGzjzyhApplication>(10,
 			true);
 
 	private Page<TGzjzyhCase> casePage = new Page<TGzjzyhCase>(10, true);
+	
+	private String appId;
 
 	private String accoutType;
 
@@ -94,11 +105,11 @@ public class QueryApplyAction extends BaseActionSupport {
 
 	private static final String DEFAULT_UPLOAD_IMAGE = "/images/upload/defaultUpload.jpg";
 
-	private String lawDocTmp;//文书
+	private String appLawfileTmp;//文书
 
-	private String lawRecTmp;//回执
+	private String appLawfileRTmp;//回执
 
-	private String otherTmp;//其它
+	private String appAttachmentTmp;//其它
 
 	private String ueMainNo1Tmp;
 
@@ -120,10 +131,12 @@ public class QueryApplyAction extends BaseActionSupport {
 	
 	private String attrId;//导入的属性ID
 	
+	private String errorMsg = "";
+	
 	public QueryApplyAction() {
 		statusMap.put(appConstants.STATUS_SUBMIT_NO, "待提交");
-		statusMap.put(appConstants.STATUS_SUBMIT_YES, "已提交");
-		statusMap.put(appConstants.STATUS_AUDIT_YES, "已审核");
+		statusMap.put(appConstants.STATUS_SUBMIT_YES, "待审核");
+		statusMap.put(appConstants.STATUS_AUDIT_YES, "待签收");
 		statusMap.put(appConstants.STATUS_AUDIT_BACK, "已驳回");
 
 		statusMap.put(appConstants.STATUS_SIGN_YES, "已签收");
@@ -131,7 +144,7 @@ public class QueryApplyAction extends BaseActionSupport {
 		statusMap.put(appConstants.APP_STATUS_REFUSE, "已拒签");
 
 		typeMap.put("0", "查询申请");
-		typeMap.put("1", "冻解申请");
+		typeMap.put("1", "冻结申请");
 		typeMap.put("2", "续冻申请");
 		typeMap.put("3", "解冻申请");
 	}
@@ -162,17 +175,24 @@ public class QueryApplyAction extends BaseActionSupport {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	private List<TUumsBaseUser> getBankAccountInfos(){
+		TUumsBaseOrg bankOrg = this.userService.getOrgInfoBySyscode(GzjzyhConstants.DEFAULT_BANKORG_SYSCODE);
+		userList = this.userService.getUserInfoByOrgId(bankOrg.getOrgId(), Const.IS_YES, Const.IS_NO);
+		return userList;
+	}
 
 	@Override
 	public String input() throws Exception {
-		// TODO Auto-generated method stub
+		this.getBankAccountInfos();
+		
 		TUumsBaseUser user = this.userService.getCurrentUser();
 		model = this.queryApplyService.getExtensionByUserId(user.getUserId());
 		//
-		this.lawDocTmp = this.DEFAULT_UPLOAD_IMAGE;
-		this.lawRecTmp = this.DEFAULT_UPLOAD_IMAGE;
-		this.otherTmp = this.DEFAULT_UPLOAD_IMAGE;
-
+		this.appLawfileTmp = this.DEFAULT_UPLOAD_IMAGE;
+		this.appLawfileRTmp = this.DEFAULT_UPLOAD_IMAGE;
+		this.appAttachmentTmp = this.DEFAULT_UPLOAD_IMAGE;
+		
 		this.ueMainNo1Tmp = this.DEFAULT_UPLOAD_IMAGE;
 		this.ueMainNo2Tmp = this.DEFAULT_UPLOAD_IMAGE;
 		this.ueMainId1Tmp = this.DEFAULT_UPLOAD_IMAGE;
@@ -182,14 +202,47 @@ public class QueryApplyAction extends BaseActionSupport {
 		this.ueHelpId1Tmp = this.DEFAULT_UPLOAD_IMAGE;
 		this.ueHelpId2Tmp = this.DEFAULT_UPLOAD_IMAGE;
 
+		if(model.getGzjzyhUserExtension() != null){
+			if(model.getGzjzyhUserExtension().getUeMainNo1() != null
+					&& !"".equals(model.getGzjzyhUserExtension().getUeMainNo1())){
+				this.ueMainNo1Tmp = model.getGzjzyhUserExtension().getUeMainNo1();
+			}
+			if(model.getGzjzyhUserExtension().getUeMainNo2() != null
+					&& !"".equals(model.getGzjzyhUserExtension().getUeMainNo2())){
+				this.ueMainNo2Tmp = model.getGzjzyhUserExtension().getUeMainNo2();
+			}
+			if(model.getGzjzyhUserExtension().getUeMainId1() != null
+					&& !"".equals(model.getGzjzyhUserExtension().getUeMainId1())){
+				this.ueMainId1Tmp = model.getGzjzyhUserExtension().getUeMainId1();
+			}
+			if(model.getGzjzyhUserExtension().getUeMainId2() != null
+					&& !"".equals(model.getGzjzyhUserExtension().getUeMainId2())){
+				this.ueMainId2Tmp = model.getGzjzyhUserExtension().getUeMainId2();
+			}
+			if(model.getGzjzyhUserExtension().getUeHelpNo1() != null
+					&& !"".equals(model.getGzjzyhUserExtension().getUeHelpNo1())){
+				this.ueHelpNo1Tmp = model.getGzjzyhUserExtension().getUeHelpNo1();
+			}
+			if(model.getGzjzyhUserExtension().getUeHelpNo2() != null
+					&& !"".equals(model.getGzjzyhUserExtension().getUeHelpNo2())){
+				this.ueHelpNo2Tmp = model.getGzjzyhUserExtension().getUeHelpNo2();
+			}
+			if(model.getGzjzyhUserExtension().getUeHelpId1() != null
+					&& !"".equals(model.getGzjzyhUserExtension().getUeHelpId1())){
+				this.ueHelpId1Tmp = model.getGzjzyhUserExtension().getUeHelpId1();
+			}
+			if(model.getGzjzyhUserExtension().getUeHelpId2() != null
+					&& !"".equals(model.getGzjzyhUserExtension().getUeHelpId2())){
+				this.ueHelpId2Tmp = model.getGzjzyhUserExtension().getUeHelpId2();
+			}
+		}
+
 		return INPUT;
 	}
 
 	@Override
 	public String list() throws Exception {
-		// TODO Auto-generated method stub
-		userList = userService.getUserInfoByOrgId(
-				GzjzyhConstants.DEFAULT_BANKORG_SYSCODE, "0", "1");
+		this.getBankAccountInfos();
 		page = this.queryApplyService.findQueryApplyPage(page, accoutType,
 				appFileno, appBankuser, appStartDate, appEndDate, caseCode);
 		return SUCCESS;
@@ -205,7 +258,7 @@ public class QueryApplyAction extends BaseActionSupport {
 	public String save() throws Exception {
 
 		try {
-			//冻解申请
+			//冻结申请
 			if ("1".equals(model.getGzjzyhApplication().getAppType())) {
 				model.getGzjzyhApplication()
 						.setAppOrgAccount(frozenAppOrgAccount);
@@ -254,7 +307,7 @@ public class QueryApplyAction extends BaseActionSupport {
 	public String doCommits() throws Exception {
 
 		try {
-			//冻解申请
+			//冻结申请
 			if ("1".equals(model.getGzjzyhApplication().getAppType())) {
 				model.getGzjzyhApplication()
 						.setAppOrgAccount(frozenAppOrgAccount);
@@ -301,9 +354,10 @@ public class QueryApplyAction extends BaseActionSupport {
 	}
 
 	public String getApply() throws Exception {
-		// TODO Auto-generated method stub
+		this.getBankAccountInfos();
+		
 		model = this.queryApplyService.getApplyById(appIds);
-		//冻解申请
+		//冻结申请
 		if ("1".equals(model.getGzjzyhApplication().getAppType())) {
 			frozenAppOrgAccount = model.getGzjzyhApplication()
 					.getAppOrgAccount();
@@ -327,23 +381,23 @@ public class QueryApplyAction extends BaseActionSupport {
 		//
 		if (model.getGzjzyhApplication().getAppLawfile() == null
 				|| "".equals(model.getGzjzyhApplication().getAppLawfile())) {
-			this.lawDocTmp = this.DEFAULT_UPLOAD_IMAGE;
+			this.appLawfileTmp = this.DEFAULT_UPLOAD_IMAGE;
 		} else {
-			this.lawDocTmp = this.model.getGzjzyhApplication().getAppLawfile();
+			this.appLawfileTmp = this.model.getGzjzyhApplication().getAppLawfile();
 		}
 		//
 		if (model.getGzjzyhApplication().getAppLawfileR() == null
 				|| "".equals(model.getGzjzyhApplication().getAppLawfileR())) {
-			this.lawRecTmp = this.DEFAULT_UPLOAD_IMAGE;
+			this.appLawfileRTmp = this.DEFAULT_UPLOAD_IMAGE;
 		} else {
-			this.lawRecTmp = this.model.getGzjzyhApplication().getAppLawfileR();
+			this.appLawfileRTmp = this.model.getGzjzyhApplication().getAppLawfileR();
 		}
 		//
 		if (model.getGzjzyhApplication().getAppAttachment() == null
 				|| "".equals(model.getGzjzyhApplication().getAppAttachment())) {
-			this.otherTmp = this.DEFAULT_UPLOAD_IMAGE;
+			this.appAttachmentTmp = this.DEFAULT_UPLOAD_IMAGE;
 		} else {
-			this.otherTmp = this.model.getGzjzyhApplication()
+			this.appAttachmentTmp = this.model.getGzjzyhApplication()
 					.getAppAttachment();
 		}
 
@@ -405,7 +459,7 @@ public class QueryApplyAction extends BaseActionSupport {
 	public String getApplyView() throws Exception {
 		// TODO Auto-generated method stub
 		model = this.queryApplyService.getViewById(appIds);
-		//冻解申请
+		//冻结申请
 		if ("1".equals(model.getGzjzyhApplication().getAppType())) {
 			frozenAppOrgAccount = model.getGzjzyhApplication()
 					.getAppOrgAccount();
@@ -429,23 +483,23 @@ public class QueryApplyAction extends BaseActionSupport {
 		//
 		if (model.getGzjzyhApplication().getAppLawfile() == null
 				|| "".equals(model.getGzjzyhApplication().getAppLawfile())) {
-			this.lawDocTmp = this.DEFAULT_UPLOAD_IMAGE;
+			this.appLawfileTmp = this.DEFAULT_UPLOAD_IMAGE;
 		} else {
-			this.lawDocTmp = this.model.getGzjzyhApplication().getAppLawfile();
+			this.appLawfileTmp = this.model.getGzjzyhApplication().getAppLawfile();
 		}
 		//
 		if (model.getGzjzyhApplication().getAppLawfileR() == null
 				|| "".equals(model.getGzjzyhApplication().getAppLawfileR())) {
-			this.lawRecTmp = this.DEFAULT_UPLOAD_IMAGE;
+			this.appLawfileRTmp = this.DEFAULT_UPLOAD_IMAGE;
 		} else {
-			this.lawRecTmp = this.model.getGzjzyhApplication().getAppLawfileR();
+			this.appLawfileRTmp = this.model.getGzjzyhApplication().getAppLawfileR();
 		}
 		//
 		if (model.getGzjzyhApplication().getAppAttachment() == null
 				|| "".equals(model.getGzjzyhApplication().getAppAttachment())) {
-			this.otherTmp = this.DEFAULT_UPLOAD_IMAGE;
+			this.appAttachmentTmp = this.DEFAULT_UPLOAD_IMAGE;
 		} else {
-			this.otherTmp = this.model.getGzjzyhApplication()
+			this.appAttachmentTmp = this.model.getGzjzyhApplication()
 					.getAppAttachment();
 		}
 		return "view";
@@ -568,7 +622,7 @@ public class QueryApplyAction extends BaseActionSupport {
 	 */
 	public String upload() throws Exception {
 		try {
-			Set<String> set = new HashSet<String>();
+			List<String> lst = new ArrayList<String>();
 
 			InputStream in = new FileInputStream(uploadFile);//不用request.getInputStream();
 			//2.得到Excel工作簿对象  
@@ -585,40 +639,25 @@ public class QueryApplyAction extends BaseActionSupport {
 			//			HSSFCell cell = row.getCell((short) 1);
 			//6.得到单元格样式  
 			//			HSSFCellStyle cellStyle = cell.getCellStyle();
-			for (int i = 0; i < trLength; i++) {
+			for (int i = 1; i <= trLength; i++) {
 				//得到Excel工作表的行  
 				HSSFRow row1 = sheet.getRow(i);
-				for (int j = 0; j < tdLength; j++) {
-
+				for (int j = 0; j < 1; j++) {
 					//得到Excel工作表指定行的单元格  
 					HSSFCell cell = row1.getCell((short) 0);
-
-					/** 
-					 * 为了处理：Excel异常Cannot get a text value from a numeric cell 
-					 * 将所有列中的内容都设置成String类型格式 
-					 */
-//					if (cell != null) {
-//						cell.setCellType(HSSFCell.CELL_TYPE_STRING);
-//					}
-
 					//获得每一列中的值  
-					set.add(getStringCellValue(cell));
-					//					System.out.print(cell.getStringCellValue() + "\t\t\t");
+					lst.add(getStringCellValue(cell));
 				}
 			}
 			StringBuffer appBf = new StringBuffer();
-			for (String str : set) {
+			for (String str : lst) {
 				appBf.append(str).append(",");
 			}
-			
 			accountStr = appBf.toString();
 			accountStr = accountStr.substring(0, accountStr.length() - 1);
-			
-
-
 		} catch (Exception e) {
-			// TODO: handle exception
-			throw e;
+			e.printStackTrace();
+			this.errorMsg = "导入文件错误，请下载导入模板并按模板规范填写账号。";
 		}
 		return "impinit";
 	}
@@ -816,30 +855,6 @@ public class QueryApplyAction extends BaseActionSupport {
 		this.typeMap = typeMap;
 	}
 
-	public String getLawDocTmp() {
-		return lawDocTmp;
-	}
-
-	public void setLawDocTmp(String lawDocTmp) {
-		this.lawDocTmp = lawDocTmp;
-	}
-
-	public String getLawRecTmp() {
-		return lawRecTmp;
-	}
-
-	public void setLawRecTmp(String lawRecTmp) {
-		this.lawRecTmp = lawRecTmp;
-	}
-
-	public String getOtherTmp() {
-		return otherTmp;
-	}
-
-	public void setOtherTmp(String otherTmp) {
-		this.otherTmp = otherTmp;
-	}
-
 	public String getUeMainNo1Tmp() {
 		return ueMainNo1Tmp;
 	}
@@ -922,6 +937,46 @@ public class QueryApplyAction extends BaseActionSupport {
 
 	public void setAttrId(String attrId) {
 		this.attrId = attrId;
+	}
+
+	public String getAppLawfileTmp() {
+		return appLawfileTmp;
+	}
+
+	public void setAppLawfileTmp(String appLawfileTmp) {
+		this.appLawfileTmp = appLawfileTmp;
+	}
+
+	public String getAppLawfileRTmp() {
+		return appLawfileRTmp;
+	}
+
+	public void setAppLawfileRTmp(String appLawfileRTmp) {
+		this.appLawfileRTmp = appLawfileRTmp;
+	}
+
+	public String getAppAttachmentTmp() {
+		return appAttachmentTmp;
+	}
+
+	public void setAppAttachmentTmp(String appAttachmentTmp) {
+		this.appAttachmentTmp = appAttachmentTmp;
+	}
+
+	public String getErrorMsg() {
+		return errorMsg;
+	}
+
+	public void setErrorMsg(String errorMsg) {
+		this.errorMsg = errorMsg;
+	}
+
+	public String getAppId() {
+		return appId;
+	}
+
+	public void setAppId(String appId) {
+		this.appId = appId;
 	}
 
 }

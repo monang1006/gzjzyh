@@ -6,7 +6,7 @@
 
 <HTML>
 <HEAD>
-<TITLE>日志列表</TITLE>
+<TITLE>查询申请列表</TITLE>
 <%@include file="/common/include/meta.jsp"%>
 <LINK href="<%=frameroot%>/css/properties_windows_add.css" type=text/css
 	rel=stylesheet>
@@ -125,40 +125,36 @@
 											<tr>
 												<td>&nbsp;&nbsp;查询需求：&nbsp; <s:select name="accoutType"
 														list="#{'':'请选择','0':'个人账号','1':'单位帐号','2':'个人开户明细','3':'单位开户明细','4':'交易明细'}"
-														listKey="key" listValue="value" />
-
-													&nbsp;&nbsp;文书编号：&nbsp;<input id="appFileno"
-													name="appFileno" type="text">
-
-
+														listKey="key" listValue="value" style="width:155px;" />
+													&nbsp;&nbsp;文书编号：&nbsp; <input id="appFileno"
+													name="appFileno" type="text" width="155px">
 													&nbsp;&nbsp;开始时间：&nbsp; <strong:newdate id="appStartDate"
 														name="appStartDate" dateform="yyyy-MM-dd HH:mm:ss"
-														isicon="true"
+														isicon="true" width="155px"
 														dateobj="${model.gzjzyhApplication.appStartDate}"
 														classtyle="search" title="搜索开始时间" />
-
 													&nbsp;&nbsp;结束时间：&nbsp; <strong:newdate id="appEndDate"
 														name="appEndDate" dateform="yyyy-MM-dd HH:mm:ss"
-														isicon="true"
+														isicon="true" width="155px"
 														dateobj="${model.gzjzyhApplication.appEndDate}"
 														classtyle="search" title="搜索结束时间" />
-
-													&nbsp;&nbsp;请求银行：&nbsp; <s:select name="appBankuser"
-														list="userList" listKey="userId" listValue="userName"
-														cssClass="search" title="请输入操作结果"></s:select>
-
-
 												</td>
 											</tr>
 											<tr>
-												<td>&nbsp;&nbsp;案件编号：&nbsp; <input id="caseCode"
-													name="caseCode" type="hidden"> <input id="caseName"
-													name="caseName" type="text"> <a href="#"
+												<td>
+													&nbsp;&nbsp;请求银行：&nbsp; <s:select name="appBankuser"
+														list="userList" listKey="userId" listValue="userName"
+														cssClass="search" title="请输入操作结果" headerKey="" headerValue="请选择"
+														style="width:155px;"></s:select>
+													&nbsp;&nbsp;当前状态：&nbsp; <s:select name="searchStatus"
+														list="#{'':'请选择','0':'待提交','1':'待审核','2':'待签收','3':'已驳回','4':'已签收','5':'已处理','6':'已拒签'}"
+														listKey="key" listValue="value" style="width:155px;" />
+													&nbsp;&nbsp;关联案件：&nbsp; <input id="caseName"
+													name="caseName" type="text" width="155px"><input id="caseCode"
+													name="caseCode" type="hidden"> <a href="#"
 													class="button" onclick="change()">选择方案</a> <input
 													id="img_sousuo" type="button" onClick="getListBySta();" />
 												</td>
-
-
 											</tr>
 										</table>
 										<webflex:flexCheckBoxCol caption="选择" property="appId"
@@ -200,11 +196,11 @@ function initMenuT(){
 	item = new MenuItem("<%=root%>/images/operationbtn/del.png","删除","deleteApply",1,"ChangeWidthTable","checkMoreDis");
 	sMenu.addItem(item);
 	
-	item = new MenuItem("<%=root%>/images/operationbtn/del.png","提交","doCommit",1,"ChangeWidthTable","checkMoreDis");
+	item = new MenuItem("<%=root%>/images/operationbtn/edit.png","提交","doCommit",1,"ChangeWidthTable","checkMoreDis");
 	sMenu.addItem(item);
-	item = new MenuItem("<%=root%>/images/operationbtn/del.png","撤销","doBack",1,"ChangeWidthTable","checkMoreDis");
+	item = new MenuItem("<%=root%>/images/operationbtn/edit.png","撤销","doBack",1,"ChangeWidthTable","checkMoreDis");
 	sMenu.addItem(item);
-	item = new MenuItem("<%=root%>/images/operationbtn/del.png","查看","view",1,"ChangeWidthTable","checkMoreDis");
+	item = new MenuItem("<%=root%>/images/operationbtn/view.png","查看","view",1,"ChangeWidthTable","checkMoreDis");
 	sMenu.addItem(item);	
 	sMenu.addShowType("ChangeWidthTable");
     registerMenu(sMenu);

@@ -47,21 +47,8 @@
 		uploader.on('uploadSuccess', function(file,response) {
 			//layer.close(logining);
 			srcImagePath = response[0];
-			if(jcropApi != undefined){
-				jcropApi.destroy();
-			}
 			document.getElementById("imgField").src = "<%=path%>" + response[0];
-			$('#imgField').Jcrop({
-			  	allowSelect: true,
-			  	onSelect:function(c){
-			  		$("#imageX").val(c.x);
-			  		$("#imageY").val(c.y);
-			  		$("#imageW").val(c.w);
-			  		$("#imageH").val(c.h);
-			  	}
-			}, function() {
-				jcropApi = this;
-			});
+			jcropInit();
 		});
 		uploader.on('beforeFileQueued', function( file ) {
 			//logining = layer.msg("服务器分析中...",{icon: 16,time:60000,shade: [0.8, '#393D49']});
@@ -78,8 +65,26 @@
 		if("${imageUrl}" != "/images/upload/defaultUpload.jpg"){
 			$("#imgField").attr("src", "<%=path%>${imageUrl}");
 			srcImagePath = "${imageUrl}";
+			jcropInit();
 		}
 	});
+	
+	function jcropInit(){
+		if(jcropApi != undefined && jcropApi != null){
+			jcropApi.destroy();
+		}
+		$('#imgField').Jcrop({
+		  	allowSelect: true,
+		  	onSelect:function(c){
+		  		$("#imageX").val(c.x);
+		  		$("#imageY").val(c.y);
+		  		$("#imageW").val(c.w);
+		  		$("#imageH").val(c.h);
+		  	}
+		}, function() {
+			jcropApi = this;
+		});
+	}
 	
 	function cutImage(){
 		if(srcImagePath == undefined || srcImagePath == null || srcImagePath == ""){

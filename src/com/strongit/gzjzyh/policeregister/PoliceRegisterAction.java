@@ -280,10 +280,6 @@ public class PoliceRegisterAction extends BaseActionSupport<TGzjzyhUserExtension
 		
 		return "checkmore";
 	}
-	
-	public String imageUpload() throws Exception {
-		return "upload";
-	}
 
 	public TGzjzyhUserExtension getModel() {
 		return model;

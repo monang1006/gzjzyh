@@ -298,7 +298,7 @@ function checkMobile(mobile){
 					if(document.getElementById(domElementId).value != "" && document.getElementById(domElementId).value != null){
 						nowImageUrl = document.getElementById(domElementId).value;
 					}
-					var imageUrl = window.showModalDialog("<%=path%>/policeregister/policeRegister!imageUpload.action?imageUrl="+nowImageUrl,window,'help:no;status:no;scroll:no;dialogWidth:1200px; dialogHeight:800px');
+					var imageUrl = window.showModalDialog("<%=path%>/upload/fileUpload!imageUpload.action?imageUrl="+nowImageUrl,window,'help:no;status:no;scroll:no;dialogWidth:1200px; dialogHeight:800px');
 					if(imageUrl != null && imageUrl != ""){
 						document.getElementById(domElementId).value = imageUrl;
 						document.getElementById(domElementId + "Tmp").src = "<%=path%>" + imageUrl;

@@ -208,13 +208,12 @@ public class QueryApplyService implements IQueryApplyService {
 
 		TGzjzyhUserExtension tGzjzyhUserExtension = null;
 
-		String hql = "from TGzjzyhUserExtension t where ueUserId = ?";
+		String hql = "from TGzjzyhUserExtension t where t.tuumsBaseUser.userId = ?";
 
 		//
-		if (userId != null && "".equals(userId)) {
-
+		if (userId != null && !"".equals(userId)) {
 			tGzjzyhUserExtension = (TGzjzyhUserExtension) this.userExtensionDao
-					.find(hql, new Object[] { userId }).get(0);
+					.findUnique(hql, new Object[] { userId });
 		}
 
 		if (tGzjzyhUserExtension != null) {
