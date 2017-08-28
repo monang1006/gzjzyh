@@ -152,12 +152,12 @@ function initMenuT(){
 function editApply(){
 	var id=getValue();
 	if(id==null || id==""){
-		alert("请选择要编辑的记录。");
+		alert("请选择要查看的记录。");
 			return;
 		}
 		
 	if(id.length >32){
-		alert('只可以编辑一条记录。');
+		alert('只可以查看一条记录。');
 		return;
 	}
 	var width=screen.availWidth;

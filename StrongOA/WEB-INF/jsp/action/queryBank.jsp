@@ -128,7 +128,7 @@
 											align="center" showValue="appDate" width="18%"
 											isCanDrag="true" isCanSort="true"></webflex:flexTextCol>
 										<webflex:flexTextCol caption="审核时间" property="appDate"
-											align="center" showValue="appDate" width="18%"
+											align="center" showValue="appAuditDate" width="18%"
 											isCanDrag="true" isCanSort="true"></webflex:flexTextCol>
 										<webflex:flexEnumCol caption="当前状态" align="center"
 											mapobj="${statusMap}" property="appStatus"
