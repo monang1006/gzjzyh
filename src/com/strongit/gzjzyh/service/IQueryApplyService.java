@@ -33,9 +33,9 @@ public interface IQueryApplyService {
 	 * @throws DAOException
 	 */
 	public Page<TGzjzyhApplication> findQueryApplyPage(
-			Page<TGzjzyhApplication> page, String accoutType, String appFileno,
-			String appBankuser, Date appStartDate, Date appEndDate,
-			String caseCode)
+			Page<TGzjzyhApplication> page, String searchRequiredType,
+			String searchAppFileNo, String searchAppBankuser, Date searchAppStartDate,
+			Date searchAppEndDate, String searchCaseId, String searchAppStatus)
 			throws ServiceException, SystemException, DAOException;
 
 	/**
@@ -85,6 +85,12 @@ public interface IQueryApplyService {
 	 * @throws DAOException
 	 */
 	public TGzjzyhApplyVo getApplyById(String appId)
+			throws ServiceException, SystemException, DAOException;
+	
+	public TGzjzyhApplication getApplicationById(String appId)
+			throws ServiceException, SystemException, DAOException;
+	
+	public TGzjzyhCase getCaseById(String caseId)
 			throws ServiceException, SystemException, DAOException;
 
 	/**

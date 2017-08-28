@@ -66,13 +66,11 @@
 										collection='${casePage.result}' page="${casePage}">
 										<table width="100%" border="0" cellpadding="0" cellspacing="0"
 											class="table1_search">
-											<input type="hidden" id="caseConfirmTime" name="model.gzjzyhCase.caseConfirmTime" value="${model.gzjzyhCase.caseConfirmTime}">
-											<input type="hidden" id="caseOrg" name="model.gzjzyhCase.caseOrg" value="${model.gzjzyhCase.caseOrg}">
 											<tr>
-												<td>&nbsp;&nbsp;案件编号：&nbsp;<input id="caseCode"
-													name="caseCode" type="text">
-													&nbsp;&nbsp;案件名称：&nbsp;<input id="caseName"
-													name="caseName" type="text">
+												<td>&nbsp;&nbsp;案件编号：&nbsp;<input id="searchCaseCode"
+													name="searchCaseCode" type="text" value="${searchCaseCode }">
+													&nbsp;&nbsp;案件名称：&nbsp;<input id="searchCaseName"
+													name="searchCaseName" type="text" value="${searchCaseName }">
 													&nbsp;&nbsp;&nbsp;&nbsp;<input id="img_sousuo"
 													type="button" onClick="castList();" />
 												</td>
@@ -110,19 +108,21 @@
 									</table>
 								</td>
 							</tr>
-						</table> </s:form>
-						</DIV> <script language="javascript">
-							function changeCase() {
-								var caseId = $("input[name='chkRadio'][checked]").attr("value");
-								var tr = $("#radio" + caseId).parent().parent();
-								var caseName = $("td:eq(3)", tr).attr("value");
-								var parentWin=window.dialogArguments;
-								//parentWin.document.getElementById("caseCode").value=caseId;
-								//parentWin.document.getElementById("caseName").value=caseName;
-								
-								parentWin.changeCaseF(caseId,caseName,caseOrg,caseConfirmTime);
-								window.close();
-							}
-						</script>
+						</table>
+					 </s:form>
+					</DIV>
+<script language="javascript">
+	function changeCase() {
+		var caseId = $("input[name='chkRadio'][checked]").attr("value");
+		var tr = $("#radio" + caseId).parent().parent();
+		var caseName = $("td:eq(3)", tr).attr("value");
+		var parentWin=window.dialogArguments;
+		//parentWin.document.getElementById("caseCode").value=caseId;
+		//parentWin.document.getElementById("caseName").value=caseName;
+		
+		parentWin.changeCaseF(caseId,caseName,caseOrg,caseConfirmTime);
+		window.close();
+	}
+</script>
 </BODY>
 </HTML>

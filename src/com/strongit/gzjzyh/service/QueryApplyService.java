@@ -42,61 +42,60 @@ public class QueryApplyService implements IQueryApplyService {
 
 	@Override
 	public Page<TGzjzyhApplication> findQueryApplyPage(
-			Page<TGzjzyhApplication> page, String accoutType, String appFileno,
-			String appBankuser, Date appStartDate, Date appEndDate,
-			String caseCode)
+			Page<TGzjzyhApplication> page, String searchRequiredType,
+			String searchAppFileNo, String searchAppBankuser, Date searchAppStartDate,
+			Date searchAppEndDate, String searchCaseId, String searchAppStatus)
 			throws ServiceException, SystemException, DAOException {
-		// TODO Auto-generated method stub
 		StringBuffer hql = new StringBuffer(
 				"from TGzjzyhApplication t where 1=1");
 		List values = new ArrayList();
 		//个人账号
-		if ("0".equals(accoutType)) {
+		if ("0".equals(searchRequiredType)) {
 			hql.append(" and t.appPersonAccount is not null");
 		}
 		//单位帐号
-		if ("1".equals(accoutType)) {
+		else if ("1".equals(searchRequiredType)) {
 			hql.append(" and t.appOrgAccount is not null");
 		}
 		//个人开户明细
-		if ("2".equals(accoutType)) {
+		else if ("2".equals(searchRequiredType)) {
 			hql.append(" and t.appPersonDetail is not null");
 		}
 		//单位开户明细
-		if ("3".equals(accoutType)) {
+		else if ("3".equals(searchRequiredType)) {
 			hql.append(" and t.appOrgDetail is not null");
 		}
 		//交易明细
-		if ("4".equals(accoutType)) {
+		else if ("4".equals(searchRequiredType)) {
 			hql.append(" and t.appChadeDetail is not null");
 		}
 		//
-		if (appFileno != null && appFileno.length() > 0) {
+		if (searchAppFileNo != null && searchAppFileNo.length() > 0) {
 			hql.append(" and t.appFileno = ?");
-			values.add(appFileno);
+			values.add(searchAppFileNo);
 		}
 		//
-		if (caseCode != null && caseCode.length() > 0) {
-			hql.append(" and t.caseCode = ?");
-			values.add(caseCode);
+		if (searchCaseId != null && searchCaseId.length() > 0) {
+			hql.append(" and t.caseId = ?");
+			values.add(searchCaseId);
 		}
 
-		if (appBankuser != null && appBankuser.length() > 0) {
+		if (searchAppBankuser != null && searchAppBankuser.length() > 0) {
 			hql.append(" and t.appBankuser = ?");
-			values.add(appBankuser);
+			values.add(searchAppBankuser);
 		}
 		// 开始时间
-		if (appStartDate != null) {
-			hql.append(" and t.appStartDate >= ? ");
-			values.add(appStartDate);
+		if (searchAppStartDate != null) {
+			hql.append(" and t.appDate >= ? ");
+			values.add(searchAppStartDate);
 		}
 		// 结束时间
-		if (appEndDate != null) {
-			hql.append(" and t.appEndDate <= ? ");
-			values.add(appEndDate);
+		if (searchAppEndDate != null) {
+			hql.append(" and t.appDate <= ? ");
+			values.add(searchAppEndDate);
 		}
 
-		hql.append(" order by t.appId");
+		hql.append(" order by t.appDate desc");
 		page = this.queryApplyDao.find(page, hql.toString(), values.toArray());
 		return page;
 	}
@@ -335,5 +334,17 @@ public class QueryApplyService implements IQueryApplyService {
 
 		return tGzjzyhApplyVo;
 
+	}
+	
+	public TGzjzyhApplication getApplicationById(String appId)
+			throws ServiceException, SystemException, DAOException{
+		TGzjzyhApplication tGzjzyhApplication = this.queryApplyDao.get(appId);
+		return tGzjzyhApplication;
+	}
+	
+	public TGzjzyhCase getCaseById(String caseId)
+			throws ServiceException, SystemException, DAOException{
+		TGzjzyhCase caseInfo = this.caseDao.get(caseId);
+		return caseInfo;
 	}
 }

@@ -158,10 +158,7 @@ public class ToSyncManager implements IToSyncManager {
 				TGzjzyhCase gzjzyhCase = (TGzjzyhCase)this.baseDao.getSession().load(TGzjzyhCase.class, applicationCopy.getCaseId());
 				applicationCopy.setAppCaseCode(gzjzyhCase.getCaseCode());
 				applicationCopy.setAppCaseConfirmTime(gzjzyhCase.getCaseConfirmTime());
-				applicationCopy.setAppCaseAddress(gzjzyhCase.getCaseAddress());
-				applicationCopy.setAppCaseBeginTime(gzjzyhCase.getCaseBeginTime());
 				applicationCopy.setAppCaseName(gzjzyhCase.getCaseName());
-				applicationCopy.setAppCaseOrg(gzjzyhCase.getCaseOrg());
 				
 				operationObj = applicationCopy;
 				

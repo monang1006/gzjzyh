@@ -38,46 +38,44 @@
 	src="<%=path%>/common/js/newdate/WdatePicker.js"></script>
 <script type="text/javascript">
 
-	 
-	function checkLoginName(obj,flag){
-		var isValidated = false;
-			 $.ajax({
-				url:obj.url,
-				type:"post",
-				async:false,
-				data:{loginname:obj.value},
-				success:function(logininfo){
-					if(logininfo!="111"){
-						alert("登录名不唯一。");
-						obj.focus();
-					}
-					else{
-						isValidated = true;
-					}						
-				},
-				error:function(logininfo){
-					alert("异步出错。");
-				}					
-			});
-		return isValidated;
-	}
-			
-	//校验手机号码
-function checkMobile(mobile){
-	var flag = true;
-	var reg_mobile13= /^(13\d{9})$/;
-	var reg_mobile159=/^(15\d{9})$/;
-	var reg_mobile189=/^(18\d{9})$/;
-	if(mobile!=""){
-		if(!reg_mobile13.test(mobile) && !reg_mobile159.test(mobile) && !reg_mobile189.test(mobile)){
-			flag = false;
-		}
-	}
-	return flag;
-}	
-	
 function formsubmit(){
 	document.getElementById("applySave").submit();
+}
+
+function validateElementRequired(elementId, elementName){
+	var isValidate = true;
+	if(document.getElementById(elementId).value != ""
+			&& document.getElementById(elementId).value.length > maxLength){
+    	alert(elementName + '过长。');
+    	document.getElementById(elementId).focus();
+    	isValidate = false;
+    }
+	return isValidate;
+}
+
+function validateElementLength(elementId, maxLength, elementName){
+	var isValidate = true;
+	if(document.getElementById(elementId).value == ""){
+   		alert(elementName + '不能为空。');
+   		document.getElementById(elementId).focus();
+   		isValidate = false;
+    }
+	return isValidate;
+}
+
+function validateElement(elementId, maxLength, elementName){
+	var isValidate = true;
+	if(document.getElementById(elementId).value == ""){
+   		alert(elementName + '不能为空。');
+   		document.getElementById(elementId).focus();
+   		return false;
+    }
+    if(document.getElementById(elementId).value.length > maxLength){
+    	alert(elementName + '过长。');
+    	document.getElementById(elementId).focus();
+    	return false;
+    }
+    return isValidate;
 }
 
 function impForm(accountStr, accId) {
@@ -217,31 +215,112 @@ function viewImage(url){
 <base target="_self" />
 <body class=contentbodymargin oncontextmenu="return false;">
 	<DIV id=contentborder align=center>
-		<s:form id="applySave" target="hiddenFrame" enctype="multipart/form-data"
-						action="/action/queryApply!save.action"  theme="simple" >
-			<input type="hidden" id="appId" name="model.gzjzyhApplication.appId"
-				value="${model.gzjzyhApplication.appId}">
-			<input type="hidden" id="caseId"
-				name="model.gzjzyhCase.caseId"
-				value="${model.gzjzyhCase.caseId}">
-			<input type="hidden" id="ueId" name="model.gzjzyhUserExtension.ueId"
-				value="${model.gzjzyhUserExtension.ueId}">
-				
-			<input type="hidden" id="appAuditUserId" name="model.gzjzyhApplication.appAuditUserId"
-				value="${model.gzjzyhApplication.appAuditUserId}">
-			<input type="hidden" id="appReceiverId" name="model.gzjzyhApplication.appReceiverId"
-				value="${model.gzjzyhApplication.appReceiverId}">
-				
-			
-			<input type="hidden" id="appLawfile" name="model.gzjzyhApplication.appLawfile"
-				value="${model.gzjzyhApplication.appLawfile}">
-			<input type="hidden" id="appLawfileR" name="model.gzjzyhApplication.appLawfileR"
-				value="${model.gzjzyhApplication.appLawfileR}">
-			<input type="hidden" id="appAttachment" name="model.gzjzyhApplication.appAttachment"
-				value="${model.gzjzyhApplication.appAttachment}">			
+		<s:form id="applySave" target="hiddenFrame" action="/action/queryApply!save.action"  theme="simple" >
+		<input type="hidden" id="appId" name="model.gzjzyhApplication.appId"
+			value="${model.gzjzyhApplication.appId}">
+		<input type="hidden" id="caseId" name="model.gzjzyhCase.caseId"
+			value="${model.gzjzyhCase.caseId}">
+		<input type="hidden" id="appUserid" name="model.gzjzyhApplication.appUserid"
+			value="${model.gzjzyhApplication.appUserid}">
+		<input type="hidden" id="appOrgId" name="model.gzjzyhApplication.appOrgId"
+			value="${model.gzjzyhApplication.appOrgId}">
+		<input type="hidden" id="appLawfile" name="model.gzjzyhApplication.appLawfile"
+			value="${model.gzjzyhApplication.appLawfile}">
+		<input type="hidden" id="appLawfileR" name="model.gzjzyhApplication.appLawfileR"
+			value="${model.gzjzyhApplication.appLawfileR}">
+		<input type="hidden" id="appAttachment" name="model.gzjzyhApplication.appAttachment"
+			value="${model.gzjzyhApplication.appAttachment}">
 								
 		<table width="100%" border="0" cellspacing="0" cellpadding="0"
 			style="vertical-align: top;">
+			<!-- 处理状态 -->
+			<s:if test="${model.gzjzyhApplication.appStatus='2' || model.gzjzyhApplication.appStatus='3' ||model.gzjzyhApplication.appStatus='4' ||model.gzjzyhApplication.appStatus='5' || model.gzjzyhApplication.appStatus='6' }">
+			<tr>
+				<td height="100%">
+					<!-- 处理状态标题 -->
+					<table width="100%" border="0" cellspacing="0" cellpadding="0">
+						<tr>
+							<td height="40" class="table_headtd">
+								<table width="100%" border="0" cellspacing="0" cellpadding="00">
+									<tr>
+										<td width="30">&nbsp;</td>
+										<td class="table_headtd_img"><img
+											src="<%=frameroot%>/images/ico/ico.gif">&nbsp;</td>
+										<td align="left" width="140"><strong>处理状态</strong></td>
+										<td align="right">
+											<table border="0" align="right" cellpadding="00"
+												cellspacing="0">
+												<tr>
+													<td width="7"><img
+														src="<%=frameroot%>/images/ch_h_l.gif" /></td>
+													<td class="Operation_input" onclick="formsubmit();">&nbsp;保&nbsp;存&nbsp;</td>
+													<td width="7"><img
+														src="<%=frameroot%>/images/ch_h_r.gif" /></td>
+													<td width="5"></td>
+													<td width="8"><img
+														src="<%=frameroot%>/images/ch_z_l.gif" /></td>
+													<td class="Operation_input1" onclick="window.close()">&nbsp;关&nbsp;闭&nbsp;</td>
+													<td width="7"><img
+														src="<%=frameroot%>/images/ch_z_r.gif" /></td>
+													<td width="6"></td>
+												</tr>
+											</table>
+										</td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+					</table> 
+					<!-- 处理状态信息内容 -->
+					<table width="100%" height="10%" border="0" cellpadding="0"
+						cellspacing="0" align="center" class="table1">
+						<tr>
+							<td height="21" class="biao_bg1_gz" align="right">
+								<span class="wz"><font color="red">*</font>&nbsp;当前状态：</span>
+							</td>
+							<td class="td1" align="left" width="35%">
+								<s:if test="${model.gzjzyhApplication.appStatus='2' || model.gzjzyhApplication.appStatus='4'}">
+									已审核
+								</s:if>
+								<s:if test="${model.gzjzyhApplication.appStatus='3'}">
+									已驳回
+								</s:if>
+								<s:if test="${model.gzjzyhApplication.appStatus='5'}">
+									已处理
+								</s:if>
+								<s:if test="${model.gzjzyhApplication.appStatus='6'}">
+									已拒签
+								</s:if>
+							</td>
+							<td height="21" class="biao_bg1_gz" align="right">
+								<span class="wz"><font color="red">*</font>&nbsp;处理人员：</span>
+							</td>
+							<td class="td1" align="left">
+								<s:if test="${model.gzjzyhApplication.appStatus='2' || model.gzjzyhApplication.appStatus='3' || model.gzjzyhApplication.appStatus='4'}">
+									${model.gzjzyhApplication.appAuditUser }
+								</s:if>
+								<s:if test="${model.gzjzyhApplication.appStatus='5'}">
+									${model.gzjzyhApplication.appResponser }
+								</s:if>
+								<s:if test="${model.gzjzyhApplication.appStatus='6'}">
+									${model.gzjzyhApplication.appReceiver }
+								</s:if>
+							</td>
+						</tr>
+						<tr>
+							<td height="21" class="biao_bg1_gz" align="right">
+								<span class="wz"><font color="red">*</font>&nbsp;处理意见：</span>
+							</td>
+							<td class="td1" align="left" colspan="3">
+								<s:if test="${model.gzjzyhApplication.appStatus='3' || model.gzjzyhApplication.appStatus='6'}">
+									${model.gzjzyhApplication.appNgReason }
+								</s:if>
+							</td>
+						</tr>
+					</table>
+				</td>
+			</tr>
+			</s:if>
 			<!-- 案件信息 -->
 			<tr>
 				<td height="100%">
@@ -259,6 +338,7 @@ function viewImage(url){
 											<table border="0" align="right" cellpadding="00"
 												cellspacing="0">
 												<tr>
+													<s:if test="${model.gzjzyhApplication.appStatus='0' || model.gzjzyhApplication.appStatus='1'}">
 													<td width="7"><img
 														src="<%=frameroot%>/images/ch_h_l.gif" /></td>
 													<td class="Operation_input" onclick="formsubmit();">&nbsp;保&nbsp;存&nbsp;</td>
@@ -267,9 +347,10 @@ function viewImage(url){
 													<td width="5"></td>
 													<td width="8"><img
 														src="<%=frameroot%>/images/ch_z_l.gif" /></td>
-													<td class="Operation_input1" onclick="window.close()()">&nbsp;关&nbsp;闭&nbsp;</td>
+													<td class="Operation_input1" onclick="window.close()">&nbsp;关&nbsp;闭&nbsp;</td>
 													<td width="7"><img
 														src="<%=frameroot%>/images/ch_z_r.gif" /></td>
+													</s:if>
 													<td width="6"></td>
 												</tr>
 											</table>
@@ -289,13 +370,13 @@ function viewImage(url){
 							<td class="td1" align="left" width="35%"><input
 								id="caseCode"
 								name="model.gzjzyhCase.caseCode" type="text" size="44" maxLength="50"
-								value="${model.gzjzyhCase.caseCode}">&nbsp;<a href="#" class="button"
+								value="${model.gzjzyhCase.caseCode}">&nbsp;<a href="javascript:void(0);" class="button"
 								onclick="change()">选择案件</a></td>
 							<td height="21" class="biao_bg1_gz" align="right">
 								<span class="wz"><font color="red">*</font>&nbsp;案件名称：</span>
 							</td>
 							<td class="td1" align="left">
-								<input id="caseName" name="model.gzjzyhCase.caseName" type="text" size="44" value="${model.gzjzyhCase.caseName}">&nbsp;
+								<input id="caseName" name="model.gzjzyhCase.caseName" type="text" size="44" value="${model.gzjzyhCase.caseName}">
 							</td>
 						</tr>
 						<tr>
@@ -393,16 +474,16 @@ function viewImage(url){
 								<span class="wz"><font color="red">*</font>&nbsp;经办单位：</span>
 							</td>
 							<td class="td1" align="left" width="35%"><input
-								id="appFileno" name="model.gzjzyhApplication.appFileno" type="text" size="44"
-								value="${model.gzjzyhApplication.appFileno}"></td>
+								id="appOrg" name="model.gzjzyhApplication.appOrg" type="text" size="44"
+								value="${model.gzjzyhApplication.appOrg}"></td>
 								
 							<td height="21" class="biao_bg1_gz" align="right">
 								<span class="wz"><font color="red">*</font>&nbsp;联系地址：</span>
 							</td>
 							<td class="td1" align="left">
 								<input
-									id="appFileno" name="model.gzjzyhApplication.appFileno" type="text" size="44"
-									value="${model.gzjzyhApplication.appFileno}">
+									id="appAddress" name="model.gzjzyhApplication.appAddress" type="text" size="44"
+									value="${model.gzjzyhApplication.appAddress}">
 							</td>	
 						</tr>
 						<tr>						
@@ -468,22 +549,22 @@ function viewImage(url){
 								<span class="wz">单位账号（证件号码）：</span>
 							</td>
 							<td class="td1" align="left" width="35%"><textarea rows="6"
-									id="appOrgAccount" style="width: 290px;height: 150px;margin-top: 5px;margin-bottom: 5px"
-									name="model.gzjzyhApplication.appOrgAccount">${model.gzjzyhApplication.appOrgAccount}</textarea>
+									id="searchAppOrgAccount" style="width: 290px;height: 150px;margin-top: 5px;margin-bottom: 5px"
+									name="searchAppOrgAccount">${searchAppOrgAccount}</textarea>
 									<span style="width:50px;margin-bottom: 5px">
-								 		<a	href="#" class="button" onclick="accountImp('appOrgAccount')">导入</a>
-								 		<a	href="#" class="button" onclick="accountClear('appOrgAccount')">清空</a>
+								 		<a	href="javascript:void(0);" class="button" onclick="accountImp('searchAppOrgAccount')">导入</a>
+								 		<a	href="javascript:void(0);" class="button" onclick="accountClear('searchAppOrgAccount')">清空</a>
 									</span>
 							</td>									
 							<td height="21" class="biao_bg1_gz" align="right">
 								<span class="wz">个人账号（证件号码）：</span>
 							</td>
 							<td class="td1" align="left"><textarea rows="6"
-									id="appPersonAccount" style="width: 290px;height: 150px;margin-top: 5px;margin-bottom: 5px"
-									name="model.gzjzyhApplication.appPersonAccount">${model.gzjzyhApplication.appPersonAccount}</textarea>
+									id="searchAppPersonAccount" style="width: 290px;height: 150px;margin-top: 5px;margin-bottom: 5px"
+									name="searchAppPersonAccount">${searchAppPersonAccount}</textarea>
 									<span style="width:50px;margin-bottom: 5px">
-								 		<a	href="#" class="button" onclick="accountImp('appPersonAccount')">导入</a>
-								 		<a	href="#" class="button" onclick="accountClear('appPersonAccount')">清空</a>
+								 		<a	href="javascript:void(0);" class="button" onclick="accountImp('searchAppPersonAccount')">导入</a>
+								 		<a	href="javascript:void(0);" class="button" onclick="accountClear('searchAppPersonAccount')">清空</a>
 									</span>
 							</td>		
 						</tr>				
@@ -528,22 +609,22 @@ function viewImage(url){
 								<span class="wz">单位开户明细（待查账号）：</span>
 							</td>
 							<td class="td1" align="left" width="35%"><textarea
-									rows="6" id="appOrgDetail" style="width: 290px;height: 150px;margin-top: 5px;margin-bottom: 5px"
-									name="model.gzjzyhApplication.appOrgDetail">${model.gzjzyhApplication.appOrgDetail}</textarea>
+									rows="6" id="searchAppOrgDetail" style="width: 290px;height: 150px;margin-top: 5px;margin-bottom: 5px"
+									name="searchAppOrgDetail">${searchAppOrgDetail}</textarea>
 								 <span style="width:50px;margin-bottom: 5px">
-								 	<a	href="#" class="button" onclick="accountImp('appOrgDetail')">导入</a>
-								 	<a	href="#" class="button" onclick="accountClear('appOrgDetail')">清空</a>
+								 	<a	href="javascript:void(0);" class="button" onclick="accountImp('searchAppOrgDetail')">导入</a>
+								 	<a	href="javascript:void(0);" class="button" onclick="accountClear('searchAppOrgDetail')">清空</a>
 								</span>	
 							</td>	
 							<td height="21" class="biao_bg1_gz" align="right">
 								<span class="wz">个人开户明细（证件号码）：</span>
 							</td>
 							<td class="td1" align="left"><textarea
-									rows="6" id="appPersonDetail" style="width: 290px;height: 150px;margin-top: 5px;margin-bottom: 5px"
-									name="model.gzjzyhApplication.appPersonDetail">${model.gzjzyhApplication.appPersonDetail}</textarea>
+									rows="6" id="searchAppPersonDetail" style="width: 290px;height: 150px;margin-top: 5px;margin-bottom: 5px"
+									name="searchAppPersonDetail">${searchAppPersonDetail}</textarea>
 								 <span style="width:50px;margin-bottom: 5px">
-								 	<a	href="#" class="button" onclick="accountImp('appPersonDetail')">导入</a>
-								 	<a	href="#" class="button" onclick="accountClear('appPersonDetail')">清空</a>
+								 	<a	href="javascript:void(0);" class="button" onclick="accountImp('searchAppPersonDetail')">导入</a>
+								 	<a	href="javascript:void(0);" class="button" onclick="accountClear('searchAppPersonDetail')">清空</a>
 								</span>
 							</td>
 						</tr>				
@@ -553,11 +634,11 @@ function viewImage(url){
 								<span class="wz">交易明细（待查账号）：</span>
 							</td>
 							<td class="td1" align="left" width="35%"><textarea
-									rows="6" id="appChadeDetail" style="width: 290px;height: 150px;margin-top: 5px;margin-bottom: 5px"
-									name="model.gzjzyhApplication.appChadeDetail">${model.gzjzyhApplication.appChadeDetail}</textarea>
+									rows="6" id="searchAppChadeDetail" style="width: 290px;height: 150px;margin-top: 5px;margin-bottom: 5px"
+									name="searchAppChadeDetail">${searchAppChadeDetail}</textarea>
 								 <span style="width:50px;margin-bottom: 5px">
-								 	<a	href="#" class="button" onclick="accountImp('appChadeDetail')">导入</a>
-								 	<a	href="#" class="button" onclick="accountClear('appChadeDetail')">清空</a>
+								 	<a	href="javascript:void(0);" class="button" onclick="accountImp('searchAppChadeDetail')">导入</a>
+								 	<a	href="javascript:void(0);" class="button" onclick="accountClear('searchAppChadeDetail')">清空</a>
 								</span>
 							</td>
 						</tr>
@@ -567,25 +648,25 @@ function viewImage(url){
 								<span class="wz"><font color="red">*</font>&nbsp;查询时间：</span>
 							</td>
 							<td colspan="3" align="left">
-								<input name="timeSign"
+								<input name="searchAppDateType"
 								type="radio" value="0" />&nbsp;开启之日启至今
 								
-								<input name="timeSign"
+								<input name="searchAppDateType"
 								type="radio" value="1" />&nbsp;近一年
 								
-								<input name="timeSign"
+								<input name="searchAppDateType"
 								type="radio" value="2" />&nbsp;自定义
 								
 								<strong:newdate
-									name="model.gzjzyhApplication.appStartDate" id="appStartDate"
+									name="searchAppStartDate" id="searchAppStartDate"
 									skin="whyGreen" isicon="true" width="155"
-									dateobj="${model.gzjzyhApplication.appStartDate}"
-									classtyle="search" title="请输入日期" dateform="yyyy-MM-dd"></strong:newdate>
+									dateobj="${searchAppStartDate}"
+									classtyle="search" dateform="yyyy-MM-dd"></strong:newdate>
 								&nbsp;&nbsp;至&nbsp;&nbsp;<strong:newdate width="155"
-									name="model.gzjzyhApplication.appEndDate" id="appEndDate"
+									name="searchAppEndDate" id="searchAppEndDate"
 									skin="whyGreen" isicon="true"
-									dateobj="${model.gzjzyhApplication.appEndDate}"
-									classtyle="search" title="请输入日期" dateform="yyyy-MM-dd"></strong:newdate>
+									dateobj="${searchAppEndDate}"
+									classtyle="search" dateform="yyyy-MM-dd"></strong:newdate>
 							</td>
 						</tr>
 					</table>
@@ -631,8 +712,8 @@ function viewImage(url){
 									rows="6" id="frozenAppOrgAccount" style="width: 290px;height: 150px;margin-top: 5px;margin-bottom: 5px"
 									name="frozenAppOrgAccount">${frozenAppOrgAccount}</textarea>
 								 <span style="width:50px;margin-bottom: 5px">
-								 	<a	href="#" class="button" onclick="accountImp('frozenAppOrgAccount')">导入</a>
-								 	<a	href="#" class="button" onclick="accountClear('frozenAppOrgAccount')">清空</a>
+								 	<a	href="javascript:void(0);" class="button" onclick="accountImp('frozenAppOrgAccount')">导入</a>
+								 	<a	href="javascript:void(0);" class="button" onclick="accountClear('frozenAppOrgAccount')">清空</a>
 								</span>	
 							</td>	
 							<td height="21" class="biao_bg1_gz" align="right">
@@ -642,8 +723,8 @@ function viewImage(url){
 									rows="6" id="frozenAppPersonAccount" style="width: 290px;height: 150px;margin-top: 5px;margin-bottom: 5px"
 									name="frozenAppPersonAccount">${frozenAppPersonAccount}</textarea>
 								 <span style="width:50px;margin-bottom: 5px">
-								 	<a	href="#" class="button" onclick="accountImp('frozenAppPersonAccount')">导入</a>
-								 	<a	href="#" class="button" onclick="accountClear('frozenAppPersonAccount')">清空</a>
+								 	<a	href="javascript:void(0);" class="button" onclick="accountImp('frozenAppPersonAccount')">导入</a>
+								 	<a	href="javascript:void(0);" class="button" onclick="accountClear('frozenAppPersonAccount')">清空</a>
 								</span>
 							</td>
 						</tr>				
@@ -653,15 +734,15 @@ function viewImage(url){
 							</td>
 							<td colspan="3" align="left">							
 								<strong:newdate
-									name="model.gzjzyhApplication.appStartDate" id="appStartDate"
+									name="frozenAppStartDate" id="frozenAppStartDate"
 									skin="whyGreen" isicon="true" width="155"
-									dateobj="${model.gzjzyhApplication.appStartDate}"
-									classtyle="search" title="请输入日期" dateform="yyyy-MM-dd"></strong:newdate>
-								&nbsp;&nbsp;至<strong:newdate width="155"
-									name="model.gzjzyhApplication.appEndDate" id="appEndDate"
+									dateobj="${frozenAppStartDate}"
+									classtyle="search" dateform="yyyy-MM-dd"></strong:newdate>
+								&nbsp;&nbsp;至&nbsp;&nbsp;<strong:newdate width="155"
+									name="frozenAppEndDate" id="frozenAppEndDate"
 									skin="whyGreen" isicon="true"
-									dateobj="${model.gzjzyhApplication.appEndDate}"
-									classtyle="search" title="请输入日期" dateform="yyyy-MM-dd"></strong:newdate>
+									dateobj="${frozenAppEndDate}"
+									classtyle="search" dateform="yyyy-MM-dd"></strong:newdate>
 							</td>
 						</tr>
 					</table>
@@ -671,7 +752,7 @@ function viewImage(url){
 				</td>
 			</tr>
 			
-		<!--续冻申请  -->			
+			<!--续冻申请  -->			
 			<tr id="tr_4" style="display: none">
 				<td height="100%">
 					<table width="100%" border="0" cellspacing="0" cellpadding="0">
@@ -707,8 +788,8 @@ function viewImage(url){
 									rows="6" id="continueAppOrgAccount" style="width: 290px;height: 150px;margin-top: 5px;margin-bottom: 5px"
 									name="continueAppOrgAccount">${continueAppOrgAccount}</textarea>
 								 <span style="width:50px;margin-bottom: 5px">
-								 	<a	href="#" class="button" onclick="accountImp('continueAppOrgAccount')">导入</a>
-								 	<a	href="#" class="button" onclick="accountClear('continueAppOrgAccount')">清空</a>
+								 	<a	href="javascript:void(0);" class="button" onclick="accountImp('continueAppOrgAccount')">导入</a>
+								 	<a	href="javascript:void(0);" class="button" onclick="accountClear('continueAppOrgAccount')">清空</a>
 								</span>	
 							</td>	
 							<td height="21" class="biao_bg1_gz" align="right">
@@ -718,26 +799,26 @@ function viewImage(url){
 									rows="6" id="continueAppPersonAccount" style="width: 290px;height: 150px;margin-top: 5px;margin-bottom: 5px"
 									name="continueAppPersonAccount">${continueAppPersonAccount}</textarea>
 								 <span style="width:50px;margin-bottom: 5px">
-								 	<a	href="#" class="button" onclick="accountImp('continueAppPersonAccount')">导入</a>
-								 	<a	href="#" class="button" onclick="accountClear('continueAppPersonAccount')">清空</a>
+								 	<a	href="javascript:void(0);" class="button" onclick="accountImp('continueAppPersonAccount')">导入</a>
+								 	<a	href="javascript:void(0);" class="button" onclick="accountClear('continueAppPersonAccount')">清空</a>
 								</span>
 							</td>
 						</tr>				
 						<tr>								
 							<td height="21" class="biao_bg1_gz" align="right">
-								<span class="wz"><font color="red">*</font>&nbsp;冻结时间：</span>
+								<span class="wz"><font color="red">*</font>&nbsp;续冻时间：</span>
 							</td>
 							<td colspan="3" align="left">							
 								<strong:newdate
-									name="model.gzjzyhApplication.appStartDate" id="appStartDate"
+									name="continueAppStartDate" id="continueAppStartDate"
 									skin="whyGreen" isicon="true" width="155"
-									dateobj="${model.gzjzyhApplication.appStartDate}"
-									classtyle="search" title="请输入日期" dateform="yyyy-MM-dd"></strong:newdate>
-								&nbsp;&nbsp;至<strong:newdate width="155"
-									name="model.gzjzyhApplication.appEndDate" id="appEndDate"
+									dateobj="${continueAppStartDate}"
+									classtyle="search" dateform="yyyy-MM-dd"></strong:newdate>
+								&nbsp;&nbsp;至&nbsp;&nbsp;<strong:newdate width="155"
+									name="continueAppEndDate" id="continueAppEndDate"
 									skin="whyGreen" isicon="true"
-									dateobj="${model.gzjzyhApplication.appEndDate}"
-									classtyle="search" title="请输入日期" dateform="yyyy-MM-dd"></strong:newdate>
+									dateobj="${continueAppEndDate}"
+									classtyle="search" dateform="yyyy-MM-dd"></strong:newdate>
 							</td>
 						</tr>
 					</table>
@@ -783,8 +864,8 @@ function viewImage(url){
 									rows="6" id="thawAppOrgAccount" style="width: 290px;height: 150px;margin-top: 5px;margin-bottom: 5px"
 									name="thawAppOrgAccount">${thawAppOrgAccount}</textarea>
 								 <span style="width:50px;margin-bottom: 5px">
-								 	<a	href="#" class="button" onclick="accountImp('thawAppOrgAccount')">导入</a>
-								 	<a	href="#" class="button" onclick="accountClear('thawAppOrgAccount')">清空</a>
+								 	<a	href="javascript:void(0);" class="button" onclick="accountImp('thawAppOrgAccount')">导入</a>
+								 	<a	href="javascript:void(0);" class="button" onclick="accountClear('thawAppOrgAccount')">清空</a>
 								</span>	
 							</td>	
 							<td height="21" class="biao_bg1_gz" align="right">
@@ -794,8 +875,8 @@ function viewImage(url){
 									rows="6" id="thawAppPersonAccount" style="width: 290px;height: 150px;margin-top: 5px;margin-bottom: 5px"
 									name="thawAppPersonAccount">${thawAppPersonAccount}</textarea>
 								 <span style="width:50px;margin-bottom: 5px">
-								 	<a	href="#" class="button" onclick="accountImp('thawAppPersonAccount')">导入</a>
-								 	<a	href="#" class="button" onclick="accountClear('thawAppPersonAccount')">清空</a>
+								 	<a	href="javascript:void(0);" class="button" onclick="accountImp('thawAppPersonAccount')">导入</a>
+								 	<a	href="javascript:void(0);" class="button" onclick="accountClear('thawAppPersonAccount')">清空</a>
 								</span>
 							</td>
 						</tr>				
@@ -805,10 +886,10 @@ function viewImage(url){
 							</td>
 							<td colspan="3" align="left">							
 								<strong:newdate
-									name="model.gzjzyhApplication.appStartDate" id="appStartDate"
+									name="thawAppStartDate" id="thawAppStartDate"
 									skin="whyGreen" isicon="true" width="155"
-									dateobj="${model.gzjzyhApplication.appStartDate}"
-									classtyle="search" title="请输入日期" dateform="yyyy-MM-dd"></strong:newdate>
+									dateobj="${thawAppStartDate}"
+									classtyle="search" dateform="yyyy-MM-dd"></strong:newdate>
 							</td>
 					
 						</tr>

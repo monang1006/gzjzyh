@@ -123,36 +123,36 @@
 										<table width="100%" border="0" cellpadding="0" cellspacing="0"
 											class="table1_search">
 											<tr>
-												<td>&nbsp;&nbsp;查询需求：&nbsp; <s:select name="accoutType"
+												<td>&nbsp;&nbsp;查询需求：&nbsp; <s:select name="searchRequiredType"
 														list="#{'':'请选择','0':'个人账号','1':'单位帐号','2':'个人开户明细','3':'单位开户明细','4':'交易明细'}"
 														listKey="key" listValue="value" style="width:155px;" />
-													&nbsp;&nbsp;文书编号：&nbsp; <input id="appFileno"
-													name="appFileno" type="text" width="155px">
-													&nbsp;&nbsp;开始时间：&nbsp; <strong:newdate id="appStartDate"
-														name="appStartDate" dateform="yyyy-MM-dd HH:mm:ss"
+													&nbsp;&nbsp;文书编号：&nbsp; <input id="searchAppFileNo"
+													name="searchAppFileNo" type="text" width="155px" value="${searchAppFileNo}">
+													&nbsp;&nbsp;申请时间：&nbsp; <strong:newdate id="searchAppDateStart"
+														name="searchAppDateStart" dateform="yyyy-MM-dd HH:mm:ss"
 														isicon="true" width="155px"
-														dateobj="${model.gzjzyhApplication.appStartDate}"
-														classtyle="search" title="搜索开始时间" />
-													&nbsp;&nbsp;结束时间：&nbsp; <strong:newdate id="appEndDate"
-														name="appEndDate" dateform="yyyy-MM-dd HH:mm:ss"
+														dateobj="${searchAppDateStart}"
+														classtyle="search" />
+													&nbsp;至&nbsp; <strong:newdate id="searchAppDateEnd"
+														name="searchAppDateEnd" dateform="yyyy-MM-dd HH:mm:ss"
 														isicon="true" width="155px"
-														dateobj="${model.gzjzyhApplication.appEndDate}"
-														classtyle="search" title="搜索结束时间" />
+														dateobj="${searchAppDateEnd}"
+														classtyle="search" />
 												</td>
 											</tr>
 											<tr>
 												<td>
-													&nbsp;&nbsp;请求银行：&nbsp; <s:select name="appBankuser"
+													&nbsp;&nbsp;请求银行：&nbsp; <s:select name="searchAppBankuser"
 														list="userList" listKey="userId" listValue="userName"
-														cssClass="search" title="请输入操作结果" headerKey="" headerValue="请选择"
+														cssClass="search" headerKey="" headerValue="请选择"
 														style="width:155px;"></s:select>
-													&nbsp;&nbsp;当前状态：&nbsp; <s:select name="searchStatus"
-														list="#{'':'请选择','0':'待提交','1':'待审核','2':'待签收','3':'已驳回','4':'已签收','5':'已处理','6':'已拒签'}"
+													&nbsp;&nbsp;当前状态：&nbsp; <s:select name="searchAppStatus"
+														list="#{'':'请选择','0':'待提交','1':'待审核','2':'已审核','3':'已驳回','4':'已签收','5':'已处理','6':'已拒签'}"
 														listKey="key" listValue="value" style="width:155px;" />
-													&nbsp;&nbsp;关联案件：&nbsp; <input id="caseName"
-													name="caseName" type="text" width="155px"><input id="caseCode"
-													name="caseCode" type="hidden"> <a href="#"
-													class="button" onclick="change()">选择方案</a> <input
+													&nbsp;&nbsp;关联案件：&nbsp; <input id="searchCaseName"
+													name="searchCaseName" type="text" width="155px" value="${searchCaseName }">
+													<input id="searchCaseId" name="searchCaseId" type="hidden" value="${searchCaseId }">
+													<a href="javascript:void(0);" class="button" onclick="change()">选择方案</a> <input
 													id="img_sousuo" type="button" onClick="getListBySta();" />
 												</td>
 											</tr>

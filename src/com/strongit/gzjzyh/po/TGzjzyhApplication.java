@@ -175,6 +175,9 @@ public class TGzjzyhApplication implements Serializable {
 	
 	@Column(name = "APP_CASE_CODE")
 	private String appCaseCode;
+	
+	@Column(name = "APP_ORGID")
+	private String appOrgId;
 
 	@Column(name = "APP_ORG")
 	private String appOrg;
@@ -598,6 +601,14 @@ public class TGzjzyhApplication implements Serializable {
 
 	public void setAppAddress(String appAddress) {
 		this.appAddress = appAddress;
+	}
+
+	public String getAppOrgId() {
+		return appOrgId;
+	}
+
+	public void setAppOrgId(String appOrgId) {
+		this.appOrgId = appOrgId;
 	}
 
 }
