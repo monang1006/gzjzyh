@@ -273,20 +273,26 @@ public class QueryBankService implements IQueryBankService {
 			gzjzyhCase = this.caseDao.get(tGzjzyhApplication.getCaseId());
 			if (gzjzyhCase != null) {
 				tGzjzyhApplyVo.setGzjzyhCase(gzjzyhCase);
-			}
+			}			
 
-			//集中式式在扩展表中取数
-			if(!GzjzyhApplicationConfig.isDistributedDeployed()){
-				tGzjzyhUserExtension = (TGzjzyhUserExtension) this.userExtensionDao
-						.find(hql,
-								new Object[] { tGzjzyhApplication.getAppUserid() })
-						.get(0);
+			//分布式在申请表中有同步数
+			if(GzjzyhApplicationConfig.isDistributedDeployed()){
 				
+				
+			}else{
+				List<TGzjzyhUserExtension> tGzjzyhUserExtensionList = (List<TGzjzyhUserExtension>) this.userExtensionDao
+						.find(hql,
+								new Object[] { tGzjzyhApplication.getAppUserid() });
+				if (tGzjzyhUserExtensionList != null
+						&& tGzjzyhUserExtensionList.size() > 0) {
+					tGzjzyhUserExtension = tGzjzyhUserExtensionList.get(0);
+				}
+				if (tGzjzyhUserExtension != null) {
+					tGzjzyhApplyVo.setGzjzyhUserExtension(tGzjzyhUserExtension);
+				}
 			}
-
-			if (tGzjzyhUserExtension != null) {
-				tGzjzyhApplyVo.setGzjzyhUserExtension(tGzjzyhUserExtension);
-			}
+			
+			
 
 		}
 
@@ -301,10 +307,10 @@ public class QueryBankService implements IQueryBankService {
 		TGzjzyhApplication gzjzyhApplication = this.queryApplyDao
 				.get(vo.getGzjzyhApplication().getAppId());
 		//
-		gzjzyhApplication.setAppReceiverId(
-				vo.getGzjzyhApplication().getAppReceiverId());
+		gzjzyhApplication.setAppResponserId(
+				vo.getGzjzyhApplication().getAppResponserId());
 		gzjzyhApplication
-				.setAppReceiver(vo.getGzjzyhApplication().getAppReceiver());
+				.setAppResponser(vo.getGzjzyhApplication().getAppResponser());
 		//
 		gzjzyhApplication.setAppResponsefile(vo.getGzjzyhApplication().getAppResponsefile());//文件路径
 		gzjzyhApplication.setAppStatus(appConstants.STATUS_PROCESS_YES);//已处理

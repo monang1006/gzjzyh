@@ -162,15 +162,15 @@ public class QueryAuditService implements IQueryAuditService {
 
 		gzjzyhApplication.setAppAuditUserId(
 				vo.getGzjzyhApplication().getAppAuditUserId());
-		gzjzyhApplication.setAppAuditUser(
-				vo.getGzjzyhApplication().getAppAuditUser());
+		gzjzyhApplication
+				.setAppAuditUser(vo.getGzjzyhApplication().getAppAuditUser());
 		//
 		gzjzyhApplication
 				.setAppAuditUser(vo.getGzjzyhApplication().getAppAuditUser());
-		
+
 		gzjzyhApplication.setAppStatus(appConstants.STATUS_AUDIT_YES);//已审核
 		gzjzyhApplication.setAppAuditDate(new Date());
-		
+
 		this.queryApplyDao.update(gzjzyhApplication);
 
 	}
@@ -186,15 +186,16 @@ public class QueryAuditService implements IQueryAuditService {
 				vo.getGzjzyhApplication().getAppAuditUserId());
 		gzjzyhApplication
 				.setAppAuditUser(vo.getGzjzyhApplication().getAppAuditUser());
-		
-		gzjzyhApplication.setAppNgReason(vo.getGzjzyhApplication().getAppNgReason());//退回原因
+
+		gzjzyhApplication
+				.setAppNgReason(vo.getGzjzyhApplication().getAppNgReason());//退回原因
 		gzjzyhApplication.setAppStatus(appConstants.STATUS_AUDIT_BACK);//驳回
 		gzjzyhApplication.setAppAuditDate(new Date());
-		
+
 		this.queryApplyDao.update(gzjzyhApplication);
 
 	}
-	
+
 	@Override
 	public TGzjzyhApplyVo getApplyById(String appId)
 			throws ServiceException, SystemException, DAOException {
@@ -206,7 +207,7 @@ public class QueryAuditService implements IQueryAuditService {
 
 		TGzjzyhUserExtension tGzjzyhUserExtension = null;
 
-		String hql = "from TGzjzyhUserExtension t where ueUserId = ?";
+		String hql = "from TGzjzyhUserExtension t where t.tuumsBaseUser.userId = ?";
 
 		if (appId != null && !"".equals(appId)) {
 			tGzjzyhApplication = this.queryApplyDao.get(appId);
@@ -220,10 +221,14 @@ public class QueryAuditService implements IQueryAuditService {
 			}
 
 			//
-			tGzjzyhUserExtension = (TGzjzyhUserExtension) this.userExtensionDao
+			List<TGzjzyhUserExtension> tGzjzyhUserExtensionList = (List<TGzjzyhUserExtension>) this.userExtensionDao
 					.find(hql,
-							new Object[] { tGzjzyhApplication.getAppUserid() })
-					.get(0);
+							new Object[] { tGzjzyhApplication.getAppUserid() });
+			if (tGzjzyhUserExtensionList != null
+					&& tGzjzyhUserExtensionList.size() > 0) {
+				tGzjzyhUserExtension = tGzjzyhUserExtensionList.get(0);
+			}
+
 			tGzjzyhApplyVo.setGzjzyhApplication(tGzjzyhApplication);
 
 			if (tGzjzyhUserExtension != null) {

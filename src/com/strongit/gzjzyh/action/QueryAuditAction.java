@@ -87,6 +87,30 @@ public class QueryAuditAction extends BaseActionSupport {
 
 	private MyLogManager myLogManager;
 
+	private static final String DEFAULT_UPLOAD_IMAGE = "/images/upload/defaultUpload.jpg";
+
+	private String lawDocTmp;//文书
+
+	private String lawRecTmp;//回执
+
+	private String otherTmp;//其它
+
+	private String ueMainNo1Tmp;
+
+	private String ueMainNo2Tmp;
+
+	private String ueMainId1Tmp;
+
+	private String ueMainId2Tmp;
+
+	private String ueHelpNo1Tmp;
+
+	private String ueHelpNo2Tmp;
+
+	private String ueHelpId1Tmp;
+
+	private String ueHelpId2Tmp;
+
 	public QueryAuditAction() {
 
 		statusMap.put(appConstants.STATUS_SUBMIT_NO, "待提交");
@@ -185,6 +209,100 @@ public class QueryAuditAction extends BaseActionSupport {
 			thawAppPersonAccount = model.getGzjzyhApplication()
 					.getAppPersonAccount();
 		}
+
+		//
+		if (model.getGzjzyhApplication().getAppLawfile() == null
+				|| "".equals(model.getGzjzyhApplication().getAppLawfile())) {
+			this.lawDocTmp = this.DEFAULT_UPLOAD_IMAGE;
+		} else {
+			this.lawDocTmp = this.model.getGzjzyhApplication().getAppLawfile();
+		}
+		//
+		if (model.getGzjzyhApplication().getAppLawfileR() == null
+				|| "".equals(model.getGzjzyhApplication().getAppLawfileR())) {
+			this.lawRecTmp = this.DEFAULT_UPLOAD_IMAGE;
+		} else {
+			this.lawRecTmp = this.model.getGzjzyhApplication().getAppLawfileR();
+		}
+		//
+		if (model.getGzjzyhApplication().getAppAttachment() == null
+				|| "".equals(model.getGzjzyhApplication().getAppAttachment())) {
+			this.otherTmp = this.DEFAULT_UPLOAD_IMAGE;
+		} else {
+			this.otherTmp = this.model.getGzjzyhApplication()
+					.getAppAttachment();
+		}
+
+		//无警官信息
+		if (model.getGzjzyhUserExtension() == null) {
+			this.ueMainNo1Tmp = this.DEFAULT_UPLOAD_IMAGE;
+			this.ueMainNo2Tmp = this.DEFAULT_UPLOAD_IMAGE;
+			this.ueMainId1Tmp = this.DEFAULT_UPLOAD_IMAGE;
+			this.ueMainId2Tmp = this.DEFAULT_UPLOAD_IMAGE;
+			this.ueHelpNo1Tmp = this.DEFAULT_UPLOAD_IMAGE;
+			this.ueHelpNo2Tmp = this.DEFAULT_UPLOAD_IMAGE;
+			this.ueHelpId1Tmp = this.DEFAULT_UPLOAD_IMAGE;
+			this.ueHelpId2Tmp = this.DEFAULT_UPLOAD_IMAGE;
+		} else {
+			if (model.getGzjzyhUserExtension().getUeMainId1() == null || ""
+					.equals(model.getGzjzyhUserExtension().getUeMainId1())) {
+				this.ueMainId1Tmp = this.DEFAULT_UPLOAD_IMAGE;
+			} else {
+				this.ueMainId1Tmp = this.model.getGzjzyhUserExtension()
+						.getUeMainId1();
+			}
+			if (model.getGzjzyhUserExtension().getUeMainId2() == null || ""
+					.equals(model.getGzjzyhUserExtension().getUeMainId2())) {
+				this.ueMainId2Tmp = this.DEFAULT_UPLOAD_IMAGE;
+			} else {
+				this.ueMainId2Tmp = this.model.getGzjzyhUserExtension()
+						.getUeMainId2();
+			}
+			if (model.getGzjzyhUserExtension().getUeMainNo1() == null || ""
+					.equals(model.getGzjzyhUserExtension().getUeMainNo1())) {
+				this.ueMainNo1Tmp = this.DEFAULT_UPLOAD_IMAGE;
+			} else {
+				this.ueMainNo1Tmp = model.getGzjzyhUserExtension()
+						.getUeMainNo1();
+			}
+			if (model.getGzjzyhUserExtension().getUeMainNo2() == null || ""
+					.equals(model.getGzjzyhUserExtension().getUeMainNo2())) {
+				this.ueMainNo2Tmp = this.DEFAULT_UPLOAD_IMAGE;
+			} else {
+				this.ueMainNo2Tmp = model.getGzjzyhUserExtension()
+						.getUeMainNo2();
+			}
+
+			if (model.getGzjzyhUserExtension().getUeHelpId1() == null || ""
+					.equals(model.getGzjzyhUserExtension().getUeHelpId1())) {
+				this.ueHelpId1Tmp = this.DEFAULT_UPLOAD_IMAGE;
+			} else {
+				this.ueHelpId1Tmp = model.getGzjzyhUserExtension()
+						.getUeHelpId1();
+			}
+			if (model.getGzjzyhUserExtension().getUeHelpId2() == null || ""
+					.equals(model.getGzjzyhUserExtension().getUeHelpId2())) {
+				this.ueHelpId2Tmp = this.DEFAULT_UPLOAD_IMAGE;
+			} else {
+				this.ueHelpId2Tmp = model.getGzjzyhUserExtension()
+						.getUeHelpId2();
+			}
+			if (model.getGzjzyhUserExtension().getUeHelpNo1() == null || ""
+					.equals(model.getGzjzyhUserExtension().getUeHelpNo1())) {
+				this.ueHelpNo1Tmp = this.DEFAULT_UPLOAD_IMAGE;
+			} else {
+				this.ueHelpNo1Tmp = model.getGzjzyhUserExtension()
+						.getUeHelpNo1();
+			}
+			if (model.getGzjzyhUserExtension().getUeHelpNo2() == null || ""
+					.equals(model.getGzjzyhUserExtension().getUeHelpNo2())) {
+				this.ueHelpNo2Tmp = this.DEFAULT_UPLOAD_IMAGE;
+			} else {
+				this.ueHelpNo2Tmp = model.getGzjzyhUserExtension()
+						.getUeHelpNo2();
+			}
+		}
+
 		return INPUT;
 	}
 
@@ -197,10 +315,9 @@ public class QueryAuditAction extends BaseActionSupport {
 		if (appConstants.STATUS_AUDIT_YES
 				.equals(model.getGzjzyhApplication().getAppStatus())) {
 			this.queryAuditService.audit(model);
-		}else{
+		} else {
 			this.queryAuditService.back(model);
 		}
-		
 
 		return "close";
 	}
@@ -244,6 +361,100 @@ public class QueryAuditAction extends BaseActionSupport {
 			thawAppPersonAccount = model.getGzjzyhApplication()
 					.getAppPersonAccount();
 		}
+
+		//
+		if (model.getGzjzyhApplication().getAppLawfile() == null
+				|| "".equals(model.getGzjzyhApplication().getAppLawfile())) {
+			this.lawDocTmp = this.DEFAULT_UPLOAD_IMAGE;
+		} else {
+			this.lawDocTmp = this.model.getGzjzyhApplication().getAppLawfile();
+		}
+		//
+		if (model.getGzjzyhApplication().getAppLawfileR() == null
+				|| "".equals(model.getGzjzyhApplication().getAppLawfileR())) {
+			this.lawRecTmp = this.DEFAULT_UPLOAD_IMAGE;
+		} else {
+			this.lawRecTmp = this.model.getGzjzyhApplication().getAppLawfileR();
+		}
+		//
+		if (model.getGzjzyhApplication().getAppAttachment() == null
+				|| "".equals(model.getGzjzyhApplication().getAppAttachment())) {
+			this.otherTmp = this.DEFAULT_UPLOAD_IMAGE;
+		} else {
+			this.otherTmp = this.model.getGzjzyhApplication()
+					.getAppAttachment();
+		}
+
+		//无警官信息
+		if (model.getGzjzyhUserExtension() == null) {
+			this.ueMainNo1Tmp = this.DEFAULT_UPLOAD_IMAGE;
+			this.ueMainNo2Tmp = this.DEFAULT_UPLOAD_IMAGE;
+			this.ueMainId1Tmp = this.DEFAULT_UPLOAD_IMAGE;
+			this.ueMainId2Tmp = this.DEFAULT_UPLOAD_IMAGE;
+			this.ueHelpNo1Tmp = this.DEFAULT_UPLOAD_IMAGE;
+			this.ueHelpNo2Tmp = this.DEFAULT_UPLOAD_IMAGE;
+			this.ueHelpId1Tmp = this.DEFAULT_UPLOAD_IMAGE;
+			this.ueHelpId2Tmp = this.DEFAULT_UPLOAD_IMAGE;
+		} else {
+			if (model.getGzjzyhUserExtension().getUeMainId1() == null || ""
+					.equals(model.getGzjzyhUserExtension().getUeMainId1())) {
+				this.ueMainId1Tmp = this.DEFAULT_UPLOAD_IMAGE;
+			} else {
+				this.ueMainId1Tmp = this.model.getGzjzyhUserExtension()
+						.getUeMainId1();
+			}
+			if (model.getGzjzyhUserExtension().getUeMainId2() == null || ""
+					.equals(model.getGzjzyhUserExtension().getUeMainId2())) {
+				this.ueMainId2Tmp = this.DEFAULT_UPLOAD_IMAGE;
+			} else {
+				this.ueMainId2Tmp = this.model.getGzjzyhUserExtension()
+						.getUeMainId2();
+			}
+			if (model.getGzjzyhUserExtension().getUeMainNo1() == null || ""
+					.equals(model.getGzjzyhUserExtension().getUeMainNo1())) {
+				this.ueMainNo1Tmp = this.DEFAULT_UPLOAD_IMAGE;
+			} else {
+				this.ueMainNo1Tmp = model.getGzjzyhUserExtension()
+						.getUeMainNo1();
+			}
+			if (model.getGzjzyhUserExtension().getUeMainNo2() == null || ""
+					.equals(model.getGzjzyhUserExtension().getUeMainNo2())) {
+				this.ueMainNo2Tmp = this.DEFAULT_UPLOAD_IMAGE;
+			} else {
+				this.ueMainNo2Tmp = model.getGzjzyhUserExtension()
+						.getUeMainNo2();
+			}
+
+			if (model.getGzjzyhUserExtension().getUeHelpId1() == null || ""
+					.equals(model.getGzjzyhUserExtension().getUeHelpId1())) {
+				this.ueHelpId1Tmp = this.DEFAULT_UPLOAD_IMAGE;
+			} else {
+				this.ueHelpId1Tmp = model.getGzjzyhUserExtension()
+						.getUeHelpId1();
+			}
+			if (model.getGzjzyhUserExtension().getUeHelpId2() == null || ""
+					.equals(model.getGzjzyhUserExtension().getUeHelpId2())) {
+				this.ueHelpId2Tmp = this.DEFAULT_UPLOAD_IMAGE;
+			} else {
+				this.ueHelpId2Tmp = model.getGzjzyhUserExtension()
+						.getUeHelpId2();
+			}
+			if (model.getGzjzyhUserExtension().getUeHelpNo1() == null || ""
+					.equals(model.getGzjzyhUserExtension().getUeHelpNo1())) {
+				this.ueHelpNo1Tmp = this.DEFAULT_UPLOAD_IMAGE;
+			} else {
+				this.ueHelpNo1Tmp = model.getGzjzyhUserExtension()
+						.getUeHelpNo1();
+			}
+			if (model.getGzjzyhUserExtension().getUeHelpNo2() == null || ""
+					.equals(model.getGzjzyhUserExtension().getUeHelpNo2())) {
+				this.ueHelpNo2Tmp = this.DEFAULT_UPLOAD_IMAGE;
+			} else {
+				this.ueHelpNo2Tmp = model.getGzjzyhUserExtension()
+						.getUeHelpNo2();
+			}
+		}
+
 		return "view";
 	}
 
@@ -405,6 +616,94 @@ public class QueryAuditAction extends BaseActionSupport {
 
 	public void setTypeMap(Map<String, String> typeMap) {
 		this.typeMap = typeMap;
+	}
+
+	public String getLawDocTmp() {
+		return lawDocTmp;
+	}
+
+	public void setLawDocTmp(String lawDocTmp) {
+		this.lawDocTmp = lawDocTmp;
+	}
+
+	public String getLawRecTmp() {
+		return lawRecTmp;
+	}
+
+	public void setLawRecTmp(String lawRecTmp) {
+		this.lawRecTmp = lawRecTmp;
+	}
+
+	public String getOtherTmp() {
+		return otherTmp;
+	}
+
+	public void setOtherTmp(String otherTmp) {
+		this.otherTmp = otherTmp;
+	}
+
+	public String getUeMainNo1Tmp() {
+		return ueMainNo1Tmp;
+	}
+
+	public void setUeMainNo1Tmp(String ueMainNo1Tmp) {
+		this.ueMainNo1Tmp = ueMainNo1Tmp;
+	}
+
+	public String getUeMainNo2Tmp() {
+		return ueMainNo2Tmp;
+	}
+
+	public void setUeMainNo2Tmp(String ueMainNo2Tmp) {
+		this.ueMainNo2Tmp = ueMainNo2Tmp;
+	}
+
+	public String getUeMainId1Tmp() {
+		return ueMainId1Tmp;
+	}
+
+	public void setUeMainId1Tmp(String ueMainId1Tmp) {
+		this.ueMainId1Tmp = ueMainId1Tmp;
+	}
+
+	public String getUeMainId2Tmp() {
+		return ueMainId2Tmp;
+	}
+
+	public void setUeMainId2Tmp(String ueMainId2Tmp) {
+		this.ueMainId2Tmp = ueMainId2Tmp;
+	}
+
+	public String getUeHelpNo1Tmp() {
+		return ueHelpNo1Tmp;
+	}
+
+	public void setUeHelpNo1Tmp(String ueHelpNo1Tmp) {
+		this.ueHelpNo1Tmp = ueHelpNo1Tmp;
+	}
+
+	public String getUeHelpNo2Tmp() {
+		return ueHelpNo2Tmp;
+	}
+
+	public void setUeHelpNo2Tmp(String ueHelpNo2Tmp) {
+		this.ueHelpNo2Tmp = ueHelpNo2Tmp;
+	}
+
+	public String getUeHelpId1Tmp() {
+		return ueHelpId1Tmp;
+	}
+
+	public void setUeHelpId1Tmp(String ueHelpId1Tmp) {
+		this.ueHelpId1Tmp = ueHelpId1Tmp;
+	}
+
+	public String getUeHelpId2Tmp() {
+		return ueHelpId2Tmp;
+	}
+
+	public void setUeHelpId2Tmp(String ueHelpId2Tmp) {
+		this.ueHelpId2Tmp = ueHelpId2Tmp;
 	}
 
 }
