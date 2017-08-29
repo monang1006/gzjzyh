@@ -194,6 +194,69 @@ public class PoliceRegisterAction extends BaseActionSupport<TGzjzyhUserExtension
 			return INPUT;
 		}
 	}
+	
+	public String goRegister() throws Exception {
+		this.prepareModel();
+		// 获取md5加密设置
+		if (applicationConfig.isMd5Enable()) {
+			this.md5Enable = "1";
+		} else {
+			this.md5Enable = "0";
+		}
+
+		String isSupman = "0";
+		this.getRequest().setAttribute("isSupman", isSupman);
+		
+		if(this.model.getTuumsBaseUser().getOrgId() != null && !"".equals(this.model.getTuumsBaseUser().getOrgId())) {
+			TUumsBaseOrg org = this.userService.getOrgInfoByOrgId(this.model.getTuumsBaseUser().getOrgId());
+			this.userOrgName = org.getOrgName();
+		}
+		
+		if(this.model.getUeMainId1() == null || "".equals(this.model.getUeMainId1())) {
+			this.ueMainId1Tmp = this.DEFAULT_UPLOAD_IMAGE;
+		}else {
+			this.ueMainId1Tmp = this.model.getUeMainId1();
+		}
+		if(this.model.getUeMainId2() == null || "".equals(this.model.getUeMainId2())) {
+			this.ueMainId2Tmp = this.DEFAULT_UPLOAD_IMAGE;
+		}else {
+			this.ueMainId2Tmp = this.model.getUeMainId2();
+		}
+		if(this.model.getUeMainNo1() == null || "".equals(this.model.getUeMainNo1())) {
+			this.ueMainNo1Tmp = this.DEFAULT_UPLOAD_IMAGE;
+		}else {
+			this.ueMainNo1Tmp = this.model.getUeMainNo1();
+		}
+		if(this.model.getUeMainNo2() == null || "".equals(this.model.getUeMainNo2())) {
+			this.ueMainNo2Tmp = this.DEFAULT_UPLOAD_IMAGE;
+		}else {
+			this.ueMainNo2Tmp = this.model.getUeMainNo2();
+		}
+		
+		if(this.model.getUeHelpId1() == null || "".equals(this.model.getUeHelpId1())) {
+			this.ueHelpId1Tmp = this.DEFAULT_UPLOAD_IMAGE;
+		}else {
+			this.ueHelpId1Tmp = this.model.getUeHelpId1();
+		}
+		if(this.model.getUeHelpId2() == null || "".equals(this.model.getUeHelpId2())) {
+			this.ueHelpId2Tmp = this.DEFAULT_UPLOAD_IMAGE;
+		}else {
+			this.ueHelpId2Tmp = this.model.getUeHelpId2();
+		}
+		if(this.model.getUeHelpNo1() == null || "".equals(this.model.getUeHelpNo1())) {
+			this.ueHelpNo1Tmp = this.DEFAULT_UPLOAD_IMAGE;
+		}else {
+			this.ueHelpNo1Tmp = this.model.getUeHelpNo1();
+		}
+		if(this.model.getUeHelpNo2() == null || "".equals(this.model.getUeHelpNo2())) {
+			this.ueHelpNo2Tmp = this.DEFAULT_UPLOAD_IMAGE;
+		}else {
+			this.ueHelpNo2Tmp = this.model.getUeHelpNo2();
+		}
+		
+		return "register";
+		
+	}
 
 	@Override
 	public String list() throws Exception {
@@ -242,6 +305,32 @@ public class PoliceRegisterAction extends BaseActionSupport<TGzjzyhUserExtension
 		this.renderHtml("<script>alert('保存成功。')</script>");
 
 		return null;
+	}
+	
+	public String register() throws Exception {
+		this.prepareModel();
+		// 添加用户还是编辑用户的标志
+		String flag = "edit";
+		if ("".equals(model.getUeId()) || model.getUeId() == null) {
+			flag = "add";
+			model.setUeId(null);
+		}
+		this.registerManager.save(model);
+		
+		addActionMessage("保存成功");
+
+		// 添加日志信息
+		String ip = getRequest().getRemoteAddr();
+		String logInfo = "";
+		if (flag.equals("add")) {
+			logInfo = "添加了账号" + model.getTuumsBaseUser().getUserName();
+		} else {
+			logInfo = "编辑了账号" + model.getTuumsBaseUser().getUserName();
+		}
+
+		this.myLogManager.addLog(logInfo, ip);
+		
+		return "registerClose";
 	}
 	
 	public String orgMoreTree() throws Exception {

@@ -61,15 +61,6 @@ public interface IQueryApplyService {
 			throws ServiceException, SystemException, DAOException;
 
 	/**
-	 * @param vo
-	 * @throws ServiceException
-	 * @throws SystemException
-	 * @throws DAOException
-	 */
-	public void update(TGzjzyhApplyVo vo)
-			throws ServiceException, SystemException, DAOException;
-
-	/**
 	 * @param ids
 	 * @throws ServiceException
 	 * @throws SystemException
@@ -127,15 +118,6 @@ public interface IQueryApplyService {
 	 * @throws DAOException
 	 */
 	public void saveOrCommit(TGzjzyhApplyVo vo)
-			throws ServiceException, SystemException, DAOException;
-
-	/**修改并提交
-	 * @param ids
-	 * @throws ServiceException
-	 * @throws SystemException
-	 * @throws DAOException
-	 */
-	public void updateOrCommit(TGzjzyhApplyVo vo)
 			throws ServiceException, SystemException, DAOException;
 
 	/**

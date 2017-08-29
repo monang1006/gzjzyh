@@ -29,6 +29,7 @@ import com.strongit.gzjzyh.po.TGzjzyhCase;
 import com.strongit.gzjzyh.po.TGzjzyhUserExtension;
 import com.strongit.gzjzyh.policeregister.IPoliceRegisterManager;
 import com.strongit.gzjzyh.service.IQueryApplyService;
+import com.strongit.gzjzyh.util.FileKit;
 import com.strongit.gzjzyh.vo.TGzjzyhApplyVo;
 import com.strongit.oa.common.user.IUserService;
 import com.strongit.oa.mylog.MyLogManager;
@@ -37,6 +38,7 @@ import com.strongit.uums.bo.TUumsBaseOrg;
 import com.strongit.uums.bo.TUumsBaseUser;
 import com.strongit.uums.rolemanage.IRoleManager;
 import com.strongit.uums.util.Const;
+import com.strongit.workflow.util.TimeKit;
 import com.strongmvc.exception.ServiceException;
 import com.strongmvc.orm.hibernate.Page;
 import com.strongmvc.webapp.action.BaseActionSupport;
@@ -79,6 +81,14 @@ public class QueryApplyAction extends BaseActionSupport {
 	private String searchCaseCode;
 
 	private List<TUumsBaseUser> userList = new ArrayList<TUumsBaseUser>();
+	
+	private String bankUserName;
+	
+	private String appTypeName;
+	
+	private String appDateDesc;
+	
+	private String appResponsefile;
 
 	IUserService userService;
 
@@ -208,6 +218,19 @@ public class QueryApplyAction extends BaseActionSupport {
 				Const.IS_YES, Const.IS_NO);
 		return userList;
 	}
+	
+	public void checkCanEdit() throws Exception{
+		boolean canEdit = true;
+		if(this.appId != null && !"".equals(this.appId)) {
+			TGzjzyhApplication application = this.queryApplyService.getApplicationById(this.appId);
+			if(!appConstants.APP_STATUS_REFUSE.equals(application.getAppStatus())
+					&& !appConstants.STATUS_AUDIT_BACK.equals(application.getAppStatus())
+					&& !appConstants.STATUS_SUBMIT_NO.equals(application.getAppStatus())) {
+				canEdit = false;
+			}
+		}
+		this.renderText(String.valueOf(canEdit));
+	}
 
 	@Override
 	public String input() throws Exception {
@@ -218,6 +241,22 @@ public class QueryApplyAction extends BaseActionSupport {
 		this.appLawfileTmp = this.DEFAULT_UPLOAD_IMAGE;
 		this.appLawfileRTmp = this.DEFAULT_UPLOAD_IMAGE;
 		this.appAttachmentTmp = this.DEFAULT_UPLOAD_IMAGE;
+		
+		if (model.getGzjzyhApplication().getAppLawfile() != null
+				&& !"".equals(model.getGzjzyhApplication().getAppLawfile())) {
+			this.appLawfileTmp = model.getGzjzyhApplication()
+					.getAppLawfile();
+		}
+		if (model.getGzjzyhApplication().getAppLawfileR() != null
+				&& !"".equals(model.getGzjzyhApplication().getAppLawfileR())) {
+			this.appLawfileRTmp = model.getGzjzyhApplication()
+					.getAppLawfileR();
+		}
+		if (model.getGzjzyhApplication().getAppAttachment() != null
+				&& !"".equals(model.getGzjzyhApplication().getAppAttachment())) {
+			this.appAttachmentTmp = model.getGzjzyhApplication()
+					.getAppAttachment();
+		}
 
 		this.ueMainNo1Tmp = this.DEFAULT_UPLOAD_IMAGE;
 		this.ueMainNo2Tmp = this.DEFAULT_UPLOAD_IMAGE;
@@ -228,47 +267,45 @@ public class QueryApplyAction extends BaseActionSupport {
 		this.ueHelpId1Tmp = this.DEFAULT_UPLOAD_IMAGE;
 		this.ueHelpId2Tmp = this.DEFAULT_UPLOAD_IMAGE;
 
-		if (model.getGzjzyhUserExtension() != null) {
-			if (model.getGzjzyhUserExtension().getUeMainNo1() != null
-					&& !"".equals(model.getGzjzyhUserExtension().getUeMainNo1())) {
-				this.ueMainNo1Tmp = model.getGzjzyhUserExtension()
-						.getUeMainNo1();
-			}
-			if (model.getGzjzyhUserExtension().getUeMainNo2() != null
-					&& !"".equals(model.getGzjzyhUserExtension().getUeMainNo2())) {
-				this.ueMainNo2Tmp = model.getGzjzyhUserExtension()
-						.getUeMainNo2();
-			}
-			if (model.getGzjzyhUserExtension().getUeMainId1() != null
-					&& !"".equals(model.getGzjzyhUserExtension().getUeMainId1())) {
-				this.ueMainId1Tmp = model.getGzjzyhUserExtension()
-						.getUeMainId1();
-			}
-			if (model.getGzjzyhUserExtension().getUeMainId2() != null
-					&& !"".equals(model.getGzjzyhUserExtension().getUeMainId2())) {
-				this.ueMainId2Tmp = model.getGzjzyhUserExtension()
-						.getUeMainId2();
-			}
-			if (model.getGzjzyhUserExtension().getUeHelpNo1() != null
-					&& !"".equals(model.getGzjzyhUserExtension().getUeHelpNo1())) {
-				this.ueHelpNo1Tmp = model.getGzjzyhUserExtension()
-						.getUeHelpNo1();
-			}
-			if (model.getGzjzyhUserExtension().getUeHelpNo2() != null
-					&& !"".equals(model.getGzjzyhUserExtension().getUeHelpNo2())) {
-				this.ueHelpNo2Tmp = model.getGzjzyhUserExtension()
-						.getUeHelpNo2();
-			}
-			if (model.getGzjzyhUserExtension().getUeHelpId1() != null
-					&& !"".equals(model.getGzjzyhUserExtension().getUeHelpId1())) {
-				this.ueHelpId1Tmp = model.getGzjzyhUserExtension()
-						.getUeHelpId1();
-			}
-			if (model.getGzjzyhUserExtension().getUeHelpId2() != null
-					&& !"".equals(model.getGzjzyhUserExtension().getUeHelpId2())) {
-				this.ueHelpId2Tmp = model.getGzjzyhUserExtension()
-						.getUeHelpId2();
-			}
+		if (model.getGzjzyhUserExtension().getUeMainNo1() != null
+				&& !"".equals(model.getGzjzyhUserExtension().getUeMainNo1())) {
+			this.ueMainNo1Tmp = model.getGzjzyhUserExtension()
+					.getUeMainNo1();
+		}
+		if (model.getGzjzyhUserExtension().getUeMainNo2() != null
+				&& !"".equals(model.getGzjzyhUserExtension().getUeMainNo2())) {
+			this.ueMainNo2Tmp = model.getGzjzyhUserExtension()
+					.getUeMainNo2();
+		}
+		if (model.getGzjzyhUserExtension().getUeMainId1() != null
+				&& !"".equals(model.getGzjzyhUserExtension().getUeMainId1())) {
+			this.ueMainId1Tmp = model.getGzjzyhUserExtension()
+					.getUeMainId1();
+		}
+		if (model.getGzjzyhUserExtension().getUeMainId2() != null
+				&& !"".equals(model.getGzjzyhUserExtension().getUeMainId2())) {
+			this.ueMainId2Tmp = model.getGzjzyhUserExtension()
+					.getUeMainId2();
+		}
+		if (model.getGzjzyhUserExtension().getUeHelpNo1() != null
+				&& !"".equals(model.getGzjzyhUserExtension().getUeHelpNo1())) {
+			this.ueHelpNo1Tmp = model.getGzjzyhUserExtension()
+					.getUeHelpNo1();
+		}
+		if (model.getGzjzyhUserExtension().getUeHelpNo2() != null
+				&& !"".equals(model.getGzjzyhUserExtension().getUeHelpNo2())) {
+			this.ueHelpNo2Tmp = model.getGzjzyhUserExtension()
+					.getUeHelpNo2();
+		}
+		if (model.getGzjzyhUserExtension().getUeHelpId1() != null
+				&& !"".equals(model.getGzjzyhUserExtension().getUeHelpId1())) {
+			this.ueHelpId1Tmp = model.getGzjzyhUserExtension()
+					.getUeHelpId1();
+		}
+		if (model.getGzjzyhUserExtension().getUeHelpId2() != null
+				&& !"".equals(model.getGzjzyhUserExtension().getUeHelpId2())) {
+			this.ueHelpId2Tmp = model.getGzjzyhUserExtension()
+					.getUeHelpId2();
 		}
 
 		return INPUT;
@@ -320,25 +357,28 @@ public class QueryApplyAction extends BaseActionSupport {
 	public String save() throws Exception {
 		this.buildModel();
 		try {
-			TUumsBaseUser user = this.userService.getCurrentUser();
-			model.getGzjzyhApplication().setAppUserid(user.getUserId());
-			model.getGzjzyhApplication().setCaseId(
-					model.getGzjzyhCase().getCaseId());
-
+			String flag = "add";
 			if (model.getGzjzyhApplication().getAppId() != null
 					&& !"".equals(model.getGzjzyhApplication().getAppId())) {
-				this.queryApplyService.update(model);
-			} else {
+				flag = "edit";
 				model.getGzjzyhApplication().setAppId(null);
 				model.getGzjzyhCase().setCaseId(null);
-				model.getGzjzyhUserExtension().setUeId(null);
-				this.queryApplyService.save(model);
 			}
+			
+			this.queryApplyService.save(model);
+			
+			// 添加日志信息
+			String ip = getRequest().getRemoteAddr();
+			String logInfo = "";
+			if (flag.equals("add")) {
+				logInfo = "添加了查询申请" + model.getGzjzyhApplication().getAppId();
+			} else {
+				logInfo = "编辑了查询申请" + model.getGzjzyhApplication().getAppId();
+			}
+			this.myLogManager.addLog(logInfo, ip);
 		} catch (Exception e) {
-			String x = e.getCause().getMessage();
-			System.out.println(x);
-			LogPrintStackUtil.printErrorStack(logger, e);
-			renderText(x);
+			e.printStackTrace();
+			errorMsg = "保存失败：" + e.getMessage();
 		}
 		return "close";
 	}
@@ -347,27 +387,27 @@ public class QueryApplyAction extends BaseActionSupport {
 		String appType = this.model.getGzjzyhApplication().getAppType();
 		TGzjzyhApplication application = this.model.getGzjzyhApplication();
 		if("0".equals(appType)){
-			this.searchAppOrgAccount = application.getAppOrgAccount();
-			this.searchAppPersonAccount = application.getAppPersonAccount();
-			this.searchAppOrgDetail = application.getAppOrgDetail();
-			this.searchAppPersonDetail = application.getAppPersonDetail();
-			this.searchAppChadeDetail = application.getAppChadeDetail();
+			this.searchAppOrgAccount = wrapAccount(application.getAppOrgAccount());
+			this.searchAppPersonAccount = wrapAccount(application.getAppPersonAccount());
+			this.searchAppOrgDetail = wrapAccount(application.getAppOrgDetail());
+			this.searchAppPersonDetail = wrapAccount(application.getAppPersonDetail());
+			this.searchAppChadeDetail = wrapAccount(application.getAppChadeDetail());
 			this.searchAppDateType = application.getAppDateType();
 			this.searchAppStartDate = application.getAppStartDate();
 			this.searchAppEndDate = application.getAppEndDate();
 		}else if("1".equals(appType)){
-			this.frozenAppOrgAccount = application.getAppOrgAccount();
-			this.frozenAppPersonAccount = application.getAppPersonAccount();
+			this.frozenAppOrgAccount = wrapAccount(application.getAppOrgAccount());
+			this.frozenAppPersonAccount = wrapAccount(application.getAppPersonAccount());
 			this.frozenAppStartDate = application.getAppStartDate();
 			this.frozenAppEndDate = application.getAppEndDate();
 		}else if("2".equals(appType)){
-			this.continueAppOrgAccount = application.getAppOrgAccount();
-			this.continueAppPersonAccount = application.getAppPersonAccount();
+			this.continueAppOrgAccount = wrapAccount(application.getAppOrgAccount());
+			this.continueAppPersonAccount = wrapAccount(application.getAppPersonAccount());
 			this.continueAppStartDate = application.getAppStartDate();
 			this.continueAppEndDate = application.getAppEndDate();
 		}else if("3".equals(appType)){
-			this.thawAppOrgAccount = application.getAppOrgAccount();
-			this.thawAppPersonAccount = application.getAppPersonAccount();
+			this.thawAppOrgAccount = wrapAccount(application.getAppOrgAccount());
+			this.thawAppPersonAccount = wrapAccount(application.getAppPersonAccount());
 			this.thawAppStartDate = application.getAppStartDate();
 		}
 	}
@@ -376,230 +416,162 @@ public class QueryApplyAction extends BaseActionSupport {
 		String appType = this.model.getGzjzyhApplication().getAppType();
 		TGzjzyhApplication application = this.model.getGzjzyhApplication();
 		if("0".equals(appType)){
-			application.setAppOrgAccount(this.searchAppOrgAccount);
-			application.setAppPersonAccount(this.searchAppPersonAccount);
-			application.setAppOrgDetail(this.searchAppOrgDetail);
-			application.setAppPersonDetail(this.searchAppPersonDetail);
-			application.setAppChadeDetail(this.searchAppChadeDetail);
+			application.setAppOrgAccount(unWrapAccount(this.searchAppOrgAccount));
+			application.setAppPersonAccount(unWrapAccount(this.searchAppPersonAccount));
+			application.setAppOrgDetail(unWrapAccount(this.searchAppOrgDetail));
+			application.setAppPersonDetail(unWrapAccount(this.searchAppPersonDetail));
+			application.setAppChadeDetail(unWrapAccount(this.searchAppChadeDetail));
 			application.setAppDateType(this.searchAppDateType);
 			application.setAppStartDate(this.searchAppStartDate);
 			application.setAppEndDate(this.searchAppEndDate);
 		}else if("1".equals(appType)){
-			application.setAppOrgAccount(this.frozenAppOrgAccount);
-			application.setAppPersonAccount(this.frozenAppPersonAccount);
+			application.setAppOrgAccount(unWrapAccount(this.frozenAppOrgAccount));
+			application.setAppPersonAccount(unWrapAccount(this.frozenAppPersonAccount));
 			application.setAppStartDate(this.frozenAppStartDate);
 			application.setAppEndDate(this.frozenAppEndDate);
 		}else if("2".equals(appType)){
-			application.setAppOrgAccount(this.continueAppOrgAccount);
-			application.setAppPersonAccount(this.continueAppPersonAccount);
+			application.setAppOrgAccount(unWrapAccount(this.continueAppOrgAccount));
+			application.setAppPersonAccount(unWrapAccount(this.continueAppPersonAccount));
 			application.setAppStartDate(this.continueAppStartDate);
 			application.setAppEndDate(this.continueAppEndDate);
 		}else if("3".equals(appType)){
-			application.setAppOrgAccount(this.thawAppOrgAccount);
-			application.setAppPersonAccount(this.thawAppPersonAccount);
+			application.setAppOrgAccount(unWrapAccount(this.thawAppOrgAccount));
+			application.setAppPersonAccount(unWrapAccount(this.thawAppPersonAccount));
 			application.setAppStartDate(this.thawAppStartDate);
 		}
 	}
+	
+	private String wrapAccount(String account) {
+		if(account == null || "".equals(account)) {
+			return account;
+		}
+		return account.replaceAll(",", ",\\\r\\\n");
+	}
+	
+	private String unWrapAccount(String account) {
+		if(account == null || "".equals(account)) {
+			return account;
+		}
+		account = account.replaceAll("\\\r", "");
+		account = account.replaceAll("\\\n", "");
+		return account;
+	}
 
 	public String doCommits() throws Exception {
-
+		this.buildModel();
 		try {
-			// 冻结申请
-			if ("1".equals(model.getGzjzyhApplication().getAppType())) {
-				model.getGzjzyhApplication().setAppOrgAccount(
-						frozenAppOrgAccount);
-				model.getGzjzyhApplication().setAppPersonAccount(
-						frozenAppPersonAccount);
-			}
-			// 续冻申请
-			if ("2".equals(model.getGzjzyhApplication().getAppType())) {
-				model.getGzjzyhApplication().setAppOrgAccount(
-						continueAppOrgAccount);
-				model.getGzjzyhApplication().setAppPersonAccount(
-						continueAppPersonAccount);
-			}
-			// 解冻申请
-			if ("3".equals(model.getGzjzyhApplication().getAppType())) {
-				model.getGzjzyhApplication()
-						.setAppOrgAccount(thawAppOrgAccount);
-				model.getGzjzyhApplication().setAppPersonAccount(
-						thawAppPersonAccount);
-			}
-			TUumsBaseUser user = this.userService.getCurrentUser();
-			model.getGzjzyhApplication().setAppUserid(user.getUserId());
-			model.getGzjzyhApplication().setCaseId(
-					model.getGzjzyhCase().getCaseId());
-
 			if (model.getGzjzyhApplication().getAppId() != null
 					&& !"".equals(model.getGzjzyhApplication().getAppId())) {
-				this.queryApplyService.updateOrCommit(model);
-			} else {
 				model.getGzjzyhApplication().setAppId(null);
 				model.getGzjzyhCase().setCaseId(null);
-				model.getGzjzyhUserExtension().setUeId(null);
-				this.queryApplyService.saveOrCommit(model);
 			}
+			
+			this.queryApplyService.saveOrCommit(model);
+			
+			// 添加日志信息
+			String ip = getRequest().getRemoteAddr();
+			String logInfo = "提交了查询申请" + model.getGzjzyhApplication().getAppId();
+			this.myLogManager.addLog(logInfo, ip);
 		} catch (Exception e) {
-			String x = e.getCause().getMessage();
-			LogPrintStackUtil.printErrorStack(logger, e);
-			renderText(x);
+			e.printStackTrace();
+			errorMsg = "提交失败：" + e.getMessage();
 		}
-
 		return "close";
 	}
 
-	public String getApply() throws Exception {
+	public String getApplyView() throws Exception {
+		this.prepareModel();
+		this.parseModel();
 		this.getBankAccountInfos();
-
-		model = this.queryApplyService.getApplyById(this.appId);
-		// 冻结申请
-		if ("1".equals(model.getGzjzyhApplication().getAppType())) {
-			frozenAppOrgAccount = model.getGzjzyhApplication()
-					.getAppOrgAccount();
-			frozenAppPersonAccount = model.getGzjzyhApplication()
-					.getAppPersonAccount();
+		
+		if(this.userList != null && !this.userList.isEmpty()) {
+			for(TUumsBaseUser user : this.userList) {
+				if(user.getUserId().equals(this.model.getGzjzyhApplication().getAppBankuser())) {
+					this.bankUserName = user.getUserName();
+				}
+			}
 		}
-		// 续冻申请
-		if ("2".equals(model.getGzjzyhApplication().getAppType())) {
-			continueAppOrgAccount = model.getGzjzyhApplication()
-					.getAppOrgAccount();
-			continueAppPersonAccount = model.getGzjzyhApplication()
-					.getAppPersonAccount();
-		}
-		// 解冻申请
-		if ("3".equals(model.getGzjzyhApplication().getAppType())) {
-			thawAppOrgAccount = model.getGzjzyhApplication().getAppOrgAccount();
-			thawAppPersonAccount = model.getGzjzyhApplication()
-					.getAppPersonAccount();
+		this.appTypeName = this.typeMap.get(this.model.getGzjzyhApplication().getAppType());
+		String appDateType = this.model.getGzjzyhApplication().getAppDateType();
+		if("0".equals(appDateType)) {
+			this.appDateDesc = "开启之日启至今";
+		}else if("1".equals(appDateType)) {
+			this.appDateDesc = "近一年";
+		}else if("2".equals(appDateType)) {
+			this.appDateDesc = TimeKit.formatDate(this.model.getGzjzyhApplication().getAppStartDate(), "yyyy-MM-dd")
+					+ " 至 " + TimeKit.formatDate(this.model.getGzjzyhApplication().getAppEndDate(), "yyyy-MM-dd");
 		}
 
-		//
-		if (model.getGzjzyhApplication().getAppLawfile() == null
-				|| "".equals(model.getGzjzyhApplication().getAppLawfile())) {
-			this.appLawfileTmp = this.DEFAULT_UPLOAD_IMAGE;
-		} else {
-			this.appLawfileTmp = this.model.getGzjzyhApplication()
+		this.appLawfileTmp = this.DEFAULT_UPLOAD_IMAGE;
+		this.appLawfileRTmp = this.DEFAULT_UPLOAD_IMAGE;
+		this.appAttachmentTmp = this.DEFAULT_UPLOAD_IMAGE;
+		
+		if (model.getGzjzyhApplication().getAppLawfile() != null
+				&& !"".equals(model.getGzjzyhApplication().getAppLawfile())) {
+			this.appLawfileTmp = model.getGzjzyhApplication()
 					.getAppLawfile();
 		}
-		//
-		if (model.getGzjzyhApplication().getAppLawfileR() == null
-				|| "".equals(model.getGzjzyhApplication().getAppLawfileR())) {
-			this.appLawfileRTmp = this.DEFAULT_UPLOAD_IMAGE;
-		} else {
-			this.appLawfileRTmp = this.model.getGzjzyhApplication()
+		if (model.getGzjzyhApplication().getAppLawfileR() != null
+				&& !"".equals(model.getGzjzyhApplication().getAppLawfileR())) {
+			this.appLawfileRTmp = model.getGzjzyhApplication()
 					.getAppLawfileR();
 		}
-		//
-		if (model.getGzjzyhApplication().getAppAttachment() == null
-				|| "".equals(model.getGzjzyhApplication().getAppAttachment())) {
-			this.appAttachmentTmp = this.DEFAULT_UPLOAD_IMAGE;
-		} else {
-			this.appAttachmentTmp = this.model.getGzjzyhApplication()
+		if (model.getGzjzyhApplication().getAppAttachment() != null
+				&& !"".equals(model.getGzjzyhApplication().getAppAttachment())) {
+			this.appAttachmentTmp = model.getGzjzyhApplication()
 					.getAppAttachment();
 		}
 
-		if (model.getGzjzyhUserExtension().getUeMainId1() == null
-				|| "".equals(model.getGzjzyhUserExtension().getUeMainId1())) {
-			this.ueMainId1Tmp = this.DEFAULT_UPLOAD_IMAGE;
-		} else {
-			this.ueMainId1Tmp = this.model.getGzjzyhUserExtension()
+		this.ueMainNo1Tmp = this.DEFAULT_UPLOAD_IMAGE;
+		this.ueMainNo2Tmp = this.DEFAULT_UPLOAD_IMAGE;
+		this.ueMainId1Tmp = this.DEFAULT_UPLOAD_IMAGE;
+		this.ueMainId2Tmp = this.DEFAULT_UPLOAD_IMAGE;
+		this.ueHelpNo1Tmp = this.DEFAULT_UPLOAD_IMAGE;
+		this.ueHelpNo2Tmp = this.DEFAULT_UPLOAD_IMAGE;
+		this.ueHelpId1Tmp = this.DEFAULT_UPLOAD_IMAGE;
+		this.ueHelpId2Tmp = this.DEFAULT_UPLOAD_IMAGE;
+
+		if (model.getGzjzyhUserExtension().getUeMainNo1() != null
+				&& !"".equals(model.getGzjzyhUserExtension().getUeMainNo1())) {
+			this.ueMainNo1Tmp = model.getGzjzyhUserExtension()
+					.getUeMainNo1();
+		}
+		if (model.getGzjzyhUserExtension().getUeMainNo2() != null
+				&& !"".equals(model.getGzjzyhUserExtension().getUeMainNo2())) {
+			this.ueMainNo2Tmp = model.getGzjzyhUserExtension()
+					.getUeMainNo2();
+		}
+		if (model.getGzjzyhUserExtension().getUeMainId1() != null
+				&& !"".equals(model.getGzjzyhUserExtension().getUeMainId1())) {
+			this.ueMainId1Tmp = model.getGzjzyhUserExtension()
 					.getUeMainId1();
 		}
-		if (model.getGzjzyhUserExtension().getUeMainId2() == null
-				|| "".equals(model.getGzjzyhUserExtension().getUeMainId2())) {
-			this.ueMainId2Tmp = this.DEFAULT_UPLOAD_IMAGE;
-		} else {
-			this.ueMainId2Tmp = this.model.getGzjzyhUserExtension()
+		if (model.getGzjzyhUserExtension().getUeMainId2() != null
+				&& !"".equals(model.getGzjzyhUserExtension().getUeMainId2())) {
+			this.ueMainId2Tmp = model.getGzjzyhUserExtension()
 					.getUeMainId2();
 		}
-		if (model.getGzjzyhUserExtension().getUeMainNo1() == null
-				|| "".equals(model.getGzjzyhUserExtension().getUeMainNo1())) {
-			this.ueMainNo1Tmp = this.DEFAULT_UPLOAD_IMAGE;
-		} else {
-			this.ueMainNo1Tmp = model.getGzjzyhUserExtension().getUeMainNo1();
+		if (model.getGzjzyhUserExtension().getUeHelpNo1() != null
+				&& !"".equals(model.getGzjzyhUserExtension().getUeHelpNo1())) {
+			this.ueHelpNo1Tmp = model.getGzjzyhUserExtension()
+					.getUeHelpNo1();
 		}
-		if (model.getGzjzyhUserExtension().getUeMainNo2() == null
-				|| "".equals(model.getGzjzyhUserExtension().getUeMainNo2())) {
-			this.ueMainNo2Tmp = this.DEFAULT_UPLOAD_IMAGE;
-		} else {
-			this.ueMainNo2Tmp = model.getGzjzyhUserExtension().getUeMainNo2();
+		if (model.getGzjzyhUserExtension().getUeHelpNo2() != null
+				&& !"".equals(model.getGzjzyhUserExtension().getUeHelpNo2())) {
+			this.ueHelpNo2Tmp = model.getGzjzyhUserExtension()
+					.getUeHelpNo2();
 		}
-
-		if (model.getGzjzyhUserExtension().getUeHelpId1() == null
-				|| "".equals(model.getGzjzyhUserExtension().getUeHelpId1())) {
-			this.ueHelpId1Tmp = this.DEFAULT_UPLOAD_IMAGE;
-		} else {
-			this.ueHelpId1Tmp = model.getGzjzyhUserExtension().getUeHelpId1();
+		if (model.getGzjzyhUserExtension().getUeHelpId1() != null
+				&& !"".equals(model.getGzjzyhUserExtension().getUeHelpId1())) {
+			this.ueHelpId1Tmp = model.getGzjzyhUserExtension()
+					.getUeHelpId1();
 		}
-		if (model.getGzjzyhUserExtension().getUeHelpId2() == null
-				|| "".equals(model.getGzjzyhUserExtension().getUeHelpId2())) {
-			this.ueHelpId2Tmp = this.DEFAULT_UPLOAD_IMAGE;
-		} else {
-			this.ueHelpId2Tmp = model.getGzjzyhUserExtension().getUeHelpId2();
-		}
-		if (model.getGzjzyhUserExtension().getUeHelpNo1() == null
-				|| "".equals(model.getGzjzyhUserExtension().getUeHelpNo1())) {
-			this.ueHelpNo1Tmp = this.DEFAULT_UPLOAD_IMAGE;
-		} else {
-			this.ueHelpNo1Tmp = model.getGzjzyhUserExtension().getUeHelpNo1();
-		}
-		if (model.getGzjzyhUserExtension().getUeHelpNo2() == null
-				|| "".equals(model.getGzjzyhUserExtension().getUeHelpNo2())) {
-			this.ueHelpNo2Tmp = this.DEFAULT_UPLOAD_IMAGE;
-		} else {
-			this.ueHelpNo2Tmp = model.getGzjzyhUserExtension().getUeHelpNo2();
+		if (model.getGzjzyhUserExtension().getUeHelpId2() != null
+				&& !"".equals(model.getGzjzyhUserExtension().getUeHelpId2())) {
+			this.ueHelpId2Tmp = model.getGzjzyhUserExtension()
+					.getUeHelpId2();
 		}
 
-		return INPUT;
-	}
-
-	public String getApplyView() throws Exception {
-		model = this.queryApplyService.getViewById(this.appId);
-		// 冻结申请
-		if ("1".equals(model.getGzjzyhApplication().getAppType())) {
-			frozenAppOrgAccount = model.getGzjzyhApplication()
-					.getAppOrgAccount();
-			frozenAppPersonAccount = model.getGzjzyhApplication()
-					.getAppPersonAccount();
-		}
-		// 续冻申请
-		if ("2".equals(model.getGzjzyhApplication().getAppType())) {
-			continueAppOrgAccount = model.getGzjzyhApplication()
-					.getAppOrgAccount();
-			continueAppPersonAccount = model.getGzjzyhApplication()
-					.getAppPersonAccount();
-		}
-		// 解冻申请
-		if ("3".equals(model.getGzjzyhApplication().getAppType())) {
-			thawAppOrgAccount = model.getGzjzyhApplication().getAppOrgAccount();
-			thawAppPersonAccount = model.getGzjzyhApplication()
-					.getAppPersonAccount();
-		}
-
-		//
-		if (model.getGzjzyhApplication().getAppLawfile() == null
-				|| "".equals(model.getGzjzyhApplication().getAppLawfile())) {
-			this.appLawfileTmp = this.DEFAULT_UPLOAD_IMAGE;
-		} else {
-			this.appLawfileTmp = this.model.getGzjzyhApplication()
-					.getAppLawfile();
-		}
-		//
-		if (model.getGzjzyhApplication().getAppLawfileR() == null
-				|| "".equals(model.getGzjzyhApplication().getAppLawfileR())) {
-			this.appLawfileRTmp = this.DEFAULT_UPLOAD_IMAGE;
-		} else {
-			this.appLawfileRTmp = this.model.getGzjzyhApplication()
-					.getAppLawfileR();
-		}
-		//
-		if (model.getGzjzyhApplication().getAppAttachment() == null
-				|| "".equals(model.getGzjzyhApplication().getAppAttachment())) {
-			this.appAttachmentTmp = this.DEFAULT_UPLOAD_IMAGE;
-		} else {
-			this.appAttachmentTmp = this.model.getGzjzyhApplication()
-					.getAppAttachment();
-		}
 		return "view";
 	}
 
@@ -607,18 +579,15 @@ public class QueryApplyAction extends BaseActionSupport {
 		try {
 			if ((this.appId != null) && (!("".equals(this.appId)))) {
 				this.queryApplyService.delete(this.appId);
+				// 添加删除操作的日志信息
+				String ip = getRequest().getRemoteAddr();
+				String logInfo = "";
+				logInfo = "删除了查询申请:" + this.appId;
+				this.myLogManager.addLog(logInfo, ip);
 			}
-			addActionMessage("删除成功");
-			// 添加删除操作的日志信息
-			String ip = getRequest().getRemoteAddr();
-			String logInfo = "";
-			logInfo = "删除了查询申请:" + this.appId;
-			this.myLogManager.addLog(logInfo, ip);
 			renderHtml("true");
-		} catch (ServiceException e) {
-			logger.error(e.getMessage(), e);
+		} catch (Exception e) {
 			e.printStackTrace();
-			addActionMessage(e.getMessage());
 			renderHtml("false");
 		}
 		return null;
@@ -628,18 +597,14 @@ public class QueryApplyAction extends BaseActionSupport {
 		try {
 			if ((this.appId != null) && (!("".equals(this.appId)))) {
 				this.queryApplyService.goCommits(this.appId);
+				String ip = getRequest().getRemoteAddr();
+				String logInfo = "";
+				logInfo = "提交了查询申请:" + this.appId;
+				this.myLogManager.addLog(logInfo, ip);
 			}
-			addActionMessage("提交成功");
-
-			String ip = getRequest().getRemoteAddr();
-			String logInfo = "";
-			logInfo = "提交了查询申请:" + this.appId;
-			this.myLogManager.addLog(logInfo, ip);
 			renderHtml("true");
-		} catch (ServiceException e) {
-			logger.error(e.getMessage(), e);
+		} catch (Exception e) {
 			e.printStackTrace();
-			addActionMessage(e.getMessage());
 			renderHtml("false");
 		}
 		return null;
@@ -649,18 +614,14 @@ public class QueryApplyAction extends BaseActionSupport {
 		try {
 			if ((this.appId != null) && (!("".equals(this.appId)))) {
 				this.queryApplyService.goBack(this.appId);
+				String ip = getRequest().getRemoteAddr();
+				String logInfo = "";
+				logInfo = "撤消了查询申请:" + this.appId;
+				this.myLogManager.addLog(logInfo, ip);
 			}
-			addActionMessage("撤消成功");
-
-			String ip = getRequest().getRemoteAddr();
-			String logInfo = "";
-			logInfo = "撤消了查询申请:" + this.appId;
-			this.myLogManager.addLog(logInfo, ip);
 			renderHtml("true");
-		} catch (ServiceException e) {
-			logger.error(e.getMessage(), e);
+		} catch (Exception e) {
 			e.printStackTrace();
-			addActionMessage(e.getMessage());
 			renderHtml("false");
 		}
 		return null;
@@ -686,22 +647,34 @@ public class QueryApplyAction extends BaseActionSupport {
 	/**
 	 * @throws Exception
 	 */
-	public void download() throws Exception {
-
+	public void downloadTemplat() throws Exception {
+		String fileName = "账户导入模板.xls";
+		// 获取目标文件的绝对路径
+		String filePath = FileKit.getProjectPath() + "/template/account_template.xls";
+		this.download(fileName, filePath);
+	}
+	
+	public void downloadAttachment() throws Exception {
+		String fileName = null;
+		int index = this.appResponsefile.lastIndexOf("\\/");
+		if(index != -1) {
+			fileName = this.appResponsefile.substring(index + 1, this.appResponsefile.length());
+		}
+		// 获取目标文件的绝对路径
+		String filePath = FileKit.getProjectPath() + this.appResponsefile;
+		this.download(fileName, filePath);
+	}
+	
+	private void download(String fileName, String filePath) throws Exception {
 		HttpServletRequest request = ServletActionContext.getRequest();
 		HttpServletResponse response = ServletActionContext.getResponse();
-		String name = "账户模版.xls";
-
-		// 获取目标文件的绝对路径
-		String path = ServletActionContext.getServletContext().getRealPath(
-				"/account_template.xls");
-
+		
 		response.setContentType("text/plain");
-		response.setHeader("Location", URLEncoder.encode(name, "UTF-8"));
+		response.setHeader("Location", URLEncoder.encode(fileName, "UTF-8"));
 		response.setHeader("Content-Disposition", "attachment; filename="
-				+ URLEncoder.encode(name, "UTF-8"));
+				+ URLEncoder.encode(fileName, "UTF-8"));
 		// 读取文件
-		InputStream in = new FileInputStream(path);
+		InputStream in = new FileInputStream(filePath);
 		OutputStream out = response.getOutputStream();
 
 		// 写文件
@@ -746,11 +719,14 @@ public class QueryApplyAction extends BaseActionSupport {
 				}
 			}
 			StringBuffer appBf = new StringBuffer();
-			for (String str : lst) {
-				appBf.append(str).append(",");
+			if(lst != null && !lst.isEmpty()) {
+				for (String str : lst) {
+					appBf.append(str).append(",");
+				}
+				accountStr = appBf.toString();
+				accountStr = accountStr.substring(0, accountStr.length() - 1);
+				accountStr = this.wrapAccount(accountStr);
 			}
-			accountStr = appBf.toString();
-			accountStr = accountStr.substring(0, accountStr.length() - 1);
 		} catch (Exception e) {
 			e.printStackTrace();
 			this.errorMsg = "导入文件错误，请下载导入模板并按模板规范填写账号。";
@@ -1187,6 +1163,38 @@ public class QueryApplyAction extends BaseActionSupport {
 
 	public void setThawAppStartDate(Date thawAppStartDate) {
 		this.thawAppStartDate = thawAppStartDate;
+	}
+
+	public String getBankUserName() {
+		return bankUserName;
+	}
+
+	public void setBankUserName(String bankUserName) {
+		this.bankUserName = bankUserName;
+	}
+
+	public String getAppTypeName() {
+		return appTypeName;
+	}
+
+	public void setAppTypeName(String appTypeName) {
+		this.appTypeName = appTypeName;
+	}
+
+	public String getAppDateDesc() {
+		return appDateDesc;
+	}
+
+	public void setAppDateDesc(String appDateDesc) {
+		this.appDateDesc = appDateDesc;
+	}
+
+	public String getAppResponsefile() {
+		return appResponsefile;
+	}
+
+	public void setAppResponsefile(String appResponsefile) {
+		this.appResponsefile = appResponsefile;
 	}
 
 }

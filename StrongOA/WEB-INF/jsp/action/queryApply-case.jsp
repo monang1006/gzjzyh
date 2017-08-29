@@ -72,7 +72,7 @@
 													&nbsp;&nbsp;案件名称：&nbsp;<input id="searchCaseName"
 													name="searchCaseName" type="text" value="${searchCaseName }">
 													&nbsp;&nbsp;&nbsp;&nbsp;<input id="img_sousuo"
-													type="button" onClick="castList();" />
+													type="button" onClick="document.getElementById('myTableForm').submit();" />
 												</td>
 											</tr>
 										</table>
@@ -85,6 +85,9 @@
 										<webflex:flexTextCol caption="案件名称" property="caseName"
 											align="center" showValue="caseName" width="50%"
 											isCanDrag="true" isCanSort="true"></webflex:flexTextCol>
+										<webflex:flexDateCol caption="立案时间" property="caseConfirmTime"
+											showValue="caseConfirmTime" width="20%" isCanDrag="true" isCanSort="false">
+										</webflex:flexDateCol>
 									</webflex:flexTable></td>
 							</tr>
 							<tr>
@@ -115,12 +118,12 @@
 	function changeCase() {
 		var caseId = $("input[name='chkRadio'][checked]").attr("value");
 		var tr = $("#radio" + caseId).parent().parent();
+		var caseCode = $("td:eq(2)", tr).attr("value");
 		var caseName = $("td:eq(3)", tr).attr("value");
+		var caseConfirmTime = $("td:eq(4)", tr).attr("value");
 		var parentWin=window.dialogArguments;
-		//parentWin.document.getElementById("caseCode").value=caseId;
-		//parentWin.document.getElementById("caseName").value=caseName;
 		
-		parentWin.changeCaseF(caseId,caseName,caseOrg,caseConfirmTime);
+		parentWin.changeCaseF(caseId,caseCode,caseName,caseConfirmTime);
 		window.close();
 	}
 </script>

@@ -173,7 +173,7 @@ function checkMobile(mobile){
 			        if(!checkMobile(mobile)){
 			        	alert("请输入正确的手机号码。\n\n例如:13916752109");
 			        	return ;
-			        } 
+			        }
 			      	if(document.getElementById("userAddr").value.length > 100){
 			        	alert('联系地址过长！');
 			        	document.getElementById("userAddr").focus();
@@ -367,7 +367,7 @@ function checkMobile(mobile){
 										<td width="30">&nbsp;</td>
 										<td class="table_headtd_img"><img
 											src="<%=frameroot%>/images/ico/ico.gif">&nbsp;</td>
-										<td align="left" width="140"><strong>审核状态</strong></td>
+										<td align="left" width="140"><strong>账号信息</strong></td>
 										<td align="right">
 											<table border="0" align="right" cellpadding="00"
 												cellspacing="0">
@@ -383,81 +383,6 @@ function checkMobile(mobile){
 													<td class="Operation_input1" onclick="formReset()">&nbsp;重&nbsp;置&nbsp;</td>
 													<td width="7"><img
 														src="<%=frameroot%>/images/ch_z_r.gif" /></td>
-													<td width="6"></td>
-												</tr>
-											</table>
-										</td>
-									</tr>
-								</table>
-							</td>
-						</tr>
-					</table> 
-					<table width="100%" height="10%" border="0" cellpadding="0"
-						cellspacing="0" align="center" class="table1">
-						<tr>
-							<td height="21" class="biao_bg1" align="right">
-								<span class="wz">审核状态：</span>
-							</td>
-							<td class="td1" align="left" width="40%">
-								<script>
-									var displayStatus = "";
-									if("${model.ueStatus}" == "1"){
-										displayStatus = "待审核";
-									}else if("${model.ueStatus}" == "2"){
-										displayStatus = "审核通过";
-									}else if("${model.ueStatus}" == "0"){
-										displayStatus = "已退回";
-									}
-									document.write(displayStatus);
-								</script>
-							</td>
-							<td height="21" class="biao_bg1" align="right">
-								<span class="wz">审核人员：</span>
-							</td>
-							<td class="td1" align="left">
-								<script>
-									if("${model.ueStatus}" == "0" || "${model.ueStatus}" == "2"){
-										document.write("${model.ueAuditUser}");
-									}
-								</script>
-							</td>
-						</tr>
-						<tr>
-							<td height="21" class="biao_bg1" align="right">
-								<span class="wz">退回意见：</span>
-							</td>
-							<td class="td1" align="left" colspan="3">
-								<script>
-									if("${model.ueStatus}" == "0"){
-										document.write("${model.ueNgReason}");
-									}
-								</script>
-							</td>
-						</tr>
-						<td class="table1_td"></td>
-						<td></td>
-						</tr>
-					</table>
-					<table id="annex" width="90%" height="10%" border="0"
-						cellpadding="0" cellspacing="1" align="center" class="table1">
-					</table>
-				</td>
-			</tr>
-			<tr>
-				<td height="100%">
-					<table width="100%" border="0" cellspacing="0" cellpadding="0">
-						<tr>
-							<td height="40" class="table_headtd">
-								<table width="100%" border="0" cellspacing="0" cellpadding="00">
-									<tr>
-										<td width="30">&nbsp;</td>
-										<td class="table_headtd_img"><img
-											src="<%=frameroot%>/images/ico/ico.gif">&nbsp;</td>
-										<td align="left" width="140"><strong>账号信息</strong></td>
-										<td align="right">
-											<table border="0" align="right" cellpadding="00"
-												cellspacing="0">
-												<tr>
 													<td width="6"></td>
 												</tr>
 											</table>

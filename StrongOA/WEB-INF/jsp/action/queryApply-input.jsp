@@ -38,11 +38,105 @@
 	src="<%=path%>/common/js/newdate/WdatePicker.js"></script>
 <script type="text/javascript">
 
-function formsubmit(){
-	document.getElementById("applySave").submit();
+function formsubmit(doAction){
+	if(!validateElement("caseCode", 50, "案件编号")){
+		return;
+	}
+	if(!validateElement("caseName", 100, "案件名字")){
+		return;
+	}
+	if(!validateElementRequired("caseConfirmTime", "立案时间")){
+		return;
+	}
+	if(!validateElement("appFileno", 100, "立案时间")){
+		return;
+	}
+	if(!validateElement("appAddress", 500, "联系地址")){
+		return;
+	}
+	if(!validateElement("appLawfile", 250, "法律文书")){
+		return;
+	}
+	if(!validateElement("appLawfileR", 250, "法律文书回执")){
+		return;
+	}
+	if(!validateElement("appLawfileR", 250, "法律文书回执")){
+		return;
+	}
+	var appType = document.getElementById("#appType").value;
+	if(appType == '0'){
+		if(!validateElementLength("searchAppOrgAccount", 3000, "单位账号")){
+			return;
+		}
+		if(!validateElementLength("searchAppPersonAccount", 3000, "个人账号")){
+			return;
+		}
+		if(!validateElementLength("searchAppOrgDetail", 3000, "单位开户明细")){
+			return;
+		}
+		if(!validateElementLength("searchAppPersonDetail", 3000, "个人开户明细")){
+			return;
+		}
+		if(!validateElementLength("searchAppChadeDetail", 3000, "交易明细")){
+			return;
+		}
+		var dateType = $("input[name='searchAppDateType']:checked").val();
+		if(dateType == "2"){
+			if(!validateElementRequired("searchAppStartDate", "查询开始时间")){
+				return;
+			}
+			if(!validateElementRequired("searchAppEndDate", "查询结束时间")){
+				return;
+			}
+		}
+	}else if(appType == '1'){
+		if(!validateElementLength("frozenAppOrgAccount", 3000, "单位账号")){
+			return;
+		}
+		if(!validateElementLength("frozenAppPersonAccount", 3000, "个人账号")){
+			return;
+		}
+		if(!validateElementRequired("frozenAppStartDate", "冻结开始时间")){
+			return;
+		}
+		if(!validateElementRequired("frozenAppEndDate", "冻结结束时间")){
+			return;
+		}
+	}else if(appType == '2'){
+		if(!validateElementLength("continueAppOrgAccount", 3000, "单位账号")){
+			return;
+		}
+		if(!validateElementLength("continueAppPersonAccount", 3000, "个人账号")){
+			return;
+		}
+		if(!validateElementRequired("continueAppStartDate", "续冻开始时间")){
+			return;
+		}
+		if(!validateElementRequired("continueAppEndDate", "续冻结束时间")){
+			return;
+		}
+	}else if(appType == '3'){
+		if(!validateElementLength("thawAppOrgAccount", 3000, "单位账号")){
+			return;
+		}
+		if(!validateElementLength("thawAppPersonAccount", 3000, "个人账号")){
+			return;
+		}
+		if(!validateElementRequired("thawAppStartDate", "解冻时间")){
+			return;
+		}
+	}
+	
+	if(doAction == "save"){
+		document.getElementById("applySave").submit();
+	}else if(doAction == "commit"){
+		var formElement = document.getElementById("applySave");
+		formElement.action = "<%=path%>/action/queryApply!doCommits.action";
+		formElement.submit();
+	}
 }
 
-function validateElementRequired(elementId, elementName){
+function validateElementLength(elementId, maxLength, elementName){
 	var isValidate = true;
 	if(document.getElementById(elementId).value != ""
 			&& document.getElementById(elementId).value.length > maxLength){
@@ -53,7 +147,7 @@ function validateElementRequired(elementId, elementName){
 	return isValidate;
 }
 
-function validateElementLength(elementId, maxLength, elementName){
+function validateElementRequired(elementId, elementName){
 	var isValidate = true;
 	if(document.getElementById(elementId).value == ""){
    		alert(elementName + '不能为空。');
@@ -101,10 +195,10 @@ function change(){
 														+ "status:no;help:no;scroll:no;");
 }
 
-function changeCaseF(caseCode,caseName,caseOrg,caseConfirmTime){
+function changeCaseF(caseId,caseCode,caseName,caseConfirmTime){
+	document.getElementById("caseId").value=caseId;
 	document.getElementById("caseCode").value=caseCode;
 	document.getElementById("caseName").value=caseName;
-	document.getElementById("caseOrg").value=caseOrg;
 	document.getElementById("caseConfirmTime").value=caseConfirmTime;
 }
 
@@ -210,6 +304,10 @@ function setImageUpload(domElementId, imageUrl){
 function viewImage(url){
 	window.showModalDialog("<%=path%>/fileNameRedirectAction.action?toPage=/viewimage/viewImage.jsp?imageUrl="+url,window,'help:no;status:no;scroll:no;dialogWidth:1200px; dialogHeight:800px');
 }
+
+function refreshList(){
+	window.dialogArguments.submitForm();
+}
 </script>
 </head>
 <base target="_self" />
@@ -230,11 +328,15 @@ function viewImage(url){
 			value="${model.gzjzyhApplication.appLawfileR}">
 		<input type="hidden" id="appAttachment" name="model.gzjzyhApplication.appAttachment"
 			value="${model.gzjzyhApplication.appAttachment}">
+		<input type="hidden" id="appDate" name="model.gzjzyhApplication.appDate"
+			value='<s:date name="${model.gzjzyhApplication.appDate}" format="yyyy-MM-dd HH:mm:ss" />'>
+		<input type="hidden" id="appOrg" name="model.gzjzyhApplication.appOrg"
+			value="${model.gzjzyhApplication.appOrg}">
 								
 		<table width="100%" border="0" cellspacing="0" cellpadding="0"
 			style="vertical-align: top;">
 			<!-- 处理状态 -->
-			<s:if test="${model.gzjzyhApplication.appStatus='2' || model.gzjzyhApplication.appStatus='3' ||model.gzjzyhApplication.appStatus='4' ||model.gzjzyhApplication.appStatus='5' || model.gzjzyhApplication.appStatus='6' }">
+			<s:if test="${model.gzjzyhApplication.appStatus=='2' || model.gzjzyhApplication.appStatus=='3' ||model.gzjzyhApplication.appStatus=='4' ||model.gzjzyhApplication.appStatus=='5' || model.gzjzyhApplication.appStatus=='6' }">
 			<tr>
 				<td height="100%">
 					<!-- 处理状态标题 -->
@@ -253,7 +355,13 @@ function viewImage(url){
 												<tr>
 													<td width="7"><img
 														src="<%=frameroot%>/images/ch_h_l.gif" /></td>
-													<td class="Operation_input" onclick="formsubmit();">&nbsp;保&nbsp;存&nbsp;</td>
+													<td class="Operation_input" onclick="formsubmit('save');">&nbsp;保&nbsp;存&nbsp;</td>
+													<td width="7"><img
+														src="<%=frameroot%>/images/ch_h_r.gif" /></td>
+													<td width="5"></td>
+													<td width="7"><img
+														src="<%=frameroot%>/images/ch_h_l.gif" /></td>
+													<td class="Operation_input" onclick="formsubmit('commit');">&nbsp;提&nbsp;交&nbsp;</td>
 													<td width="7"><img
 														src="<%=frameroot%>/images/ch_h_r.gif" /></td>
 													<td width="5"></td>
@@ -279,16 +387,16 @@ function viewImage(url){
 								<span class="wz"><font color="red">*</font>&nbsp;当前状态：</span>
 							</td>
 							<td class="td1" align="left" width="35%">
-								<s:if test="${model.gzjzyhApplication.appStatus='2' || model.gzjzyhApplication.appStatus='4'}">
+								<s:if test="${model.gzjzyhApplication.appStatus=='2' || model.gzjzyhApplication.appStatus=='4'}">
 									已审核
 								</s:if>
-								<s:if test="${model.gzjzyhApplication.appStatus='3'}">
+								<s:if test="${model.gzjzyhApplication.appStatus=='3'}">
 									已驳回
 								</s:if>
-								<s:if test="${model.gzjzyhApplication.appStatus='5'}">
+								<s:if test="${model.gzjzyhApplication.appStatus=='5'}">
 									已处理
 								</s:if>
-								<s:if test="${model.gzjzyhApplication.appStatus='6'}">
+								<s:if test="${model.gzjzyhApplication.appStatus=='6'}">
 									已拒签
 								</s:if>
 							</td>
@@ -296,13 +404,13 @@ function viewImage(url){
 								<span class="wz"><font color="red">*</font>&nbsp;处理人员：</span>
 							</td>
 							<td class="td1" align="left">
-								<s:if test="${model.gzjzyhApplication.appStatus='2' || model.gzjzyhApplication.appStatus='3' || model.gzjzyhApplication.appStatus='4'}">
+								<s:if test="${model.gzjzyhApplication.appStatus=='2' || model.gzjzyhApplication.appStatus=='3' || model.gzjzyhApplication.appStatus=='4'}">
 									${model.gzjzyhApplication.appAuditUser }
 								</s:if>
-								<s:if test="${model.gzjzyhApplication.appStatus='5'}">
+								<s:if test="${model.gzjzyhApplication.appStatus=='5'}">
 									${model.gzjzyhApplication.appResponser }
 								</s:if>
-								<s:if test="${model.gzjzyhApplication.appStatus='6'}">
+								<s:if test="${model.gzjzyhApplication.appStatus=='6'}">
 									${model.gzjzyhApplication.appReceiver }
 								</s:if>
 							</td>
@@ -312,7 +420,7 @@ function viewImage(url){
 								<span class="wz"><font color="red">*</font>&nbsp;处理意见：</span>
 							</td>
 							<td class="td1" align="left" colspan="3">
-								<s:if test="${model.gzjzyhApplication.appStatus='3' || model.gzjzyhApplication.appStatus='6'}">
+								<s:if test="${model.gzjzyhApplication.appStatus=='3' || model.gzjzyhApplication.appStatus=='6'}">
 									${model.gzjzyhApplication.appNgReason }
 								</s:if>
 							</td>
@@ -338,10 +446,16 @@ function viewImage(url){
 											<table border="0" align="right" cellpadding="00"
 												cellspacing="0">
 												<tr>
-													<s:if test="${model.gzjzyhApplication.appStatus='0' || model.gzjzyhApplication.appStatus='1'}">
+													<s:if test="${model.gzjzyhApplication.appStatus=='0' || model.gzjzyhApplication.appStatus=='1'}">
 													<td width="7"><img
 														src="<%=frameroot%>/images/ch_h_l.gif" /></td>
-													<td class="Operation_input" onclick="formsubmit();">&nbsp;保&nbsp;存&nbsp;</td>
+													<td class="Operation_input" onclick="formsubmit('save');">&nbsp;保&nbsp;存&nbsp;</td>
+													<td width="7"><img
+														src="<%=frameroot%>/images/ch_h_r.gif" /></td>
+													<td width="5"></td>
+													<td width="7"><img
+														src="<%=frameroot%>/images/ch_h_l.gif" /></td>
+													<td class="Operation_input" onclick="formsubmit('commit');">&nbsp;提&nbsp;交&nbsp;</td>
 													<td width="7"><img
 														src="<%=frameroot%>/images/ch_h_r.gif" /></td>
 													<td width="5"></td>
@@ -461,21 +575,16 @@ function viewImage(url){
 								<span class="wz"><font color="red">*</font>&nbsp;申请时间：</span>
 							</td>
 							<td class="td1" align="left">
-								<strong:newdate
-									id="appDate"
-									name="model.gzjzyhApplication.appDate"
-									width="155"  dateform="yyyy-MM-dd HH:mm:ss" isicon="true"
-									dateobj="${model.gzjzyhApplication.appDate}"
-									classtyle="search" />
+								<s:date name="${model.gzjzyhApplication.appDate}" format="yyyy-MM-dd HH:mm:ss" />
 							</td>	
 						</tr>
 						<tr>
 							<td height="21" class="biao_bg1_gz" align="right">
 								<span class="wz"><font color="red">*</font>&nbsp;经办单位：</span>
 							</td>
-							<td class="td1" align="left" width="35%"><input
-								id="appOrg" name="model.gzjzyhApplication.appOrg" type="text" size="44"
-								value="${model.gzjzyhApplication.appOrg}"></td>
+							<td class="td1" align="left" width="35%">
+								${model.gzjzyhApplication.appOrg}
+							</td>
 								
 							<td height="21" class="biao_bg1_gz" align="right">
 								<span class="wz"><font color="red">*</font>&nbsp;联系地址：</span>

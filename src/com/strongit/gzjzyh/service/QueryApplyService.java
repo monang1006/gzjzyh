@@ -21,6 +21,7 @@ import com.strongmvc.orm.hibernate.GenericDAOHibernate;
 import com.strongmvc.orm.hibernate.Page;
 
 @Service
+@Transactional(readOnly = true)
 public class QueryApplyService implements IQueryApplyService {
 
 	private GenericDAOHibernate<TGzjzyhApplication, String> queryApplyDao;
@@ -125,38 +126,28 @@ public class QueryApplyService implements IQueryApplyService {
 	@Transactional(readOnly = false)
 	public void save(TGzjzyhApplyVo vo)
 			throws ServiceException, SystemException, DAOException {
-		// TODO Auto-generated method stub
-		this.caseDao.save(vo.getGzjzyhCase());
-		//
-		vo.getGzjzyhApplication().setAppStatus(appConstants.STATUS_SUBMIT_NO);
-		vo.getGzjzyhApplication().setCaseId(vo.getGzjzyhCase().getCaseId());
-		this.queryApplyDao.save(vo.getGzjzyhApplication());
-
-	}
-
-	@Override
-	public void update(TGzjzyhApplyVo vo)
-			throws ServiceException, SystemException, DAOException {
-		// TODO Auto-generated method stub
-
-		this.caseDao.update(vo.getGzjzyhCase());
-
-		vo.getGzjzyhApplication().setAppStatus(appConstants.STATUS_SUBMIT_NO);
-		this.queryApplyDao.update(vo.getGzjzyhApplication());
-
+		TGzjzyhCase caseInfo = vo.getGzjzyhCase();
+		this.caseDao.save(caseInfo);
+		
+		TGzjzyhApplication application = vo.getGzjzyhApplication();
+		application.setAppStatus(appConstants.STATUS_SUBMIT_NO);
+		application.setCaseId(caseInfo.getCaseId());
+		this.queryApplyDao.save(application);
 	}
 
 	@Override
 	@Transactional(readOnly = false)
 	public void delete(String ids)
 			throws ServiceException, SystemException, DAOException {
-		// TODO Auto-generated method stub
 		if ((ids != null) && (!("".equals(ids)))) {
 			String[] id = ids.split(",");
 			for (int i = 0; i < id.length; i++) {
-				this.queryApplyDao.delete(id[i]);
+				TGzjzyhApplication application = this.getApplicationById(id[i]);
+				if(!appConstants.STATUS_SUBMIT_NO.equals(application.getAppStatus())) {
+					throw new SystemException();
+				}
+				this.queryApplyDao.delete(application);
 			}
-
 		}
 	}
 
@@ -229,42 +220,47 @@ public class QueryApplyService implements IQueryApplyService {
 	 * @throws SystemException
 	 * @throws DAOException
 	 */
+	@Transactional(readOnly = false)
 	public void goCommits(String ids)
 			throws ServiceException, SystemException, DAOException {
-		List<TGzjzyhApplication> queryList = new ArrayList<TGzjzyhApplication>();
 		if ((ids != null) && (!("".equals(ids)))) {
 			String[] id = ids.split(",");
 			TGzjzyhApplication gzjzyhApplication = null;
 			for (int i = 0; i < id.length; i++) {
 				gzjzyhApplication = this.queryApplyDao.get(id[i]);
-
+				if(!appConstants.STATUS_SUBMIT_NO.equals(gzjzyhApplication.getAppStatus())) {
+					throw new SystemException();
+				}
 				gzjzyhApplication.setAppStatus(appConstants.STATUS_SUBMIT_YES);
-				queryList.add(gzjzyhApplication);
+				this.queryApplyDao.update(gzjzyhApplication);
 
 			}
-			this.queryApplyDao.update(queryList);
 		}
 	}
 
-	/**批量提交
+	/**
+	 * 批量撤销
 	 * @param ids
 	 * @throws ServiceException
 	 * @throws SystemException
 	 * @throws DAOException
 	 */
+	@Transactional(readOnly = false)
 	public void goBack(String ids)
 			throws ServiceException, SystemException, DAOException {
-		List<TGzjzyhApplication> queryList = new ArrayList<TGzjzyhApplication>();
 		if ((ids != null) && (!("".equals(ids)))) {
 			String[] id = ids.split(",");
 			TGzjzyhApplication gzjzyhApplication = null;
 			for (int i = 0; i < id.length; i++) {
 				gzjzyhApplication = this.queryApplyDao.get(id[i]);
+				if(!appConstants.STATUS_SUBMIT_YES.equals(gzjzyhApplication.getAppStatus())
+						&& !appConstants.STATUS_AUDIT_BACK.equals(gzjzyhApplication.getAppStatus())
+						&& !appConstants.APP_STATUS_REFUSE.equals(gzjzyhApplication.getAppStatus())) {
+					throw new SystemException();
+				}
 				gzjzyhApplication.setAppStatus(appConstants.STATUS_SUBMIT_NO);
-				queryList.add(gzjzyhApplication);
-
+				this.queryApplyDao.update(gzjzyhApplication);
 			}
-			this.queryApplyDao.update(queryList);
 		}
 	}
 
@@ -274,25 +270,16 @@ public class QueryApplyService implements IQueryApplyService {
 	 * @throws SystemException
 	 * @throws DAOException
 	 */
+	@Transactional(readOnly = false)
 	public void saveOrCommit(TGzjzyhApplyVo vo)
 			throws ServiceException, SystemException, DAOException {
-		this.caseDao.save(vo.getGzjzyhCase());
-		//
-		vo.getGzjzyhApplication().setCaseId(vo.getGzjzyhCase().getCaseId());
-		vo.getGzjzyhApplication().setAppStatus(appConstants.STATUS_SUBMIT_YES);
-		this.queryApplyDao.save(vo.getGzjzyhApplication());
-
-	}
-
-	@Override
-	public void updateOrCommit(TGzjzyhApplyVo vo)
-			throws ServiceException, SystemException, DAOException {
-		// TODO Auto-generated method stub
-
-		this.caseDao.update(vo.getGzjzyhCase());
-		vo.getGzjzyhApplication().setAppStatus(appConstants.STATUS_SUBMIT_YES);
-		this.queryApplyDao.update(vo.getGzjzyhApplication());
-
+		TGzjzyhCase caseInfo = vo.getGzjzyhCase();
+		this.caseDao.save(caseInfo);
+		
+		TGzjzyhApplication application = vo.getGzjzyhApplication();
+		application.setAppStatus(appConstants.STATUS_SUBMIT_YES);
+		application.setCaseId(caseInfo.getCaseId());
+		this.queryApplyDao.save(application);
 	}
 
 	@Override

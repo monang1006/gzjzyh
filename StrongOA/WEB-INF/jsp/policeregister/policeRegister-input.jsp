@@ -166,7 +166,11 @@ function checkMobile(mobile){
                              return false;               
 			          }
 			          }
-			         var mobile = document.getElementById("rest2").value;
+			     
+			     	if(!validateElement("rest2", 20, "手机号码")){
+						return ;
+			        }
+			        var mobile = document.getElementById("rest2").value;
 			        if(!checkMobile(mobile)){
 			        	alert("请输入正确的手机号码。\n\n例如:13916752109");
 			        	return ;
@@ -203,22 +207,18 @@ function checkMobile(mobile){
 					if(!validateElement("ueHelpId", 20, "协办警官身份证号")){
 						return ;
 			        }
-					var mobile = document.getElementById("ueMainMobile").value;
-					if(mobile.length > 15){
-			        	alert("主办警官手机号码过长。");
-			        	document.getElementById("ueMainMobile").focus();
-			        	return false;
+					if(!validateElement("ueMainMobile", 20, "主办警官手机号码")){
+						return ;
 			        }
+					var mobile = document.getElementById("ueMainMobile").value;
 			        if(!checkMobile(mobile)){
 			        	alert("请输入正确的主办警官手机号码。\n\n例如:13916752109");
 			        	return ;
 			        }
-			        var mobile = document.getElementById("ueHelpMobile").value;
-			        if(mobile.length > 15){
-			        	alert("协办警官手机号码过长。");
-			        	document.getElementById("ueHelpMobile").focus();
-			        	return false;
+			        if(!validateElement("ueHelpMobile", 20, "协办警官手机号码")){
+						return ;
 			        }
+			        var mobile = document.getElementById("ueHelpMobile").value;
 			        if(!checkMobile(mobile)){
 			        	alert("请输入正确的协办警官手机号码。\n\n例如:13916752109");
 			        	return ;
@@ -472,7 +472,7 @@ function checkMobile(mobile){
 						</tr>
 						<tr>
 							<td height="21" class="biao_bg1" align="right">
-								<span class="wz">手机号码：</span>
+								<span class="wz"><font color="red">*</font>&nbsp;手机号码：</span>
 							</td>
 							<td class="td1" align="left"><input id="rest2"
 								name="model.tuumsBaseUser.rest2" type="text" size="44" maxLength="20"
@@ -583,13 +583,13 @@ function checkMobile(mobile){
 						</tr>
 						<tr>
 							<td height="21" class="biao_bg1" align="right">
-								<span class="wz">手机号码：</span>
+								<span class="wz"><font color="red">*</font>&nbsp;手机号码：</span>
 							</td>
 							<td class="td1" align="left" width="40%"><input id="ueMainMobile"
 								name="model.ueMainMobile" type="text" size="44"
 								value="${model.ueMainMobile}"></td>
 							<td height="21" class="biao_bg1" align="right">
-								<span class="wz">手机号码：</span>
+								<span class="wz"><font color="red">*</font>&nbsp;手机号码：</span>
 							</td>
 							<td class="td1" align="left"><input
 								id="ueHelpMobile" name="model.ueHelpMobile" type="text" size="44" value="${model.ueHelpMobile}"></td>

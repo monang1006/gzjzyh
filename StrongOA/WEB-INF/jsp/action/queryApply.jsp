@@ -215,56 +215,54 @@ function addApply(){
 
 function deleteApply(){
 	var id=getValue();
-	var tr = $("#chkButton" + id).parent().parent();
-	var status = $("td:eq(7)", tr).attr("value");
-	alert(status);
 	if(id==null || id==""){
-		alert("请选择要删除的记录。");
-			return;
+		alert("请选择要删除的申请。");
+		return;
 	}
-	if(status==0){
-		alert("记录已审核。");
-			return;
-	}
-	if(status==1){
-		alert("记录已签收。");
-			return;
-	}
-	
 	if(confirm("确定要删除吗？")){
 		$.ajax({
 			type : "post",
 			dataType : "text",
 			url : "<%=path%>/action/queryApply!del.action",
-					data : "appIds=" + id,
-					success : function(msg) {
-						if (msg == "true") {
-							//alert("删除成功！");
-							$("form").submit();
-						} else {
-							alert("删除失败，请您重新删除。");
-						}
-					}
-				});
-		}
- 	}
-
+			data : "appId=" + id,
+			success : function(msg) {
+				if (msg == "true") {
+					alert("删除成功");
+					$("form").submit();
+				} else {
+					alert("删除失败，只能删除未提交的申请。");
+				}
+			}
+		});
+	}
+}
 
 function editApply(){
 	var id=getValue();
 	if(id==null || id==""){
-		alert("请选择要编辑的记录。");
-			return;
-		}
-		
-	if(id.length >32){
-		alert('只可以编辑一条记录。');
+		alert("请选择要编辑的申请。");
 		return;
 	}
-	var width=screen.availWidth;
- 	var height=screen.availHeight;
-	var result=window.showModalDialog("<%=path%>/action/queryApply!getApply.action?appIds="+id,
-			window,"dialogWidth:" + width + "pt;dialogHeight:" + height + "pt;"+"status:no;help:no;scroll:no;");
+	if(id.length >32){
+		alert('只可以编辑一条申请。');
+		return;
+	}
+	$.ajax({
+		type : "post",
+		dataType : "text",
+		url : "<%=path%>/action/queryApply!checkCanEdit.action",
+		data : "appId=" + id,
+		success : function(msg) {
+			if (msg == "true") {
+				var width=screen.availWidth;
+			 	var height=screen.availHeight;
+				var result=window.showModalDialog("<%=path%>/action/queryApply!input.action?appId="+id,
+						window,"dialogWidth:" + width + "pt;dialogHeight:" + height + "pt;"+"status:no;help:no;scroll:no;");
+			} else {
+				alert("当前申请不是未提交、已驳回或者已拒签状态，不允许编辑。");
+			}
+		}
+	});
 }
 
 function change(){
@@ -281,24 +279,11 @@ function change(){
 
 }
 
-
-
 function doCommit(){
 	var id=getValue();
-	var tr = $("#chkButton" + id).parent().parent();
-	var status = $("td:eq(7)", tr).attr("value");
-	alert(status);
 	if(id==null || id==""){
-		alert("请选择要提交的记录。");
-			return;
-	}
-	if(status==0){
-		alert("记录已审核。");
-			return;
-	}
-	if(status==1){
-		alert("记录已签收。");
-			return;
+		alert("请选择要提交的申请。");
+		return;
 	}
 	
 	if(confirm("确定要提交吗？")){
@@ -306,34 +291,23 @@ function doCommit(){
 			type : "post",
 			dataType : "text",
 			url : "<%=path%>/action/queryApply!doCommit.action",
-					data : "appIds=" + id,
-					success : function(msg) {
-						if (msg == "true") {
-							//alert("删除成功！");
-							$("form").submit();
-						} else {
-							alert("提交失败，请您重新提交。");
-						}
-					}
-				});
-		}
- 	}
+			data : "appId=" + id,
+			success : function(msg) {
+				if (msg == "true") {
+					alert("提交成功");
+					$("form").submit();
+				} else {
+					alert("提交失败，只能提交尚未提交的申请。");
+				}
+			}
+		});
+	}
+}
 
 function doback(){
 	var id=getValue();
-	var tr = $("#chkButton" + id).parent().parent();
-	var status = $("td:eq(7)", tr).attr("value");
-	alert(status);
 	if(id==null || id==""){
-		alert("请选择要撤消的记录。");
-			return;
-	}
-	if(status==0){
-		alert("记录已审核。");
-			return;
-	}
-	if(status==1){
-		alert("记录已签收。");
+		alert("请选择要撤消的申请。");
 			return;
 	}
 	
@@ -342,41 +316,39 @@ function doback(){
 			type : "post",
 			dataType : "text",
 			url : "<%=path%>/action/queryApply!back.action",
-					data : "appIds=" + id,
-					success : function(msg) {
-						if (msg == "true") {
-							//alert("删除成功！");
-							$("form").submit();
-						} else {
-							alert("撤消失败，请您重新撤消。");
-						}
-					}
-				});
-		}
- 	}	
+			data : "appId=" + id,
+			success : function(msg) {
+				if (msg == "true") {
+					alert("撤销成功！");
+					$("form").submit();
+				} else {
+					alert("撤消失败，只能撤销未审核、审核退回及拒签的申请。");
+				}
+			}
+		});
+	}
+}	
 	
-
-
 function view(){
 	var id=getValue();
 	if(id==null || id==""){
-		alert("请选择要查看的记录。");
-			return;
-		}
-		
+		alert("请选择要查看的申请。");
+		return;
+	}
+	
 	if(id.length >32){
-		alert('只可以查看一条记录。');
+		alert('只可以查看一条申请。');
 		return;
 	}
 	var width=screen.availWidth;
  	var height=screen.availHeight;
-	var result=window.showModalDialog("<%=path%>/action/queryApply!getApplyView.action?appIds="+id,
+	var result=window.showModalDialog("<%=path%>/action/queryApply!getApplyView.action?appId="+id,
 			window,"dialogWidth:" + width + "pt;dialogHeight:" + height + "pt;"+"status:no;help:no;scroll:no;");
 }
 
-function changeCaseF(caseId,caseName){
-	document.getElementById("caseCode").value=caseId;
-	document.getElementById("caseName").value=caseName;
+function changeCaseF(caseId,caseCode,caseName){
+	document.getElementById("searchCaseId").value=caseId;
+	document.getElementById("searchCaseName").value=caseName;
 }
 
 function submitForm() {

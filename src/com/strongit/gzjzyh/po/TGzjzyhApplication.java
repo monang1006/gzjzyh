@@ -76,7 +76,7 @@ public class TGzjzyhApplication implements Serializable {
 	private String appChadeDetail;
 
 	@Column(name = "APP_DATE_TYPE")
-	private String appDateType;
+	private String appDateType = "0";
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "APP_START_DATE")

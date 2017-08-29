@@ -5,7 +5,7 @@
 <%@ taglib prefix="s" uri="/struts-tags"%>
 <html>
 <head>
-<title>文件导入</title>
+<title>账号导入</title>
 <%@include file="/common/include/meta.jsp"%>
 <!--  引用公共样式文件,建议所有样式都以文件方式定义在jsp文件外部,通常定义在WebRoot目录下的CSS文件夹下-->
 <LINK href="<%=frameroot%>/css/properties_windows_special.css"
@@ -40,6 +40,10 @@
 function formsubmit(){
 	document.getElementById("applySave").submit();
 }
+
+function downloadTemplate(){
+	document.getElementById("applyTemplate").submit();
+}
 </script>
 </head>
 <base target="_self" />
@@ -48,7 +52,7 @@ function formsubmit(){
 		<s:form id="applySave" target="hiddenFrame" enctype="multipart/form-data"
 						action="/action/queryApply!upload.action"  theme="simple" >
 		
-			<input type="hidden" id="attrId" name="attrId" value="${attrId}"/>
+		<input type="hidden" id="attrId" name="attrId" value="${attrId}"/>
 		<table width="100%" border="0" cellspacing="0" cellpadding="0"
 			style="vertical-align: top;">
 			<tr>
@@ -61,7 +65,7 @@ function formsubmit(){
 										<td width="30">&nbsp;</td>
 										<td class="table_headtd_img"><img
 											src="<%=frameroot%>/images/ico/ico.gif">&nbsp;</td>
-										<td align="left" width="140"><strong>文件导入</strong></td>
+										<td align="left" width="140"><strong>账号导入</strong></td>
 										<td align="right">
 											<table border="0" align="right" cellpadding="00"
 												cellspacing="0">
@@ -95,7 +99,7 @@ function formsubmit(){
 						<tr>
 							<td class="td1" align="center">
 								<input id="path" style="width:300px;" name="uploadFile" type="file">
-								&nbsp;&nbsp;<a href="<%=path%>/template/账号导入模板.xls">下载Excel模板</a>
+								&nbsp;&nbsp;<a href="javascript:void(0);" class="button" onclick="downloadTemplate()">下载导入模板</a>
 							</td>
 						</tr>
 					</table>
@@ -105,6 +109,9 @@ function formsubmit(){
 				</td>
 			</tr>
 		</table>
+		</s:form>
+		<s:form id="applyTemplate" target="hiddenFrame" enctype="multipart/form-data"
+						action="/action/queryApply!downloadTemplat.action"  theme="simple" >
 		</s:form>
 	</DIV>
 </body>
