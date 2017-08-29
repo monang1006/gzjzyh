@@ -47,6 +47,7 @@ public class PoliceRegisterAction extends BaseActionSupport<TGzjzyhUserExtension
 	private String userOrgName;
 	private String domElementId;
 	private String imageUrl;
+	private String flag;
 	
 	private String ueMainNo1Tmp;
 	private String ueMainNo2Tmp;
@@ -282,9 +283,9 @@ public class PoliceRegisterAction extends BaseActionSupport<TGzjzyhUserExtension
 	@Override
 	public String save() throws Exception {
 		// 添加用户还是编辑用户的标志
-		String flag = "edit";
+		String opFlag = "edit";
 		if ("".equals(model.getUeId()) || model.getUeId() == null) {
-			flag = "add";
+			opFlag = "add";
 			model.setUeId(null);
 		}
 		this.registerManager.save(model);
@@ -294,7 +295,7 @@ public class PoliceRegisterAction extends BaseActionSupport<TGzjzyhUserExtension
 		// 添加日志信息
 		String ip = getRequest().getRemoteAddr();
 		String logInfo = "";
-		if (flag.equals("add")) {
+		if (opFlag.equals("add")) {
 			logInfo = "添加了账号" + model.getTuumsBaseUser().getUserName();
 		} else {
 			logInfo = "编辑了账号" + model.getTuumsBaseUser().getUserName();
@@ -302,35 +303,13 @@ public class PoliceRegisterAction extends BaseActionSupport<TGzjzyhUserExtension
 
 		this.myLogManager.addLog(logInfo, ip);
 		
-		this.renderHtml("<script>alert('保存成功。')</script>");
-
-		return null;
-	}
-	
-	public String register() throws Exception {
-		this.prepareModel();
-		// 添加用户还是编辑用户的标志
-		String flag = "edit";
-		if ("".equals(model.getUeId()) || model.getUeId() == null) {
-			flag = "add";
-			model.setUeId(null);
+		if("register".equals(this.flag)){
+			return "registerClose";
+		}else{
+			this.renderHtml("<script>alert('保存成功。')</script>");
+			return null;
 		}
-		this.registerManager.save(model);
 		
-		addActionMessage("保存成功");
-
-		// 添加日志信息
-		String ip = getRequest().getRemoteAddr();
-		String logInfo = "";
-		if (flag.equals("add")) {
-			logInfo = "添加了账号" + model.getTuumsBaseUser().getUserName();
-		} else {
-			logInfo = "编辑了账号" + model.getTuumsBaseUser().getUserName();
-		}
-
-		this.myLogManager.addLog(logInfo, ip);
-		
-		return "registerClose";
 	}
 	
 	public String orgMoreTree() throws Exception {
@@ -489,5 +468,13 @@ public class PoliceRegisterAction extends BaseActionSupport<TGzjzyhUserExtension
 
 	public void setImageUrl(String imageUrl) {
 		this.imageUrl = imageUrl;
+	}
+
+	public String getFlag() {
+		return flag;
+	}
+
+	public void setFlag(String flag) {
+		this.flag = flag;
 	}
 }

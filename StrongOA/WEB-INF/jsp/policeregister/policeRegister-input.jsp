@@ -181,13 +181,6 @@ function checkMobile(mobile){
 			        	return;
 			        }
 	        
-			      	var ueId = $("#ueId").val();
-					if(ueId == "" || document.getElementById("hasPasswordEdited").value == "1"){
-						if("${md5Enable}" == "1"){	
-							document.getElementById("userPassword").value = hex_md5(document.getElementById("userPassword").value);
-						}
-					}
-					
 					//扩展信息
 					if(!validateElement("ueMainName", 20, "主办警官姓名")){
 						return ;
@@ -248,7 +241,12 @@ function checkMobile(mobile){
 					if(!validateElement("ueHelpId2", 200, "协办警官身份证反面")){
 						return ;
 			        } */
-					
+			        var ueId = $("#ueId").val();
+					if(ueId == "" || document.getElementById("hasPasswordEdited").value == "1"){
+						if("${md5Enable}" == "1"){	
+							document.getElementById("userPassword").value = hex_md5(document.getElementById("userPassword").value);
+						}
+					}
 		             //----------------------END-----------------------
 					document.getElementById("usermanagesave").submit();
 				
@@ -339,14 +337,14 @@ function checkMobile(mobile){
 					$("#ueHelpId1").val("");
 					$("#ueHelpId2").val("");
 					
-					$("#ueMainNo1").attr("src", "<%=path%>/images/upload/defaultUpload.jpg");
-					$("#ueMainNo2").attr("src", "<%=path%>/images/upload/defaultUpload.jpg");
-					$("#ueMainId1").attr("src", "<%=path%>/images/upload/defaultUpload.jpg");
-					$("#ueMainId2").attr("src", "<%=path%>/images/upload/defaultUpload.jpg");
-					$("#ueHelpNo1").attr("src", "<%=path%>/images/upload/defaultUpload.jpg");
-					$("#ueHelpNo2").attr("src", "<%=path%>/images/upload/defaultUpload.jpg");
-					$("#ueHelpId1").attr("src", "<%=path%>/images/upload/defaultUpload.jpg");
-					$("#ueHelpId2").attr("src", "<%=path%>/images/upload/defaultUpload.jpg");
+					$("#ueMainNo1Tmp").attr("src", "<%=path%>/images/upload/defaultUpload.jpg");
+					$("#ueMainNo2Tmp").attr("src", "<%=path%>/images/upload/defaultUpload.jpg");
+					$("#ueMainId1Tmp").attr("src", "<%=path%>/images/upload/defaultUpload.jpg");
+					$("#ueMainId2Tmp").attr("src", "<%=path%>/images/upload/defaultUpload.jpg");
+					$("#ueHelpNo1Tmp").attr("src", "<%=path%>/images/upload/defaultUpload.jpg");
+					$("#ueHelpNo2Tmp").attr("src", "<%=path%>/images/upload/defaultUpload.jpg");
+					$("#ueHelpId1Tmp").attr("src", "<%=path%>/images/upload/defaultUpload.jpg");
+					$("#ueHelpId2Tmp").attr("src", "<%=path%>/images/upload/defaultUpload.jpg");
 				}
 				
 			</script>

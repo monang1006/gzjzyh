@@ -149,11 +149,12 @@
 													&nbsp;&nbsp;当前状态：&nbsp; <s:select name="searchAppStatus"
 														list="#{'':'请选择','0':'待提交','1':'待审核','2':'已审核','3':'已驳回','4':'已签收','5':'已处理','6':'已拒签'}"
 														listKey="key" listValue="value" style="width:155px;" />
-													&nbsp;&nbsp;关联案件：&nbsp; <input id="searchCaseName"
+													&nbsp;&nbsp;关联案件：&nbsp; <input id="searchCaseName" readonly="readonly"
 													name="searchCaseName" type="text" width="155px" value="${searchCaseName }">
 													<input id="searchCaseId" name="searchCaseId" type="hidden" value="${searchCaseId }">
-													<a href="javascript:void(0);" class="button" onclick="change()">选择方案</a> <input
-													id="img_sousuo" type="button" onClick="getListBySta();" />
+													<a href="javascript:void(0);" class="button" onclick="change()">选择案件</a> 
+													<a href="javascript:void(0);" class="button" onclick="clearCase()">清空案件</a> <input
+													id="img_sousuo" type="button" onClick="submitForm();" />
 												</td>
 											</tr>
 										</table>
@@ -167,15 +168,16 @@
 										<webflex:flexTextCol caption="文书编号" property="appFileno"
 											align="center" showValue="appFileno" width="12%"
 											isCanDrag="true" isCanSort="true"></webflex:flexTextCol>
-										<webflex:flexTextCol caption="请求银行" property="appBankuser"
-											align="center" showValue="appBankuser" width="18%"
-											isCanDrag="true" isCanSort="true"></webflex:flexTextCol>
-										<webflex:flexTextCol caption="申请时间" property="appDate"
-											align="center" showValue="appDate" width="18%"
-											isCanDrag="true" isCanSort="true"></webflex:flexTextCol>
-										<webflex:flexTextCol caption="审核时间" property="appDate"
-											align="center" showValue="appAuditDate" width="18%"
-											isCanDrag="true" isCanSort="true"></webflex:flexTextCol>
+										<webflex:flexEnumCol caption="请求银行" align="center"
+											mapobj="${userMap}" property="appBankuser"
+											showValue="appBankuser" width="18%" isCanDrag="true"
+											isCanSort="true" isCanDrag="true"></webflex:flexEnumCol>
+										<webflex:flexDateCol caption="申请时间" property="appDate"
+											showValue="appDate" width="18%" isCanDrag="true" 
+											isCanSort="false" dateFormat="yyyy-MM-dd HH:mm:ss"></webflex:flexDateCol>
+										<webflex:flexDateCol caption="审核时间" property="appAuditDate"
+											showValue="appAuditDate" width="18%"
+											isCanDrag="true" isCanSort="true"></webflex:flexDateCol>
 										<webflex:flexEnumCol caption="当前状态" align="center"
 											mapobj="${statusMap}" property="appStatus"
 											showValue="appStatus" width="12%" isCanDrag="true"
@@ -349,6 +351,11 @@ function view(){
 function changeCaseF(caseId,caseCode,caseName){
 	document.getElementById("searchCaseId").value=caseId;
 	document.getElementById("searchCaseName").value=caseName;
+}
+
+function clearCase(){
+	document.getElementById("searchCaseId").value="";
+	document.getElementById("searchCaseName").value="";
 }
 
 function submitForm() {

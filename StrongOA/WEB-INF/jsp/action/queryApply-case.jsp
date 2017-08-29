@@ -36,6 +36,7 @@
 	type="text/javascript"></script>
 
 </HEAD>
+<base target="_self" />
 <BODY class=contentbodymargin oncontextmenu="return false;">
 	<script language="javascript" type="text/javascript"
 		src="<%=path%>/common/js/newdate/WdatePicker.js"></script>
@@ -86,7 +87,8 @@
 											align="center" showValue="caseName" width="50%"
 											isCanDrag="true" isCanSort="true"></webflex:flexTextCol>
 										<webflex:flexDateCol caption="立案时间" property="caseConfirmTime"
-											showValue="caseConfirmTime" width="20%" isCanDrag="true" isCanSort="false">
+											showValue="caseConfirmTime" width="20%" 
+											isCanDrag="true" isCanSort="false" dateFormat="yyyy-MM-dd HH:mm:ss">
 										</webflex:flexDateCol>
 									</webflex:flexTable></td>
 							</tr>
@@ -117,10 +119,14 @@
 <script language="javascript">
 	function changeCase() {
 		var caseId = $("input[name='chkRadio'][checked]").attr("value");
+		if(caseId == undefined || caseId == null || caseId == ""){
+			alert("请选择案件");
+			return;
+		}
 		var tr = $("#radio" + caseId).parent().parent();
 		var caseCode = $("td:eq(2)", tr).attr("value");
 		var caseName = $("td:eq(3)", tr).attr("value");
-		var caseConfirmTime = $("td:eq(4)", tr).attr("value");
+		var caseConfirmTime = $("td:eq(4)", tr).attr("title");
 		var parentWin=window.dialogArguments;
 		
 		parentWin.changeCaseF(caseId,caseCode,caseName,caseConfirmTime);

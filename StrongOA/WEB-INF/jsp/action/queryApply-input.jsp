@@ -3,6 +3,7 @@
 <%@ include file="/common/include/rootPath.jsp"%>
 <%@ taglib uri="/tags/web-newdate" prefix="strong"%>
 <%@ taglib prefix="s" uri="/struts-tags"%>
+<%@ taglib prefix="c" uri="/tags/c.tld"%>
 <html>
 <head>
 <title>查询申请</title>
@@ -48,7 +49,7 @@ function formsubmit(doAction){
 	if(!validateElementRequired("caseConfirmTime", "立案时间")){
 		return;
 	}
-	if(!validateElement("appFileno", 100, "立案时间")){
+	if(!validateElement("appFileno", 100, "文书编号")){
 		return;
 	}
 	if(!validateElement("appAddress", 500, "联系地址")){
@@ -60,10 +61,7 @@ function formsubmit(doAction){
 	if(!validateElement("appLawfileR", 250, "法律文书回执")){
 		return;
 	}
-	if(!validateElement("appLawfileR", 250, "法律文书回执")){
-		return;
-	}
-	var appType = document.getElementById("#appType").value;
+	var appType = document.getElementById("appType").value;
 	if(appType == '0'){
 		if(!validateElementLength("searchAppOrgAccount", 3000, "单位账号")){
 			return;
@@ -173,6 +171,7 @@ function validateElement(elementId, maxLength, elementName){
 }
 
 function impForm(accountStr, accId) {
+	accountStr = accountStr.replace(/,/g,",\r\n");
 	document.getElementById(accId).value = accountStr;
 }
 
@@ -198,8 +197,17 @@ function change(){
 function changeCaseF(caseId,caseCode,caseName,caseConfirmTime){
 	document.getElementById("caseId").value=caseId;
 	document.getElementById("caseCode").value=caseCode;
+	document.getElementById("caseCode").readOnly="readonly";
 	document.getElementById("caseName").value=caseName;
 	document.getElementById("caseConfirmTime").value=caseConfirmTime;
+}
+
+function clearCase(){
+	document.getElementById("caseId").value="";
+	document.getElementById("caseCode").value="";
+	document.getElementById("caseCode").readOnly="";
+	document.getElementById("caseName").value="";
+	document.getElementById("caseConfirmTime").value="";
 }
 
 function display(){
@@ -246,6 +254,8 @@ $(function(){
 	}
 	
 	$(".unDisplayFlag").hide();
+	
+	$("input[name='searchAppDateType'][value='${searchAppDateType}']").attr("checked",true); 
 	
 });
 
@@ -329,14 +339,14 @@ function refreshList(){
 		<input type="hidden" id="appAttachment" name="model.gzjzyhApplication.appAttachment"
 			value="${model.gzjzyhApplication.appAttachment}">
 		<input type="hidden" id="appDate" name="model.gzjzyhApplication.appDate"
-			value='<s:date name="${model.gzjzyhApplication.appDate}" format="yyyy-MM-dd HH:mm:ss" />'>
+			value='<s:date name="#request.model.gzjzyhApplication.appDate" format="yyyy-MM-dd HH:mm:ss" />'>
 		<input type="hidden" id="appOrg" name="model.gzjzyhApplication.appOrg"
 			value="${model.gzjzyhApplication.appOrg}">
 								
 		<table width="100%" border="0" cellspacing="0" cellpadding="0"
 			style="vertical-align: top;">
 			<!-- 处理状态 -->
-			<s:if test="${model.gzjzyhApplication.appStatus=='2' || model.gzjzyhApplication.appStatus=='3' ||model.gzjzyhApplication.appStatus=='4' ||model.gzjzyhApplication.appStatus=='5' || model.gzjzyhApplication.appStatus=='6' }">
+			<s:if test="#request.model.gzjzyhApplication.appStatus==2 || #request.model.gzjzyhApplication.appStatus==3 || #request.model.gzjzyhApplication.appStatus==4 || #request.model.gzjzyhApplication.appStatus==5 || #request.model.gzjzyhApplication.appStatus==6">
 			<tr>
 				<td height="100%">
 					<!-- 处理状态标题 -->
@@ -387,16 +397,16 @@ function refreshList(){
 								<span class="wz"><font color="red">*</font>&nbsp;当前状态：</span>
 							</td>
 							<td class="td1" align="left" width="35%">
-								<s:if test="${model.gzjzyhApplication.appStatus=='2' || model.gzjzyhApplication.appStatus=='4'}">
+								<s:if test="#request.model.gzjzyhApplication.appStatus==2 || #request.model.gzjzyhApplication.appStatus==4">
 									已审核
 								</s:if>
-								<s:if test="${model.gzjzyhApplication.appStatus=='3'}">
+								<s:if test="#request.model.gzjzyhApplication.appStatus==3">
 									已驳回
 								</s:if>
-								<s:if test="${model.gzjzyhApplication.appStatus=='5'}">
+								<s:if test="#request.model.gzjzyhApplication.appStatus==5">
 									已处理
 								</s:if>
-								<s:if test="${model.gzjzyhApplication.appStatus=='6'}">
+								<s:if test="#request.model.gzjzyhApplication.appStatus==6">
 									已拒签
 								</s:if>
 							</td>
@@ -404,13 +414,13 @@ function refreshList(){
 								<span class="wz"><font color="red">*</font>&nbsp;处理人员：</span>
 							</td>
 							<td class="td1" align="left">
-								<s:if test="${model.gzjzyhApplication.appStatus=='2' || model.gzjzyhApplication.appStatus=='3' || model.gzjzyhApplication.appStatus=='4'}">
+								<s:if test="#request.model.gzjzyhApplication.appStatus==2 || #request.model.gzjzyhApplication.appStatus==3 || #request.model.gzjzyhApplication.appStatus==4">
 									${model.gzjzyhApplication.appAuditUser }
 								</s:if>
-								<s:if test="${model.gzjzyhApplication.appStatus=='5'}">
+								<s:if test="#request.model.gzjzyhApplication.appStatus==5">
 									${model.gzjzyhApplication.appResponser }
 								</s:if>
-								<s:if test="${model.gzjzyhApplication.appStatus=='6'}">
+								<s:if test="#request.model.gzjzyhApplication.appStatus==6">
 									${model.gzjzyhApplication.appReceiver }
 								</s:if>
 							</td>
@@ -420,7 +430,7 @@ function refreshList(){
 								<span class="wz"><font color="red">*</font>&nbsp;处理意见：</span>
 							</td>
 							<td class="td1" align="left" colspan="3">
-								<s:if test="${model.gzjzyhApplication.appStatus=='3' || model.gzjzyhApplication.appStatus=='6'}">
+								<s:if test="#request.model.gzjzyhApplication.appStatus==3 || #request.model.gzjzyhApplication.appStatus==6">
 									${model.gzjzyhApplication.appNgReason }
 								</s:if>
 							</td>
@@ -446,7 +456,7 @@ function refreshList(){
 											<table border="0" align="right" cellpadding="00"
 												cellspacing="0">
 												<tr>
-													<s:if test="${model.gzjzyhApplication.appStatus=='0' || model.gzjzyhApplication.appStatus=='1'}">
+													<s:if test="#request.model.gzjzyhApplication.appStatus==0 || #request.model.gzjzyhApplication.appStatus==1">
 													<td width="7"><img
 														src="<%=frameroot%>/images/ch_h_l.gif" /></td>
 													<td class="Operation_input" onclick="formsubmit('save');">&nbsp;保&nbsp;存&nbsp;</td>
@@ -485,7 +495,8 @@ function refreshList(){
 								id="caseCode"
 								name="model.gzjzyhCase.caseCode" type="text" size="44" maxLength="50"
 								value="${model.gzjzyhCase.caseCode}">&nbsp;<a href="javascript:void(0);" class="button"
-								onclick="change()">选择案件</a></td>
+								onclick="change()">选择案件</a>&nbsp;<a href="javascript:void(0);" class="button"
+								onclick="clearCase()">清空案件</a></td>
 							<td height="21" class="biao_bg1_gz" align="right">
 								<span class="wz"><font color="red">*</font>&nbsp;案件名称：</span>
 							</td>
@@ -575,7 +586,7 @@ function refreshList(){
 								<span class="wz"><font color="red">*</font>&nbsp;申请时间：</span>
 							</td>
 							<td class="td1" align="left">
-								<s:date name="${model.gzjzyhApplication.appDate}" format="yyyy-MM-dd HH:mm:ss" />
+								<s:date name="#request.model.gzjzyhApplication.appDate" format="yyyy-MM-dd HH:mm:ss" />
 							</td>	
 						</tr>
 						<tr>
@@ -594,6 +605,10 @@ function refreshList(){
 									id="appAddress" name="model.gzjzyhApplication.appAddress" type="text" size="44"
 									value="${model.gzjzyhApplication.appAddress}">
 							</td>	
+						</tr>
+						<tr>						
+							<td height="20px">
+							</td>
 						</tr>
 						<tr>						
 							<td colspan="4" class="td1" align="center">

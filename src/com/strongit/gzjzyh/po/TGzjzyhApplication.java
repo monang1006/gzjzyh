@@ -17,6 +17,8 @@ import javax.persistence.TemporalType;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import com.strongit.gzjzyh.appConstants;
+
 /**
  * The persistent class for the T_GZJZYH_APPLICATION database table.
  * 

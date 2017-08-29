@@ -137,6 +137,8 @@ public class QueryApplyAction extends BaseActionSupport {
 	private Map<String, String> statusMap = new HashMap<String, String>();
 
 	private Map<String, String> typeMap = new HashMap<String, String>();
+	
+	private Map<String, String> userMap = new HashMap<String, String>();
 
 	private MyLogManager myLogManager;
 
@@ -169,7 +171,7 @@ public class QueryApplyAction extends BaseActionSupport {
 	private String attrId;// 导入的属性ID
 
 	private String errorMsg = "";
-
+	
 	public QueryApplyAction() {
 		statusMap.put(appConstants.STATUS_SUBMIT_NO, "待提交");
 		statusMap.put(appConstants.STATUS_SUBMIT_YES, "待审核");
@@ -314,6 +316,11 @@ public class QueryApplyAction extends BaseActionSupport {
 	@Override
 	public String list() throws Exception {
 		this.getBankAccountInfos();
+		if(this.userList != null && !this.userList.isEmpty()){
+			for(TUumsBaseUser user : this.userList){
+				this.userMap.put(user.getUserId(), user.getUserName());
+			}
+		}
 		page = this.queryApplyService.findQueryApplyPage(page,
 				this.searchRequiredType, this.searchAppFileNo,
 				this.searchAppBankuser, this.searchAppDateStart,
@@ -331,6 +338,9 @@ public class QueryApplyAction extends BaseActionSupport {
 			this.model.setGzjzyhUserExtension(ue);
 			TGzjzyhApplication application = this.queryApplyService
 					.getApplicationById(this.appId);
+			if(application.getAppDateType() == null || "".equals(application.getAppDateType())){
+				application.setAppDateType("0");
+			}
 			this.model.setGzjzyhApplication(application);
 			TGzjzyhCase caseInfo = this.queryApplyService
 					.getCaseById(application.getCaseId());
@@ -349,6 +359,9 @@ public class QueryApplyAction extends BaseActionSupport {
 					.getOrgId());
 			this.model.getGzjzyhApplication().setAppOrgId(org.getOrgId());
 			this.model.getGzjzyhApplication().setAppOrg(org.getOrgName());
+			this.model.getGzjzyhApplication().setAppStatus(appConstants.STATUS_SUBMIT_NO);
+			this.model.getGzjzyhApplication().setAppType("0");
+			this.model.getGzjzyhApplication().setAppDateType("0");
 			this.model.setGzjzyhCase(new TGzjzyhCase());
 		}
 	}
@@ -357,11 +370,16 @@ public class QueryApplyAction extends BaseActionSupport {
 	public String save() throws Exception {
 		this.buildModel();
 		try {
-			String flag = "add";
+			String opFlag = "add";
 			if (model.getGzjzyhApplication().getAppId() != null
 					&& !"".equals(model.getGzjzyhApplication().getAppId())) {
-				flag = "edit";
+				opFlag = "edit";
+			}else{
 				model.getGzjzyhApplication().setAppId(null);
+			}
+			if (model.getGzjzyhCase().getCaseId() != null
+					&& !"".equals(model.getGzjzyhCase().getCaseId())) {
+			}else{
 				model.getGzjzyhCase().setCaseId(null);
 			}
 			
@@ -370,7 +388,7 @@ public class QueryApplyAction extends BaseActionSupport {
 			// 添加日志信息
 			String ip = getRequest().getRemoteAddr();
 			String logInfo = "";
-			if (flag.equals("add")) {
+			if (opFlag.equals("add")) {
 				logInfo = "添加了查询申请" + model.getGzjzyhApplication().getAppId();
 			} else {
 				logInfo = "编辑了查询申请" + model.getGzjzyhApplication().getAppId();
@@ -456,14 +474,21 @@ public class QueryApplyAction extends BaseActionSupport {
 		account = account.replaceAll("\\\n", "");
 		return account;
 	}
+	
+	public void prepareDoCommits() throws Exception{
+		prepareModel();
+	}
 
 	public String doCommits() throws Exception {
 		this.buildModel();
 		try {
-			if (model.getGzjzyhApplication().getAppId() != null
-					&& !"".equals(model.getGzjzyhApplication().getAppId())) {
-				model.getGzjzyhApplication().setAppId(null);
+			if (model.getGzjzyhCase().getCaseId() == null
+					|| "".equals(model.getGzjzyhCase().getCaseId())) {
 				model.getGzjzyhCase().setCaseId(null);
+			}
+			if (model.getGzjzyhApplication().getAppId() == null
+					|| "".equals(model.getGzjzyhApplication().getAppId())) {
+				model.getGzjzyhApplication().setAppId(null);
 			}
 			
 			this.queryApplyService.saveOrCommit(model);
@@ -478,9 +503,12 @@ public class QueryApplyAction extends BaseActionSupport {
 		}
 		return "close";
 	}
+	
+	public void prepareGetApplyView() throws Exception{
+		prepareModel();
+	}
 
 	public String getApplyView() throws Exception {
-		this.prepareModel();
 		this.parseModel();
 		this.getBankAccountInfos();
 		
@@ -648,7 +676,7 @@ public class QueryApplyAction extends BaseActionSupport {
 	 * @throws Exception
 	 */
 	public void downloadTemplat() throws Exception {
-		String fileName = "账户导入模板.xls";
+		String fileName = "账号导入模板.xls";
 		// 获取目标文件的绝对路径
 		String filePath = FileKit.getProjectPath() + "/template/account_template.xls";
 		this.download(fileName, filePath);
@@ -725,7 +753,7 @@ public class QueryApplyAction extends BaseActionSupport {
 				}
 				accountStr = appBf.toString();
 				accountStr = accountStr.substring(0, accountStr.length() - 1);
-				accountStr = this.wrapAccount(accountStr);
+				//accountStr = this.wrapAccount(accountStr);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -1195,6 +1223,14 @@ public class QueryApplyAction extends BaseActionSupport {
 
 	public void setAppResponsefile(String appResponsefile) {
 		this.appResponsefile = appResponsefile;
+	}
+
+	public Map<String, String> getUserMap() {
+		return userMap;
+	}
+
+	public void setUserMap(Map<String, String> userMap) {
+		this.userMap = userMap;
 	}
 
 }

@@ -102,7 +102,7 @@ function downloadAttachment(){
 		<table width="100%" border="0" cellspacing="0" cellpadding="0"
 			style="vertical-align: top;">
 			<!-- 处理状态 -->
-			<s:if test="${model.gzjzyhApplication.appStatus=='2' || model.gzjzyhApplication.appStatus=='3' ||model.gzjzyhApplication.appStatus=='4' ||model.gzjzyhApplication.appStatus=='5' || model.gzjzyhApplication.appStatus=='6' }">
+			<s:if test="#request.model.gzjzyhApplication.appStatus==2 || #request.model.gzjzyhApplication.appStatus==3 || #request.model.gzjzyhApplication.appStatus==4 || #request.model.gzjzyhApplication.appStatus==5 || #request.model.gzjzyhApplication.appStatus==6">
 			<tr>
 				<td height="100%">
 					<!-- 处理状态标题 -->
@@ -141,16 +141,16 @@ function downloadAttachment(){
 								<span class="wz"><font color="red">*</font>&nbsp;当前状态：</span>
 							</td>
 							<td class="td1" align="left" width="35%">
-								<s:if test="${model.gzjzyhApplication.appStatus=='2' || model.gzjzyhApplication.appStatus=='4'}">
+								<s:if test="#request.model.gzjzyhApplication.appStatus==2 || #request.model.gzjzyhApplication.appStatus==4">
 									已审核
 								</s:if>
-								<s:if test="${model.gzjzyhApplication.appStatus=='3'}">
+								<s:if test="#request.model.gzjzyhApplication.appStatus==3">
 									已驳回
 								</s:if>
-								<s:if test="${model.gzjzyhApplication.appStatus=='5'}">
+								<s:if test="#request.model.gzjzyhApplication.appStatus==5">
 									已处理
 								</s:if>
-								<s:if test="${model.gzjzyhApplication.appStatus=='6'}">
+								<s:if test="#request.model.gzjzyhApplication.appStatus==6">
 									已拒签
 								</s:if>
 							</td>
@@ -158,13 +158,13 @@ function downloadAttachment(){
 								<span class="wz"><font color="red">*</font>&nbsp;处理人员：</span>
 							</td>
 							<td class="td1" align="left">
-								<s:if test="${model.gzjzyhApplication.appStatus=='2' || model.gzjzyhApplication.appStatus=='3' || model.gzjzyhApplication.appStatus=='4'}">
+								<s:if test="#request.model.gzjzyhApplication.appStatus==2 || #request.model.gzjzyhApplication.appStatus==3 || #request.model.gzjzyhApplication.appStatus==4">
 									${model.gzjzyhApplication.appAuditUser }
 								</s:if>
-								<s:if test="${model.gzjzyhApplication.appStatus=='5'}">
+								<s:if test="#request.model.gzjzyhApplication.appStatus==5">
 									${model.gzjzyhApplication.appResponser }
 								</s:if>
-								<s:if test="${model.gzjzyhApplication.appStatus=='6'}">
+								<s:if test="#request.model.gzjzyhApplication.appStatus==6">
 									${model.gzjzyhApplication.appReceiver }
 								</s:if>
 							</td>
@@ -174,7 +174,7 @@ function downloadAttachment(){
 								<span class="wz"><font color="red">*</font>&nbsp;处理意见：</span>
 							</td>
 							<td class="td1" align="left">
-								<s:if test="${model.gzjzyhApplication.appStatus=='3' || model.gzjzyhApplication.appStatus=='6'}">
+								<s:if test="#request.model.gzjzyhApplication.appStatus==3 || #request.model.gzjzyhApplication.appStatus==6">
 									${model.gzjzyhApplication.appNgReason }
 								</s:if>
 							</td>
@@ -182,7 +182,7 @@ function downloadAttachment(){
 								<span class="wz"><font color="red">*</font>&nbsp;反馈附件：</span>
 							</td>
 							<td class="td1" align="left">
-								<s:if test="${model.gzjzyhApplication.appStatus=='5' && model.gzjzyhApplication.appResponsefile != null && model.gzjzyhApplication.appResponsefile != ''}">
+								<s:if test="#request.model.gzjzyhApplication.appStatus==5 && #request.model.gzjzyhApplication.appResponsefile != null && #request.model.gzjzyhApplication.appResponsefile != ''">
 									<a href="javascript:void(0);" class="button" onclick="downloadAttachment()">下载附件</a>
 								</s:if>
 							</td>
@@ -208,7 +208,7 @@ function downloadAttachment(){
 											<table border="0" align="right" cellpadding="00"
 												cellspacing="0">
 												<tr>
-													<s:if test="${model.gzjzyhApplication.appStatus=='0' || model.gzjzyhApplication.appStatus=='1'}">
+													<s:if test="#request.model.gzjzyhApplication.appStatus==0 || #request.model.gzjzyhApplication.appStatus==1">
 													<td width="8"><img
 														src="<%=frameroot%>/images/ch_z_l.gif" /></td>
 													<td class="Operation_input1" onclick="window.close()">&nbsp;关&nbsp;闭&nbsp;</td>
@@ -232,7 +232,7 @@ function downloadAttachment(){
 								<span class="wz"><font color="red">*</font>&nbsp;案件编号：</span>
 							</td>
 							<td class="td1" align="left" width="35%">
-								${model.gzjzyhCase.caseCode}">
+								${model.gzjzyhCase.caseCode}
 							</td>
 							<td height="21" class="biao_bg1_gz" align="right">
 								<span class="wz"><font color="red">*</font>&nbsp;案件名称：</span>
@@ -246,7 +246,7 @@ function downloadAttachment(){
 								<span class="wz"><font color="red">*</font>&nbsp;立案时间：</span>
 							</td>
 							<td class="td1" align="left" colspan="3">
-								${model.gzjzyhCase.caseConfirmTime}
+								<s:date name="#request.model.gzjzyhCase.caseConfirmTime" format="yyyy-MM-dd HH:mm:ss" />
 							</td>
 						</tr>
 					</table>
@@ -312,7 +312,7 @@ function downloadAttachment(){
 								<span class="wz"><font color="red">*</font>&nbsp;申请时间：</span>
 							</td>
 							<td class="td1" align="left">
-								<s:date name="${model.gzjzyhApplication.appDate}" format="yyyy-MM-dd HH:mm:ss" />
+								<s:date name="#request.model.gzjzyhApplication.appDate" format="yyyy-MM-dd HH:mm:ss" />
 							</td>	
 						</tr>
 						<tr>
@@ -329,6 +329,10 @@ function downloadAttachment(){
 							<td class="td1" align="left">
 								${model.gzjzyhApplication.appAddress}
 							</td>	
+						</tr>
+						<tr>						
+							<td height="20px">
+							</td>
 						</tr>
 						<tr>						
 							<td colspan="4" class="td1" align="center">
@@ -545,9 +549,9 @@ function downloadAttachment(){
 								<span class="wz"><font color="red">*</font>&nbsp;冻结时间：</span>
 							</td>
 							<td colspan="3" align="left">	
-								<s:date name="${frozenAppStartDate}" format="yyyy-MM-dd" />
+								<s:date name="#request.frozenAppStartDate" format="yyyy-MM-dd" />
 								&nbsp;&nbsp;至&nbsp;&nbsp;
-								<s:date name="${frozenAppEndDate}" format="yyyy-MM-dd" />
+								<s:date name="#request.frozenAppEndDate" format="yyyy-MM-dd" />
 							</td>
 						</tr>
 					</table>
@@ -610,9 +614,9 @@ function downloadAttachment(){
 								<span class="wz"><font color="red">*</font>&nbsp;续冻时间：</span>
 							</td>
 							<td colspan="3" align="left">
-								<s:date name="${continueAppStartDate}" format="yyyy-MM-dd" />
+								<s:date name="#request.continueAppStartDate" format="yyyy-MM-dd" />
 								&nbsp;&nbsp;至&nbsp;&nbsp;
-								<s:date name="${continueAppEndDate}" format="yyyy-MM-dd" />							
+								<s:date name="#request.continueAppEndDate" format="yyyy-MM-dd" />							
 							</td>
 						</tr>
 					</table>
@@ -675,7 +679,7 @@ function downloadAttachment(){
 								<span class="wz"><font color="red">*</font>&nbsp;冻结时间：</span>
 							</td>
 							<td colspan="3" align="left">
-								<s:date name="${thawAppStartDate}" format="yyyy-MM-dd" />					
+								<s:date name="#request.thawAppStartDate" format="yyyy-MM-dd" />					
 							</td>
 						</tr>
 					</table>

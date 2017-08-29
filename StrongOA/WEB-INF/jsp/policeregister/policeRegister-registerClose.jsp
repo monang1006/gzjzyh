@@ -1,5 +1,7 @@
 <script id="script" type="text/javascript"></script>
 <script>
+	alert("注册成功");
+	
 	var script = document.getElementById("script");
 	if (script.attachEvent) {
 		script.attachEvent("onreadystatechange", function() {
@@ -11,5 +13,4 @@
 		}, false);
 	}
 	script.setAttribute("src", "<%=request.getContextPath()%>/j_spring_security_logout");
-	alert("注册成功");
 </script>

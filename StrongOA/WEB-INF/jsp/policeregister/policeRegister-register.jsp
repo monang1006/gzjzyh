@@ -180,13 +180,6 @@ function checkMobile(mobile){
 			        	return;
 			        }
 	        
-			      	var ueId = $("#ueId").val();
-					if(ueId == "" || document.getElementById("hasPasswordEdited").value == "1"){
-						if("${md5Enable}" == "1"){	
-							document.getElementById("userPassword").value = hex_md5(document.getElementById("userPassword").value);
-						}
-					}
-					
 					//扩展信息
 					if(!validateElement("ueMainName", 20, "主办警官姓名")){
 						return ;
@@ -247,7 +240,12 @@ function checkMobile(mobile){
 					if(!validateElement("ueHelpId2", 200, "协办警官身份证反面")){
 						return ;
 			        } */
-					
+			        var ueId = $("#ueId").val();
+					if(ueId == "" || document.getElementById("hasPasswordEdited").value == "1"){
+						if("${md5Enable}" == "1"){	
+							document.getElementById("userPassword").value = hex_md5(document.getElementById("userPassword").value);
+						}
+					}
 		             //----------------------END-----------------------
 					document.getElementById("usermanagesave").submit();
 				
@@ -338,14 +336,14 @@ function checkMobile(mobile){
 					$("#ueHelpId1").val("");
 					$("#ueHelpId2").val("");
 					
-					$("#ueMainNo1").attr("src", "<%=path%>/images/upload/defaultUpload.jpg");
-					$("#ueMainNo2").attr("src", "<%=path%>/images/upload/defaultUpload.jpg");
-					$("#ueMainId1").attr("src", "<%=path%>/images/upload/defaultUpload.jpg");
-					$("#ueMainId2").attr("src", "<%=path%>/images/upload/defaultUpload.jpg");
-					$("#ueHelpNo1").attr("src", "<%=path%>/images/upload/defaultUpload.jpg");
-					$("#ueHelpNo2").attr("src", "<%=path%>/images/upload/defaultUpload.jpg");
-					$("#ueHelpId1").attr("src", "<%=path%>/images/upload/defaultUpload.jpg");
-					$("#ueHelpId2").attr("src", "<%=path%>/images/upload/defaultUpload.jpg");
+					$("#ueMainNo1Tmp").attr("src", "<%=path%>/images/upload/defaultUpload.jpg");
+					$("#ueMainNo2Tmp").attr("src", "<%=path%>/images/upload/defaultUpload.jpg");
+					$("#ueMainId1Tmp").attr("src", "<%=path%>/images/upload/defaultUpload.jpg");
+					$("#ueMainId2Tmp").attr("src", "<%=path%>/images/upload/defaultUpload.jpg");
+					$("#ueHelpNo1Tmp").attr("src", "<%=path%>/images/upload/defaultUpload.jpg");
+					$("#ueHelpNo2Tmp").attr("src", "<%=path%>/images/upload/defaultUpload.jpg");
+					$("#ueHelpId1Tmp").attr("src", "<%=path%>/images/upload/defaultUpload.jpg");
+					$("#ueHelpId2Tmp").attr("src", "<%=path%>/images/upload/defaultUpload.jpg");
 				}
 				
 			</script>
@@ -355,6 +353,7 @@ function checkMobile(mobile){
 	<DIV id=contentborder align=center>
 		<s:form id="usermanagesave" target="hiddenFrame"
 						action="/policeregister/policeRegister!save.action" theme="simple">
+		<input type="hidden" id="flag" name="flag" value="register" />
 		<table width="100%" border="0" cellspacing="0" cellpadding="0"
 			style="vertical-align: top;">
 			<tr>
@@ -378,9 +377,15 @@ function checkMobile(mobile){
 													<td width="7"><img
 														src="<%=frameroot%>/images/ch_h_r.gif" /></td>
 													<td width="5"></td>
+													<td width="7"><img
+														src="<%=frameroot%>/images/ch_h_l.gif" /></td>
+													<td class="Operation_input" onclick="formReset()">&nbsp;重&nbsp;置&nbsp;</td>
+													<td width="7"><img
+														src="<%=frameroot%>/images/ch_h_r.gif" /></td>
+													<td width="5"></td>
 													<td width="8"><img
 														src="<%=frameroot%>/images/ch_z_l.gif" /></td>
-													<td class="Operation_input1" onclick="formReset()">&nbsp;重&nbsp;置&nbsp;</td>
+													<td class="Operation_input1" onclick="window.close();">&nbsp;关&nbsp;闭&nbsp;</td>
 													<td width="7"><img
 														src="<%=frameroot%>/images/ch_z_r.gif" /></td>
 													<td width="6"></td>

@@ -95,6 +95,10 @@ public class QueryApplyService implements IQueryApplyService {
 			hql.append(" and t.appDate <= ? ");
 			values.add(searchAppEndDate);
 		}
+		if (searchAppStatus != null && searchAppStatus.length() > 0) {
+			hql.append(" and t.appStatus = ?");
+			values.add(searchAppStatus);
+		}
 
 		hql.append(" order by t.appDate desc");
 		page = this.queryApplyDao.find(page, hql.toString(), values.toArray());

@@ -99,7 +99,7 @@ function downloadTemplate(){
 						<tr>
 							<td class="td1" align="center">
 								<input id="path" style="width:300px;" name="uploadFile" type="file">
-								&nbsp;&nbsp;<a href="javascript:void(0);" class="button" onclick="downloadTemplate()">下载导入模板</a>
+								&nbsp;&nbsp;<a href="javascript:void(0);" class="button" onclick="downloadTemplate()">下载模板</a>
 							</td>
 						</tr>
 					</table>
