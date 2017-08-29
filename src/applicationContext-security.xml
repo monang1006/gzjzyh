@@ -106,7 +106,8 @@
 		<beans:property name="authenticationManager"
 			ref="authenticationManager" />
 		<!--认证成功后跳转到的页面-->
-		<beans:property name="defaultTargetUrl" value="/default.jsp" />
+		<!-- <beans:property name="defaultTargetUrl" value="/default.jsp" /> -->
+		<beans:property name="defaultTargetUrl" value="/redirect.jsp" />
 	</beans:bean>
 
 	<!--    负责USBKEY认证处理的filter  -->
