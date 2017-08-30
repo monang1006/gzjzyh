@@ -4,6 +4,7 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URLEncoder;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -26,6 +27,7 @@ import com.strongit.gzjzyh.service.IQueryAuditService;
 import com.strongit.gzjzyh.util.FileKit;
 import com.strongit.gzjzyh.vo.TGzjzyhApplyVo;
 import com.strongit.oa.common.user.IUserService;
+import com.strongit.oa.desktop.DesktopSectionManager;
 import com.strongit.oa.mylog.MyLogManager;
 import com.strongit.uums.bo.TUumsBaseOrg;
 import com.strongit.uums.bo.TUumsBaseUser;
@@ -48,6 +50,8 @@ public class QueryAuditAction extends BaseActionSupport {
 	IPoliceRegisterManager policeRegisterManager;
 	@Autowired
 	IQueryAuditService auditService;
+	@Autowired
+	DesktopSectionManager sectionManager;
 
 	private Page<TGzjzyhApplication> page = new Page<TGzjzyhApplication>(10,
 			true);
@@ -153,6 +157,9 @@ public class QueryAuditAction extends BaseActionSupport {
 	private String ueHelpId2Tmp;
 
 	private String errorMsg = "";
+	
+	private String isDesktop;
+	private String blockId;
 	
 	public QueryAuditAction() {
 		statusMap.put(appConstants.STATUS_SUBMIT_NO, "待提交");
@@ -506,6 +513,256 @@ public class QueryAuditAction extends BaseActionSupport {
 		}
 		in.close();
 		out.close();
+	}
+	
+	public String showToAuditDesktop() throws Exception {
+		StringBuffer innerHtml = new StringBuffer();
+		
+		String blockid = getRequest().getParameter("blockid");//获取blockid
+		String subLength = getRequest().getParameter("subLength");
+		String showNum = getRequest().getParameter("showNum"); 
+		String showCreator = null;
+		String showDate = getRequest().getParameter("showDate");
+		String sectionFontSize = getRequest().getParameter("sectionFontSize");
+		if(blockid != null){
+			Map<String,String> map = sectionManager.getParam(blockid);//通过blockid获取映射对象
+			showNum = map.get("showNum");//显示条数
+			subLength = map.get("subLength");//主题长度
+			showCreator = map.get("showCreator");//是否显示作者
+			showDate = map.get("showDate");//是否显示日期
+			sectionFontSize = map.get("sectionFontSize");//是否显示字体大小
+		}
+		if(sectionFontSize == null || "".equals("sectionFontSize") || "null".equals("sectionFontSize") ){
+			sectionFontSize = "14";
+		}
+		int num = 0,length = 0;
+		if(showNum!=null&&!"".equals(showNum)&&!"null".equals(showNum)){
+			num = Integer.parseInt(showNum);
+		}
+		if(subLength!=null&&!"".equals(subLength)&&!"null".equals(subLength)){
+			length = Integer.parseInt(subLength);
+		}
+		if (sectionFontSize == null || "".equals(sectionFontSize)
+				|| "null".equals(sectionFontSize)) {
+			sectionFontSize = "14";
+		}
+		//链接
+		StringBuffer link = new StringBuffer();
+		link.append("javascript:window.parent.refreshWorkByTitle('").append(getRequest().getContextPath())
+			.append("/action/queryAudit.action")
+			.append("', '待审批查询'")
+			.append(");");
+		
+		List<TGzjzyhApplication> list = null;
+		Page<TGzjzyhApplication> desktopPage = new Page<TGzjzyhApplication>(num, false);
+		desktopPage = this.auditService.findQueryAuditPage(desktopPage, null, null, null, null, null, null);
+		list = desktopPage.getResult();
+		
+		if(list!=null){
+			this.getBankAccountInfos();
+			if(this.userList != null && !this.userList.isEmpty()){
+				for(TUumsBaseUser user : this.userList){
+					this.userMap.put(user.getUserId(), user.getUserName());
+				}
+			}
+			for(int i=0;i<num&&i<list.size();i++){//获取在条数范围内的列表
+				TGzjzyhApplication notify = list.get(i);
+				//标题连接
+				StringBuffer titleLink = new StringBuffer();
+				titleLink.append("javascript:window.showModalDialog('")
+					.append(getRequest().getContextPath())
+					.append("/action/queryAudit!input.action?appId=").append(notify.getAppId())
+					.append("&blockId=").append(blockid).append("&isDesktop=1").append("'")
+					.append(",window,'help:no;status:no;scroll:no;dialogWidth:1500px; dialogHeight:800px'")
+					.append(")");
+				
+				SimpleDateFormat st = new SimpleDateFormat("yyyy-MM-dd");
+				innerHtml.append("<table width=\"100%\" class=\"linkdiv\" title=\"\">");
+				innerHtml.append("<tr>");
+				innerHtml.append("<td>");
+				innerHtml.append("	<IMG SRC=\"").append(getRequest().getContextPath()).append("/oa/image/desktop/littlegif/news_bullet.gif\" WIDTH=\"15\" HEIGHT=\"10\" BORDER=\"0\" ALT=\"\">");
+				
+				String title = this.typeMap.get(notify.getAppType()) + "（" + this.userMap.get(notify.getAppBankuser()) + "）";
+				if(title==null){
+					title="";
+				}
+				
+				StringBuilder tip = new StringBuilder();
+				tip.append(title);
+				
+				if(title.length()>length)//如果显示的内容长度大于设置的主题长度，则过滤该长度
+					title = title.substring(0,length)+"...";
+				innerHtml.append("	<a href=\"#\" onclick=\"").append(titleLink.toString()).append("\">")
+							.append("<span style=\"font-size: "+sectionFontSize+"px;\" title=\"").append(tip).append("\">").append(title).append("</span></a>");
+				innerHtml.append("</td>");
+				if("1".equals(showCreator)){//如果设置为显示作者，则显示作者信息
+					innerHtml.append("<td width=\"115px\">");
+					if(notify.getAppOrg() == null){
+						innerHtml.append("");
+					}else{
+						innerHtml.append("<span class =\"linkgray\">").append(notify.getAppOrg() ).append("</span>&nbsp;&nbsp;&nbsp;");
+					}
+					innerHtml.append("</td>");
+				}
+				if("1".equals(showDate)){//如果设置为显示日期，则显示日期信息
+					innerHtml.append("<td width=\"100px\">");
+					innerHtml.append("<span class =\"linkgray10\">").append(st.format(notify.getAppDate())).append("</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
+					innerHtml.append("</td>");
+				}
+				innerHtml.append("</tr>");
+				innerHtml.append("</table>");
+			}
+		}
+		if(list==null){
+			for (int i = 0; i < num; i++) { // 获取在条数范围内的列表
+				innerHtml.append("<table width=\"100%\" class=\"linkdiv\" title=\"\">");
+				innerHtml.append("<tr>");
+				innerHtml.append("<td>");
+				innerHtml.append("	&nbsp;");
+				innerHtml.append("</td>");
+				innerHtml.append("</tr>");
+				innerHtml.append("	</table>");
+				}
+		}
+		if(list!=null&&list.size()<num){
+			for (int i = 0; i < num-list.size() ; i++) { // 获取在条数范围内的列表
+			innerHtml.append("<table width=\"100%\" class=\"linkdiv\" title=\"\">");
+			innerHtml.append("<tr>");
+			innerHtml.append("<td>");
+			innerHtml.append("	&nbsp;");
+			innerHtml.append("</td>");
+			innerHtml.append("</tr>");
+			innerHtml.append("	</table>");
+			}
+		}
+		innerHtml.append("<div align=\"right\" style=\"padding:2px；font-size:12px;\"><a href=\"#\" onclick=\"").append(link.toString()).append("\"> ")
+				 .append("<IMG SRC=\"").append(getRequest().getContextPath()).append("/oa/image/more.gif\" BORDER=\"0\" /></a></div>");
+		return renderHtml(innerHtml.toString());//用renderHtml将设置好的html代码返回桌面显示
+	}
+	
+	public String showAuditedDesktop() throws Exception {
+		StringBuffer innerHtml = new StringBuffer();
+		
+		String blockid = getRequest().getParameter("blockid");//获取blockid
+		String subLength = getRequest().getParameter("subLength");
+		String showNum = getRequest().getParameter("showNum"); 
+		String showCreator = null;
+		String showDate = getRequest().getParameter("showDate");
+		String sectionFontSize = getRequest().getParameter("sectionFontSize");
+		if(blockid != null){
+			Map<String,String> map = sectionManager.getParam(blockid);//通过blockid获取映射对象
+			showNum = map.get("showNum");//显示条数
+			subLength = map.get("subLength");//主题长度
+			showCreator = map.get("showCreator");//是否显示作者
+			showDate = map.get("showDate");//是否显示日期
+			sectionFontSize = map.get("sectionFontSize");//是否显示字体大小
+		}
+		if(sectionFontSize == null || "".equals("sectionFontSize") || "null".equals("sectionFontSize") ){
+			sectionFontSize = "14";
+		}
+		int num = 0,length = 0;
+		if(showNum!=null&&!"".equals(showNum)&&!"null".equals(showNum)){
+			num = Integer.parseInt(showNum);
+		}
+		if(subLength!=null&&!"".equals(subLength)&&!"null".equals(subLength)){
+			length = Integer.parseInt(subLength);
+		}
+		if (sectionFontSize == null || "".equals(sectionFontSize)
+				|| "null".equals(sectionFontSize)) {
+			sectionFontSize = "14";
+		}
+		//链接
+		StringBuffer link = new StringBuffer();
+		link.append("javascript:window.parent.refreshWorkByTitle('").append(getRequest().getContextPath())
+			.append("/action/queryAudit!auditedList.action")
+			.append("', '已审批查询'")
+			.append(");");
+		
+		List<TGzjzyhApplication> list = null;
+		Page<TGzjzyhApplication> desktopPage = new Page<TGzjzyhApplication>(num, false);
+		desktopPage = this.auditService.findQueryCheckedPage(desktopPage, null, null, null, null, null, null);
+		list = desktopPage.getResult();
+		
+		if(list!=null){
+			this.getBankAccountInfos();
+			if(this.userList != null && !this.userList.isEmpty()){
+				for(TUumsBaseUser user : this.userList){
+					this.userMap.put(user.getUserId(), user.getUserName());
+				}
+			}
+			for(int i=0;i<num&&i<list.size();i++){//获取在条数范围内的列表
+				TGzjzyhApplication notify = list.get(i);
+				//标题连接
+				StringBuffer titleLink = new StringBuffer();
+				titleLink.append("javascript:window.showModalDialog('")
+					.append(getRequest().getContextPath())
+					.append("/action/queryAudit!getApplyView.action?appId=").append(notify.getAppId())
+					.append("&blockId=").append(blockid).append("&isDesktop=1").append("'")
+					.append(",window,'help:no;status:no;scroll:no;dialogWidth:1500px; dialogHeight:800px'")
+					.append(")");
+				
+				SimpleDateFormat st = new SimpleDateFormat("yyyy-MM-dd");
+				innerHtml.append("<table width=\"100%\" class=\"linkdiv\" title=\"\">");
+				innerHtml.append("<tr>");
+				innerHtml.append("<td>");
+				innerHtml.append("	<IMG SRC=\"").append(getRequest().getContextPath()).append("/oa/image/desktop/littlegif/news_bullet.gif\" WIDTH=\"15\" HEIGHT=\"10\" BORDER=\"0\" ALT=\"\">");
+				
+				String title = this.typeMap.get(notify.getAppType()) + "（" + this.userMap.get(notify.getAppBankuser()) + "）";
+				if(title==null){
+					title="";
+				}
+				
+				StringBuilder tip = new StringBuilder();
+				tip.append(title);
+				
+				if(title.length()>length)//如果显示的内容长度大于设置的主题长度，则过滤该长度
+					title = title.substring(0,length)+"...";
+				innerHtml.append("	<a href=\"#\" onclick=\"").append(titleLink.toString()).append("\">")
+							.append("<span style=\"font-size: "+sectionFontSize+"px;\" title=\"").append(tip).append("\">").append(title).append("</span></a>");
+				innerHtml.append("</td>");
+				if("1".equals(showCreator)){//如果设置为显示作者，则显示作者信息
+					innerHtml.append("<td width=\"115px\">");
+					if(notify.getAppOrg() == null){
+						innerHtml.append("");
+					}else{
+						innerHtml.append("<span class =\"linkgray\">").append(notify.getAppOrg() ).append("</span>&nbsp;&nbsp;&nbsp;");
+					}
+					innerHtml.append("</td>");
+				}
+				if("1".equals(showDate)){//如果设置为显示日期，则显示日期信息
+					innerHtml.append("<td width=\"100px\">");
+					innerHtml.append("<span class =\"linkgray10\">").append(st.format(notify.getAppDate())).append("</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
+					innerHtml.append("</td>");
+				}
+				innerHtml.append("</tr>");
+				innerHtml.append("</table>");
+			}
+		}
+		if(list==null){
+			for (int i = 0; i < num; i++) { // 获取在条数范围内的列表
+				innerHtml.append("<table width=\"100%\" class=\"linkdiv\" title=\"\">");
+				innerHtml.append("<tr>");
+				innerHtml.append("<td>");
+				innerHtml.append("	&nbsp;");
+				innerHtml.append("</td>");
+				innerHtml.append("</tr>");
+				innerHtml.append("	</table>");
+				}
+		}
+		if(list!=null&&list.size()<num){
+			for (int i = 0; i < num-list.size() ; i++) { // 获取在条数范围内的列表
+			innerHtml.append("<table width=\"100%\" class=\"linkdiv\" title=\"\">");
+			innerHtml.append("<tr>");
+			innerHtml.append("<td>");
+			innerHtml.append("	&nbsp;");
+			innerHtml.append("</td>");
+			innerHtml.append("</tr>");
+			innerHtml.append("	</table>");
+			}
+		}
+		innerHtml.append("<div align=\"right\" style=\"padding:2px；font-size:12px;\"><a href=\"#\" onclick=\"").append(link.toString()).append("\"> ")
+				 .append("<IMG SRC=\"").append(getRequest().getContextPath()).append("/oa/image/more.gif\" BORDER=\"0\" /></a></div>");
+		return renderHtml(innerHtml.toString());//用renderHtml将设置好的html代码返回桌面显示
 	}
 
 
@@ -895,6 +1152,22 @@ public class QueryAuditAction extends BaseActionSupport {
 
 	public void setSearchAppOrg(String searchAppOrg) {
 		this.searchAppOrg = searchAppOrg;
+	}
+
+	public String getIsDesktop() {
+		return isDesktop;
+	}
+
+	public void setIsDesktop(String isDesktop) {
+		this.isDesktop = isDesktop;
+	}
+
+	public String getBlockId() {
+		return blockId;
+	}
+
+	public void setBlockId(String blockId) {
+		this.blockId = blockId;
 	}
 
 }

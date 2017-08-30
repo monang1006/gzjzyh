@@ -1,5 +1,7 @@
 package com.strongit.gzjzyh.tosync;
 
+import java.io.ByteArrayInputStream;
+import java.io.UnsupportedEncodingException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -96,11 +98,9 @@ public class ToSyncManager implements IToSyncManager {
 		Packet packet = new Packet();
 		packet.setOperationType(operation);
 		packet.setOperationObj(json);
-
-		toSyncVo.setTsToSyncMsg(JSONObject.toJSONString(packet));
+		
 		toSyncVo.setTsToSyncTime(new Date());
-
-		this.baseDao.insert(toSyncVo);
+		this.saveToSyncMsg(toSyncVo, JSONObject.toJSONString(packet));
 	}
 
 	private void createBankAccountPersonalSyncMsg(ToaPersonalInfo user,
@@ -119,10 +119,8 @@ public class ToSyncManager implements IToSyncManager {
 		packet.setOperationType(operation);
 		packet.setOperationObj(json);
 
-		toSyncVo.setTsToSyncMsg(JSONObject.toJSONString(packet));
 		toSyncVo.setTsToSyncTime(new Date());
-
-		this.baseDao.insert(toSyncVo);
+		this.saveToSyncMsg(toSyncVo, JSONObject.toJSONString(packet));
 	}
 
 	private void createApplicationSyncMsg(TGzjzyhApplication application,
@@ -280,10 +278,8 @@ public class ToSyncManager implements IToSyncManager {
 		packet.setOperationObj(operationObj);
 		packet.setAttachments(attachments);
 
-		toSyncVo.setTsToSyncMsg(JSONObject.toJSONString(packet));
 		toSyncVo.setTsToSyncTime(new Date());
-
-		this.baseDao.insert(toSyncVo);
+		this.saveToSyncMsg(toSyncVo, JSONObject.toJSONString(packet));
 	}
 
 	@Transactional(readOnly = false)
@@ -296,8 +292,15 @@ public class ToSyncManager implements IToSyncManager {
 		if (result != null && !result.isEmpty()) {
 			counter = 1;
 			TGzjzyhToSync syncMsg = result.get(0);
-			this.getHttpConnector().perform(syncMsg.getTsToSyncMsg());
-			this.baseDao.delete(syncMsg);
+			try {
+				byte[] toSyncMsgByte = FileKit.getFileContentByRelativePath(syncMsg.getTsToSyncMsgPath());
+				this.getHttpConnector().perform(toSyncMsgByte);
+				this.baseDao.delete(syncMsg);
+				FileKit.deleteFileByRelativePath(syncMsg.getTsToSyncMsgPath());
+			} catch (Exception e) {
+				e.printStackTrace();
+				throw new SystemException(e);
+			}
 		}
 		return counter;
 	}
@@ -309,5 +312,20 @@ public class ToSyncManager implements IToSyncManager {
 		}
 		return this.connector;
 	}
-
+	
+	private void saveToSyncMsg(TGzjzyhToSync toSyncVo, String msgContent) throws SystemException {
+		try {
+			byte[] msgContentByte = msgContent.getBytes("UTF-8");
+			ByteArrayInputStream bi = new ByteArrayInputStream(msgContentByte);
+			String filePath = FileKit.saveFile("XX.gzjzyh", bi);
+			toSyncVo.setTsToSyncMsgPath(filePath);
+			
+			this.baseDao.save(toSyncVo);
+			
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+			throw new SystemException(e);
+		}
+	}
+	
 }

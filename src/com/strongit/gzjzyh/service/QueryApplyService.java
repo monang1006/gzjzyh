@@ -14,6 +14,8 @@ import com.strongit.gzjzyh.po.TGzjzyhApplication;
 import com.strongit.gzjzyh.po.TGzjzyhCase;
 import com.strongit.gzjzyh.po.TGzjzyhUserExtension;
 import com.strongit.gzjzyh.vo.TGzjzyhApplyVo;
+import com.strongit.oa.common.user.IUserService;
+import com.strongit.oa.common.user.model.User;
 import com.strongmvc.exception.DAOException;
 import com.strongmvc.exception.ServiceException;
 import com.strongmvc.exception.SystemException;
@@ -23,6 +25,9 @@ import com.strongmvc.orm.hibernate.Page;
 @Service
 @Transactional(readOnly = true)
 public class QueryApplyService implements IQueryApplyService {
+	
+	@Autowired
+	IUserService userService;
 
 	private GenericDAOHibernate<TGzjzyhApplication, String> queryApplyDao;
 
@@ -47,9 +52,12 @@ public class QueryApplyService implements IQueryApplyService {
 			String searchAppFileNo, String searchAppBankuser, Date searchAppStartDate,
 			Date searchAppEndDate, String searchCaseId, String searchAppStatus)
 			throws ServiceException, SystemException, DAOException {
+		User currentUser = this.userService.getCurrentUser();
+		
 		StringBuffer hql = new StringBuffer(
-				"from TGzjzyhApplication t where 1=1");
+				"from TGzjzyhApplication t where t.appUserid = ?");
 		List values = new ArrayList();
+		values.add(currentUser.getUserId());
 		//个人账号
 		if ("0".equals(searchRequiredType)) {
 			hql.append(" and t.appPersonAccount is not null");
@@ -99,6 +107,26 @@ public class QueryApplyService implements IQueryApplyService {
 			hql.append(" and t.appStatus = ?");
 			values.add(searchAppStatus);
 		}
+
+		hql.append(" order by t.appDate desc");
+		page = this.queryApplyDao.find(page, hql.toString(), values.toArray());
+		return page;
+	}
+	
+	@Override
+	public Page<TGzjzyhApplication> findDesktopQueryApplyPage(
+			Page<TGzjzyhApplication> page) throws ServiceException, SystemException, DAOException {
+		User currentUser = this.userService.getCurrentUser();
+		
+		StringBuffer hql = new StringBuffer(
+				"from TGzjzyhApplication t where t.appUserid = ?");
+		List values = new ArrayList();
+		values.add(currentUser.getUserId());
+		
+		hql.append(" and (t.appStatus = ? or t.appStatus = ? or t.appStatus = ?)");
+		values.add(appConstants.STATUS_SUBMIT_NO);
+		values.add(appConstants.APP_STATUS_REFUSE);
+		values.add(appConstants.STATUS_AUDIT_BACK);
 
 		hql.append(" order by t.appDate desc");
 		page = this.queryApplyDao.find(page, hql.toString(), values.toArray());

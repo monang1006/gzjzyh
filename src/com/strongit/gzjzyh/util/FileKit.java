@@ -65,6 +65,10 @@ public class FileKit {
 		}
 		return encodedFileContent;
 	}
+	
+	public final static byte[] getFileContentByRelativePath(String relativeFilePath) throws Exception {
+		return getFileContent(getProjectPath() + relativeFilePath);
+	}
 
 	public final static byte[] getFileContent(String filePath) throws Exception {
 		byte[] fileContent = null;
@@ -185,6 +189,15 @@ public class FileKit {
 				}
 			}
 		}
+	}
+	
+	public final static void deleteFileByRelativePath(String relativeFilePath) throws Exception {
+		deleteFile(getProjectPath() + relativeFilePath);
+	}
+	
+	public final static void deleteFile(String filePath) throws Exception {
+		File file = new File(filePath);
+		file.delete();
 	}
 
 }

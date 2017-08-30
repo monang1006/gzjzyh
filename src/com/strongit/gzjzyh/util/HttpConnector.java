@@ -30,9 +30,8 @@ public class HttpConnector {
     	
     }
 
-    public void perform(String msgContent) throws SystemException {
+    public void perform(byte[] binaryRequestPacket) throws SystemException {
         try {
-            byte[] binaryRequestPacket = msgContent.getBytes("UTF-8");
             ByteArrayInputStream isRequestPacket = new ByteArrayInputStream(binaryRequestPacket);
             InputStreamRequestEntity requestEntity = new InputStreamRequestEntity(isRequestPacket, binaryRequestPacket.length, GzjzyhConstants.GZJZYH_CONTENT_TYPE);
             //发出Http请求

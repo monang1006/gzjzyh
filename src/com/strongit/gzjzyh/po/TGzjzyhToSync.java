@@ -25,7 +25,7 @@ public class TGzjzyhToSync implements Serializable {
 private static final long serialVersionUID = 1L;
 	
 	private String tsId;
-	private String tsToSyncMsg;
+	private String tsToSyncMsgPath;
 	private Date tsToSyncTime;
 	private String tsToSyncFlag = GzjzyhApplicationConfig.getSyncflag();
 	
@@ -45,17 +45,6 @@ private static final long serialVersionUID = 1L;
 		this.tsId = tsId;
 	}
 
-	@Lob
-	@Basic(fetch = FetchType.EAGER)
-	@Column(name = "TS_TOSYNC_MSG", columnDefinition="CLOB")
-	public String getTsToSyncMsg() {
-		return tsToSyncMsg;
-	}
-
-	public void setTsToSyncMsg(String tsToSyncMsg) {
-		this.tsToSyncMsg = tsToSyncMsg;
-	}
-
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "TS_TOSYNC_TIME")
 	public Date getTsToSyncTime() {
@@ -73,6 +62,15 @@ private static final long serialVersionUID = 1L;
 
 	public void setTsToSyncFlag(String tsToSyncFlag) {
 		this.tsToSyncFlag = tsToSyncFlag;
+	}
+
+	@Column(name = "TS_TOSYNC_MSGPATH")
+	public String getTsToSyncMsgPath() {
+		return tsToSyncMsgPath;
+	}
+
+	public void setTsToSyncMsgPath(String tsToSyncMsgPath) {
+		this.tsToSyncMsgPath = tsToSyncMsgPath;
 	}
 
 }

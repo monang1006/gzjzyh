@@ -37,6 +37,9 @@ public interface IQueryApplyService {
 			String searchAppFileNo, String searchAppBankuser, Date searchAppStartDate,
 			Date searchAppEndDate, String searchCaseId, String searchAppStatus)
 			throws ServiceException, SystemException, DAOException;
+	
+	public Page<TGzjzyhApplication> findDesktopQueryApplyPage(
+			Page<TGzjzyhApplication> page) throws ServiceException, SystemException, DAOException;
 
 	/**
 	 * @param page
