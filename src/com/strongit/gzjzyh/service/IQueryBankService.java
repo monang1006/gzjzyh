@@ -23,7 +23,7 @@ public interface IQueryBankService {
 	 * @param page
 	 * @param accoutType
 	 * @param appFileno
-	 * @param appBankuser
+	 * @param appOrg
 	 * @param appStartDate
 	 * @param appEndDate
 	 * @return
@@ -33,7 +33,7 @@ public interface IQueryBankService {
 	 */
 	public Page<TGzjzyhApplication> findQueryBankNotSignPage(
 			Page<TGzjzyhApplication> page, String accoutType, String appFileno,
-			String appBankuser, Date appStartDate, Date appEndDate)
+			String appOrg, Date appStartDate, Date appEndDate)
 			throws ServiceException, SystemException, DAOException;
 
 	/**已签收列表
@@ -50,7 +50,7 @@ public interface IQueryBankService {
 	 */
 	public Page<TGzjzyhApplication> findQueryBankSignPage(
 			Page<TGzjzyhApplication> page, String accoutType, String appFileno,
-			String appBankuser, Date appStartDate, Date appEndDate)
+			String appOrg, Date appStartDate, Date appEndDate)
 			throws ServiceException, SystemException, DAOException;
 
 	/**已处理列表
@@ -67,7 +67,7 @@ public interface IQueryBankService {
 	 */
 	public Page<TGzjzyhApplication> findQueryBankProcessedPage(
 			Page<TGzjzyhApplication> page, String accoutType, String appFileno,
-			String appBankuser, Date appStartDate, Date appEndDate)
+			String appOrg, Date appStartDate, Date appEndDate)
 			throws ServiceException, SystemException, DAOException;
 
 	/**
@@ -77,24 +77,6 @@ public interface IQueryBankService {
 	 * @throws DAOException
 	 */
 	public void doSign(TGzjzyhApplyVo vo)
-			throws ServiceException, SystemException, DAOException;
-
-	/**
-	 * @param appId
-	 * @throws ServiceException
-	 * @throws SystemException
-	 * @throws DAOException
-	 */
-	public TGzjzyhApplyVo getApplyById(String appId)
-			throws ServiceException, SystemException, DAOException;
-
-	/**
-	 * @param vo
-	 * @throws ServiceException
-	 * @throws SystemException
-	 * @throws DAOException
-	 */
-	public void back(TGzjzyhApplyVo vo)
 			throws ServiceException, SystemException, DAOException;
 
 	/**

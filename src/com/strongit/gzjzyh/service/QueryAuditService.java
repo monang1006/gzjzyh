@@ -9,11 +9,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.strongit.gzjzyh.GzjzyhApplicationConfig;
+import com.strongit.gzjzyh.GzjzyhCommonService;
+import com.strongit.gzjzyh.GzjzyhConstants;
 import com.strongit.gzjzyh.appConstants;
 import com.strongit.gzjzyh.po.TGzjzyhApplication;
 import com.strongit.gzjzyh.po.TGzjzyhCase;
 import com.strongit.gzjzyh.po.TGzjzyhUserExtension;
+import com.strongit.gzjzyh.tosync.IToSyncManager;
 import com.strongit.gzjzyh.vo.TGzjzyhApplyVo;
+import com.strongit.oa.common.user.IUserService;
+import com.strongit.oa.common.user.model.User;
 import com.strongmvc.exception.DAOException;
 import com.strongmvc.exception.ServiceException;
 import com.strongmvc.exception.SystemException;
@@ -21,6 +27,7 @@ import com.strongmvc.orm.hibernate.GenericDAOHibernate;
 import com.strongmvc.orm.hibernate.Page;
 
 @Service
+@Transactional(readOnly = true)
 public class QueryAuditService implements IQueryAuditService {
 
 	private GenericDAOHibernate<TGzjzyhApplication, String> queryApplyDao;
@@ -28,6 +35,13 @@ public class QueryAuditService implements IQueryAuditService {
 	private GenericDAOHibernate<TGzjzyhCase, String> caseDao;
 
 	private GenericDAOHibernate<TGzjzyhUserExtension, String> userExtensionDao;
+	
+	@Autowired
+	IUserService userService;
+	@Autowired
+	GzjzyhCommonService commonService;
+	@Autowired
+	IToSyncManager syncManager;
 
 	@Autowired
 	public void setSessionFactory(SessionFactory sessionFactory) {
@@ -43,7 +57,7 @@ public class QueryAuditService implements IQueryAuditService {
 	@Override
 	public Page<TGzjzyhApplication> findQueryAuditPage(
 			Page<TGzjzyhApplication> page, String accoutType, String appFileno,
-			String appBankuser, Date appStartDate, Date appEndDate)
+			String appBankuser, Date appStartDate, Date appEndDate, String appOrg)
 			throws ServiceException, SystemException, DAOException {
 		// TODO Auto-generated method stub
 		StringBuffer hql = new StringBuffer(
@@ -55,19 +69,19 @@ public class QueryAuditService implements IQueryAuditService {
 			hql.append(" and t.appPersonAccount is not null");
 		}
 		//单位帐号
-		if ("1".equals(accoutType)) {
+		else if ("1".equals(accoutType)) {
 			hql.append(" and t.appOrgAccount is not null");
 		}
 		//个人开户明细
-		if ("2".equals(accoutType)) {
+		else if ("2".equals(accoutType)) {
 			hql.append(" and t.appPersonDetail is not null");
 		}
 		//单位开户明细
-		if ("3".equals(accoutType)) {
+		else if ("3".equals(accoutType)) {
 			hql.append(" and t.appOrgDetail is not null");
 		}
 		//交易明细
-		if ("4".equals(accoutType)) {
+		else if ("4".equals(accoutType)) {
 			hql.append(" and t.appChadeDetail is not null");
 		}
 		//
@@ -90,8 +104,12 @@ public class QueryAuditService implements IQueryAuditService {
 			hql.append(" and t.appEndDate <= ? ");
 			values.add(appEndDate);
 		}
+		if (appOrg != null && !"".equals(appOrg)) {
+			hql.append(" and t.appOrg like ?");
+			values.add("%" + appOrg + "%");
+		}
 
-		hql.append(" order by t.appId");
+		hql.append(" order by t.appDate desc");
 		page = this.queryApplyDao.find(page, hql.toString(), values.toArray());
 		return page;
 	}
@@ -99,13 +117,14 @@ public class QueryAuditService implements IQueryAuditService {
 	@Override
 	public Page<TGzjzyhApplication> findQueryCheckedPage(
 			Page<TGzjzyhApplication> page, String accoutType, String appFileno,
-			String appBankuser, Date appStartDate, Date appEndDate)
+			String appBankuser, Date appStartDate, Date appEndDate, String appOrg)
 			throws ServiceException, SystemException, DAOException {
-		// TODO Auto-generated method stub
+		User currentUser = this.userService.getCurrentUser();
+		
 		StringBuffer hql = new StringBuffer(
-				"from TGzjzyhApplication t where t.appStatus = ?");
+				"from TGzjzyhApplication t where appAuditUserId = ? ");
 		List values = new ArrayList();
-		values.add(appConstants.STATUS_AUDIT_YES);
+		values.add(currentUser.getUserId());
 		//个人账号
 		if ("0".equals(accoutType)) {
 			hql.append(" and t.appPersonAccount is not null");
@@ -146,99 +165,38 @@ public class QueryAuditService implements IQueryAuditService {
 			hql.append(" and t.appEndDate <= ? ");
 			values.add(appEndDate);
 		}
+		if (appOrg != null && !"".equals(appOrg)) {
+			hql.append(" and t.appOrg like ?");
+			values.add("%" + appOrg + "%");
+		}
 
-		hql.append(" order by t.appId");
+		hql.append(" order by t.appDate desc");
 		page = this.queryApplyDao.find(page, hql.toString(), values.toArray());
 		return page;
 	}
 
 	@Override
+	@Transactional(readOnly = false)
 	public void audit(TGzjzyhApplyVo vo)
 			throws ServiceException, SystemException, DAOException {
-		// TODO Auto-generated method stub
-
-		TGzjzyhApplication gzjzyhApplication = this.queryApplyDao
-				.get(vo.getGzjzyhApplication().getAppId());
-
-		gzjzyhApplication.setAppAuditUserId(
-				vo.getGzjzyhApplication().getAppAuditUserId());
+		User user = this.userService.getCurrentUser();
+		TGzjzyhApplication gzjzyhApplication = vo.getGzjzyhApplication();
+		gzjzyhApplication.setAppAuditUserId(user.getUserId());
 		gzjzyhApplication
-				.setAppAuditUser(vo.getGzjzyhApplication().getAppAuditUser());
-		//
-		gzjzyhApplication
-				.setAppAuditUser(vo.getGzjzyhApplication().getAppAuditUser());
-
-		gzjzyhApplication.setAppStatus(appConstants.STATUS_AUDIT_YES);//已审核
+				.setAppAuditUser(user.getUserName());
 		gzjzyhApplication.setAppAuditDate(new Date());
-
 		this.queryApplyDao.update(gzjzyhApplication);
-
-	}
-
-	public void back(TGzjzyhApplyVo vo)
-			throws ServiceException, SystemException, DAOException {
-		// TODO Auto-generated method stub
-
-		TGzjzyhApplication gzjzyhApplication = this.queryApplyDao
-				.get(vo.getGzjzyhApplication().getAppId());
-
-		gzjzyhApplication.setAppAuditUserId(
-				vo.getGzjzyhApplication().getAppAuditUserId());
-		gzjzyhApplication
-				.setAppAuditUser(vo.getGzjzyhApplication().getAppAuditUser());
-
-		gzjzyhApplication
-				.setAppNgReason(vo.getGzjzyhApplication().getAppNgReason());//退回原因
-		gzjzyhApplication.setAppStatus(appConstants.STATUS_AUDIT_BACK);//驳回
-		gzjzyhApplication.setAppAuditDate(new Date());
-
-		this.queryApplyDao.update(gzjzyhApplication);
-
-	}
-
-	@Override
-	public TGzjzyhApplyVo getApplyById(String appId)
-			throws ServiceException, SystemException, DAOException {
-		TGzjzyhApplyVo tGzjzyhApplyVo = new TGzjzyhApplyVo();
-
-		TGzjzyhCase gzjzyhCase = null;
-
-		TGzjzyhApplication tGzjzyhApplication = null;
-
-		TGzjzyhUserExtension tGzjzyhUserExtension = null;
-
-		String hql = "from TGzjzyhUserExtension t where t.tuumsBaseUser.userId = ?";
-
-		if (appId != null && !"".equals(appId)) {
-			tGzjzyhApplication = this.queryApplyDao.get(appId);
-
+		
+		if(appConstants.STATUS_AUDIT_YES.equals(gzjzyhApplication.getAppStatus())) {
+			if(GzjzyhApplicationConfig.isDistributedDeployed()) {
+				this.syncManager.createToSyncMsg(gzjzyhApplication, GzjzyhConstants.OPERATION_TYPE_ADD_APP);
+			}else {
+				String smsMsg = "您有一条查询申请需要签收，请登录系统处理。";
+				this.commonService.sendSms(gzjzyhApplication.getAppBankuser(), smsMsg);
+			}
+		}else if(appConstants.STATUS_AUDIT_BACK.equals(gzjzyhApplication.getAppStatus())) {
+			String smsMsg = "您有一条查询申请被退回，请登录系统处理。";
+			this.commonService.sendSms(gzjzyhApplication.getAppUserid(), smsMsg);
 		}
-		if (tGzjzyhApplication != null) {
-
-			gzjzyhCase = this.caseDao.get(tGzjzyhApplication.getCaseId());
-			if (gzjzyhCase != null) {
-				tGzjzyhApplyVo.setGzjzyhCase(gzjzyhCase);
-			}
-
-			//
-			List<TGzjzyhUserExtension> tGzjzyhUserExtensionList = (List<TGzjzyhUserExtension>) this.userExtensionDao
-					.find(hql,
-							new Object[] { tGzjzyhApplication.getAppUserid() });
-			if (tGzjzyhUserExtensionList != null
-					&& tGzjzyhUserExtensionList.size() > 0) {
-				tGzjzyhUserExtension = tGzjzyhUserExtensionList.get(0);
-			}
-
-			tGzjzyhApplyVo.setGzjzyhApplication(tGzjzyhApplication);
-
-			if (tGzjzyhUserExtension != null) {
-				tGzjzyhApplyVo.setGzjzyhUserExtension(tGzjzyhUserExtension);
-			}
-
-		}
-
-		return tGzjzyhApplyVo;
-
 	}
-
 }

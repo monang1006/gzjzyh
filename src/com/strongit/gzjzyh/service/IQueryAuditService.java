@@ -33,7 +33,7 @@ public interface IQueryAuditService {
 	 */
 	public Page<TGzjzyhApplication> findQueryAuditPage(
 			Page<TGzjzyhApplication> page, String accoutType, String appFileno,
-			String appBankuser, Date appStartDate, Date appEndDate)
+			String appBankuser, Date appStartDate, Date appEndDate, String appOrg)
 			throws ServiceException, SystemException, DAOException;
 
 	/**已审核列表
@@ -50,7 +50,7 @@ public interface IQueryAuditService {
 	 */
 	public Page<TGzjzyhApplication> findQueryCheckedPage(
 			Page<TGzjzyhApplication> page, String accoutType, String appFileno,
-			String appBankuser, Date appStartDate, Date appEndDate)
+			String appBankuser, Date appStartDate, Date appEndDate, String appOrg)
 			throws ServiceException, SystemException, DAOException;
 
 	/**
@@ -62,21 +62,4 @@ public interface IQueryAuditService {
 	public void audit(TGzjzyhApplyVo vo)
 			throws ServiceException, SystemException, DAOException;
 
-	/**
-	 * @param appId
-	 * @throws ServiceException
-	 * @throws SystemException
-	 * @throws DAOException
-	 */
-	public TGzjzyhApplyVo getApplyById(String appId)
-			throws ServiceException, SystemException, DAOException;
-
-	/**
-	 * @param vo
-	 * @throws ServiceException
-	 * @throws SystemException
-	 * @throws DAOException
-	 */
-	public void back(TGzjzyhApplyVo vo)
-			throws ServiceException, SystemException, DAOException;
 }
