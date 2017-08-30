@@ -316,7 +316,12 @@ function viewImage(url){
 }
 
 function refreshList(){
-	window.dialogArguments.submitForm();
+	if("${isDesktop}" == "1"){
+		window.dialogArguments.resetDragContent("${blockId}");
+		window.dialogArguments.loadDragContent("${blockId}");
+	}else{
+		window.dialogArguments.submitForm();
+	}
 }
 </script>
 </head>
@@ -327,6 +332,8 @@ function refreshList(){
 		<input type="hidden" id="appId" name="appId" value="${model.gzjzyhApplication.appId}">
 		<input type="hidden" id="caseId" name="caseId"
 			value="${model.gzjzyhCase.caseId}">
+		<input type="hidden" id="isDesktop" name="isDesktop" value="${isDesktop}">
+		<input type="hidden" id="blockId" name="blockId" value="${blockId}">
 		<input type="hidden" id="appUserid" name="model.gzjzyhApplication.appUserid"
 			value="${model.gzjzyhApplication.appUserid}">
 		<input type="hidden" id="appOrgId" name="model.gzjzyhApplication.appOrgId"

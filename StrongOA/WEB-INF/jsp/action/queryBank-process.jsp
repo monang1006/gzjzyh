@@ -131,7 +131,12 @@ function formsubmit(){
 }
 
 function refreshList(){
-	window.dialogArguments.submitForm();
+	if("${isDesktop}" == "1"){
+		window.dialogArguments.resetDragContent("${blockId}");
+		window.dialogArguments.loadDragContent("${blockId}");
+	}else{
+		window.dialogArguments.submitForm();
+	}
 }
 
 function downloadAttachment(){
@@ -145,6 +150,8 @@ function downloadAttachment(){
 		<s:form id="applySave" target="hiddenFrame" action="/action/queryBank!process.action" theme="simple" >
 		<input type="hidden" id="appId" name="appId" value="${model.gzjzyhApplication.appId}">
 		<input type="hidden" id="appResponsefile" name="model.gzjzyhApplication.appResponsefil" value="${model.gzjzyhApplication.appResponsefile}" />
+		<input type="hidden" id="isDesktop" name="isDesktop" value="${isDesktop}">
+		<input type="hidden" id="blockId" name="blockId" value="${blockId}">
 		<table width="100%" border="0" cellspacing="0" cellpadding="0"
 			style="vertical-align: top;">
 			<!-- 处理状态 -->

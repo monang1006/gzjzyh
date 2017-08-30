@@ -9,9 +9,10 @@
 <LINK type=text/css rel=stylesheet
 	href="<%=frameroot%>/css/properties_windows_add.css">
 <script type="text/javascript" language="javascript"
-	src="<%=path%>/common/js/jquery/jquery-1.12.4.min.js"></script>
+	src="<%=path%>/common/js/jquery/jquery-1.8.3.min.js"></script>
 <LINK href="<%=path%>/css/properties_windows_list.css" type=text/css
 	rel=stylesheet>
+<script language="javascript" src="<%=path%>/common/js/upload/jquery.blockUI.js"></script>
 <!-- webuploader -->
 <link rel="stylesheet" type="text/css" href="<%=path%>/common/js/webuploader/webuploader.css">
 <script type="text/javascript" src="<%=path%>/common/js/webuploader/webuploader.min.js"></script>
@@ -21,6 +22,14 @@
 <script type="text/javascript" src="<%=path%>/common/js/jcrop/Jcrop.min.js"></script>
 
 <script type="text/javascript">
+	function show(i){
+		$.blockUI({ overlayCSS: { backgroundColor: '#B3B3B3' }});
+		$.blockUI({ message: '<font color="#008000"><h1>'+i+'</h1></font>' });
+	}
+	function hidden(){
+		$.unblockUI();
+	}
+
 	var jcropApi;
 	var srcImagePath;
 	$(document).ready(function(){
@@ -45,16 +54,19 @@
 		    duplicate: true
 		});
 		uploader.on('uploadSuccess', function(file,response) {
+			hidden();
 			//layer.close(logining);
 			srcImagePath = response[0];
 			document.getElementById("imgField").src = "<%=path%>" + response[0];
 			jcropInit();
 		});
 		uploader.on('beforeFileQueued', function( file ) {
+			show("正在上传，请稍候...");
 			//logining = layer.msg("服务器分析中...",{icon: 16,time:60000,shade: [0.8, '#393D49']});
 			return true;
 	    });
 		uploader.on('error', function(type) {
+			hidden();
 			if (type == "Q_EXCEED_NUM_LIMIT") {
 				alert("超出最大张数");
 			}else{
