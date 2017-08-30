@@ -3,10 +3,13 @@ package com.strongit.gzjzyh.po;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -42,6 +45,8 @@ private static final long serialVersionUID = 1L;
 		this.tsId = tsId;
 	}
 
+	@Lob
+	@Basic(fetch = FetchType.EAGER)
 	@Column(name = "TS_TOSYNC_MSG", columnDefinition="CLOB")
 	public String getTsToSyncMsg() {
 		return tsToSyncMsg;
