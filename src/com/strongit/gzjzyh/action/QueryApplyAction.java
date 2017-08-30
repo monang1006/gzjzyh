@@ -61,6 +61,8 @@ public class QueryApplyAction extends BaseActionSupport {
 	private Page<TGzjzyhCase> casePage = new Page<TGzjzyhCase>(10, true);
 
 	private String appId;
+	
+	private String caseId;
 
 	private String searchRequiredType;
 
@@ -342,9 +344,17 @@ public class QueryApplyAction extends BaseActionSupport {
 				application.setAppDateType("0");
 			}
 			this.model.setGzjzyhApplication(application);
-			TGzjzyhCase caseInfo = this.queryApplyService
-					.getCaseById(application.getCaseId());
-			this.model.setGzjzyhCase(caseInfo);
+			if(this.caseId != null && !"".equals(this.caseId)) {
+				TGzjzyhCase caseInfo = this.queryApplyService
+						.getCaseById(this.caseId);
+				this.model.setGzjzyhCase(caseInfo);
+			}else if(application.getCaseId() != null && !"".equals(application.getCaseId())){
+				TGzjzyhCase caseInfo = this.queryApplyService
+						.getCaseById(application.getCaseId());
+				this.model.setGzjzyhCase(caseInfo);
+			}else {
+				this.model.setGzjzyhCase(new TGzjzyhCase());
+			}
 		} else {
 			TUumsBaseUser user = this.userService.getCurrentUser();
 			this.model = new TGzjzyhApplyVo();
@@ -362,7 +372,13 @@ public class QueryApplyAction extends BaseActionSupport {
 			this.model.getGzjzyhApplication().setAppStatus(appConstants.STATUS_SUBMIT_NO);
 			this.model.getGzjzyhApplication().setAppType("0");
 			this.model.getGzjzyhApplication().setAppDateType("0");
-			this.model.setGzjzyhCase(new TGzjzyhCase());
+			if(this.caseId != null && !"".equals(this.caseId)) {
+				TGzjzyhCase caseInfo = this.queryApplyService
+						.getCaseById(this.caseId);
+				this.model.setGzjzyhCase(caseInfo);
+			}else {
+				this.model.setGzjzyhCase(new TGzjzyhCase());
+			}
 		}
 	}
 
@@ -1231,6 +1247,14 @@ public class QueryApplyAction extends BaseActionSupport {
 
 	public void setUserMap(Map<String, String> userMap) {
 		this.userMap = userMap;
+	}
+
+	public String getCaseId() {
+		return caseId;
+	}
+
+	public void setCaseId(String caseId) {
+		this.caseId = caseId;
 	}
 
 }

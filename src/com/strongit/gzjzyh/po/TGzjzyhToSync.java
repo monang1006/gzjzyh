@@ -42,7 +42,7 @@ private static final long serialVersionUID = 1L;
 		this.tsId = tsId;
 	}
 
-	@Column(name = "TS_TOSYNC_MSG")
+	@Column(name = "TS_TOSYNC_MSG", columnDefinition="CLOB")
 	public String getTsToSyncMsg() {
 		return tsToSyncMsg;
 	}

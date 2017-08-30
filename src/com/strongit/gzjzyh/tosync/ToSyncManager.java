@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.beanutils.ConvertUtils;
+import org.apache.commons.beanutils.converters.DateConverter;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -47,6 +49,7 @@ public class ToSyncManager implements IToSyncManager {
 		if (!GzjzyhApplicationConfig.isDistributedDeployed()) {
 			return;
 		}
+		ConvertUtils.register(new DateConverter(null), java.util.Date.class);
 		if (GzjzyhConstants.OPERATION_TYPE_ADD_BANKACCOUNT.equals(operation)) {
 			this.createBankAccountSyncMsg((TUumsBaseUser) obj, operation);
 		} else if (GzjzyhConstants.OPERATION_TYPE_EDIT_BANKACCOUNT
@@ -127,7 +130,7 @@ public class ToSyncManager implements IToSyncManager {
 		TGzjzyhToSync toSyncVo = new TGzjzyhToSync();
 		JSONObject json = new JSONObject();
 		Object operationObj = json;
-		Map<String, String> attachments = null;
+		Map<String, String> attachments = new HashMap<String, String>(0);
 
 		if (GzjzyhConstants.OPERATION_TYPE_ADD_APP.equals(operation)) {
 			try {
@@ -165,7 +168,6 @@ public class ToSyncManager implements IToSyncManager {
 				// 加载附件
 				if (applicationCopy.getAppLawfile() != null
 						&& !"".equals(applicationCopy.getAppLawfile())) {
-					attachments = new HashMap<String, String>(0);
 					String encodedFileContent = FileKit
 							.getBase64EncodedFileContentByRelativePath(applicationCopy
 									.getAppLawfile());
@@ -173,7 +175,6 @@ public class ToSyncManager implements IToSyncManager {
 				}
 				if (applicationCopy.getAppLawfileR() != null
 						&& !"".equals(applicationCopy.getAppLawfileR())) {
-					attachments = new HashMap<String, String>(0);
 					String encodedFileContent = FileKit
 							.getBase64EncodedFileContentByRelativePath(applicationCopy
 									.getAppLawfileR());
@@ -181,7 +182,6 @@ public class ToSyncManager implements IToSyncManager {
 				}
 				if (applicationCopy.getAppAttachment() != null
 						&& !"".equals(applicationCopy.getAppAttachment())) {
-					attachments = new HashMap<String, String>(0);
 					String encodedFileContent = FileKit
 							.getBase64EncodedFileContentByRelativePath(applicationCopy
 									.getAppAttachment());
@@ -189,7 +189,6 @@ public class ToSyncManager implements IToSyncManager {
 				}
 				if (applicationCopy.getAppMainId1() != null
 						&& !"".equals(applicationCopy.getAppMainId1())) {
-					attachments = new HashMap<String, String>(0);
 					String encodedFileContent = FileKit
 							.getBase64EncodedFileContentByRelativePath(applicationCopy
 									.getAppMainId1());
@@ -197,7 +196,6 @@ public class ToSyncManager implements IToSyncManager {
 				}
 				if (applicationCopy.getAppMainId2() != null
 						&& !"".equals(applicationCopy.getAppMainId2())) {
-					attachments = new HashMap<String, String>(0);
 					String encodedFileContent = FileKit
 							.getBase64EncodedFileContentByRelativePath(applicationCopy
 									.getAppMainId2());
@@ -205,7 +203,6 @@ public class ToSyncManager implements IToSyncManager {
 				}
 				if (applicationCopy.getAppMainNo1() != null
 						&& !"".equals(applicationCopy.getAppMainNo1())) {
-					attachments = new HashMap<String, String>(0);
 					String encodedFileContent = FileKit
 							.getBase64EncodedFileContentByRelativePath(applicationCopy
 									.getAppMainNo1());
@@ -213,7 +210,6 @@ public class ToSyncManager implements IToSyncManager {
 				}
 				if (applicationCopy.getAppMainNo2() != null
 						&& !"".equals(applicationCopy.getAppMainNo2())) {
-					attachments = new HashMap<String, String>(0);
 					String encodedFileContent = FileKit
 							.getBase64EncodedFileContentByRelativePath(applicationCopy
 									.getAppMainNo2());
@@ -221,7 +217,6 @@ public class ToSyncManager implements IToSyncManager {
 				}
 				if (applicationCopy.getAppHelpId1() != null
 						&& !"".equals(applicationCopy.getAppHelpId1())) {
-					attachments = new HashMap<String, String>(0);
 					String encodedFileContent = FileKit
 							.getBase64EncodedFileContentByRelativePath(applicationCopy
 									.getAppHelpId1());
@@ -229,7 +224,6 @@ public class ToSyncManager implements IToSyncManager {
 				}
 				if (applicationCopy.getAppHelpId2() != null
 						&& !"".equals(applicationCopy.getAppHelpId2())) {
-					attachments = new HashMap<String, String>(0);
 					String encodedFileContent = FileKit
 							.getBase64EncodedFileContentByRelativePath(applicationCopy
 									.getAppHelpId2());
@@ -237,7 +231,6 @@ public class ToSyncManager implements IToSyncManager {
 				}
 				if (applicationCopy.getAppHelpNo1() != null
 						&& !"".equals(applicationCopy.getAppHelpNo1())) {
-					attachments = new HashMap<String, String>(0);
 					String encodedFileContent = FileKit
 							.getBase64EncodedFileContentByRelativePath(applicationCopy
 									.getAppHelpNo1());
@@ -245,7 +238,6 @@ public class ToSyncManager implements IToSyncManager {
 				}
 				if (applicationCopy.getAppHelpNo2() != null
 						&& !"".equals(applicationCopy.getAppHelpNo2())) {
-					attachments = new HashMap<String, String>(0);
 					String encodedFileContent = FileKit
 							.getBase64EncodedFileContentByRelativePath(applicationCopy
 									.getAppHelpNo2());

@@ -207,8 +207,6 @@ public class QueryAuditAction extends BaseActionSupport {
 	public String input() throws Exception {
 		this.parseModel();
 		
-		this.getBankAccountInfos();
-
 		this.appLawfileTmp = this.DEFAULT_UPLOAD_IMAGE;
 		this.appLawfileRTmp = this.DEFAULT_UPLOAD_IMAGE;
 		this.appAttachmentTmp = this.DEFAULT_UPLOAD_IMAGE;
@@ -324,6 +322,25 @@ public class QueryAuditAction extends BaseActionSupport {
 			TGzjzyhCase caseInfo = this.queryApplyService
 					.getCaseById(application.getCaseId());
 			this.model.setGzjzyhCase(caseInfo);
+			
+			this.getBankAccountInfos();
+			if(this.userList != null && !this.userList.isEmpty()) {
+				for(TUumsBaseUser user : this.userList) {
+					if(user.getUserId().equals(this.model.getGzjzyhApplication().getAppBankuser())) {
+						this.bankUserName = user.getUserName();
+					}
+				}
+			}
+			this.appTypeName = this.typeMap.get(this.model.getGzjzyhApplication().getAppType());
+			String appDateType = this.model.getGzjzyhApplication().getAppDateType();
+			if("0".equals(appDateType)) {
+				this.appDateDesc = "开启之日启至今";
+			}else if("1".equals(appDateType)) {
+				this.appDateDesc = "近一年";
+			}else if("2".equals(appDateType)) {
+				this.appDateDesc = TimeKit.formatDate(this.model.getGzjzyhApplication().getAppStartDate(), "yyyy-MM-dd")
+						+ " 至 " + TimeKit.formatDate(this.model.getGzjzyhApplication().getAppEndDate(), "yyyy-MM-dd");
+			}
 		}
 	}
 
@@ -385,25 +402,6 @@ public class QueryAuditAction extends BaseActionSupport {
 
 	public String getApplyView() throws Exception {
 		this.parseModel();
-		this.getBankAccountInfos();
-		
-		if(this.userList != null && !this.userList.isEmpty()) {
-			for(TUumsBaseUser user : this.userList) {
-				if(user.getUserId().equals(this.model.getGzjzyhApplication().getAppBankuser())) {
-					this.bankUserName = user.getUserName();
-				}
-			}
-		}
-		this.appTypeName = this.typeMap.get(this.model.getGzjzyhApplication().getAppType());
-		String appDateType = this.model.getGzjzyhApplication().getAppDateType();
-		if("0".equals(appDateType)) {
-			this.appDateDesc = "开启之日启至今";
-		}else if("1".equals(appDateType)) {
-			this.appDateDesc = "近一年";
-		}else if("2".equals(appDateType)) {
-			this.appDateDesc = TimeKit.formatDate(this.model.getGzjzyhApplication().getAppStartDate(), "yyyy-MM-dd")
-					+ " 至 " + TimeKit.formatDate(this.model.getGzjzyhApplication().getAppEndDate(), "yyyy-MM-dd");
-		}
 
 		this.appLawfileTmp = this.DEFAULT_UPLOAD_IMAGE;
 		this.appLawfileRTmp = this.DEFAULT_UPLOAD_IMAGE;

@@ -257,6 +257,7 @@ public class QueryBankService implements IQueryBankService {
 		gzjzyhApplication
 				.setAppResponser(user.getUserName());
 		gzjzyhApplication.setAppResponseDate(new Date());
+		gzjzyhApplication.setAppStatus(appConstants.STATUS_PROCESS_YES);
 		this.queryApplyDao.update(gzjzyhApplication);
 		
 		if(GzjzyhApplicationConfig.isDistributedDeployed()) {

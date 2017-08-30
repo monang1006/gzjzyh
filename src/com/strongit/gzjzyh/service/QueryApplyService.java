@@ -131,10 +131,25 @@ public class QueryApplyService implements IQueryApplyService {
 	public void save(TGzjzyhApplyVo vo)
 			throws ServiceException, SystemException, DAOException {
 		TGzjzyhCase caseInfo = vo.getGzjzyhCase();
-		this.caseDao.save(caseInfo);
+		if(caseInfo.getCaseId() == null || "".equals(caseInfo.getCaseId())) {
+			TGzjzyhCase existCaseInfo = this.caseDao.findByUnique("caseCode", caseInfo.getCaseCode());
+			if(existCaseInfo != null) {
+				existCaseInfo.setCaseName(caseInfo.getCaseName());
+				existCaseInfo.setCaseConfirmTime(caseInfo.getCaseConfirmTime());
+				this.caseDao.update(existCaseInfo);
+				caseInfo = existCaseInfo;
+			}else {
+				this.caseDao.insert(caseInfo);
+			}
+		}else {
+			this.caseDao.update(caseInfo);
+		}
 		
 		TGzjzyhApplication application = vo.getGzjzyhApplication();
-		application.setAppStatus(appConstants.STATUS_SUBMIT_NO);
+		if(application.getAppStatus() == null || "".equals(application.getAppStatus())
+				|| appConstants.STATUS_SUBMIT_NO.equals(application.getAppStatus())) {
+			application.setAppStatus(appConstants.STATUS_SUBMIT_NO);
+		}
 		application.setCaseId(caseInfo.getCaseId());
 		this.queryApplyDao.save(application);
 	}
@@ -278,7 +293,19 @@ public class QueryApplyService implements IQueryApplyService {
 	public void saveOrCommit(TGzjzyhApplyVo vo)
 			throws ServiceException, SystemException, DAOException {
 		TGzjzyhCase caseInfo = vo.getGzjzyhCase();
-		this.caseDao.save(caseInfo);
+		if(caseInfo.getCaseId() == null || "".equals(caseInfo.getCaseId())) {
+			TGzjzyhCase existCaseInfo = this.caseDao.findByUnique("caseCode", caseInfo.getCaseCode());
+			if(existCaseInfo != null) {
+				existCaseInfo.setCaseName(caseInfo.getCaseName());
+				existCaseInfo.setCaseConfirmTime(caseInfo.getCaseConfirmTime());
+				this.caseDao.update(existCaseInfo);
+				caseInfo = existCaseInfo;
+			}else {
+				this.caseDao.insert(caseInfo);
+			}
+		}else {
+			this.caseDao.update(caseInfo);
+		}
 		
 		TGzjzyhApplication application = vo.getGzjzyhApplication();
 		application.setAppStatus(appConstants.STATUS_SUBMIT_YES);

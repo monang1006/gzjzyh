@@ -81,6 +81,8 @@ public class QueryBankAction extends BaseActionSupport {
 	private String appDateDesc;
 	
 	private String appResponsefile;
+	
+	private String appResponsefile1;
 
 	IUserService userService;
 
@@ -211,8 +213,6 @@ public class QueryBankAction extends BaseActionSupport {
 	public String input() throws Exception {
 		this.parseModel();
 		
-		this.getBankAccountInfos();
-
 		this.appLawfileTmp = this.DEFAULT_UPLOAD_IMAGE;
 		this.appLawfileRTmp = this.DEFAULT_UPLOAD_IMAGE;
 		this.appAttachmentTmp = this.DEFAULT_UPLOAD_IMAGE;
@@ -400,6 +400,25 @@ public class QueryBankAction extends BaseActionSupport {
 						.getCaseById(application.getCaseId());
 				this.model.setGzjzyhCase(caseInfo);
 			}
+			
+			this.getBankAccountInfos();
+			if(this.userList != null && !this.userList.isEmpty()) {
+				for(TUumsBaseUser user : this.userList) {
+					if(user.getUserId().equals(this.model.getGzjzyhApplication().getAppBankuser())) {
+						this.bankUserName = user.getUserName();
+					}
+				}
+			}
+			this.appTypeName = this.typeMap.get(this.model.getGzjzyhApplication().getAppType());
+			String appDateType = this.model.getGzjzyhApplication().getAppDateType();
+			if("0".equals(appDateType)) {
+				this.appDateDesc = "开启之日启至今";
+			}else if("1".equals(appDateType)) {
+				this.appDateDesc = "近一年";
+			}else if("2".equals(appDateType)) {
+				this.appDateDesc = TimeKit.formatDate(this.model.getGzjzyhApplication().getAppStartDate(), "yyyy-MM-dd")
+						+ " 至 " + TimeKit.formatDate(this.model.getGzjzyhApplication().getAppEndDate(), "yyyy-MM-dd");
+			}
 		}
 	}
 
@@ -455,31 +474,72 @@ public class QueryBankAction extends BaseActionSupport {
 		return account.replaceAll(",", ",\\\r\\\n");
 	}
 	
+	public void prepareGoPrint() throws Exception{
+		prepareModel();
+	}
+	
+	public String goPrint() throws Exception {
+		this.parseModel();
+
+		this.ueMainNo1Tmp = this.DEFAULT_UPLOAD_IMAGE;
+		this.ueMainNo2Tmp = this.DEFAULT_UPLOAD_IMAGE;
+		this.ueMainId1Tmp = this.DEFAULT_UPLOAD_IMAGE;
+		this.ueMainId2Tmp = this.DEFAULT_UPLOAD_IMAGE;
+		this.ueHelpNo1Tmp = this.DEFAULT_UPLOAD_IMAGE;
+		this.ueHelpNo2Tmp = this.DEFAULT_UPLOAD_IMAGE;
+		this.ueHelpId1Tmp = this.DEFAULT_UPLOAD_IMAGE;
+		this.ueHelpId2Tmp = this.DEFAULT_UPLOAD_IMAGE;
+
+		if (model.getGzjzyhUserExtension().getUeMainNo1() != null
+				&& !"".equals(model.getGzjzyhUserExtension().getUeMainNo1())) {
+			this.ueMainNo1Tmp = model.getGzjzyhUserExtension()
+					.getUeMainNo1();
+		}
+		if (model.getGzjzyhUserExtension().getUeMainNo2() != null
+				&& !"".equals(model.getGzjzyhUserExtension().getUeMainNo2())) {
+			this.ueMainNo2Tmp = model.getGzjzyhUserExtension()
+					.getUeMainNo2();
+		}
+		if (model.getGzjzyhUserExtension().getUeMainId1() != null
+				&& !"".equals(model.getGzjzyhUserExtension().getUeMainId1())) {
+			this.ueMainId1Tmp = model.getGzjzyhUserExtension()
+					.getUeMainId1();
+		}
+		if (model.getGzjzyhUserExtension().getUeMainId2() != null
+				&& !"".equals(model.getGzjzyhUserExtension().getUeMainId2())) {
+			this.ueMainId2Tmp = model.getGzjzyhUserExtension()
+					.getUeMainId2();
+		}
+		if (model.getGzjzyhUserExtension().getUeHelpNo1() != null
+				&& !"".equals(model.getGzjzyhUserExtension().getUeHelpNo1())) {
+			this.ueHelpNo1Tmp = model.getGzjzyhUserExtension()
+					.getUeHelpNo1();
+		}
+		if (model.getGzjzyhUserExtension().getUeHelpNo2() != null
+				&& !"".equals(model.getGzjzyhUserExtension().getUeHelpNo2())) {
+			this.ueHelpNo2Tmp = model.getGzjzyhUserExtension()
+					.getUeHelpNo2();
+		}
+		if (model.getGzjzyhUserExtension().getUeHelpId1() != null
+				&& !"".equals(model.getGzjzyhUserExtension().getUeHelpId1())) {
+			this.ueHelpId1Tmp = model.getGzjzyhUserExtension()
+					.getUeHelpId1();
+		}
+		if (model.getGzjzyhUserExtension().getUeHelpId2() != null
+				&& !"".equals(model.getGzjzyhUserExtension().getUeHelpId2())) {
+			this.ueHelpId2Tmp = model.getGzjzyhUserExtension()
+					.getUeHelpId2();
+		}
+
+		return "print";
+	}
+	
 	public void prepareGetApplyView() throws Exception{
 		prepareModel();
 	}
 
 	public String getApplyView() throws Exception {
 		this.parseModel();
-		this.getBankAccountInfos();
-		
-		if(this.userList != null && !this.userList.isEmpty()) {
-			for(TUumsBaseUser user : this.userList) {
-				if(user.getUserId().equals(this.model.getGzjzyhApplication().getAppBankuser())) {
-					this.bankUserName = user.getUserName();
-				}
-			}
-		}
-		this.appTypeName = this.typeMap.get(this.model.getGzjzyhApplication().getAppType());
-		String appDateType = this.model.getGzjzyhApplication().getAppDateType();
-		if("0".equals(appDateType)) {
-			this.appDateDesc = "开启之日启至今";
-		}else if("1".equals(appDateType)) {
-			this.appDateDesc = "近一年";
-		}else if("2".equals(appDateType)) {
-			this.appDateDesc = TimeKit.formatDate(this.model.getGzjzyhApplication().getAppStartDate(), "yyyy-MM-dd")
-					+ " 至 " + TimeKit.formatDate(this.model.getGzjzyhApplication().getAppEndDate(), "yyyy-MM-dd");
-		}
 
 		this.appLawfileTmp = this.DEFAULT_UPLOAD_IMAGE;
 		this.appLawfileRTmp = this.DEFAULT_UPLOAD_IMAGE;
@@ -556,12 +616,12 @@ public class QueryBankAction extends BaseActionSupport {
 
 	public void downloadAttachment() throws Exception {
 		String fileName = null;
-		int index = this.appResponsefile.lastIndexOf("\\/");
+		int index = this.appResponsefile1.lastIndexOf("/");
 		if(index != -1) {
-			fileName = this.appResponsefile.substring(index + 1, this.appResponsefile.length());
+			fileName = this.appResponsefile1.substring(index + 1, this.appResponsefile1.length());
 		}
 		// 获取目标文件的绝对路径
-		String filePath = FileKit.getProjectPath() + this.appResponsefile;
+		String filePath = FileKit.getProjectPath() + this.appResponsefile1;
 		this.download(fileName, filePath);
 	}
 	
@@ -965,6 +1025,14 @@ public class QueryBankAction extends BaseActionSupport {
 
 	public void setSearchAppOrg(String searchAppOrg) {
 		this.searchAppOrg = searchAppOrg;
+	}
+
+	public String getAppResponsefile1() {
+		return appResponsefile1;
+	}
+
+	public void setAppResponsefile1(String appResponsefile1) {
+		this.appResponsefile1 = appResponsefile1;
 	}
 
 }

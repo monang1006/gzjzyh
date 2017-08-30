@@ -51,7 +51,7 @@ public class FileKit {
 
 	public final static String getBase64EncodedFileContentByRelativePath(
 			String relativeFilePath) throws Exception {
-		return getProjectPath() + relativeFilePath;
+		return getBase64EncodedFileContent(getProjectPath() + relativeFilePath);
 	}
 
 	public final static String getBase64EncodedFileContent(String filePath)
