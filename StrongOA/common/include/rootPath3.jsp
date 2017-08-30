@@ -49,7 +49,5 @@ if(privilName != null && privilName.length() > 0){
   }
 </script>
 <!-- 统一【alert,confirm】风格 add by dengzc -->
-<SCRIPT LANGUAGE="JavaScript" src="<%=path%>/common/js/commontab/service.js"></SCRIPT>
-<SCRIPT LANGUAGE="JavaScript" src="<%=path%>/common/js/commontab/workservice.js"></SCRIPT>
 <script type="text/javascript" src="<%=path%>/common/js/common/common.js"></script>
 
