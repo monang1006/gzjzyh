@@ -18,14 +18,23 @@
 
 <!--  引用公共及自定义js文件,建议js都以文件方式定义在jsp文件外部,通常定义在WebRoot目录下的js文件夹下-->
 <script type="text/javascript" language="javascript"
-	src="<%=path%>/common/js/jquery/jquery-1.12.4.min.js"></script>
+	src="<%=path%>/common/js/jquery/jquery-1.8.3.min.js"></script>
 <script language="javascript"
 	src="<%=path%>/common/js/common/windowsadaptive.js"></script>
+<script language="javascript" src="<%=path%>/common/js/upload/jquery.blockUI.js"></script>
 
 <!-- webuploader -->
 <link rel="stylesheet" type="text/css" href="<%=path%>/common/js/webuploader/webuploader.css">
 <script type="text/javascript" src="<%=path%>/common/js/webuploader/webuploader.min.js"></script>
 <script type="text/javascript">
+
+function show(i){
+	$.blockUI({ overlayCSS: { backgroundColor: '#B3B3B3' }});
+	$.blockUI({ message: '<font color="#008000"><h1>'+i+'</h1></font>' });
+}
+function hidden(){
+	$.unblockUI();
+}
 
 function display(){
 	$(".displayFlag").hide();
@@ -88,15 +97,18 @@ $(function(){
 	    duplicate: true
 	});
 	uploader.on('uploadSuccess', function(file,response) {
+		hidden();
 		$("#appResponsefile").val(response[0]);
 		$("#appResponsefile1").val(response[0]);
 		$("#downloadBtn").html(file.name);
 		$("#downloadBtn").show();
 	});
 	uploader.on('beforeFileQueued', function( file ) {
+		show("正在上传，请稍候...");
 		return true;
     });
 	uploader.on('error', function(type) {
+		hidden();
 		if (type == "Q_EXCEED_NUM_LIMIT") {
 			alert("超出最大附件数");
 		}
@@ -146,7 +158,7 @@ function downloadAttachment(){
 										<td width="30">&nbsp;</td>
 										<td class="table_headtd_img"><img
 											src="<%=frameroot%>/images/ico/ico.gif">&nbsp;</td>
-										<td align="left" width="140"><strong>查询申请签收</strong></td>
+										<td align="left" width="140"><strong>申请处理</strong></td>
 										<td align="right">
 											<table border="0" align="right" cellpadding="00"
 												cellspacing="0">
@@ -177,13 +189,13 @@ function downloadAttachment(){
 						cellspacing="0" align="center" class="table1">
 						<tr>
 							<td height="21" class="biao_bg1_gz" align="right">
-								<span class="wz">结果反馈：</span>
+								<span class="wz"><font color="red">*</font>&nbsp;结果反馈：</span>
 							</td>
-							<td class="td1" align="left" width="15%">
+							<td class="td1" align="left" width="150px">
 								<div id="uploadBtn">上传反馈文件</div>
 							</td>
 							<td class="td1" align="left" colspan="2">
-								<a id="downloadBtn" href="javascript:void(0);" style="display:none;" onclick="downloadAttachment()"></a>
+								<a id="downloadBtn" title="请点击下载已上传的附件" href="javascript:void(0);" style="display:none;text-decoration:underline;" onclick="downloadAttachment()"></a>
 							</td>
 						</tr>
 						<td class="table1_td"></td>
