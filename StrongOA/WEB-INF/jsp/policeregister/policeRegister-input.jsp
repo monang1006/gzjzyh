@@ -217,7 +217,7 @@ function checkMobile(mobile){
 			        	return ;
 			        }
 			        
-			        /*if(!validateElement("ueMainNo1", 200, "主办警官警官证正面")){
+			        if(!validateElement("ueMainNo1", 200, "主办警官警官证正面")){
 						return ;
 			        }
 					if(!validateElement("ueMainNo2", 200, "主办警官警官证反面")){
@@ -240,7 +240,7 @@ function checkMobile(mobile){
 			        }
 					if(!validateElement("ueHelpId2", 200, "协办警官身份证反面")){
 						return ;
-			        } */
+			        } 
 			        var ueId = $("#ueId").val();
 					if(ueId == "" || document.getElementById("hasPasswordEdited").value == "1"){
 						if("${md5Enable}" == "1"){	

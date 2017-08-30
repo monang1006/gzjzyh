@@ -178,7 +178,7 @@
 										<td>
 											 &nbsp;&nbsp;用户姓名：&nbsp;<input id="searchname" name="searchname" cssClass="search" title="请输入用户名称" style="width:110px;"  maxlength="50" onkeyup="this.value=this.value.replace(/\s/g,'')" onafterpaste="this.value=this.value.replace(/\s/g,'')" value="${selectname}"> 										
 											 &nbsp;&nbsp;登录账号：&nbsp;<input id="searchloginname" name="searchloginname"   cssClass="search" title="请输入登录账号" maxlength="50"  onkeyup="this.value=this.value.replace(/\s/g,'')" onafterpaste="this.value=this.value.replace(/\s/g,'')" value="${selectloginname}">										
-											 &nbsp;&nbsp;是否启用：&nbsp;<s:select id="searchActive" name="searchActive" style="width:80px;" list="#{'':'是否启用','1':'已启用','0':'未启用'}" onchange='$("#img_sousuo").click();' listKey="key" listValue="value" style="width:14em"/>
+											 &nbsp;&nbsp;是否启用：&nbsp;<s:select id="searchActive" name="searchActive" style="width:80px;" list="#{'':'是否启用','1':'已启用','0':'未启用'}" onchange='$("#img_sousuo").click();' listKey="key" listValue="value" />
 											 &nbsp;&nbsp;&nbsp;&nbsp;<input id="img_sousuo" type="button" />
 										<%--
 										<td width="15%" align="center" class="biao_bg1">

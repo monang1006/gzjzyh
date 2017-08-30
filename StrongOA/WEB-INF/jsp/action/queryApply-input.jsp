@@ -324,9 +324,8 @@ function refreshList(){
 <body class=contentbodymargin oncontextmenu="return false;">
 	<DIV id=contentborder align=center>
 		<s:form id="applySave" target="hiddenFrame" action="/action/queryApply!save.action"  theme="simple" >
-		<input type="hidden" id="appId" name="model.gzjzyhApplication.appId"
-			value="${model.gzjzyhApplication.appId}">
-		<input type="hidden" id="caseId" name="model.gzjzyhCase.caseId"
+		<input type="hidden" id="appId" name="appId" value="${model.gzjzyhApplication.appId}">
+		<input type="hidden" id="caseId" name="caseId"
 			value="${model.gzjzyhCase.caseId}">
 		<input type="hidden" id="appUserid" name="model.gzjzyhApplication.appUserid"
 			value="${model.gzjzyhApplication.appUserid}">

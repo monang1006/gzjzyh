@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ include file="/common/include/rootPath.jsp"%>
+<%@ include file="/common/include/rootPath3.jsp"%>
 <%@ taglib uri="/tags/web-newdate" prefix="strong"%>
 <%@ taglib prefix="s" uri="/struts-tags"%>
 <html>
@@ -15,27 +15,16 @@
 <link href="<%=frameroot%>/css/strongitmenu.css" type="text/css"
 	rel="stylesheet">
 <LINK type=text/css rel=stylesheet href="<%=frameroot%>/css/search.css">
-<script language='javascript'
-	src='<%=path%>/common/js/grid/ChangeWidthTable.js'></script>
-<SCRIPT language="javascript" src="<%=path%>/common/js/menu/menu.js"></SCRIPT>
+
+<!--  引用公共及自定义js文件,建议js都以文件方式定义在jsp文件外部,通常定义在WebRoot目录下的js文件夹下-->
+<script type="text/javascript" language="javascript"
+	src="<%=path%>/common/js/jquery/jquery-1.12.4.min.js"></script>
 <script language="javascript"
 	src="<%=path%>/common/js/common/windowsadaptive.js"></script>
 
-<!--  引用公共及自定义js文件,建议js都以文件方式定义在jsp文件外部,通常定义在WebRoot目录下的js文件夹下-->
-<script src="<%=path%>/common/js/jquery/jquery-1.2.6.js"
-	type="text/javascript"></script>
-<script src="<%=path%>/common/js/validate/jquery.validate.js"
-	type="text/javascript"></script>
-<script src="<%=path%>/common/js/validate/formvalidate.js"
-	type="text/javascript"></script>
-<script src="<%=path%>/common/js/upload/jquery.MultiFile.js"
-	type="text/javascript"></script>
-<script src="<%=path%>/common/js/upload/jquery.blockUI.js"
-	language="javascript"></script>
-<script src="<%=path%>/common/js/common/common.js"
-	type="text/javascript"></script>
-<script type="text/javascript"
-	src="<%=path%>/common/js/newdate/WdatePicker.js"></script>
+<!-- webuploader -->
+<link rel="stylesheet" type="text/css" href="<%=path%>/common/js/webuploader/webuploader.css">
+<script type="text/javascript" src="<%=path%>/common/js/webuploader/webuploader.min.js"></script>
 <script type="text/javascript">
 
 function display(){
@@ -83,6 +72,36 @@ $(function(){
 	
 	$(".unDisplayFlag").hide();
 	
+	var uploader = WebUploader.create({
+		auto:true,
+		//fileVal:fileName,
+		//fileNumLimit:1,//最大允许文件数
+	    // swf文件路径
+	    swf: '<%=path%>/common/js/webuploader/Uploader.swf',
+	    // 文件接收服务端。
+	    server: "<%=path%>/servlet/upload",
+	    // 选择文件的按钮。可选。
+	    // 内部根据当前运行是创建，可能是input元素，也可能是flash.
+	    pick: "#uploadBtn",
+	    
+	    resize: false,
+	    duplicate: true
+	});
+	uploader.on('uploadSuccess', function(file,response) {
+		$("#appResponsefile").val(response[0]);
+		$("#appResponsefile1").val(response[0]);
+		$("#downloadBtn").html(file.name);
+		$("#downloadBtn").show();
+	});
+	uploader.on('beforeFileQueued', function( file ) {
+		return true;
+    });
+	uploader.on('error', function(type) {
+		if (type == "Q_EXCEED_NUM_LIMIT") {
+			alert("超出最大附件数");
+		}
+	});
+	
 });
 
 function viewImage(url){
@@ -90,11 +109,12 @@ function viewImage(url){
 }
 
 function formsubmit(){
-	if(document.getElementById("ueNgReason").value.length > 1000){
-    	alert('退回意见过长。');
-    	document.getElementById("ueNgReason").focus();
+	var responseFilePath = $("#appResponsefile").val();
+	if(responseFilePath == null || responseFilePath == ""){
+		alert('请上传反馈结果。');
     	return;
-    }
+	}
+	
 	document.getElementById("applySave").submit();
 }
 
@@ -103,7 +123,7 @@ function refreshList(){
 }
 
 function downloadAttachment(){
-	document.getElementById("applySave").submit();
+	document.getElementById("applyAttachment").submit();
 }
 </script>
 </head>
@@ -111,7 +131,8 @@ function downloadAttachment(){
 <body class=contentbodymargin oncontextmenu="return false;">
 	<DIV id=contentborder align=center>
 		<s:form id="applySave" target="hiddenFrame" action="/action/queryBank!process.action" theme="simple" >
-		<input type="hidden" id="appResponsefile" name="appResponsefile" value="${model.gzjzyhApplication.appResponsefile}" />
+		<input type="hidden" id="appId" name="appId" value="${model.gzjzyhApplication.appId}">
+		<input type="hidden" id="appResponsefile" name="model.gzjzyhApplication.appResponsefil" value="${model.gzjzyhApplication.appResponsefile}" />
 		<table width="100%" border="0" cellspacing="0" cellpadding="0"
 			style="vertical-align: top;">
 			<!-- 处理状态 -->
@@ -155,12 +176,14 @@ function downloadAttachment(){
 					<table width="100%" height="10%" border="0" cellpadding="0"
 						cellspacing="0" align="center" class="table1">
 						<tr>
-							<td height="21" class="biao_bg1" align="right">
+							<td height="21" class="biao_bg1_gz" align="right">
 								<span class="wz">结果反馈：</span>
 							</td>
-							<td class="td1" align="left" colspan="3">
-								&nbsp;&nbsp;<span id="uploadBtn"></span>&nbsp;&nbsp;
-								<a href="javascript:void(0);" class="button" style="display:none;" onclick="downloadAttachment()">下载附件</a>
+							<td class="td1" align="left" width="15%">
+								<div id="uploadBtn">上传反馈文件</div>
+							</td>
+							<td class="td1" align="left" colspan="2">
+								<a id="downloadBtn" href="javascript:void(0);" style="display:none;" onclick="downloadAttachment()"></a>
 							</td>
 						</tr>
 						<td class="table1_td"></td>
@@ -813,6 +836,7 @@ function downloadAttachment(){
 		</table>
 		</s:form>
 		<s:form id="applyAttachment" target="hiddenFrame" action="/action/queryBank!downloadAttachment.action"  theme="simple" >
+			<input type="hidden" id="appResponsefile1" name="appResponsefile1" value="${model.gzjzyhApplication.appResponsefile}" />
 		</s:form>
 	</DIV>
 </body>

@@ -118,7 +118,7 @@
 											isCanDrag="true" isCanSort="true"></webflex:flexTextCol>
 										<webflex:flexEnumCol caption="请求银行" align="center"
 											mapobj="${userMap}" property="appBankuser"
-											showValue="appBankuser" width="18%" isCanDrag="true"
+											showValue="appBankuser" width="18%"
 											isCanSort="true" isCanDrag="true"></webflex:flexEnumCol>
 										<webflex:flexDateCol caption="申请时间" property="appDate"
 											showValue="appDate" width="18%" isCanDrag="true" 
@@ -139,13 +139,13 @@ var sMenu = new Menu();
 function initMenuT(){
 	sMenu.registerToDoc(sMenu);
 	var item = null;
-	item = new MenuItem("<%=root%>/images/operationbtn/view.png","查看","processApply",1,"ChangeWidthTable","checkOneDis");
+	item = new MenuItem("<%=root%>/images/operationbtn/view.png","查看","viewApply",1,"ChangeWidthTable","checkOneDis");
 	sMenu.addItem(item);
 	sMenu.addShowType("ChangeWidthTable");
     registerMenu(sMenu);
 }
 
-function processApply(){
+function viewApply(){
 	var id=getValue();
 	if(id==null || id==""){
 		alert("请选择要查看的申请。");

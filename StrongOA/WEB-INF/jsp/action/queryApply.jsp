@@ -170,7 +170,7 @@
 											isCanDrag="true" isCanSort="true"></webflex:flexTextCol>
 										<webflex:flexEnumCol caption="请求银行" align="center"
 											mapobj="${userMap}" property="appBankuser"
-											showValue="appBankuser" width="18%" isCanDrag="true"
+											showValue="appBankuser" width="18%"
 											isCanSort="true" isCanDrag="true"></webflex:flexEnumCol>
 										<webflex:flexDateCol caption="申请时间" property="appDate"
 											showValue="appDate" width="18%" isCanDrag="true" 

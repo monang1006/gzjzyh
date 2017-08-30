@@ -103,7 +103,8 @@ function refreshList(){
 }
 
 function policePrint(){
-	
+	var result=window.showModalDialog("<%=path%>/action/queryBank!goPrint.action?appId=${appId}",
+			window,"dialogWidth:210mm;dialogHeight:297mm;"+"status:no;help:no;scroll:no;");
 }
 </script>
 </head>
@@ -111,6 +112,7 @@ function policePrint(){
 <body class=contentbodymargin oncontextmenu="return false;">
 	<DIV id=contentborder align=center>
 		<s:form id="applySave" target="hiddenFrame" action="/action/queryBank!save.action"  theme="simple" >
+		<input type="hidden" id="appId" name="appId" value="${model.gzjzyhApplication.appId}">
 		<table width="100%" border="0" cellspacing="0" cellpadding="0"
 			style="vertical-align: top;">
 			<!-- 处理状态 -->
@@ -159,7 +161,7 @@ function policePrint(){
 					<table width="100%" height="10%" border="0" cellpadding="0"
 						cellspacing="0" align="center" class="table1">
 						<tr>
-							<td height="21" class="biao_bg1" align="right">
+							<td height="21" class="biao_bg1_gz" align="right">
 								<span class="wz">处理状态：</span>
 							</td>
 							<td class="td1" align="left" colspan="3">
@@ -170,7 +172,7 @@ function policePrint(){
 							</td>
 						</tr>
 						<tr>
-							<td height="21" class="biao_bg1" align="right">
+							<td height="21" class="biao_bg1_gz" align="right">
 								<span class="wz">退回意见：</span>
 							</td>
 							<td class="td1" align="left" colspan="3">
