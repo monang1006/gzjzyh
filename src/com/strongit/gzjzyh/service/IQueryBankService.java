@@ -19,14 +19,16 @@ import com.strongmvc.orm.hibernate.Page;
  */
 public interface IQueryBankService {
 
-	/**未签收列表
-	 * @param page
-	 * @param accoutType
-	 * @param appFileno
-	 * @param appOrg
-	 * @param appStartDate
-	 * @param appEndDate
-	 * @return
+	/**
+	 * 未签收列表
+	 * 
+	 * @param page -分页信息
+	 * @param accoutType -账号类型
+	 * @param appFileno -文书号
+	 * @param appOrg -经办单位
+	 * @param appStartDate -申请开始时间
+	 * @param appEndDate -申请结束时间
+	 * @return 未签收列表
 	 * @throws ServiceException
 	 * @throws SystemException
 	 * @throws DAOException
@@ -36,14 +38,16 @@ public interface IQueryBankService {
 			String appOrg, Date appStartDate, Date appEndDate)
 			throws ServiceException, SystemException, DAOException;
 
-	/**已签收列表
-	 * @param page
-	 * @param accoutType
-	 * @param appFileno
-	 * @param appBankuser
-	 * @param appStartDate
-	 * @param appEndDate
-	 * @return
+	/**
+	 * 已签收列表
+	 * 
+	 * @param page -分页信息
+	 * @param accoutType -账号类型
+	 * @param appFileno -文书号
+	 * @param appOrg -经办单位
+	 * @param appStartDate -申请开始时间
+	 * @param appEndDate -申请结束时间
+	 * @return 已签收列表
 	 * @throws ServiceException
 	 * @throws SystemException
 	 * @throws DAOException
@@ -53,14 +57,16 @@ public interface IQueryBankService {
 			String appOrg, Date appStartDate, Date appEndDate)
 			throws ServiceException, SystemException, DAOException;
 
-	/**已处理列表
-	 * @param page
-	 * @param accoutType
-	 * @param appFileno
-	 * @param appBankuser
-	 * @param appStartDate
-	 * @param appEndDate
-	 * @return
+	/**
+	 * 已处理列表
+	 * 
+	 * @param page -分页信息
+	 * @param accoutType -账号类型
+	 * @param appFileno -文书号
+	 * @param appOrg -经办单位
+	 * @param appStartDate -申请开始时间
+	 * @param appEndDate -申请结束时间
+	 * @return 已处理列表
 	 * @throws ServiceException
 	 * @throws SystemException
 	 * @throws DAOException
@@ -71,7 +77,9 @@ public interface IQueryBankService {
 			throws ServiceException, SystemException, DAOException;
 
 	/**
-	 * @param vo
+	 * 签收申请
+	 * 
+	 * @param vo -申请实体类
 	 * @throws ServiceException
 	 * @throws SystemException
 	 * @throws DAOException
@@ -80,7 +88,9 @@ public interface IQueryBankService {
 			throws ServiceException, SystemException, DAOException;
 
 	/**
-	 * @param vo
+	 * 处理申请
+	 * 
+	 * @param vo -申请实体类
 	 * @throws ServiceException
 	 * @throws SystemException
 	 * @throws DAOException

@@ -19,14 +19,17 @@ import com.strongmvc.orm.hibernate.Page;
  */
 public interface IQueryAuditService {
 
-	/**未审核列表
-	 * @param page
-	 * @param accoutType
-	 * @param appFileno
-	 * @param appBankuser
-	 * @param appStartDate
-	 * @param appEndDate
-	 * @return
+	/**
+	 * 未审核列表
+	 * 
+	 * @param page -分页信息
+	 * @param accoutType -账户类型
+	 * @param appFileno -文书号
+	 * @param appBankuser -查询银行
+	 * @param appStartDate -申请开始时间
+	 * @param appEndDate -申请结束时间
+	 * @param appOrg -经办机构
+	 * @return 未审核列表
 	 * @throws ServiceException
 	 * @throws SystemException
 	 * @throws DAOException
@@ -36,14 +39,17 @@ public interface IQueryAuditService {
 			String appBankuser, Date appStartDate, Date appEndDate, String appOrg)
 			throws ServiceException, SystemException, DAOException;
 
-	/**已审核列表
-	 * @param page
-	 * @param accoutType
-	 * @param appFileno
-	 * @param appBankuser
-	 * @param appStartDate
-	 * @param appEndDate
-	 * @return
+	/**
+	 * 已审核列表
+	 * 
+	 * @param page -分页信息
+	 * @param accoutType -账户类型
+	 * @param appFileno -文书号
+	 * @param appBankuser -查询银行
+	 * @param appStartDate -申请开始时间
+	 * @param appEndDate -申请结束时间
+	 * @param appOrg -经办机构
+	 * @return 已审核列表
 	 * @throws ServiceException
 	 * @throws SystemException
 	 * @throws DAOException
@@ -54,7 +60,9 @@ public interface IQueryAuditService {
 			throws ServiceException, SystemException, DAOException;
 
 	/**
-	 * @param vo
+	 * 申请审核
+	 * 
+	 * @param vo -申请实体类
 	 * @throws ServiceException
 	 * @throws SystemException
 	 * @throws DAOException
