@@ -149,7 +149,7 @@ function downloadAttachment(){
 	<DIV id=contentborder align=center>
 		<s:form id="applySave" target="hiddenFrame" action="/action/queryBank!process.action" theme="simple" >
 		<input type="hidden" id="appId" name="appId" value="${model.gzjzyhApplication.appId}">
-		<input type="hidden" id="appResponsefile" name="model.gzjzyhApplication.appResponsefil" value="${model.gzjzyhApplication.appResponsefile}" />
+		<input type="hidden" id="appResponsefile" name="model.gzjzyhApplication.appResponsefile" value="${model.gzjzyhApplication.appResponsefile}" />
 		<input type="hidden" id="isDesktop" name="isDesktop" value="${isDesktop}">
 		<input type="hidden" id="blockId" name="blockId" value="${blockId}">
 		<table width="100%" border="0" cellspacing="0" cellpadding="0"
