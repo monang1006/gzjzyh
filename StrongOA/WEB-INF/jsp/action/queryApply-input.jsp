@@ -16,6 +16,8 @@
 <link href="<%=frameroot%>/css/strongitmenu.css" type="text/css"
 	rel="stylesheet">
 <LINK type=text/css rel=stylesheet href="<%=frameroot%>/css/search.css">
+<script src="<%=path%>/common/js/jquery/jquery-1.2.6.js"
+	type="text/javascript"></script>
 <script language='javascript'
 	src='<%=path%>/common/js/grid/ChangeWidthTable.js'></script>
 <SCRIPT language="javascript" src="<%=path%>/common/js/menu/menu.js"></SCRIPT>
@@ -23,8 +25,6 @@
 	src="<%=path%>/common/js/common/windowsadaptive.js"></script>
 
 <!--  引用公共及自定义js文件,建议js都以文件方式定义在jsp文件外部,通常定义在WebRoot目录下的js文件夹下-->
-<script src="<%=path%>/common/js/jquery/jquery-1.2.6.js"
-	type="text/javascript"></script>
 <script src="<%=path%>/common/js/validate/jquery.validate.js"
 	type="text/javascript"></script>
 <script src="<%=path%>/common/js/validate/formvalidate.js"
