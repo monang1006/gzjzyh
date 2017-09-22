@@ -707,7 +707,7 @@ public class QueryApplyAction extends BaseActionSupport {
 	
 	public void downloadAttachment() throws Exception {
 		String fileName = null;
-		int index = this.appResponsefile.lastIndexOf("\\/");
+		int index = this.appResponsefile.lastIndexOf("/");
 		if(index != -1) {
 			fileName = this.appResponsefile.substring(index + 1, this.appResponsefile.length());
 		}
