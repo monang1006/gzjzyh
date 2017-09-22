@@ -150,7 +150,13 @@ $.extend(AbstractStage,{
   },
   prototype: {
     attach: function(core){
-      this.init(core);
+      //IE8下会报异常，但备注后功能仍然可用
+      try{
+    	  this.init(core);
+      }catch(e){
+    	  
+      }
+      
       core.ui.stage = this;
     },
     triggerEvent: function(ev){

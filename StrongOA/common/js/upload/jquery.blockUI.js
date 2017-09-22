@@ -169,12 +169,18 @@ function install(el, opts) {
             var s = o[0].style;
             s.position = 'absolute';
             if (i < 2) {
-                full ? s.setExpression('height','document.body.scrollHeight > document.body.offsetHeight ? document.body.scrollHeight : document.body.offsetHeight + "px"')
-                     : s.setExpression('height','this.parentNode.offsetHeight + "px"');
-                full ? s.setExpression('width','jQuery.boxModel && document.documentElement.clientWidth || document.body.clientWidth + "px"')
-                     : s.setExpression('width','this.parentNode.offsetWidth + "px"');
-                if (fixL) s.setExpression('left', fixL);
-                if (fixT) s.setExpression('top', fixT);
+            	//IE8下出现问题，捕获异常对展现无影响
+            	try{
+            		full ? s.setExpression('height','document.body.scrollHeight > document.body.offsetHeight ? document.body.scrollHeight : document.body.offsetHeight + "px"')
+                        : s.setExpression('height','this.parentNode.offsetHeight + "px"');
+            		full ? s.setExpression('width','jQuery.boxModel && document.documentElement.clientWidth || document.body.clientWidth + "px"')
+                        : s.setExpression('width','this.parentNode.offsetWidth + "px"');
+            		if (fixL) s.setExpression('left', fixL);
+            		if (fixT) s.setExpression('top', fixT);
+            	}catch(e){
+            		
+            	}
+                
             }
             else if (opts.centerY) {
                 if (full) s.setExpression('top','(document.documentElement.clientHeight || document.body.clientHeight) / 2 - (this.offsetHeight / 2) + (blah = document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop) + "px"');

@@ -1,3 +1,4 @@
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ include file="/common/include/rootPath3.jsp"%>
@@ -19,15 +20,18 @@
 
 <!-- jcrop -->
 <link rel="stylesheet" type="text/css" href="<%=path%>/common/js/jcrop/Jcrop.min.css">
-<script type="text/javascript" src="<%=path%>/common/js/jcrop/Jcrop.min.js"></script>
+<script type="text/javascript" src="<%=path%>/common/js/jcrop/Jcrop.js"></script>
 
 <script type="text/javascript">
 	function show(i){
-		$.blockUI({ overlayCSS: { backgroundColor: '#B3B3B3' }});
-		$.blockUI({ message: '<font color="#008000"><h1>'+i+'</h1></font>' });
+		//$.blockUI({ overlayCSS: { backgroundColor: '#B3B3B3' }});
+		//$.blockUI({ message: '<font color="#008000"><h1>'+i+'</h1></font>' });
+		$("body").block({ overlayCSS: { backgroundColor: '#B3B3B3' }});
+		$("body").block({ message: '<font color="#008000"><h1>'+i+'</h1></font>' });
 	}
 	function hidden(){
-		$.unblockUI();
+		//$.unblockUI();
+		$("body").unblock();
 	}
 
 	var jcropApi;
