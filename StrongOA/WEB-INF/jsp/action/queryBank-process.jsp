@@ -1,3 +1,4 @@
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ include file="/common/include/rootPath3.jsp"%>
