@@ -1,10 +1,11 @@
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ include file="/common/include/rootPath3.jsp"%>
 <%@ taglib prefix="s" uri="/struts-tags"%>
 <html>
 <head>
-<title>图片上传</title>
+<title>时效统计</title>
 <%@include file="/common/include/meta.jsp"%>
 <LINK type=text/css rel=stylesheet
 	href="<%=frameroot%>/css/properties_windows_add.css">
@@ -22,26 +23,58 @@
         // 基于准备好的dom，初始化echarts实例
         var myChart = echarts.init(document.getElementById('main'));
 
-        // 指定图表的配置项和数据
-        var option = {
-            title: {
-                text: 'ECharts 入门示例'
-            },
-            tooltip: {},
-            legend: {
-                data:['销量']
-            },
-            xAxis: {
-                data: ["衬衫","羊毛衫","雪纺衫","裤子","高跟鞋","袜子"]
-            },
-            yAxis: {},
-            series: [{
-                name: '销量',
-                type: 'bar',
-                data: [5, 20, 36, 10, 10, 20]
-            }]
-        };
-
+     	// 指定图表的配置项和数据
+        option = {
+		    title: {
+		        text: '时效统计',
+		        textStyle: {
+		        	fontSize: 20
+		        }
+		    },
+		    tooltip: {
+		        trigger: 'axis',
+		        axisPointer: {
+		            type: 'shadow'
+		        }
+		    },
+		    legend: {
+		        data: ['执行任务最短时间', '执行任务最长时间', '执行任务平均时间']
+		    },
+		    grid: {
+		        left: '3%',
+		        right: '4%',
+		        bottom: '3%',
+		        containLabel: true
+		    },
+		    xAxis: {
+		    	type: 'category',
+		        data: ${bankNamesJson}
+		    },
+		    yAxis: {
+		    	type: 'value',
+		    	name: '单位（秒）',
+		        boundaryGap: [0, 0.01],
+		        minInterval: 1
+		    },
+		    series: [
+		        {
+		            name: '执行任务最短时间',
+		            type: 'bar',
+		            data: ${minTimesJson}
+		        },
+		        {
+		            name: '执行任务最长时间',
+		            type: 'bar',
+		            data: ${maxTimesJson}
+		        },
+		        {
+		            name: '执行任务平均时间',
+		            type: 'bar',
+		            data: ${avgTimesJson}
+		        }
+		    ]
+		};
+        
         // 使用刚指定的配置项和数据显示图表。
         myChart.setOption(option);
     </script>
