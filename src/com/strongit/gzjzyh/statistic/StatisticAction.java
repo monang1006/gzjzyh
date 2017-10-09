@@ -10,12 +10,15 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.config.ParentPackage;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.alibaba.fastjson.JSON;
 import com.strongit.gzjzyh.GzjzyhConstants;
 import com.strongit.gzjzyh.appConstants;
 import com.strongit.gzjzyh.po.TGzjzyhApplication;
@@ -43,19 +46,22 @@ public class StatisticAction extends BaseActionSupport {
 	public TGzjzyhApplyVo model = new TGzjzyhApplyVo();
 
 	@Autowired
-	IRoleManager roleManager;
-	@Autowired
-	IPoliceRegisterManager policeRegisterManager;
-	@Autowired
-	IQueryAuditService auditService;
-	@Autowired
-	DesktopSectionManager sectionManager;
-	@Autowired
 	IStatisticService statisticService;
 
 	private Page<TGzjzyhApplication> page = new Page<TGzjzyhApplication>(10,
 			true);
-
+	
+	private String bankNamesJson;
+	
+	private String minTimesJson;
+	
+	private String maxTimesJson;
+	
+	private String avgTimesJson;
+	
+	private String titlesJson;
+	
+	private String datasJson;
 
 	private Map<String, String> statusMap = new HashMap<String, String>();
 
@@ -120,9 +126,179 @@ public class StatisticAction extends BaseActionSupport {
 		return "close";
 	}
 	
-	public String efficiency() throws Exception{
+	public String efficiencyStatistic() throws Exception{
+		List<Object[]> lst = this.statisticService.efficiencyStatistic(false, null, null);
+		List<String> bankNameLst = new ArrayList<String>(0);
+		List<Integer> minTimeLst = new ArrayList<Integer>(0);
+		List<Integer> maxTimeLst = new ArrayList<Integer>(0);
+		List<Integer> avgTimeLst = new ArrayList<Integer>(0);
+		if(lst != null && !lst.isEmpty()){
+			for(Object[] item : lst){
+				minTimeLst.add(Double.valueOf(item[0].toString()).intValue());
+				maxTimeLst.add(Double.valueOf(item[1].toString()).intValue());
+				avgTimeLst.add(Double.valueOf(item[2].toString()).intValue());
+				bankNameLst.add(item[3].toString());
+			}
+		}
+		this.bankNamesJson = JSON.toJSONString(bankNameLst);
+		this.minTimesJson = JSON.toJSONString(minTimeLst);
+		this.maxTimesJson = JSON.toJSONString(maxTimeLst);
+		this.avgTimesJson = JSON.toJSONString(avgTimeLst);
 		
 		return "efficiency";
+	}
+	
+	public String timeStatistic() throws Exception{
+		List<Object[]> lst = this.statisticService.timeStatistic(false, null, null);
+		List<String> yearLst = new ArrayList<String>(0);
+		Map<String, Map<String, List<Integer>>> datas = new HashMap<String, Map<String, List<Integer>>>(0);
+		if(lst != null && !lst.isEmpty()){
+			for(Object[] item : lst){
+				String year = item[0].toString();
+				String month = item[1].toString();
+				String appType = item[2].toString();
+				Integer amount = Integer.parseInt(item[3].toString());
+				if(!yearLst.contains(year)){
+					yearLst.add(year);
+					Map<String, List<Integer>> map = new HashMap<String, List<Integer>>(0);
+					List<Integer> tmpLst = new ArrayList<Integer>(0);
+					for(int i=0;i<12;i++){
+						tmpLst.add(0);
+					}
+					map.put("0", tmpLst);
+					tmpLst = new ArrayList<Integer>(0);
+					for(int i=0;i<12;i++){
+						tmpLst.add(0);
+					}
+					map.put("1", tmpLst);
+					tmpLst = new ArrayList<Integer>(0);
+					for(int i=0;i<12;i++){
+						tmpLst.add(0);
+					}
+					map.put("2", tmpLst);
+					tmpLst = new ArrayList<Integer>(0);
+					for(int i=0;i<12;i++){
+						tmpLst.add(0);
+					}
+					map.put("3", tmpLst);
+					datas.put(year, map);
+				}
+				List<Integer> amountLst = datas.get(year).get(appType);
+				if("01".equals(month)){
+					amountLst.set(0, amountLst.get(0)+amount);
+				}else if("02".equals(month)){
+					amountLst.set(1, amountLst.get(1)+amount);
+				}else if("03".equals(month)){
+					amountLst.set(2, amountLst.get(2)+amount);
+				}else if("04".equals(month)){
+					amountLst.set(3, amountLst.get(3)+amount);
+				}else if("05".equals(month)){
+					amountLst.set(4, amountLst.get(4)+amount);
+				}else if("06".equals(month)){
+					amountLst.set(5, amountLst.get(5)+amount);
+				}else if("07".equals(month)){
+					amountLst.set(6, amountLst.get(6)+amount);
+				}else if("08".equals(month)){
+					amountLst.set(7, amountLst.get(7)+amount);
+				}else if("09".equals(month)){
+					amountLst.set(8, amountLst.get(8)+amount);
+				}else if("10".equals(month)){
+					amountLst.set(9, amountLst.get(9)+amount);
+				}else if("11".equals(month)){
+					amountLst.set(10, amountLst.get(10)+amount);
+				}else if("12".equals(month)){
+					amountLst.set(11, amountLst.get(11)+amount);
+				}
+			}
+		}
+		
+		this.titlesJson = JSON.toJSONString(yearLst);
+		this.datasJson = JSON.toJSONString(datas);
+		
+		return "time";
+	}
+	
+	public String areaStatistic() throws Exception{
+		List<Object[]> lst = this.statisticService.areaStatistic(false, null, null);
+		List<String> areaLst = this.statisticService.getAllOrgNames();
+		Map<String, List<Integer>> datas = new HashMap<String, List<Integer>>(0);
+		if(lst != null && !lst.isEmpty()){
+			List<Integer> tmpLst = new ArrayList<Integer>(0);
+			for(int i=0;i<areaLst.size();i++){
+				tmpLst.add(0);
+			}
+			datas.put("0", tmpLst);
+			tmpLst = new ArrayList<Integer>(0);
+			for(int i=0;i<areaLst.size();i++){
+				tmpLst.add(0);
+			}
+			datas.put("1", tmpLst);
+			tmpLst = new ArrayList<Integer>(0);
+			for(int i=0;i<areaLst.size();i++){
+				tmpLst.add(0);
+			}
+			datas.put("2", tmpLst);
+			tmpLst = new ArrayList<Integer>(0);
+			for(int i=0;i<areaLst.size();i++){
+				tmpLst.add(0);
+			}
+			datas.put("3", tmpLst);
+			
+			for(Object[] item : lst){
+				String orgName = item[0].toString();
+				String appType = item[1].toString();
+				Integer amount = Integer.parseInt(item[2].toString());
+				List<Integer> amountLst = datas.get(appType);
+				int index = areaLst.indexOf(orgName);
+				if(index != -1){
+					amountLst.set(index, amountLst.get(index)+amount);
+				}
+			}
+		}
+		
+		this.titlesJson = JSON.toJSONString(areaLst);
+		this.datasJson = JSON.toJSONString(datas);
+		
+		return "area";
+	}
+	
+	public String bankStatistic() throws Exception{
+		List<Object[]> lst = this.statisticService.bankStatistic(false, null, null);
+		List<String> bankLst = this.statisticService.getAllBankNames();
+		Map<String, List<Integer>> datas = new HashMap<String, List<Integer>>(0);
+		if(lst != null && !lst.isEmpty()){
+			List<Integer> tmpLst = new ArrayList<Integer>(0);
+			for(int i=0;i<bankLst.size();i++){
+				tmpLst.add(0);
+			}
+			datas.put("2", tmpLst);
+			tmpLst = new ArrayList<Integer>(0);
+			for(int i=0;i<bankLst.size();i++){
+				tmpLst.add(0);
+			}
+			datas.put("4", tmpLst);
+			tmpLst = new ArrayList<Integer>(0);
+			for(int i=0;i<bankLst.size();i++){
+				tmpLst.add(0);
+			}
+			datas.put("5", tmpLst);
+			
+			for(Object[] item : lst){
+				String orgName = item[0].toString();
+				String appStatus = item[1].toString();
+				Integer amount = Integer.parseInt(item[2].toString());
+				List<Integer> amountLst = datas.get(appStatus);
+				int index = bankLst.indexOf(orgName);
+				if(index != -1){
+					amountLst.set(index, amountLst.get(index)+amount);
+				}
+			}
+		}
+		
+		this.titlesJson = JSON.toJSONString(bankLst);
+		this.datasJson = JSON.toJSONString(datas);
+		
+		return "bank";
 	}
 	
 	public void prepareGetApplyView() throws Exception{
@@ -165,6 +341,54 @@ public class StatisticAction extends BaseActionSupport {
 
 	public void setUserMap(Map<String, String> userMap) {
 		this.userMap = userMap;
+	}
+
+	public String getBankNamesJson() {
+		return bankNamesJson;
+	}
+
+	public void setBankNamesJson(String bankNamesJson) {
+		this.bankNamesJson = bankNamesJson;
+	}
+
+	public String getMinTimesJson() {
+		return minTimesJson;
+	}
+
+	public void setMinTimesJson(String minTimesJson) {
+		this.minTimesJson = minTimesJson;
+	}
+
+	public String getMaxTimesJson() {
+		return maxTimesJson;
+	}
+
+	public void setMaxTimesJson(String maxTimesJson) {
+		this.maxTimesJson = maxTimesJson;
+	}
+
+	public String getAvgTimesJson() {
+		return avgTimesJson;
+	}
+
+	public void setAvgTimesJson(String avgTimesJson) {
+		this.avgTimesJson = avgTimesJson;
+	}
+
+	public String getTitlesJson() {
+		return titlesJson;
+	}
+
+	public void setTitlesJson(String titlesJson) {
+		this.titlesJson = titlesJson;
+	}
+
+	public String getDatasJson() {
+		return datasJson;
+	}
+
+	public void setDatasJson(String datasJson) {
+		this.datasJson = datasJson;
 	}
 
 }

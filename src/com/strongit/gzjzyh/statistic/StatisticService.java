@@ -20,6 +20,9 @@ import com.strongit.gzjzyh.tosync.IToSyncManager;
 import com.strongit.gzjzyh.vo.TGzjzyhApplyVo;
 import com.strongit.oa.common.user.IUserService;
 import com.strongit.oa.common.user.model.User;
+import com.strongit.uums.bo.TUumsBaseOrg;
+import com.strongit.uums.bo.TUumsBaseUser;
+import com.strongit.uums.organisemanage.IOrgManager;
 import com.strongmvc.exception.DAOException;
 import com.strongmvc.exception.ServiceException;
 import com.strongmvc.exception.SystemException;
@@ -38,6 +41,8 @@ public class StatisticService implements IStatisticService {
 	GzjzyhCommonService commonService;
 	@Autowired
 	IToSyncManager syncManager;
+	@Autowired
+	IOrgManager orgManager;
 
 	@Autowired
 	public void setSessionFactory(SessionFactory sessionFactory) {
@@ -49,7 +54,7 @@ public class StatisticService implements IStatisticService {
 	public List<Object[]> efficiencyStatistic(boolean isOrder, String orderColumn, String orderType)
 			throws ServiceException, SystemException, DAOException {
 		StringBuilder sqlBuilder = new StringBuilder("");
-		sqlBuilder.append("select max(duringTime) as maxTime, min(duringTime) as minTime, avg(duringTime) as avgTime, userName from ")
+		sqlBuilder.append("select min(duringTime) as minTime, max(duringTime) as maxTime, avg(duringTime) as avgTime, userName from ")
 					.append("(select TO_NUMBER((APP_RESPONSE_DATE - APP_RECEIVE_DATE)*24*60*60) as duringTime, USER_NAME as userName from T_GZJZYH_APPLICATION ")
 					.append("left join T_UUMS_BASE_USER on APP_BANKUSER=USER_ID where APP_RESPONSE_DATE is not null) ")
 					.append("group by userName ");
@@ -77,7 +82,7 @@ public class StatisticService implements IStatisticService {
 		StringBuilder sqlBuilder = new StringBuilder("");
 		sqlBuilder.append("select yearNum, monthNum, APP_TYPE, count(1) from ")
 					.append("(select TO_CHAR(APP_DATE, 'yyyy') as yearNum, TO_CHAR(APP_DATE, 'mm') as monthNum, APP_TYPE from T_GZJZYH_APPLICATION) ")
-					.append("group by yearNum, monthNum, APP_TYPE ");
+					.append("group by yearNum, monthNum, APP_TYPE order by yearNum, monthNum, APP_TYPE ");
 		if(isOrder) {
 			//待处理
 		}
@@ -93,7 +98,7 @@ public class StatisticService implements IStatisticService {
 		StringBuilder sqlBuilder = new StringBuilder("");
 		sqlBuilder.append("select ORG_NAME, APP_TYPE, count(1) from ")
 					.append("(select ORG_NAME, APP_TYPE from T_GZJZYH_APPLICATION left join T_UUMS_BASE_ORG on APP_ORGID=ORG_ID) ")
-					.append("group by ORG_NAME, APP_TYPE ");
+					.append("group by ORG_NAME, APP_TYPE order by ORG_NAME, APP_TYPE");
 		if(isOrder) {
 			//待处理
 		}
@@ -110,7 +115,7 @@ public class StatisticService implements IStatisticService {
 		sqlBuilder.append("select USER_NAME, APP_STATUS, count(1) from ")
 					.append("(select USER_NAME, APP_STATUS from T_GZJZYH_APPLICATION ")
 					.append("left join T_UUMS_BASE_USER on APP_BANKUSER=USER_ID where APP_STATUS='2' or APP_STATUS='4' or APP_STATUS='5') ")
-					.append("group by USER_NAME, APP_STATUS ");
+					.append("group by USER_NAME, APP_STATUS order by USER_NAME, APP_STATUS");
 		if(isOrder) {
 			//待处理
 		}
@@ -118,6 +123,35 @@ public class StatisticService implements IStatisticService {
 		List<Object[]> lst = this.queryApplyDao.getSession().createSQLQuery(sqlBuilder.toString()).list();
 		
 		return lst;
+	}
+
+	@Override
+	public List<String> getAllOrgNames() throws ServiceException,
+			SystemException, DAOException {
+		List<String> result = new ArrayList<String>(0);
+		String hql = "from TUumsBaseOrg where orgSyscode like '001___' and orgSyscode != '" + GzjzyhConstants.DEFAULT_BANKORG_SYSCODE + "' and orgIsdel = '0' order by orgSyscode";
+		List<TUumsBaseOrg> lst = this.queryApplyDao.find(hql, null);
+		if(lst != null && !lst.isEmpty()){
+			for(TUumsBaseOrg org : lst){
+				result.add(org.getOrgName());
+			}
+		}
+		return result;
+	}
+
+	@Override
+	public List<String> getAllBankNames() throws ServiceException,
+			SystemException, DAOException {
+		List<String> result = new ArrayList<String>(0);
+		TUumsBaseOrg bankOrg = this.orgManager.getOrgInfoBySyscode(GzjzyhConstants.DEFAULT_BANKORG_SYSCODE);
+		String hql = "from TUumsBaseUser where orgId = '" + bankOrg.getOrgId() + "' and userIsdel = '0' and userIsactive = '1' order by userSequence";
+		List<TUumsBaseUser> lst = this.queryApplyDao.find(hql, null);
+		if(lst != null && !lst.isEmpty()){
+			for(TUumsBaseUser user : lst){
+				result.add(user.getUserName());
+			}
+		}
+		return result;
 	}
 	
 	
