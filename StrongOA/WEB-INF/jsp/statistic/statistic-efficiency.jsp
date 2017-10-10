@@ -52,7 +52,7 @@
 		    },
 		    yAxis: {
 		    	type: 'value',
-		    	name: '单位（秒）',
+		    	name: '单位（天）',
 		        boundaryGap: [0, 0.01],
 		        minInterval: 1
 		    },
