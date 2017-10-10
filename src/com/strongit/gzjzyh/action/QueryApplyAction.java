@@ -278,47 +278,48 @@ public class QueryApplyAction extends BaseActionSupport {
 		this.ueHelpId1Tmp = this.DEFAULT_UPLOAD_IMAGE;
 		this.ueHelpId2Tmp = this.DEFAULT_UPLOAD_IMAGE;
 
-		if (model.getGzjzyhUserExtension().getUeMainNo1() != null
-				&& !"".equals(model.getGzjzyhUserExtension().getUeMainNo1())) {
-			this.ueMainNo1Tmp = model.getGzjzyhUserExtension()
-					.getUeMainNo1();
+		if (model.getGzjzyhUserExtension() != null) {
+			if (model.getGzjzyhUserExtension().getUeMainNo1() != null
+					&& !"".equals(model.getGzjzyhUserExtension().getUeMainNo1())) {
+				this.ueMainNo1Tmp = model.getGzjzyhUserExtension()
+						.getUeMainNo1();
+			}
+			if (model.getGzjzyhUserExtension().getUeMainNo2() != null
+					&& !"".equals(model.getGzjzyhUserExtension().getUeMainNo2())) {
+				this.ueMainNo2Tmp = model.getGzjzyhUserExtension()
+						.getUeMainNo2();
+			}
+			if (model.getGzjzyhUserExtension().getUeMainId1() != null
+					&& !"".equals(model.getGzjzyhUserExtension().getUeMainId1())) {
+				this.ueMainId1Tmp = model.getGzjzyhUserExtension()
+						.getUeMainId1();
+			}
+			if (model.getGzjzyhUserExtension().getUeMainId2() != null
+					&& !"".equals(model.getGzjzyhUserExtension().getUeMainId2())) {
+				this.ueMainId2Tmp = model.getGzjzyhUserExtension()
+						.getUeMainId2();
+			}
+			if (model.getGzjzyhUserExtension().getUeHelpNo1() != null
+					&& !"".equals(model.getGzjzyhUserExtension().getUeHelpNo1())) {
+				this.ueHelpNo1Tmp = model.getGzjzyhUserExtension()
+						.getUeHelpNo1();
+			}
+			if (model.getGzjzyhUserExtension().getUeHelpNo2() != null
+					&& !"".equals(model.getGzjzyhUserExtension().getUeHelpNo2())) {
+				this.ueHelpNo2Tmp = model.getGzjzyhUserExtension()
+						.getUeHelpNo2();
+			}
+			if (model.getGzjzyhUserExtension().getUeHelpId1() != null
+					&& !"".equals(model.getGzjzyhUserExtension().getUeHelpId1())) {
+				this.ueHelpId1Tmp = model.getGzjzyhUserExtension()
+						.getUeHelpId1();
+			}
+			if (model.getGzjzyhUserExtension().getUeHelpId2() != null
+					&& !"".equals(model.getGzjzyhUserExtension().getUeHelpId2())) {
+				this.ueHelpId2Tmp = model.getGzjzyhUserExtension()
+						.getUeHelpId2();
+			}
 		}
-		if (model.getGzjzyhUserExtension().getUeMainNo2() != null
-				&& !"".equals(model.getGzjzyhUserExtension().getUeMainNo2())) {
-			this.ueMainNo2Tmp = model.getGzjzyhUserExtension()
-					.getUeMainNo2();
-		}
-		if (model.getGzjzyhUserExtension().getUeMainId1() != null
-				&& !"".equals(model.getGzjzyhUserExtension().getUeMainId1())) {
-			this.ueMainId1Tmp = model.getGzjzyhUserExtension()
-					.getUeMainId1();
-		}
-		if (model.getGzjzyhUserExtension().getUeMainId2() != null
-				&& !"".equals(model.getGzjzyhUserExtension().getUeMainId2())) {
-			this.ueMainId2Tmp = model.getGzjzyhUserExtension()
-					.getUeMainId2();
-		}
-		if (model.getGzjzyhUserExtension().getUeHelpNo1() != null
-				&& !"".equals(model.getGzjzyhUserExtension().getUeHelpNo1())) {
-			this.ueHelpNo1Tmp = model.getGzjzyhUserExtension()
-					.getUeHelpNo1();
-		}
-		if (model.getGzjzyhUserExtension().getUeHelpNo2() != null
-				&& !"".equals(model.getGzjzyhUserExtension().getUeHelpNo2())) {
-			this.ueHelpNo2Tmp = model.getGzjzyhUserExtension()
-					.getUeHelpNo2();
-		}
-		if (model.getGzjzyhUserExtension().getUeHelpId1() != null
-				&& !"".equals(model.getGzjzyhUserExtension().getUeHelpId1())) {
-			this.ueHelpId1Tmp = model.getGzjzyhUserExtension()
-					.getUeHelpId1();
-		}
-		if (model.getGzjzyhUserExtension().getUeHelpId2() != null
-				&& !"".equals(model.getGzjzyhUserExtension().getUeHelpId2())) {
-			this.ueHelpId2Tmp = model.getGzjzyhUserExtension()
-					.getUeHelpId2();
-		}
-
 		return INPUT;
 	}
 

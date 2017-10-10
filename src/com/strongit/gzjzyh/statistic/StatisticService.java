@@ -55,7 +55,7 @@ public class StatisticService implements IStatisticService {
 			throws ServiceException, SystemException, DAOException {
 		StringBuilder sqlBuilder = new StringBuilder("");
 		sqlBuilder.append("select min(duringTime) as minTime, max(duringTime) as maxTime, avg(duringTime) as avgTime, userName from ")
-					.append("(select TO_NUMBER((APP_RESPONSE_DATE - APP_RECEIVE_DATE)*24*60*60) as duringTime, USER_NAME as userName from T_GZJZYH_APPLICATION ")
+					.append("(select TO_NUMBER(APP_RESPONSE_DATE - APP_RECEIVE_DATE) as duringTime, USER_NAME as userName from T_GZJZYH_APPLICATION ")
 					.append("left join T_UUMS_BASE_USER on APP_BANKUSER=USER_ID where APP_RESPONSE_DATE is not null) ")
 					.append("group by userName ");
 		if(isOrder) {
@@ -96,9 +96,9 @@ public class StatisticService implements IStatisticService {
 	public List<Object[]> areaStatistic(boolean isOrder, String orderColumn, String orderType)
 			throws ServiceException, SystemException, DAOException {
 		StringBuilder sqlBuilder = new StringBuilder("");
-		sqlBuilder.append("select ORG_NAME, APP_TYPE, count(1) from ")
-					.append("(select ORG_NAME, APP_TYPE from T_GZJZYH_APPLICATION left join T_UUMS_BASE_ORG on APP_ORGID=ORG_ID) ")
-					.append("group by ORG_NAME, APP_TYPE order by ORG_NAME, APP_TYPE");
+		sqlBuilder.append("select ORG_NAME, ORG_SYSCODE, APP_TYPE, count(1) from ")
+					.append("(select ORG_NAME, ORG_SYSCODE, APP_TYPE from T_GZJZYH_APPLICATION left join T_UUMS_BASE_ORG on APP_ORGID=ORG_ID) ")
+					.append("group by ORG_NAME, ORG_SYSCODE, APP_TYPE order by ORG_NAME, APP_TYPE");
 		if(isOrder) {
 			//待处理
 		}
@@ -126,17 +126,19 @@ public class StatisticService implements IStatisticService {
 	}
 
 	@Override
-	public List<String> getAllOrgNames() throws ServiceException,
+	public List[] getAllOrgNames() throws ServiceException,
 			SystemException, DAOException {
 		List<String> result = new ArrayList<String>(0);
+		List<String> result2 = new ArrayList<String>(0);
 		String hql = "from TUumsBaseOrg where orgSyscode like '001___' and orgSyscode != '" + GzjzyhConstants.DEFAULT_BANKORG_SYSCODE + "' and orgIsdel = '0' order by orgSyscode";
 		List<TUumsBaseOrg> lst = this.queryApplyDao.find(hql, null);
 		if(lst != null && !lst.isEmpty()){
 			for(TUumsBaseOrg org : lst){
 				result.add(org.getOrgName());
+				result2.add(org.getOrgSyscode());
 			}
 		}
-		return result;
+		return new List[]{result, result2};
 	}
 
 	@Override

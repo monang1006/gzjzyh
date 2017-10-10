@@ -95,7 +95,7 @@ public interface IStatisticService {
 	 * @throws SystemException
 	 * @throws DAOException
 	 */
-	public List<String> getAllOrgNames() throws ServiceException,
+	public List[] getAllOrgNames() throws ServiceException,
 			SystemException, DAOException;
 
 	/**

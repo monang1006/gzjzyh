@@ -134,9 +134,27 @@ public class StatisticAction extends BaseActionSupport {
 		List<Integer> avgTimeLst = new ArrayList<Integer>(0);
 		if(lst != null && !lst.isEmpty()){
 			for(Object[] item : lst){
-				minTimeLst.add(Double.valueOf(item[0].toString()).intValue());
-				maxTimeLst.add(Double.valueOf(item[1].toString()).intValue());
-				avgTimeLst.add(Double.valueOf(item[2].toString()).intValue());
+				double d = Double.parseDouble(item[0].toString());
+				int i = Double.valueOf(item[0].toString()).intValue();
+				if(i < d) {
+					i = i+1;
+				}
+				minTimeLst.add(i);
+				
+				d = Double.parseDouble(item[1].toString());
+				i = Double.valueOf(item[1].toString()).intValue();
+				if(i < d) {
+					i = i+1;
+				}
+				maxTimeLst.add(i);
+				
+				d = Double.parseDouble(item[2].toString());
+				i = Double.valueOf(item[2].toString()).intValue();
+				if(i < d) {
+					i = i+1;
+				}
+				avgTimeLst.add(i);
+				
 				bankNameLst.add(item[3].toString());
 			}
 		}
@@ -220,7 +238,9 @@ public class StatisticAction extends BaseActionSupport {
 	
 	public String areaStatistic() throws Exception{
 		List<Object[]> lst = this.statisticService.areaStatistic(false, null, null);
-		List<String> areaLst = this.statisticService.getAllOrgNames();
+		List[] result = this.statisticService.getAllOrgNames();
+		List<String> areaLst = result[0];
+		List<String> orgSysCodes = result[1];
 		Map<String, List<Integer>> datas = new HashMap<String, List<Integer>>(0);
 		if(lst != null && !lst.isEmpty()){
 			List<Integer> tmpLst = new ArrayList<Integer>(0);
@@ -246,11 +266,18 @@ public class StatisticAction extends BaseActionSupport {
 			
 			for(Object[] item : lst){
 				String orgName = item[0].toString();
-				String appType = item[1].toString();
-				Integer amount = Integer.parseInt(item[2].toString());
+				String orgSysCode = item[1].toString();
+				String appType = item[2].toString();
+				Integer amount = Integer.parseInt(item[3].toString());
 				List<Integer> amountLst = datas.get(appType);
-				int index = areaLst.indexOf(orgName);
-				if(index != -1){
+				int index = 0;
+				for(;index<orgSysCodes.size();index++) {
+					String tmpOrgSysCode = orgSysCodes.get(index);
+					if(orgSysCode.startsWith(tmpOrgSysCode)) {
+						break;
+					}
+				}
+				if(index < orgSysCodes.size()){
 					amountLst.set(index, amountLst.get(index)+amount);
 				}
 			}
