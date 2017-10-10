@@ -13,7 +13,7 @@
 	src="<%=path%>/common/js/jquery/jquery-1.8.3.min.js"></script>
 <LINK href="<%=path%>/css/properties_windows_list.css" type=text/css
 	rel=stylesheet>
-<script language="javascript" src="<%=path%>/common/js/echarts/echarts.min.js"></script>
+<script language="javascript" src="<%=path%>/common/js/echarts/echarts.min.new.js"></script>
 </head>
 <base target="_self" />
 <body class=contentbodymargin oncontextmenu="return false;">
