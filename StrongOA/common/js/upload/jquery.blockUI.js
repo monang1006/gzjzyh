@@ -183,7 +183,12 @@ function install(el, opts) {
                 
             }
             else if (opts.centerY) {
-                if (full) s.setExpression('top','(document.documentElement.clientHeight || document.body.clientHeight) / 2 - (this.offsetHeight / 2) + (blah = document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop) + "px"');
+            	//IE8下出现问题，捕获异常对展现无影响
+            	try{
+            		if (full) s.setExpression('top','(document.documentElement.clientHeight || document.body.clientHeight) / 2 - (this.offsetHeight / 2) + (blah = document.documentElement.scrollTop ? document.documentElement.scrollTop : document.body.scrollTop) + "px"');
+            	}catch(e){
+            		
+            	}
                 s.marginTop = 0;
             }
         });
