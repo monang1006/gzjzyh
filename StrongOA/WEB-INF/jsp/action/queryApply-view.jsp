@@ -51,7 +51,7 @@ function unDisplay(){
 }
 
 $(function(){ 
-	var appType = $("#appType").val();
+	var appType = "${model.gzjzyhApplication.appType}";
 	if(appType==0){
 		$("#tr_1").css("display","block");
 		$("#tr_2").css("display","block");
