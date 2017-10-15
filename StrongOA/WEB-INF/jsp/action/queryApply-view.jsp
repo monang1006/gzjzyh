@@ -99,6 +99,7 @@ function downloadAttachment(){
 	<DIV id=contentborder align=center>
 		<s:form id="applySave" target="hiddenFrame" action="/action/queryApply!downloadAttachment.action"  theme="simple" >
 		<input type="hidden" id="appResponsefile" name="appResponsefile" value="${model.gzjzyhApplication.appResponsefile}" />
+		</s:form>
 		<table width="100%" border="0" cellspacing="0" cellpadding="0"
 			style="vertical-align: top;">
 			<!-- 处理状态 -->
@@ -837,7 +838,6 @@ function downloadAttachment(){
 				</td>
 			</tr>
 		</table>
-		</s:form>
 	</DIV>
 </body>
 <iframe id="hiddenFrame" name="hiddenFrame" style="width:0px;height:0px;display:none;"></iframe>

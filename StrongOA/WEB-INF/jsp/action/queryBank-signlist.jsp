@@ -123,8 +123,8 @@
 										<webflex:flexDateCol caption="申请时间" property="appDate"
 											showValue="appDate" width="18%" isCanDrag="true" 
 											isCanSort="false" dateFormat="yyyy-MM-dd HH:mm:ss"></webflex:flexDateCol>
-										<webflex:flexDateCol caption="审核时间" property="appAuditDate"
-											showValue="appAuditDate" width="18%" dateFormat="yyyy-MM-dd HH:mm:ss"
+										<webflex:flexDateCol caption="签收时间" property="appReceiveDate"
+											showValue="appReceiveDate" width="18%" dateFormat="yyyy-MM-dd HH:mm:ss"
 											isCanDrag="true" isCanSort="true"></webflex:flexDateCol>
 										<webflex:flexEnumCol caption="当前状态" align="center"
 											mapobj="${statusMap}" property="appStatus"

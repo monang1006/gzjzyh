@@ -424,7 +424,7 @@ function checkMobile(mobile){
 							<td height="21" class="biao_bg1" align="right">
 								<span class="wz">退回意见：</span>
 							</td>
-							<td class="td1" align="left" colspan="3">
+							<td class="td1" align="left">
 								<script>
 									if("${model.ueStatus}" == "0"){
 										document.write("${model.ueNgReason}");

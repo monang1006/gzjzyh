@@ -176,7 +176,7 @@ function impForm(accountStr, accId) {
 }
 
 function accountImp(attrId){
-	var result=window.showModalDialog("<%=path%>/action/queryApply!imp.action?attrId="+ attrId, window,"dialogWidth:500px;dialogHeight:200px;status:no;help:no;scroll:no;");
+	var result=window.showModalDialog("<%=path%>/action/queryApply!imp.action?attrId="+ attrId, window,"dialogWidth:800px;dialogHeight:200px;status:no;help:no;scroll:no;");
 }
 
 function accountClear(attrId){

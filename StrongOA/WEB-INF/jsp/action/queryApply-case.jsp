@@ -64,7 +64,7 @@
 										height="370px" wholeCss="table1" property="dictCode"
 										isCanDrag="true" isCanFixUpCol="true" clickColor="#A9B2CA"
 										footShow="showCheck" getValueType="getValueByProperty" 
-										collection='${casePage.result}' page="${casePage}">
+										collection='${casePage.result}' page="${casePage}" pagename="casePage">
 										<table width="100%" border="0" cellpadding="0" cellspacing="0"
 											class="table1_search">
 											<tr>

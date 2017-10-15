@@ -16,7 +16,7 @@
 <script language="javascript" src="<%=path%>/common/js/upload/jquery.blockUI.js"></script>
 <!-- webuploader -->
 <link rel="stylesheet" type="text/css" href="<%=path%>/common/js/webuploader/webuploader.css">
-<script type="text/javascript" src="<%=path%>/common/js/webuploader/webuploader.min.js"></script>
+<script type="text/javascript" src="<%=path%>/common/js/webuploader/webuploader.js"></script>
 
 <!-- jcrop -->
 <link rel="stylesheet" type="text/css" href="<%=path%>/common/js/jcrop/Jcrop.min.css">
@@ -38,6 +38,7 @@
 	var srcImagePath;
 	$(document).ready(function(){
 		var uploader = WebUploader.create({
+			//runtimeOrder:'flash',
 			auto:true,
 			//fileVal:fileName,
 			//fileNumLimit:1,//最大允许文件数
@@ -60,9 +61,16 @@
 		uploader.on('uploadSuccess', function(file,response) {
 			hidden();
 			//layer.close(logining);
-			srcImagePath = response[0];
-			document.getElementById("imgField").src = "<%=path%>" + response[0];
-			jcropInit();
+			//srcImagePath = response[0];
+			//document.getElementById("imgField").src = "<%=path%>" + response[0];
+			//jcropInit();
+			/**
+			 * 由于IE8下再次上传图片后Jcrop的init有问题，故再次上传图片后重新刷新一次本页面，使得Jcrop每次都是新建而不需要销毁
+			 */
+			var imageUrl = "<%=path%>/upload/fileUpload!imageUpload.action";
+			document.getElementById("imageUrl").value = response[0];
+			document.getElementById("hiddenForm").action = imageUrl;
+			document.getElementById("hiddenForm").submit();
 		});
 		uploader.on('beforeFileQueued', function( file ) {
 			show("正在上传，请稍候...");
@@ -204,4 +212,7 @@
 		</table>
 	</DIV>
 </body>
+<form id="hiddenForm" name="hiddenForm">
+	<input type="hidden" id="imageUrl" name="imageUrl">
+</form>
 </html>

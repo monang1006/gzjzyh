@@ -93,7 +93,7 @@ $(function(){
 	    // 选择文件的按钮。可选。
 	    // 内部根据当前运行是创建，可能是input元素，也可能是flash.
 	    pick: "#uploadBtn",
-	    
+	    fileSingleSizeLimit: 20*1024*1024,
 	    resize: false,
 	    duplicate: true
 	});
@@ -112,7 +112,9 @@ $(function(){
 		hidden();
 		if (type == "Q_EXCEED_NUM_LIMIT") {
 			alert("超出最大附件数");
-		}
+		}else if(type == "Q_EXCEED_SIZE_LIMIT"){
+			alert("超出文件大小，文件不能大于20M。");
+        }
 	});
 	
 });

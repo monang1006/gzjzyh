@@ -78,7 +78,7 @@ function downloadTemplate(){
 													<td width="5"></td>
 													<td width="8"><img
 														src="<%=frameroot%>/images/ch_z_l.gif" /></td>
-													<td class="Operation_input1" onclick="window.close()()">&nbsp;关&nbsp;闭&nbsp;</td>
+													<td class="Operation_input1" onclick="window.close();">&nbsp;关&nbsp;闭&nbsp;</td>
 													<td width="7"><img
 														src="<%=frameroot%>/images/ch_z_r.gif" /></td>
 													<td width="6"></td>

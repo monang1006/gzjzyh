@@ -216,6 +216,11 @@ function checkMobile(mobile){
 			          }
 			          }
 			         var mobile = document.getElementById("rest2").value;
+			         if(mobile == ""){
+				       		alert('手机号码不能为空。');
+				       		document.getElementById("rest2").focus();
+				  			return;
+				        }
 			        if(!checkMobile(mobile)){
 			        	alert("请输入正确的手机号码。\n\n例如:13916752109");
 			        	return ;
@@ -373,7 +378,7 @@ function checkMobile(mobile){
 							</tr>
 							<tr>
 								<td width="25%" height="21" class="biao_bg1" align="right">
-									<span class="wz">手机号码：</span>
+									<span class="wz"><font color="red">*</font>&nbsp;手机号码：</span>
 								</td>
 								<td class="td1" colspan="3" align="left"><input id="rest2"
 									name="model.rest2" type="text" size="22" maxLength="20"
