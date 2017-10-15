@@ -77,7 +77,7 @@ public class BankAccountManager implements IBankAccountManager {
 		
 		if(isAdd){
 			TUumsBaseRole bankRole = this.roleManager.getRoleInfoByRoleCode(GzjzyhConstants.BANK_ROLE);
-			this.roleManager.saveRoleUsers(bankRole.getRoleId(), model.getUserId());
+			this.userService.saveUserRoles(model.getUserId(), bankRole.getRoleId());
 			this.toSyncManager.createToSyncMsg(model, GzjzyhConstants.OPERATION_TYPE_ADD_BANKACCOUNT);
 		}else{
 			this.toSyncManager.createToSyncMsg(model, GzjzyhConstants.OPERATION_TYPE_EDIT_BANKACCOUNT);
@@ -131,7 +131,7 @@ public class BankAccountManager implements IBankAccountManager {
 		myInfoManager.saveObj(myInfo);
 		
 		TUumsBaseRole bankRole = this.roleManager.getRoleInfoByRoleCode(GzjzyhConstants.BANK_ROLE);
-		this.roleManager.saveRoleUsers(bankRole.getRoleId(), model.getUserId());
+		this.userService.saveUserRoles(model.getUserId(), bankRole.getRoleId());
 	}
 	
 	@Override

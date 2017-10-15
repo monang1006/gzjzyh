@@ -331,7 +331,11 @@ public class PoliceRegisterAction extends BaseActionSupport<TGzjzyhUserExtension
 			}else{
 				node.setId(orgList.get(i).getOrgId());
 				node.setPid(parentId);
-				node.setIsexpand(true);
+				if("001".equals(orgList.get(i).getOrgSyscode())){
+					node.setIsexpand(true);
+				}else{
+					node.setIsexpand(false);
+				}
 				node.setShowcheck(true);
 				node.setComplete(true);
 				node.setText(orgList.get(i).getOrgName());

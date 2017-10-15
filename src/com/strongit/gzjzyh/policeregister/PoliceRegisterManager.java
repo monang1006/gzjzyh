@@ -81,7 +81,7 @@ public class PoliceRegisterManager implements IPoliceRegisterManager {
 		
 		if(isAdd) {
 			TUumsBaseRole bankRole = this.roleManager.getRoleInfoByRoleCode(GzjzyhConstants.UNACTIVE_ROLE);
-			this.roleManager.saveRoleUsers(bankRole.getRoleId(), user.getUserId());
+			this.userService.saveUserRoles(user.getUserId(), bankRole.getRoleId());
 		}
 		
 		model.setUeDate(new Date());
@@ -106,7 +106,7 @@ public class PoliceRegisterManager implements IPoliceRegisterManager {
 		if(GzjzyhConstants.STATUS_AUDIT_PASS.equals(model.getUeStatus())){
 			content = "您的注册账号已审核通过。";
 			TUumsBaseRole policeRole = this.roleManager.getRoleInfoByRoleCode(GzjzyhConstants.POLICE_ROLE);
-			this.roleManager.saveRoleUsers(policeRole.getRoleId(), model.getTuumsBaseUser().getUserId());
+			this.userService.saveUserRoles(model.getTuumsBaseUser().getUserId(), policeRole.getRoleId());
 		}
 		//发送短信
 		this.commonSerivce.sendSms(model.getTuumsBaseUser().getUserId(), content);

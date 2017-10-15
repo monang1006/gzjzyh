@@ -275,7 +275,9 @@ public class QueryApplyService implements IQueryApplyService {
 			TGzjzyhApplication gzjzyhApplication = null;
 			for (int i = 0; i < id.length; i++) {
 				gzjzyhApplication = this.queryApplyDao.get(id[i]);
-				if(!appConstants.STATUS_SUBMIT_NO.equals(gzjzyhApplication.getAppStatus())) {
+				if(!appConstants.STATUS_SUBMIT_NO.equals(gzjzyhApplication.getAppStatus())
+						&& !appConstants.STATUS_AUDIT_BACK.equals(gzjzyhApplication.getAppStatus())
+						&& !appConstants.APP_STATUS_REFUSE.equals(gzjzyhApplication.getAppStatus())) {
 					throw new SystemException();
 				}
 				gzjzyhApplication.setAppStatus(appConstants.STATUS_SUBMIT_YES);
