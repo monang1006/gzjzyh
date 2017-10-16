@@ -69,20 +69,16 @@
 					<td class="table_headtd">
 						<table width="100%" border="0" cellspacing="0" cellpadding="00" style="vertical-align: top;">
 							<tr>
-								<td>&nbsp;</td>
+								<td width="30">&nbsp;</td>
 								<td class="table_headtd_img">
 									<img src="<%=frameroot%>/images/ico/ico.gif">&nbsp;
 								</td>
-								<td align="left">
+								<td align="left" width="140">
 									<strong>设置所属单位</strong>
 								</td>
 								<td align="right">
 									<table border="0" align="right" cellpadding="00" cellspacing="0">
 										<tr>
-					                  		<td width="7"><img src="<%=frameroot%>/images/ch_h_l.gif"/></td>
-											<td class="Operation_input" onclick="window.close();">&nbsp;取&nbsp;消&nbsp;</td>
-											<td width="7"><img src="<%=frameroot%>/images/ch_h_r.gif"/></td>
-					                  		<td width="5"></td>
 											<td width="7"><img src="<%=frameroot%>/images/ch_z_l.gif"/></td>
 											<td class="Operation_input1" onclick="window.close();">&nbsp;取&nbsp;消&nbsp;</td>
 											<td width="7"><img src="<%=frameroot%>/images/ch_z_r.gif"/></td>
