@@ -37,7 +37,7 @@ String.prototype.isTel = function()
 						
 	function checkuser(){
 	   if(document.getElementById("userLoginname").value == ""||document.getElementById("userLoginname").value==null){
-			alert('用户登录名不能为空。');
+			alert('登录账号不能为空。');
         	document.getElementById("userLoginname").focus();
         	return;
 	    }
@@ -52,7 +52,7 @@ String.prototype.isTel = function()
 	
 	function testname(){
 	        if(document.getElementById("userLoginname").value == ""||document.getElementById("userLoginname").value==null){
-				alert('用户登录名不能为空。');
+				alert('登录账号不能为空。');
 	        	document.getElementById("userLoginname").focus();
 	        	return false;
 		    }else{
@@ -80,7 +80,7 @@ String.prototype.isTel = function()
 				data:{loginname:obj.value},
 				success:function(logininfo){
 					if(logininfo!="111"){
-						alert("登录名不唯一。");
+						alert("登录账号不唯一。");
 						obj.focus();
 					}
 					else{
@@ -122,17 +122,17 @@ function checkMobile(mobile){
 	        	      	return;
 	                } */
 			        if(document.getElementById("userLoginname").value.length > 100){
-			        	alert('用户登录名称过长，最大长度为100。');
+			        	alert('登录账号过长，最大长度为100。');
 			        	document.getElementById("userLoginname").focus();
 			        	return;
 			        }
 			        if(document.getElementById("userName").value == ""){
-			       		alert('用户名称不能为空。');
+			       		alert('用户姓名不能为空。');
 			       		document.getElementById("userName").focus();
 			  			return;
 			        }
 			        if(document.getElementById("userName").value.length > 100){
-			        	alert('用户名称过长，最大长度为100。');
+			        	alert('用户姓名过长，最大长度为100。');
 			        	document.getElementById("userName").focus();
 			        	return;
 			        }
@@ -149,19 +149,19 @@ function checkMobile(mobile){
 			        }
 			         
 			        if(document.getElementById("orgId").value == ""){
-			       		alert('请选择组织机构。');
+			       		alert('请选择所属单位。');
 			  			return;
 			        }
 			        
 			        if(document.getElementById("userTel").value.length > 20){
-			        	alert('联系电话过长，最大长度为20。');
+			        	alert('办公电话过长，最大长度为20。');
 			        	document.getElementById("userTel").focus();
 			        	return;
 			        }
 			        
 			     if(document.getElementById("userTel").value!=null && document.getElementById("userTel").value!=""){ 
 			        if(!document.getElementById("userTel").value.isMobile()&& !document.getElementById("userTel").value.isTel()){
-			           alert("请输入正确的手机号码或电话号码。\n\n例如:13916752109或0712-3614072"); 
+			           alert("请输入正确的办公电话号码。\n\n例如:13916752109或0712-3614072"); 
                       document.getElementById("userTel").focus();
                              return false;               
 			          }
