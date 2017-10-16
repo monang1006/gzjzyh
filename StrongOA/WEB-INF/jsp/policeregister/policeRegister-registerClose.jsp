@@ -7,10 +7,14 @@
 	var script = document.getElementById("script");
 	if (script.attachEvent) {
 		script.attachEvent("onreadystatechange", function() {
+			parent.window.opener = null;
+			parent.window.open(' ', '_self', ' '); 
 			parent.window.close();
 		});
 	} else {
 		script.addEventListener("load", function(e) {
+			parent.window.opener = null;
+			parent.window.open(' ', '_self', ' '); 
 			parent.window.close();
 		}, false);
 	}
