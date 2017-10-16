@@ -80,8 +80,8 @@ public class QueryApplyService implements IQueryApplyService {
 		}
 		//
 		if (searchAppFileNo != null && searchAppFileNo.length() > 0) {
-			hql.append(" and t.appFileno = ?");
-			values.add(searchAppFileNo);
+			hql.append(" and t.appFileno like ?");
+			values.add("%" + searchAppFileNo + "%");
 		}
 		//
 		if (searchCaseId != null && searchCaseId.length() > 0) {
