@@ -256,12 +256,12 @@ function checkMobile(mobile){
 					var isValidate = true;
 					if(document.getElementById(elementId).value == ""){
 			       		alert(elementName + '不能为空。');
-			       		document.getElementById(elementId).focus();
+			       		//document.getElementById(elementId).focus();
 			       		return false;
 			        }
 			        if(document.getElementById(elementId).value.length > maxLength){
 			        	alert(elementName + '过长，最大长度为' + maxLength + '。');
-			        	document.getElementById(elementId).focus();
+			        	//document.getElementById(elementId).focus();
 			        	return false;
 			        }
 			        return isValidate;
