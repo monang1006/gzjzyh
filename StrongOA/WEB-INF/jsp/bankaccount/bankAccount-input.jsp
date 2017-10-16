@@ -176,7 +176,7 @@ function checkMobile(mobile){
 	        	      	return;
 	                } */
 			        if(document.getElementById("userLoginname").value.length > 100){
-			        	alert('用户登录名称过长。');
+			        	alert('用户登录名称过长，最大长度为100。');
 			        	document.getElementById("userLoginname").focus();
 			        	return;
 			        }
@@ -186,7 +186,7 @@ function checkMobile(mobile){
 			  			return;
 			        }
 			        if(document.getElementById("userName").value.length > 100){
-			        	alert('用户名称过长。');
+			        	alert('用户名称过长，最大长度为100。');
 			        	document.getElementById("userName").focus();
 			        	return;
 			        }
@@ -197,13 +197,13 @@ function checkMobile(mobile){
 			  			return;
 			        }
 			         if(document.getElementById("userPassword").value.length > 100){
-			        	alert('用户密码过长。');
+			        	alert('用户密码过长，最大长度为100。');
 			        	document.getElementById("userPassword").focus();
 			        	return;
 			        }
 			        
 			        if(document.getElementById("userTel").value.length > 20){
-			        	alert('联系电话过长。');
+			        	alert('联系电话过长，最大长度为20。');
 			        	document.getElementById("userTel").focus();
 			        	return;
 			        }
@@ -226,7 +226,7 @@ function checkMobile(mobile){
 			        	return ;
 			        } 
 			      	if(document.getElementById("userAddr").value.length > 100){
-			        	alert('联系地址过长！');
+			        	alert('联系地址过长，最大长度为100！');
 			        	document.getElementById("userAddr").focus();
 			        	return;
 			        }
