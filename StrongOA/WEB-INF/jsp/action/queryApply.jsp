@@ -91,7 +91,7 @@
 														<td width="5"></td>
 														<td width="4"><img
 															src="<%=frameroot%>/images/bt_l.jpg" /></td>
-														<td class="Operation_list" onclick="doback();"><img
+														<td class="Operation_list" onclick="doBack();"><img
 															src="<%=root%>/images/operationbtn/edit.png" />&nbsp;撤&nbsp;销&nbsp;</td>
 														<td width="4"><img
 															src="<%=frameroot%>/images/bt_r.jpg" /></td>	
@@ -306,7 +306,7 @@ function doCommit(){
 	}
 }
 
-function doback(){
+function doBack(){
 	var id=getValue();
 	if(id==null || id==""){
 		alert("请选择要撤消的申请。");
