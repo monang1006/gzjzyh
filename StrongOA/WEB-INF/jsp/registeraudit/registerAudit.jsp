@@ -58,7 +58,7 @@
 																		<td width="4"><img
 																			src="<%=frameroot%>/images/bt_l.jpg" /></td>
 																		<td class="Operation_list" onclick="auditAccount();"><img
-																			src="<%=root%>/images/operationbtn/add.png">&nbsp;审&nbsp;核&nbsp;</td>
+																			src="<%=root%>/images/operationbtn/edit.png">&nbsp;审&nbsp;核&nbsp;</td>
 																		<td width="4"><img
 																			src="<%=frameroot%>/images/bt_r.jpg" /></td>
 																</tr>
