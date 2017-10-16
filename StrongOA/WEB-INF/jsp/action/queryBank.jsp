@@ -99,6 +99,10 @@
 														isicon="true" width="155px"
 														dateobj="${searchAppDateEnd}"
 														classtyle="search" />
+												</td>
+											</tr>
+											<tr>
+												<td>
 													&nbsp;&nbsp;经办单位：&nbsp; <input id="searchAppOrg"
 													name="searchAppOrg" type="text" width="155px" value="${searchAppOrg}">
 													&nbsp;<input
