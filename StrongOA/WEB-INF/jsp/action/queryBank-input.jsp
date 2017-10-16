@@ -109,7 +109,7 @@ function refreshList(){
 
 function policePrint(){
 	var result=window.showModalDialog("<%=path%>/action/queryBank!goPrint.action?appId=${appId}",
-			window,"dialogWidth:210mm;dialogHeight:297mm;"+"status:no;help:no;scroll:no;");
+			window,"dialogWidth:210mm;dialogHeight:600px;"+"status:no;help:no;scroll:yes;");
 }
 </script>
 </head>
