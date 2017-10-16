@@ -91,7 +91,7 @@ function viewImage(url){
 
 function formsubmit(){
 	if(document.getElementById("ueNgReason").value.length > 1000){
-    	alert('退回意见过长。');
+    	alert('退回意见过长，最大长度为1000。');
     	document.getElementById("ueNgReason").focus();
     	return;
     }

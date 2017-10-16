@@ -138,7 +138,7 @@ function validateElementLength(elementId, maxLength, elementName){
 	var isValidate = true;
 	if(document.getElementById(elementId).value != ""
 			&& document.getElementById(elementId).value.length > maxLength){
-    	alert(elementName + '过长。');
+    	alert(elementName + '过长，最大长度为' + maxLength + '。');
     	document.getElementById(elementId).focus();
     	isValidate = false;
     }
@@ -163,7 +163,7 @@ function validateElement(elementId, maxLength, elementName){
    		return false;
     }
     if(document.getElementById(elementId).value.length > maxLength){
-    	alert(elementName + '过长。');
+    	alert(elementName + '过长，最大长度为' + maxLength + '。');
     	document.getElementById(elementId).focus();
     	return false;
     }
