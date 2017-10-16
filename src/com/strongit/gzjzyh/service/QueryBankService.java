@@ -87,8 +87,8 @@ public class QueryBankService implements IQueryBankService {
 		}
 		//
 		if (appFileno != null && appFileno.length() > 0) {
-			hql.append(" and t.appFileno = ?");
-			values.add(appFileno);
+			hql.append(" and t.appFileno like ?");
+			values.add("%" + appFileno + "%");
 		}
 
 		if (appOrg != null && appOrg.length() > 0) {
@@ -144,8 +144,8 @@ public class QueryBankService implements IQueryBankService {
 		}
 		//
 		if (appFileno != null && appFileno.length() > 0) {
-			hql.append(" and t.appFileno = ?");
-			values.add(appFileno);
+			hql.append(" and t.appFileno like ?");
+			values.add("%" + appFileno + "%");
 		}
 
 		if (appOrg != null && appOrg.length() > 0) {
@@ -201,8 +201,8 @@ public class QueryBankService implements IQueryBankService {
 		}
 		//
 		if (appFileno != null && appFileno.length() > 0) {
-			hql.append(" and t.appFileno = ?");
-			values.add(appFileno);
+			hql.append(" and t.appFileno like ?");
+			values.add("%" + appFileno + "%");
 		}
 
 		if (appOrg != null && appOrg.length() > 0) {
