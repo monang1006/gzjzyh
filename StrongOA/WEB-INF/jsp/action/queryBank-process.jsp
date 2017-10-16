@@ -112,7 +112,7 @@ $(function(){
 		hidden();
 		if (type == "Q_EXCEED_NUM_LIMIT") {
 			alert("超出最大附件数");
-		}else if(type == "Q_EXCEED_SIZE_LIMIT"){
+		}else if(type == "F_EXCEED_SIZE"){
 			alert("超出文件大小，文件不能大于20M。");
         }
 	});
