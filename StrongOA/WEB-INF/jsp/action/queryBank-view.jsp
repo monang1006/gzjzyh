@@ -98,7 +98,7 @@ function downloadAttachment(){
 <body class=contentbodymargin oncontextmenu="return false;">
 	<DIV id=contentborder align=center>
 		<s:form id="applySave" target="hiddenFrame" action="/action/queryBank!downloadAttachment.action"  theme="simple" >
-		<input type="hidden" id="appResponsefile" name="appResponsefile" value="${model.gzjzyhApplication.appResponsefile}" />
+		<input type="hidden" id="appResponsefile1" name="appResponsefile1" value="${model.gzjzyhApplication.appResponsefile}" />
 		</s:form>
 		<table width="100%" border="0" cellspacing="0" cellpadding="0"
 			style="vertical-align: top;">
