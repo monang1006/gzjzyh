@@ -206,7 +206,7 @@ public class QueryAuditAction extends BaseActionSupport {
 		TUumsBaseOrg bankOrg = this.userService
 				.getOrgInfoBySyscode(GzjzyhConstants.DEFAULT_BANKORG_SYSCODE);
 		userList = this.userService.getUserInfoByOrgId(bankOrg.getOrgId(),
-				Const.IS_YES, Const.IS_NO);
+				null, null);
 		return userList;
 	}
 	
