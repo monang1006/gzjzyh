@@ -422,7 +422,7 @@ function checkMobile(mobile){
 						</tr>
 						<tr>
 							<td height="21" class="biao_bg1" align="right">
-								<span class="wz">退回意见：</span>
+								<span class="wz">审核意见：</span>
 							</td>
 							<td class="td1" align="left">
 								<script>
