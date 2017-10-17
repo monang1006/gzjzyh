@@ -225,8 +225,8 @@ function checkMobile(mobile){
 			        	alert("请输入正确的手机号码。\n\n例如:13916752109");
 			        	return ;
 			        } 
-			      	if(document.getElementById("userAddr").value.length > 100){
-			        	alert('联系地址过长，最大长度为100！');
+			      	if(document.getElementById("userAddr").value.length > 60){
+			        	alert('联系地址过长，最大长度为60！');
 			        	document.getElementById("userAddr").focus();
 			        	return;
 			        }
