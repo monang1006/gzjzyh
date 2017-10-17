@@ -79,7 +79,7 @@ public class StatisticAction extends BaseActionSupport {
 		statusMap.put(appConstants.STATUS_SUBMIT_NO, "待提交");
 		statusMap.put(appConstants.STATUS_SUBMIT_YES, "待审核");
 		statusMap.put(appConstants.STATUS_AUDIT_YES, "已审核");
-		statusMap.put(appConstants.STATUS_AUDIT_BACK, "已驳回");
+		statusMap.put(appConstants.STATUS_AUDIT_BACK, "已退回");
 
 		statusMap.put(appConstants.STATUS_SIGN_YES, "已签收");
 		statusMap.put(appConstants.STATUS_PROCESS_YES, "已处理");

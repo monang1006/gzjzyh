@@ -11,7 +11,7 @@ public class appConstants {
 	//已审核
 	public final static String STATUS_AUDIT_YES = "2";
 
-	//已驳回
+	//已退回
 	public final static String STATUS_AUDIT_BACK = "3";
 
 	//已签收
