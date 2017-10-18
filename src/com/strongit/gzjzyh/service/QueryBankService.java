@@ -97,12 +97,12 @@ public class QueryBankService implements IQueryBankService {
 		}
 		// 开始时间
 		if (appStartDate != null) {
-			hql.append(" and t.appStartDate >= ? ");
+			hql.append(" and t.appDate >= ? ");
 			values.add(appStartDate);
 		}
 		// 结束时间
 		if (appEndDate != null) {
-			hql.append(" and t.appEndDate <= ? ");
+			hql.append(" and t.appDate <= ? ");
 			values.add(appEndDate);
 		}
 
@@ -154,12 +154,12 @@ public class QueryBankService implements IQueryBankService {
 		}
 		// 开始时间
 		if (appStartDate != null) {
-			hql.append(" and t.appStartDate >= ? ");
+			hql.append(" and t.appDate >= ? ");
 			values.add(appStartDate);
 		}
 		// 结束时间
 		if (appEndDate != null) {
-			hql.append(" and t.appEndDate <= ? ");
+			hql.append(" and t.appDate <= ? ");
 			values.add(appEndDate);
 		}
 
@@ -211,12 +211,12 @@ public class QueryBankService implements IQueryBankService {
 		}
 		// 开始时间
 		if (appStartDate != null) {
-			hql.append(" and t.appStartDate >= ? ");
+			hql.append(" and t.appDate >= ? ");
 			values.add(appStartDate);
 		}
 		// 结束时间
 		if (appEndDate != null) {
-			hql.append(" and t.appEndDate <= ? ");
+			hql.append(" and t.appDate <= ? ");
 			values.add(appEndDate);
 		}
 
