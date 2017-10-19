@@ -83,6 +83,20 @@ $(function(){
 	
 	$(".unDisplayFlag").hide();
 	
+	if($("#appStatus").val() == "2"){
+		$("#suggestionTr").hide();
+	}else if($("#appStatus").val() == "3"){
+		$("#suggestionTr").show();
+	}
+	
+	$("#appStatus").change(function(){
+		if($(this).val() == "2"){
+			$("#suggestionTr").hide();
+		}else if($(this).val() == "3"){
+			$("#suggestionTr").show();
+		}
+	});
+	
 });
 
 function viewImage(url){
@@ -90,11 +104,15 @@ function viewImage(url){
 }
 
 function formsubmit(){
-	if(document.getElementById("ueNgReason").value.length > 1000){
-    	alert('退回意见过长，最大长度为1000。');
-    	document.getElementById("ueNgReason").focus();
-    	return;
-    }
+	if($("#appStatus").val() == "3"){
+		if(document.getElementById("ueNgReason").value.length > 1000){
+	    	alert('退回意见过长，最大长度为1000。');
+	    	document.getElementById("ueNgReason").focus();
+	    	return;
+	    }
+	}else{
+		$("#ueNgReason").val("");
+	}
 	document.getElementById("applySave").submit();
 }
 
@@ -168,7 +186,7 @@ function refreshList(){
 								</select>
 							</td>
 						</tr>
-						<tr>
+						<tr id="suggestionTr">
 							<td height="21" class="biao_bg1_gz" align="right">
 								<span class="wz">退回意见：</span>
 							</td>

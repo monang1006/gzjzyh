@@ -18,12 +18,33 @@
 	rel=stylesheet>
 
 <script type="text/javascript">
+
+	$(function(){ 
+		if($("#auditStatus").val() == "2"){
+			$("#suggestionTr").hide();
+		}else if($("#auditStatus").val() == "0"){
+			$("#suggestionTr").show();
+		}
+		
+		$("#auditStatus").change(function(){
+			if($(this).val() == "2"){
+				$("#suggestionTr").hide();
+			}else if($(this).val() == "0"){
+				$("#suggestionTr").show();
+			}
+		});
+	});
+
 	function onsubmitform(){
-		if(document.getElementById("ueNgReason").value.length > 1000){
-        	alert('退回意见过长，最大长度为1000。');
-        	document.getElementById("ueNgReason").focus();
-        	return;
-        }
+		if($("#auditStatus").val() == "0"){
+			if(document.getElementById("ueNgReason").value.length > 1000){
+	        	alert('退回意见过长，最大长度为1000。');
+	        	document.getElementById("ueNgReason").focus();
+	        	return;
+	        }
+		}else{
+			$("#ueNgReason").val("");
+		}
 		document.getElementById("usermanagesave").submit();
 	}
 	
@@ -99,7 +120,7 @@
 								</select>
 							</td>
 						</tr>
-						<tr>
+						<tr id="suggestionTr">
 							<td height="21" class="biao_bg1" align="right">
 								<span class="wz">退回意见：</span>
 							</td>
