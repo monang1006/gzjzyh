@@ -177,7 +177,7 @@ public class BankAccountManager implements IBankAccountManager {
 				String tempString = "";
 				TUumsBaseOrg org = userService
 						.getOrgInfoBySyscode(GzjzyhConstants.DEFAULT_BANKORG_SYSCODE);
-				if (org != null) {
+				/*if (org != null) {
 					for (int k = 0; k < orgidsss.length; k++) {
 						if (orgidsss[k] != null && !"".equals(orgidsss[k])) {
 							if (org.getOrgId().equals(orgidsss[k])) {
@@ -192,9 +192,9 @@ public class BankAccountManager implements IBankAccountManager {
 							tempInt++;
 						}
 					}
-				}
+				}*/
 				if (tempInt <= 1) {
-					model.setOrgIds(model.getOrgIds() + tempString);
+					//model.setOrgIds(model.getOrgIds() + tempString);
 					long time = new Date().getTime();
 					model.setUserLoginname(model.getUserLoginname()
 							+ "_del" + time);
