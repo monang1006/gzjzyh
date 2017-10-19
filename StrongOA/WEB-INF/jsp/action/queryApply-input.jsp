@@ -431,16 +431,16 @@ function refreshList(){
 								</s:if>
 							</td>
 						</tr>
+						<s:if test="#request.model.gzjzyhApplication.appStatus==3 || #request.model.gzjzyhApplication.appStatus==6">
 						<tr>
 							<td height="21" class="biao_bg1_gz" align="right">
 								<span class="wz"><font color="red">*</font>&nbsp;处理意见：</span>
 							</td>
 							<td class="td1" align="left" colspan="3">
-								<s:if test="#request.model.gzjzyhApplication.appStatus==3 || #request.model.gzjzyhApplication.appStatus==6">
-									${model.gzjzyhApplication.appNgReason }
-								</s:if>
+								${model.gzjzyhApplication.appNgReason }
 							</td>
 						</tr>
+						</s:if>
 					</table>
 				</td>
 			</tr>

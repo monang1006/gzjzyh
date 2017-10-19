@@ -82,18 +82,16 @@
 								</script>
 							</td>
 						</tr>
+						<s:if test="#request.model.ueStatus==0">
 						<tr>
 							<td height="21" class="biao_bg1" align="right">
 								<span class="wz">审核意见：</span>
 							</td>
-							<td class="td1" align="left" colspan="3">
-								<script>
-									if("${model.ueStatus}" == "0"){
-										document.write("${model.ueNgReason}");
-									}
-								</script>
+							<td class="td1" align="left">
+								${model.ueNgReason}
 							</td>
 						</tr>
+						</s:if>
 						<td class="table1_td"></td>
 						<td></td>
 						</tr>

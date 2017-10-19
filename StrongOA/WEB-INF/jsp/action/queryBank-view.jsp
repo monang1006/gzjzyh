@@ -170,24 +170,34 @@ function downloadAttachment(){
 								</s:if>
 							</td>
 						</tr>
+						<s:if test="#request.model.gzjzyhApplication.appStatus==3 || #request.model.gzjzyhApplication.appStatus==6">
 						<tr>
 							<td height="21" class="biao_bg1_gz" align="right">
 								<span class="wz"><font color="red">*</font>&nbsp;处理意见：</span>
 							</td>
 							<td class="td1" align="left">
-								<s:if test="#request.model.gzjzyhApplication.appStatus==3 || #request.model.gzjzyhApplication.appStatus==6">
-									${model.gzjzyhApplication.appNgReason }
-								</s:if>
+								${model.gzjzyhApplication.appNgReason }
 							</td>
+							<td height="21" class="biao_bg1_gz" align="right">
+							</td>
+							<td class="td1" align="left">
+							</td>
+						</tr>
+						</s:if>
+						<s:if test="#request.model.gzjzyhApplication.appStatus==5 && #request.model.gzjzyhApplication.appResponsefile != null && #request.model.gzjzyhApplication.appResponsefile != ''">
+						<tr>
 							<td height="21" class="biao_bg1_gz" align="right">
 								<span class="wz"><font color="red">*</font>&nbsp;反馈附件：</span>
 							</td>
 							<td class="td1" align="left">
-								<s:if test="#request.model.gzjzyhApplication.appStatus==5 && #request.model.gzjzyhApplication.appResponsefile != null && #request.model.gzjzyhApplication.appResponsefile != ''">
-									<a href="javascript:void(0);" class="button" onclick="downloadAttachment()">下载附件</a>
-								</s:if>
+								<a href="javascript:void(0);" class="button" onclick="downloadAttachment()">下载附件</a>
+							</td>
+							<td height="21" class="biao_bg1_gz" align="right">
+							</td>
+							<td class="td1" align="left">
 							</td>
 						</tr>
+						</s:if>
 					</table>
 				</td>
 			</tr>
