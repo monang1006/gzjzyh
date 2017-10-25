@@ -151,16 +151,16 @@ IMG.twist {
 
 }
 TBODY {
-	FONT-WEIGHT: normal; font-size: 14px; FONT-FAMILY: "宋体","Verdana", "Arial", "Helvetica", "sans-serif"; HEIGHT: 20px
+	FONT-WEIGHT: normal; font-size: 14px; FONT-FAMILY: "瀹嬩綋","Verdana", "Arial", "Helvetica", "sans-serif"; HEIGHT: 20px
 }
 UNKNOWN {
-	font-size: 14px; COLOR: #ffffff; FONT-FAMILY: "宋体", "Verdana", "Arial", "Helvetica", "sans-serif"; HEIGHT: 28px; BACKGROUND-COLOR: #4977b4
+	font-size: 14px; COLOR: #ffffff; FONT-FAMILY: "瀹嬩綋", "Verdana", "Arial", "Helvetica", "sans-serif"; HEIGHT: 28px; BACKGROUND-COLOR: #4977b4
 }
 .titlethead {
-	font-size: 14px; COLOR: #ffffff; FONT-FAMILY: "宋体", "Verdana", "Arial", "Helvetica", "sans-serif"; HEIGHT: 28px; BACKGROUND-COLOR: #4977b4
+	font-size: 14px; COLOR: #ffffff; FONT-FAMILY: "瀹嬩綋", "Verdana", "Arial", "Helvetica", "sans-serif"; HEIGHT: 28px; BACKGROUND-COLOR: #4977b4
 }
 .queryhead {
-	font-size: 14px; COLOR: #ffffff; FONT-FAMILY: "宋体", "Verdana", "Arial", "Helvetica", "sans-serif"; HEIGHT: 10px; BACKGROUND-COLOR: #eeeeee
+	font-size: 14px; COLOR: #ffffff; FONT-FAMILY: "瀹嬩綋", "Verdana", "Arial", "Helvetica", "sans-serif"; HEIGHT: 10px; BACKGROUND-COLOR: #eeeeee
 }
 .conBtn {
 	WIDTH: 22px; HEIGHT: 18px
@@ -240,16 +240,16 @@ UNKNOWN {
 }
 .wz{
 	padding-left:4px;
-	font-family: "宋体";
+	font-family: "瀹嬩綋";
 	font-size: 14px;
 }
 .wztext{
-	font-family: "宋体";
+	font-family: "瀹嬩綋";
 	font-size: 14px;
 }
 
 a:link,a:visited,a:hover,a:active{
-	font-family: "宋体";
+	font-family: "瀹嬩綋";
 	font-size: 14px;
 	color: #000000;
 	text-decoration:none;
@@ -264,7 +264,7 @@ a:link,a:visited,a:hover,a:active{
 	line-height: 34px;
 	height: 30px;
 	color: #454953;
-	width : 250px;
+	width : 200px;
 }
 .biao_bg2 {
 	background-image: url(../images/perspective_leftside/biao_bg.jpg);
@@ -273,7 +273,7 @@ a:link,a:visited,a:hover,a:active{
 	background-image: url(../images/perspective_leftside/biao_bg3.jpg);
 	height: 31;
 }
-/*修改*/
+/*淇敼*/
 .contentbodymargin {
 	BACKGROUND: #dae6f2; MARGIN: 0 2px 2px 0;
 }
@@ -285,7 +285,7 @@ a:link,a:visited,a:hover,a:active{
 	HEIGHT: 100%;
 	
 }
-/*增加*/
+/*澧炲姞*/
 .content_title_bg{FILTER:progid:DXImageTransform.Microsoft.Gradient(gradientType=0,startColorStr=#e7eef8,endColorStr=#ffffff);}
 .Operation{
 height:19px;
@@ -299,8 +299,8 @@ border:1px solid #dfdfdf;
 .img_s{
 display:block;
 /*
-display:block;显示前面小图标
-display:none;隐藏前面小图标
+display:block;鏄剧ず鍓嶉潰灏忓浘鏍�
+display:none;闅愯棌鍓嶉潰灏忓浘鏍�
 */
 float:left;
 width:16px;
@@ -385,14 +385,14 @@ background:#bbcfea;
 	width: 24px;
 	padding-top:3px;
 }
-/*查看或者添加页面上的顶部按钮样式——强调*/
+/*鏌ョ湅鎴栬�呮坊鍔犻〉闈笂鐨勯《閮ㄦ寜閽牱寮忊�斺�斿己璋�*/
 .Operation_input{
 	background:url(../images/ch_h_m.gif) repeat-x;
 	font-weight: bold;
 	color:white;
 	cursor: pointer;
 }
-/*查看或者添加页面上的顶部按钮样式——非强调*/
+/*鏌ョ湅鎴栬�呮坊鍔犻〉闈笂鐨勯《閮ㄦ寜閽牱寮忊�斺�旈潪寮鸿皟*/
 .Operation_input1{
 	background:url(../images/ch_z_m.gif) repeat-x;
 	font-weight: bold;
@@ -406,7 +406,7 @@ background:#bbcfea;
 	padding:0px;
 }
 
-/*查看或者添加页面上的按钮样式——四个字及以下的 尽量使用该样式将文字缩减到四个字之内*/
+/*鏌ョ湅鎴栬�呮坊鍔犻〉闈笂鐨勬寜閽牱寮忊�斺�斿洓涓瓧鍙婁互涓嬬殑 灏介噺浣跨敤璇ユ牱寮忓皢鏂囧瓧缂╁噺鍒板洓涓瓧涔嬪唴*/
 .button {
 	width:73px; height:24px; line-height:24px; border:none; background:url(../images/add_bt.jpg) no-repeat center;
 	FONT-SIZE: 14px; FONT-FAMILY: Tahoma, Verdana, Arial, Helvetica;
@@ -414,7 +414,7 @@ background:#bbcfea;
 }
 
 
-/*查看或者添加页面上的按钮样式——五到六个字的*/
+/*鏌ョ湅鎴栬�呮坊鍔犻〉闈笂鐨勬寜閽牱寮忊�斺�斾簲鍒板叚涓瓧鐨�*/
 .button6 {
 	width:94px; height:24px; line-height:24px; border:none; background:url(../images/add_bt_6.jpg) no-repeat center;
 	FONT-SIZE: 14px; FONT-FAMILY: Tahoma, Verdana, Arial, Helvetica;
@@ -422,7 +422,7 @@ background:#bbcfea;
 }
 
 
-/*查看或者添加页面上的按钮样式——七到八个字的 */
+/*鏌ョ湅鎴栬�呮坊鍔犻〉闈笂鐨勬寜閽牱寮忊�斺�斾竷鍒板叓涓瓧鐨� */
 .button8 {
 	width:121px; height:24px; line-height:24px; border:none; background:url(../images/add_bt_8.jpg) no-repeat center;
 	FONT-SIZE: 14px; FONT-FAMILY: Tahoma, Verdana, Arial, Helvetica;
