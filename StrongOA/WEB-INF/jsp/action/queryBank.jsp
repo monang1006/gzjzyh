@@ -162,7 +162,7 @@ function receiveApply(){
 	var width=screen.availWidth;
  	var height=screen.availHeight;
 	var result=window.showModalDialog("<%=path%>/action/queryBank!input.action?appId="+id,
-			window,"dialogWidth:" + width + "pt;dialogHeight:" + height + "pt;"+"status:no;help:no;scroll:no;");
+			window,"dialogWidth:" + "1000" + "pt;dialogHeight:" + height + "pt;"+"status:no;help:no;scroll:no;");
 }
 
 function submitForm() {

@@ -212,7 +212,7 @@ function addApply(){
 	var width=screen.availWidth;
  	var height=screen.availHeight;
 	var result=window.showModalDialog("<%=path%>/action/queryApply!input.action",
-										window,"dialogWidth:" + width + "pt;dialogHeight:" + height + "pt;"+"status:no;help:no;scroll:no;");
+										window,"dialogWidth:" + "1000" + "pt;dialogHeight:" + height + "pt;"+"status:no;help:no;scroll:no;");
 }
 
 function deleteApply(){
@@ -259,7 +259,7 @@ function editApply(){
 				var width=screen.availWidth;
 			 	var height=screen.availHeight;
 				var result=window.showModalDialog("<%=path%>/action/queryApply!input.action?appId="+id,
-						window,"dialogWidth:" + width + "pt;dialogHeight:" + height + "pt;"+"status:no;help:no;scroll:no;");
+						window,"dialogWidth:" + "1000" + "pt;dialogHeight:" + height + "pt;"+"status:no;help:no;scroll:no;");
 			} else {
 				alert("当前申请不是未提交、已驳回或者已拒签状态，不允许编辑。");
 			}
@@ -345,7 +345,7 @@ function view(){
 	var width=screen.availWidth;
  	var height=screen.availHeight;
 	var result=window.showModalDialog("<%=path%>/action/queryApply!getApplyView.action?appId="+id,
-			window,"dialogWidth:" + width + "pt;dialogHeight:" + height + "pt;"+"status:no;help:no;scroll:no;");
+			window,"dialogWidth:" + "1000" + "pt;dialogHeight:" + height + "pt;"+"status:no;help:no;scroll:no;");
 }
 
 function changeCaseF(caseId,caseCode,caseName){
