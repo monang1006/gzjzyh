@@ -306,8 +306,10 @@ public class PoliceRegisterAction extends BaseActionSupport<TGzjzyhUserExtension
 		if("register".equals(this.flag)){
 			return "registerClose";
 		}else{
-			this.renderHtml("<script>alert('保存成功。')</script>");
-			return null;
+			
+			//this.renderHtml("<script>alert('保存成功。');</script>");
+			return renderHtml("<script>alert('保存成功。');try{top.perspective_content.actions_container.personal_properties_toolbar.refreshCurrentWork();}catch(e){alert(e)} </script>");
+//			return null;
 		}
 		
 	}
