@@ -875,7 +875,14 @@ function refreshWorkByTitle(sUrl,sTitle){
 function refreshCurrentWork(oWin){
 	var callerIdx = findCallerIndex(oWin);
 	if(document.frames.length > 0&&callerIdx>=0&&callerIdx<document.frames.length){
-
+		
+		//帐号注册页面单独刷新
+		if($("form",window.frames(callerIdx).document)[0].id=="usermanagesave"
+			&&$("form",window.frames(callerIdx).document)[0].target=="hiddenFrame"){
+				window.frames(callerIdx).location="<%=path%>/policeregister/policeRegister!input.action";
+				return;
+			}
+		
 		if($("form",window.frames(callerIdx).document).length > 0 ){
 			$("form",window.frames(callerIdx).document)[0].submit();
 		}else{
